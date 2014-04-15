@@ -10,6 +10,7 @@
 */config/database.php
 */.htaccess
 *.htaccess
+*.log
 .DS_Store
 .DS_Store?
 .Spotlight-V100
