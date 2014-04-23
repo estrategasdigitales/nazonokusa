@@ -38,9 +38,10 @@
 |
 */
 
-$route['default_controller'] = "middleware";
+$route['default_controller'] = "cms";
 $route['404_override'] = '';
 
+$route['login']				= 'cms/login';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
