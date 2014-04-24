@@ -42,6 +42,8 @@ $route['default_controller'] = "cms";
 $route['404_override'] = '';
 
 $route['login']				= 'cms/login';
+$route['inicio']			= 'cms/index';
+$route['salir']				= 'cms/logout';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
