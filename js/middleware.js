@@ -1,7 +1,76 @@
 /*
 
- */
+*/
 $(function(){
+	$('#form_vertical_nueva').validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa el Nombre de la Categoría.",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+		}
+	});
+	$('#form_categoria_nueva').validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa el Nombre de la Categoría.",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+		}
+	});
+	$("#form_usuario_nuevo").validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 5
+			},
+			apellido: {
+				required: true
+			},
+			password: {
+				required: true,
+				minlength: 5
+			},
+			password_2: {
+				required: true,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa un Nombre de Usuario",
+				minlength: "Este campo debe ser de al menos 5 caracteres."
+			},
+			nombre: {
+				required: "Por favor, ingresa un Apellido"
+			},
+			password: {
+				required: "Por favor, ingresa una clave de usuario.",
+				minlength: "Tu clave debe ser de al menos 5 caracteres de longitud o mas."
+			},
+			password_2: {
+				required: "Por favor, vuelve a indicar tu clave.",
+				equalTo: "No coincide con tu clave, por favor, verifica."
+			},
+			email: "Por favor, ingresa un correo valido.",
+		}
+	});
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 35, // The length of each line
@@ -38,18 +107,18 @@ $(function(){
 					// $("#messages").delay(2500).slideUp(800, function(){
 					// $("#messages").html("");
 					// });
-				}else{
-					spinner.stop();
-					$('#foo').css('display','none');
-					window.location.reload();
-				}
-			},
-			error: function(data){
-				spinner.stop();
-				$('#foo').css('display','none');
-				$('#messages').html(data);
-			}
-		});
+	}else{
+		spinner.stop();
+		$('#foo').css('display','none');
+		window.location.reload();
+	}
+},
+error: function(data){
+	spinner.stop();
+	$('#foo').css('display','none');
+	$('#messages').html(data);
+}
+});
 		return false;
 	});
 });

@@ -7,7 +7,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<?php if( $this->session->userdata('nivel') === '1' ): ?>
-						<a href="#" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Usuarios</a>
+						<a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Usuarios</a>
 					<?php endif; ?>
 				</div>
 				<div class="col-md-3"></div>
@@ -17,7 +17,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<?php if( $this->session->userdata('nivel') === '1' || $this->session->userdata('nivel') === '2'): ?>
-						<a href="#" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Trabajos</a>
+						<a href="<?php base_url(); ?>trabajos" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Trabajos</a>
 					<?php endif; ?>
 				</div>
 				<div class="col-md-3"></div>
@@ -27,7 +27,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<?php if( $this->session->userdata('nivel') === '1' ): ?>
-						<a href="#" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Categorías</a>
+						<a href="<?php base_url(); ?>categorias" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Categorías</a>
 					<?php endif; ?>
 				</div>
 				<div class="col-md-3"></div>
@@ -37,7 +37,7 @@
 				<div class="col-md-3"></div>
 				<div class="col-md-6">
 					<?php if( $this->session->userdata('nivel') === '1' ): ?>
-						<a href="#" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Verticales</a>
+						<a href="<?php base_url(); ?>verticales" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Verticales</a>
 					<?php endif; ?>
 				</div>
 				<div class="col-md-3"></div>

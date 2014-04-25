@@ -13,8 +13,14 @@ h3{
     font-family: Arial;
     font-size: 22px;
     font-weight: bold;
+    color: #4E4E4E;
 }
-
+.usuarios h4,.trabajos h4,.categorias h4,.verticales h4{
+    font-family: Arial;
+    font-size: 18px;
+    font-weight: bold;
+    color: #2E509A;
+}
 #container {
 	display: block;
 	margin: 0 auto;
@@ -22,7 +28,7 @@ h3{
 }
 
 #foo{
-    background-color: #000;
+    background-color: #4E4E4E;
     display: none;
     height: 100%;
     left: 0;
@@ -89,4 +95,43 @@ header{
 }
 .principal{
     margin: 150px auto;
+}
+.usuarios,.trabajos,.categorias,.verticales{
+    margin: 80px auto;
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: rgba(33, 85, 161,.4);
+}
+.table > thead > tr > td.titulo-columna,
+.table > tbody > tr > td.titulo-columna,
+.table > tfoot > tr > td.titulo-columna,
+.table > thead > tr > th.titulo-columna,
+.table > tbody > tr > th.titulo-columna,
+.table > tfoot > tr > th.titulo-columna,
+.table > thead > tr.titulo-columna > td,
+.table > tbody > tr.titulo-columna > td,
+.table > tfoot > tr.titulo-columna > td,
+.table > thead > tr.titulo-columna > th,
+.table > tbody > tr.titulo-columna > th,
+.table > tfoot > tr.titulo-columna > th{
+    background: #2155A1;
+}
+
+.titulo-columna{
+    color: #fff;
+}
+.usuarios .table-striped td,.trabajos .table-striped td,.categorias .table-striped td,.verticales .table-striped td{
+    vertical-align: middle;
+}
+.alert-danger{
+    margin-bottom: 0px;
+}
+.table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: rgba(33, 85, 161,.1);
+}
+.table-striped > tbody > tr:nth-child(2n):hover, .table-striped > tbody > tr:nth-child(2n+1):hover {
+    background-color: rgba(100, 100, 100,.4);
+}
+.usuarios .panel-body,.usuarios .panel-primary{
+    background-color: rgba(33, 85, 161,.1);
 }

@@ -39,9 +39,9 @@ class Cms extends CI_Controller {
 		$this->form_validation->set_rules('password', 'Contraseña', 'required|xss_clean');
 		if ($this->form_validation->run() === TRUE)
 		{
-			$usuario['usuario']   = $username = $this->input->post('usuario');
-			$usuario['password']  = $username = $this->input->post('password');
-			$valido = $this->cms->validar_usuario($usuario);
+			$usuario['usuario']   = $this->input->post('usuario');
+			$usuario['password']  = $this->input->post('password');
+			$valido = $this->cms->get_usuario($usuario);
 			if( $valido )
 			{
 				$session = array(
@@ -62,5 +62,144 @@ class Cms extends CI_Controller {
 			$this->load->view('cms/login');
 		}
 
-	}	
+	}
+
+	public function admin_usuarios(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$data['usuarios']	= $this->cms->get_usuarios();
+        	$this->load->view('cms/admin/usuarios',$data);
+        }
+
+	}
+
+	public function admin_trabajos(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$data['trabajos']	= $this->cms->get_trabajos();
+        	$this->load->view('cms/admin/trabajos',$data);
+        }
+
+	}
+
+	public function admin_categorias(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$data['categorias']	= $this->cms->get_categorias();
+        	$this->load->view('cms/admin/categorias',$data);
+        }
+
+	}
+
+	public function admin_verticales(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$data['verticales']	= $this->cms->get_verticales();
+        	$this->load->view('cms/admin/verticales',$data);
+        }
+
+	}
+
+	public function nuevo_usuario(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$data['categorias'] = $this->cms->get_categorias();
+        	$data['verticales'] = $this->cms->get_verticales();
+        	$this->load->view('cms/admin/nuevo_usuario',$data);
+        }
+
+	}
+
+	public function nueva_categoria(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$this->load->view('cms/admin/nueva_categoria',$data);
+        }
+
+	}
+
+	public function validar_form_categoria(){
+
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
+		if ($this->form_validation->run() === TRUE)
+		{
+			$categoria['nombre']   = $this->input->post('nombre');
+			$guardar = $this->cms->add_categoria($categoria);
+			if( $guardar )
+			{
+                redirect('categorias');
+			}
+			else
+			{
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['error'] = "La nueva categoria no pudo ser guardada";
+				$this->load->view('cms/admin/nueva_categoria',$data);
+			}
+		}
+		else
+		{			
+			$data['usuario'] 	= $this->session->userdata('nombre');
+			$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
+        	$this->load->view('cms/admin/nueva_categoria',$data);
+		}
+
+	}
+
+	public function nueva_vertical(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+		 	redirect('login');
+        } else {
+        	$data['usuario'] 	= $this->session->userdata('nombre');
+        	$this->load->view('cms/admin/nueva_vertical',$data);
+        }
+
+	}
+
+	public function validar_form_vertical(){
+
+		$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
+		if ($this->form_validation->run() === TRUE)
+		{
+			$vertical['nombre']   = $this->input->post('nombre');
+			$guardar = $this->cms->add_vertical($vertical);
+			if( $guardar )
+			{
+                redirect('verticales');
+			}
+			else
+			{
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['error'] = "La nueva vertical no pudo ser guardada";
+				$this->load->view('cms/admin/nueva_vertical',$data);
+			}
+		}
+		else
+		{			
+			$data['usuario'] 	= $this->session->userdata('nombre');
+			$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
+        	$this->load->view('cms/admin/nueva_vertical',$data);
+		}
+
+	}
+
+
 }

@@ -38,12 +38,12 @@
 							</div>
         				<?php echo form_close(); ?>
 					</div>
-					<?php if ( validation_errors() ) { ?>
+					<?php if ( validation_errors() ) : ?>
 						<div class="alert alert-danger"><?php echo validation_errors(); ?></div>
-					<?php } ?>
-					<?php if ( isset($error) ) { ?>
+					<?php endif; ?>
+					<?php if ( isset($error) ) : ?>
 						<div class="alert alert-danger"><?php echo $error; ?></div>
-					<?php } ?>
+					<?php endif; ?>
 				</div>
 				<div class="col-md-3"></div>
 			</div>

@@ -11,6 +11,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	<script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.form.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.validate.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/spin.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
 </head>
