@@ -17,13 +17,13 @@
 							<td>Editar Información</td>
 							<td>Eliminar</td>
 						</tr>
-						<?php if ( $usuarios ): ?>
+						<?php if ( isset($usuarios) && !empty($usuarios) ): ?>
 							<?php foreach( $usuarios as $usuario ): ?>
 								<tr>
 									<td><?php echo $usuario['nombre']; ?></td>
 									<td><?php echo ($usuario['nivel'] === '2') ? 'Editor':''; ?></td>
-									<td><a href="#" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
-									<td><a href="#" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+									<td><a href="<?php base_url(); ?>editar/<?php echo $usuario['uuid_usuario'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+									<td><a href="javascript:ShowDialog('<?php base_url(); ?>eliminar/<?php echo $usuario['uuid_usuario'] ?>','<?php echo $usuario['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 								</tr>
 							<?php endforeach; ?>
 						<?php endif; ?>
@@ -31,6 +31,14 @@
 				</div>
 			</div>
 			<br>
+			<?php if ( isset($error) && !empty($error) ) : ?>
+			<div class="row">
+				<div class="container">
+					<div class="alert alert-danger"><?php echo $error; ?></div>
+				</div>
+			</div>
+			<br>
+			<?php endif; ?>
 			<div class="row">
 				<div class="col-sm-8 col-md-8"></div>
 				<div class="col-sm-4 col-md-4">
@@ -38,6 +46,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="dialogConfirm"><span id="spanMessage"></span>
 	</nav>
 	<footer>
 		

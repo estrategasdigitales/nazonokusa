@@ -45,6 +45,129 @@ class Cms_model extends CI_Model {
 
     }
 
+    public function get_usuario_editar($uuid){
+
+        $this->db->select("uuid_usuario,nombre,apellidos,AES_DECRYPT(email,'$this->key_encrypt') as email,extension,AES_DECRYPT(celular,'$this->key_encrypt') as celular, AES_DECRYPT(password,'$this->key_encrypt') as password",False);
+        $this->db->where('uuid_usuario',$uuid);
+        $result = $this->db->get('usuarios');
+        if ($result->num_rows() > 0)
+        {
+            return $result->row();
+        }
+        else
+        {
+            return False;
+        }
+
+    }
+
+    public function get_ver_cat($uuid){
+
+        $this->db->set_dbprefix('rel_');
+        $this->db->select('uuid_usuario,uuid_categoria,uuid_vertical');
+        $this->db->where('uuid_usuario',$uuid);
+        $result = $this->db->get($this->db->dbprefix('usuarios_categorias_verticales'));
+        if ($result->num_rows() > 0)
+        {
+            return $result->result_array();
+        }
+        else
+        {
+            return False;
+        }
+
+    }
+
+    public function add_usuario($usuario){
+
+        $this->db->set('uuid_usuario', "UUID()", False);
+        $this->db->set('nombre', $usuario['nombre']);
+        $this->db->set('apellidos', $usuario['apellidos']);
+        $this->db->set('email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",false);
+        $this->db->set('extension', $usuario['extension']);
+        $this->db->set('celular', "AES_ENCRYPT('{$usuario['celular']}','{$this->key_encrypt}')",false);
+        $this->db->set('password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')",false);
+        $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->set('nivel', '2');
+        $this->db->insert('usuarios');
+        if ($this->db->affected_rows() > 0)
+        {            
+            $this->db->select('uuid_usuario');
+            $this->db->where('nombre',$usuario['nombre']);
+            $this->db->where('email',"AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",false);
+            $this->db->where('password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')",false);
+            $result = $this->db->get('usuarios');
+            if ($result->num_rows() > 0)
+            {
+                $row = $result->row();
+                $result->free_result();
+                $this->db->set_dbprefix('rel_');
+                foreach ($usuario['categorias'] as $key => $value) {                    
+                    foreach ($usuario['verticales'] as $key2 => $value2) {
+                        $this->db->set('uuid_usuario', $row->uuid_usuario);
+                        $this->db->set('uuid_categoria', $value);
+                        $this->db->set('uuid_vertical', $value2);
+                        $this->db->insert($this->db->dbprefix('usuarios_categorias_verticales')); 
+                    }
+                }
+                
+            }else
+            {
+                return False;
+            }           
+        }
+        else
+        {
+            return False; 
+        }            
+
+    }
+
+    public function editar_usuario($usuario){
+
+        $this->db->set('nombre', $usuario['nombre']);
+        $this->db->set('apellidos', $usuario['apellidos']);
+        $this->db->set('email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",false);
+        $this->db->set('extension', $usuario['extension']);
+        $this->db->set('celular', "AES_ENCRYPT('{$usuario['celular']}','{$this->key_encrypt}')",false);
+        $this->db->set('password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')",false);
+        $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->where('uuid_usuario',$usuario['uuid_usuario']);
+        $this->db->update('usuarios');
+        if ($this->db->affected_rows() > 0)
+        {
+            $this->db->set_dbprefix('rel_');
+            $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $usuario['uuid_usuario']));
+            foreach ($usuario['categorias'] as $key => $value) {                    
+                foreach ($usuario['verticales'] as $key2 => $value2) {
+                    $this->db->set('uuid_usuario', $usuario['uuid_usuario']);
+                    $this->db->set('uuid_categoria', $value);
+                    $this->db->set('uuid_vertical', $value2);
+                    $this->db->insert($this->db->dbprefix('usuarios_categorias_verticales')); 
+                }
+            }
+            
+        }
+        else
+        {
+            return False; 
+        }            
+
+    }
+
+    public function delete_usuario($uuid){
+
+        $this->db->set_dbprefix('rel_');
+        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $uuid));
+        $this->db->set_dbprefix('mw_');
+        $this->db->delete('usuarios', array('uuid_usuario' => $uuid));
+        if ($this->db->affected_rows() > 0)
+            return True;
+        else
+            return False; 
+
+    }
+
     public function get_trabajos(){
 
         $this->db->select('uuid_trabajo,nombre,url_origen,url_storage,fecha_ejecucion,uuid_usuario');
@@ -88,6 +211,19 @@ class Cms_model extends CI_Model {
 
     }
 
+    public function delete_categoria($uuid){
+
+        $this->db->set_dbprefix('rel_');
+        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_categoria' => $uuid));
+        $this->db->set_dbprefix('mw_');
+        $this->db->delete('categorias', array('uuid_categoria' => $uuid));
+        if ($this->db->affected_rows() > 0)
+            return True;
+        else
+            return False; 
+
+    }
+
     public function get_verticales(){
 
         $this->db->select('uuid_vertical,nombre,fecha_registro');
@@ -109,6 +245,19 @@ class Cms_model extends CI_Model {
         $this->db->set('nombre', $vertical['nombre']);
         $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
         $this->db->insert('verticales');
+        if ($this->db->affected_rows() > 0)
+            return True;
+        else
+            return False; 
+
+    }
+
+    public function delete_vertical($uuid){
+
+        $this->db->set_dbprefix('rel_');
+        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_vertical' => $uuid));
+        $this->db->set_dbprefix('mw_');
+        $this->db->delete('verticales', array('uuid_vertical' => $uuid));
         if ($this->db->affected_rows() > 0)
             return True;
         else

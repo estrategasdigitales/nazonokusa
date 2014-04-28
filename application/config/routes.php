@@ -38,19 +38,23 @@
 |
 */
 
-$route['default_controller'] = "cms";
+$route['default_controller'] = "middleware";
 $route['404_override'] = '';
 
-$route['login']				= 'cms/login';
-$route['inicio']			= 'cms/index';
-$route['salir']				= 'cms/logout';
-$route['usuarios']			= 'cms/admin_usuarios';
-$route['trabajos']			= 'cms/admin_trabajos';
-$route['categorias']		= 'cms/admin_categorias';
-$route['verticales']		= 'cms/admin_verticales';
-$route['nuevo_usuario']		= 'cms/nuevo_usuario';
-$route['nueva_categoria']	= 'cms/nueva_categoria';
-$route['nueva_vertical']	= 'cms/nueva_vertical';
+$route['login']						= 'cms/login';
+$route['inicio']					= 'cms/index';
+$route['salir']						= 'cms/logout';
+$route['usuarios']					= 'cms/admin_usuarios';
+$route['trabajos']					= 'cms/admin_trabajos';
+$route['categorias']				= 'cms/admin_categorias';
+$route['verticales']				= 'cms/admin_verticales';
+$route['nuevo_usuario']				= 'cms/nuevo_usuario';
+$route['nueva_categoria']			= 'cms/nueva_categoria';
+$route['nueva_vertical']			= 'cms/nueva_vertical';
+$route['eliminar/(:any)']			= 'cms/eliminar_usuario/$1';
+$route['eliminar_categoria/(:any)']	= 'cms/eliminar_categoria/$1';
+$route['eliminar_vertical/(:any)']	= 'cms/eliminar_vertical/$1';
+$route['editar/(:any)']				= 'cms/editar_usuario/$1';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

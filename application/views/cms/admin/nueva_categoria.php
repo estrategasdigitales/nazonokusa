@@ -31,7 +31,6 @@
 					</div>
 					<div class="col-sm-2 col-md-2"></div>
 				</div>
-			</form>
 			<?php echo form_close(); ?>
 			<?php if ( isset($error) ) : ?>
 				<div class="alert alert-danger"><?php echo $error; ?></div>

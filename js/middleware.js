@@ -36,7 +36,7 @@ $(function(){
 				required: true,
 				minlength: 5
 			},
-			apellido: {
+			apellidos: {
 				required: true
 			},
 			password: {
@@ -51,13 +51,21 @@ $(function(){
 				required: true,
 				email: true
 			},
+			'categoria[]': {
+				required: true, 
+				minlength: 1 
+			},
+			'vertical[]': {
+				required: true, 
+				minlength: 1 
+			},
 		},
 		messages: {
 			nombre: {
 				required: "Por favor, ingresa un Nombre de Usuario",
 				minlength: "Este campo debe ser de al menos 5 caracteres."
 			},
-			nombre: {
+			apellidos: {
 				required: "Por favor, ingresa un Apellido"
 			},
 			password: {
@@ -69,6 +77,8 @@ $(function(){
 				equalTo: "No coincide con tu clave, por favor, verifica."
 			},
 			email: "Por favor, ingresa un correo valido.",
+			'categoria[]': "Debe seleccionar al menos una categoria",
+			'vertical[]': "Debe seleccionar al menos una vertical",
 		}
 	});
 	var opts = {
@@ -122,3 +132,60 @@ error: function(data){
 		return false;
 	});
 });
+
+function ShowDialog(url,nombre) {
+    $('#spanMessage').html('¿Está seguro(a) que desea eliminar el usuario: '+nombre+'?');
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        height: 200,
+        width: 400,
+        modal: true,
+        title: 'Mensaje Modal',
+        buttons: {
+            'Aceptar': function () {
+            	window.location.href = url;
+            },
+                'Cancelar': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function ShowDialog2(url,nombre) {
+    $('#spanMessage').html('¿Está seguro(a) que desea eliminar la categoría: '+nombre+'?');
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        height: 200,
+        width: 400,
+        modal: true,
+        title: 'Mensaje Modal',
+        buttons: {
+            'Aceptar': function () {
+            	window.location.href = url;
+            },
+                'Cancelar': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function ShowDialog3(url,nombre) {
+    $('#spanMessage').html('¿Está seguro(a) que desea eliminar la vertical: '+nombre+'?');
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        height: 200,
+        width: 400,
+        modal: true,
+        title: 'Mensaje Modal',
+        buttons: {
+            'Aceptar': function () {
+            	window.location.href = url;
+            },
+                'Cancelar': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
