@@ -35,36 +35,33 @@ class Cms extends CI_Controller {
 
 	public function validar_usuario(){
 
-		if ($this->session->userdata('session') !== TRUE) {
-			$this->load->view('cms/login');
-		} else {
-			$this->form_validation->set_rules('usuario', 'Usuario', 'required|xss_clean');
-			$this->form_validation->set_rules('password', 'Contraseña', 'required|xss_clean');
-			if ($this->form_validation->run() === TRUE)
+		$this->form_validation->set_rules('usuario', 'Usuario', 'required|xss_clean');
+		$this->form_validation->set_rules('password', 'Contraseña', 'required|xss_clean');
+		if ($this->form_validation->run() === TRUE)
+		{
+			$usuario['usuario']   = $this->input->post('usuario');
+			$usuario['password']  = $this->input->post('password');
+			$valido = $this->cms->get_usuario($usuario);
+			if( $valido )
 			{
-				$usuario['usuario']   = $this->input->post('usuario');
-				$usuario['password']  = $this->input->post('password');
-				$valido = $this->cms->get_usuario($usuario);
-				if( $valido )
-				{
-					$session = array(
-						'session'	 => TRUE,
-						'uuid' 		 => $valido->uuid_usuario,
-						'nombre' 	 => $valido->nombre,
-						'nivel' 	 => $valido->nivel
-						);
-					$this->session->set_userdata($session);
-					redirect('inicio');
-				}else{
-					$data['error'] = "El Usurio y/o la contraseña son incorrectos o no existe el Usuario";
-					$this->load->view('cms/login', $data);
-				}
-			}
-			else
-			{			
-				$this->load->view('cms/login');
+				$session = array(
+					'session'	 => TRUE,
+					'uuid' 		 => $valido->uuid_usuario,
+					'nombre' 	 => $valido->nombre,
+					'nivel' 	 => $valido->nivel
+					);
+				$this->session->set_userdata($session);
+				redirect('inicio');
+			}else{
+				$data['error'] = "El Usurio y/o la contraseña son incorrectos o no existe el Usuario";
+				$this->load->view('cms/login', $data);
 			}
 		}
+		else
+		{			
+			$this->load->view('cms/login');
+		}
+		
 
 	}
 
