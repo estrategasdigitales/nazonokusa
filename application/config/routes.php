@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "middleware";
+$route['default_controller'] = "cms";
 $route['404_override'] = '';
 
 $route['login']						= 'cms/login';
