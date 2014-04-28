@@ -63,7 +63,6 @@ class Cms_model extends CI_Model {
 
     public function get_ver_cat($uuid){
 
-        $this->db->set_dbprefix('rel_');
         $this->db->select('uuid_usuario,uuid_categoria,uuid_vertical');
         $this->db->where('uuid_usuario',$uuid);
         $result = $this->db->get($this->db->dbprefix('usuarios_categorias_verticales'));
@@ -101,7 +100,6 @@ class Cms_model extends CI_Model {
             {
                 $row = $result->row();
                 $result->free_result();
-                $this->db->set_dbprefix('rel_');
                 foreach ($usuario['categorias'] as $key => $value) {                    
                     foreach ($usuario['verticales'] as $key2 => $value2) {
                         $this->db->set('uuid_usuario', $row->uuid_usuario);
@@ -136,7 +134,6 @@ class Cms_model extends CI_Model {
         $this->db->update('usuarios');
         if ($this->db->affected_rows() > 0)
         {
-            $this->db->set_dbprefix('rel_');
             $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $usuario['uuid_usuario']));
             foreach ($usuario['categorias'] as $key => $value) {                    
                 foreach ($usuario['verticales'] as $key2 => $value2) {
@@ -156,8 +153,7 @@ class Cms_model extends CI_Model {
     }
 
     public function delete_usuario($uuid){
-
-        $this->db->set_dbprefix('rel_');
+        
         $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $uuid));
         $this->db->set_dbprefix('mw_');
         $this->db->delete('usuarios', array('uuid_usuario' => $uuid));
@@ -213,7 +209,6 @@ class Cms_model extends CI_Model {
 
     public function delete_categoria($uuid){
 
-        $this->db->set_dbprefix('rel_');
         $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_categoria' => $uuid));
         $this->db->set_dbprefix('mw_');
         $this->db->delete('categorias', array('uuid_categoria' => $uuid));
@@ -254,7 +249,6 @@ class Cms_model extends CI_Model {
 
     public function delete_vertical($uuid){
 
-        $this->db->set_dbprefix('rel_');
         $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_vertical' => $uuid));
         $this->db->set_dbprefix('mw_');
         $this->db->delete('verticales', array('uuid_vertical' => $uuid));

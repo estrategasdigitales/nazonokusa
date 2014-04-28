@@ -35,15 +35,14 @@ class Cms extends CI_Controller {
 
 	public function validar_usuario(){
 
-		$this->form_validation->set_rules('usuario', 'Usuario', 'required|xss_clean');
-		$this->form_validation->set_rules('password', 'Contraseña', 'required|xss_clean');
-		if ($this->form_validation->run() === TRUE)
-		{
-			$usuario['usuario']   = $this->input->post('usuario');
-			$usuario['password']  = $this->input->post('password');
-			$valido = $this->cms->get_usuario($usuario);
-			if( $valido )
-			{
+		$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean');
+		if ($this->form_validation->run() === TRUE) {
+			$usuario['usuario'] 	=	$this->input->post('usuario');
+			$usuario['password'] 	=	$this->input->post('password');
+			$usuario 				=	$this->security->xss_clean($usuario);
+			$valido 				=	$this->cms->get_usuario($usuario);
+			if( $valido ) {
 				$session = array(
 					'session'	 => TRUE,
 					'uuid' 		 => $valido->uuid_usuario,
@@ -52,17 +51,13 @@ class Cms extends CI_Controller {
 					);
 				$this->session->set_userdata($session);
 				redirect('inicio');
-			}else{
+			} else {
 				$data['error'] = "El Usurio y/o la contraseña son incorrectos o no existe el Usuario";
 				$this->load->view('cms/login', $data);
 			}
-		}
-		else
-		{			
+		} else {			
 			$this->load->view('cms/login');
 		}
-		
-
 	}
 
 	public function admin_usuarios(){
