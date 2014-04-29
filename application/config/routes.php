@@ -51,6 +51,7 @@ $route['verticales']				= 'cms/admin_verticales';
 $route['nuevo_usuario']				= 'cms/nuevo_usuario';
 $route['nueva_categoria']			= 'cms/nueva_categoria';
 $route['nueva_vertical']			= 'cms/nueva_vertical';
+$route['nuevo_trabajo']				= 'cms/nuevo_trabajo';
 $route['eliminar/(:any)']			= 'cms/eliminar_usuario/$1';
 $route['eliminar_categoria/(:any)']	= 'cms/eliminar_categoria/$1';
 $route['eliminar_vertical/(:any)']	= 'cms/eliminar_vertical/$1';

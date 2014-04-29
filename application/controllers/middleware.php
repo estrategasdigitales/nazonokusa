@@ -10,7 +10,11 @@ class Middleware extends CI_Controller {
 	 *
 	 */
 	public function index() {
-		$this->load->view('middleware/index');
+		$this->load->view('middleware/pruebas');
+	}
+
+	public function pruebas() {
+		$this->load->view('middleware/prueba');
 	}
 
 	public function read_feed() {

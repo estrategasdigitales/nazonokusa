@@ -378,5 +378,18 @@ class Cms extends CI_Controller {
 		
 	}
 
+	public function nuevo_trabajo(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+			redirect('login');
+		} else {
+			$data['usuario'] 	= $this->session->userdata('nombre');
+			$data['categorias'] = $this->cms->get_categorias($this->session->userdata('uuid'));
+			$data['verticales'] = $this->cms->get_verticales($this->session->userdata('uuid'));
+			$this->load->view('cms/admin/nuevo_trabajo',$data);
+		}
+
+	}
+
 
 }

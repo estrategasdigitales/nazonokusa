@@ -5,7 +5,7 @@
 		<div class="container">
 			<div class="row">
 					<div class="col-sm-8 col-md-8"><h4>Administrar Trabajos</h4></div>
-					<div class="col-sm-4 col-md-4"><a href="#" type="button" class="btn btn-primary btn-block">Nuevo Trabajo</a></div>
+					<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_trabajo" type="button" class="btn btn-primary btn-block">Nuevo Trabajo</a></div>
 			</div>
 			<br>
 			<div class="row">

@@ -194,6 +194,21 @@ class Cms_model extends CI_Model {
 
     }
 
+    public function get_categorias($uuid){
+
+        $this->db->select('uuid_categoria,nombre,fecha_registro');
+        $result = $this->db->get('categorias');
+        if ($result->num_rows() > 0)
+        {
+            return $result->result_array();
+        }
+        else
+        {
+            return False;
+        }
+
+    }
+
     public function add_categoria($categoria){
 
         $this->db->set('uuid_categoria', "UUID()", False);
@@ -220,6 +235,21 @@ class Cms_model extends CI_Model {
     }
 
     public function get_verticales(){
+
+        $this->db->select('uuid_vertical,nombre,fecha_registro');
+        $result = $this->db->get('verticales');
+        if ($result->num_rows() > 0)
+        {
+            return $result->result_array();
+        }
+        else
+        {
+            return False;
+        }
+
+    }
+
+    public function get_verticales($uuid){
 
         $this->db->select('uuid_vertical,nombre,fecha_registro');
         $result = $this->db->get('verticales');
