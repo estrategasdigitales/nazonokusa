@@ -52,7 +52,6 @@ function jsonp(url)
 </script>
 </head-->
 <body>
-	<?php $this->load->view('cms/header'); ?>
 	<nav class="usuarios">
 		<div class="container">
 	<?php

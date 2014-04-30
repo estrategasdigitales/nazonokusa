@@ -1,6 +1,12 @@
 /*
 
 */
+
+function desplegar(item){
+	if($('.'+item).css('display')==='none'){
+		$('.'+item).slideDown();
+	}
+}
 $(function(){
 	$('#form_vertical_nueva').validate({
 		rules: {

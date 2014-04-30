@@ -135,3 +135,6 @@ header{
 .usuarios .panel-body,.usuarios .panel-primary{
     background-color: rgba(33, 85, 161,.1);
 }
+.campos-feed{
+    display: none;
+}

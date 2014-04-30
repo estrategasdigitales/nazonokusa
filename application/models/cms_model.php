@@ -194,10 +194,13 @@ class Cms_model extends CI_Model {
 
     }
 
-    public function get_categorias($uuid){
+    public function get_categorias_usuario($uuid){
 
-        $this->db->select('uuid_categoria,nombre,fecha_registro');
-        $result = $this->db->get('categorias');
+        $this->db->select('distinct mw_categorias.uuid_categoria,categorias.nombre',false);
+        $this->db->from('categorias');
+        $this->db->join('usuarios_categorias_verticales', 'usuarios_categorias_verticales.uuid_categoria = categorias.uuid_categoria');
+        $this->db->where('usuarios_categorias_verticales.uuid_usuario',$uuid);
+        $result = $this->db->get();
         if ($result->num_rows() > 0)
         {
             return $result->result_array();
@@ -249,10 +252,13 @@ class Cms_model extends CI_Model {
 
     }
 
-    public function get_verticales($uuid){
+    public function get_verticales_usuario($uuid){
 
-        $this->db->select('uuid_vertical,nombre,fecha_registro');
-        $result = $this->db->get('verticales');
+        $this->db->select('distinct mw_verticales.uuid_vertical,verticales.nombre',false);
+        $this->db->from('verticales');
+        $this->db->join('usuarios_categorias_verticales', 'usuarios_categorias_verticales.uuid_vertical = verticales.uuid_vertical');
+        $this->db->where('usuarios_categorias_verticales.uuid_usuario',$uuid);
+        $result = $this->db->get();
         if ($result->num_rows() > 0)
         {
             return $result->result_array();

@@ -74,63 +74,78 @@
 				<br>
 				<div class="container row">
 					<div class="panel panel-primary">
-						<div class="panel-heading">Categorias y Verticales de Contenido que Puede Editar</div>
+						<div class="panel-heading">Selecciona el formato de salida</div>
 						<div class="panel-body">
 							<div class="col-sm-6 col-md-6">							
 								<div class="form-group">
-									<?php if( isset($categorias) && !empty($categorias) ): ?>
-										<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-											<h5>Categorías:</h5>
-										</div>
-										<br>
-										<br>									
-										<?php foreach($categorias as $categoria): ?>
-											<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" name="categoria[]" value="<?php echo $categoria['uuid_categoria']; ?>">
-														<?php echo $categoria['nombre']; ?>
-													</label>
-												</div>
-											</div>
-										<?php endforeach; ?>
-									<?php else: ?>
-										<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-											<h5>No Existen Categorías Aún</h5>
-										</div>
-									<?php endif; ?>
+									
 								</div>
 							</div>
 							<div class="col-sm-6 col-md-6">
 								<div class="form-group">
-									<?php if( isset($verticales) && !empty($verticales) ): ?>
-										<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-											<h5>Verticales:</h5>
-										</div>
-										<br>
-										<br>									
-										<?php foreach($verticales as $vertical): ?>
-											<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-												<div class="checkbox">
-													<label>
-														<input type="checkbox" name="vertical[]" value="<?php echo $vertical['uuid_vertical']; ?>">
-														<?php echo $vertical['nombre']; ?>
-													</label>
-												</div>
-											</div>
-										<?php endforeach; ?>
-									<?php else: ?>
-										<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-											<h5>No Existen Verticales Aún</h5>
-										</div>
-									<?php endif; ?>
+									
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-4 col-md-4"></div>
+					<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block">Detectar Campos</button></div>
+					<div class="col-sm-8 col-md-8">
+						<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
+					</div>
+				</div>
+				<br>
+				<script>
+				function cargar_campos(){
+					$.ajax({
+						url: '<?php base_url(); ?>nucleo/detectar_campos',
+						type: 'POST',
+						dataType: 'html',
+						data: {url: $('#url-origen').val()},
+					})
+					.done(function(data) {
+						$('.campos-feed .panel-body').html('');
+						$('.campos-feed .panel-body').append(data);
+						$('.campos-feed').slideDown();
+					})
+					.fail(function() {
+						console.log("error");
+					})
+					.always(function() {
+						console.log("complete");
+					});
+					
+				}
+				</script>
+				<div class="container row campos-feed">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Selecciona los campos que deseas obtener en la salida</div>
+						<div class="panel-body">
+
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="container row">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Datos para programar la tarea</div>
+						<div class="panel-body">
+							<div class="col-sm-6 col-md-6">							
+								<div class="form-group">
+									
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6">
+								<div class="form-group">
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-warning btn-block">Ejecutar</a></div>
 					<div class="col-sm-4 col-md-4">
 						<a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-danger btn-block">Cancelar</a>
 					</div>
