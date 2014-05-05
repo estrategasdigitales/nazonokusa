@@ -78,12 +78,36 @@
 						<div class="panel-body">
 							<div class="col-sm-6 col-md-6">							
 								<div class="form-group">
-									
+									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" name="formato_salida[]" value="json">
+												JSON
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" name="formato_salida[]" value="jsonp">
+												JSON-P
+											</label>
+										</div>										
+									</div>									
 								</div>
 							</div>
 							<div class="col-sm-6 col-md-6">
 								<div class="form-group">
-									
+									<div class="checkbox">
+											<label>
+												<input type="checkbox" name="formato_salida[]" value="xml">
+												XML
+											</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="formato_salida[]" value="rss2">
+											RSS 2.0
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -131,14 +155,56 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Datos para programar la tarea</div>
 						<div class="panel-body">
-							<div class="col-sm-6 col-md-6">							
-								<div class="form-group">
-									
+							<div class="row">
+								<div class="col-sm-4 col-md-4">
+									<select class="form-control">
+										<option value="">MES</option>
+										<option value="">2</option>
+										<option value="">3</option>
+										<option value="">4</option>
+										<option value="">5</option>
+									</select>
+								</div>
+								<div class="col-sm-4 col-md-4">
+									<select class="form-control">
+										<option value="">DÍA DE LA SEMANA</option>
+										<option value="">2</option>
+										<option value="">3</option>
+										<option value="">4</option>
+										<option value="">5</option>
+									</select>
+								</div>
+								<div class="col-sm-4 col-md-4">
+									<select class="form-control">
+										<option value="">HORA</option>
+										<option value="">2</option>
+										<option value="">3</option>
+										<option value="">4</option>
+										<option value="">5</option>
+									</select>
 								</div>
 							</div>
-							<div class="col-sm-6 col-md-6">
-								<div class="form-group">
-									
+							<br>
+							<div class="row">
+								<div class="col-sm-4 col-md-4">	
+									<select class="form-control">
+										<option value="">DÍA DEL MES</option>
+										<option value="">2</option>
+										<option value="">3</option>
+										<option value="">4</option>
+										<option value="">5</option>
+									</select>
+								</div>
+								<div class="col-sm-4 col-md-4">
+								</div>
+								<div class="col-sm-4 col-md-4">
+									<select class="form-control">
+										<option value="">MINUTO</option>
+										<option value="">2</option>
+										<option value="">3</option>
+										<option value="">4</option>
+										<option value="">5</option>
+									</select>
 								</div>
 							</div>
 						</div>
