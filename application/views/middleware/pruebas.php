@@ -55,7 +55,12 @@ function jsonp(url)
 	<nav class="usuarios">
 		<div class="container">
 	<?php
-		$url=file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/332/jornadas/jornada_3793.js"); // url de la pagina que queremos obtener  
+	$contenido = file_get_contents("http://feeds.esmas.com/data-feeds-esmas/xml/fotos_dep_tdfutbol.xml");	
+	echo $contenido;
+
+	$xml = simplexml_load_string($contenido);
+	print_r($xml);
+		/*$url=file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/332/jornadas/jornada_3793.js"); // url de la pagina que queremos obtener  
 		$pos = strpos($url, '(');
 			$funcion=substr($url, 0, $pos+1);
 			$rest = substr($url, $pos+2, -2);
@@ -101,7 +106,7 @@ function jsonp(url)
 			foreach ($arbol as $key => $value) {
 				echo "$key: ".$value."<br>";
 			}
-		/*foreach ($json as $value) {
+		foreach ($json as $value) {
 			unset($value['tournament']);
 			$final[]=$value;
 		}

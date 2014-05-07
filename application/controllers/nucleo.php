@@ -21,7 +21,7 @@ class Nucleo extends CI_Controller {
 		}else{
 			$rest = $url;
 		}
-		$jsonIterator =json_decode($rest, TRUE);
+		if($jsonIterator =json_decode($rest, TRUE)){
 		$espacio="col-sm-offset-0 col-md-offset-0 col-sm-12 col-md-12";
 		$final=[];
 		$offset=0;
@@ -55,6 +55,44 @@ class Nucleo extends CI_Controller {
 				<?php } ?>
 			</div>
 		<?php }
+	}else{
+		$xml=simplexml_load_file($this->input->post('url'));
+		$rest=json_encode($xml->channel->item);
+	$jsonIterator =json_decode($rest, TRUE);
+	$espacio="col-sm-offset-0 col-md-offset-0 col-sm-12 col-md-12";
+		$final=[];
+		$offset=0;
+		$col=12;
+		$cont=-1;
+		foreach ($jsonIterator as $key => $value) { 
+			++$cont;
+			if($cont%4===0) { ?>
+				<div class="row"></div>
+			<?php } ?>
+			<div class="col-sm-3 col-md-3">
+				<?php if(is_array($value)) { ?>
+					<div class="<?php echo 'col-sm-offset-'.($offset).' col-md-offset-'.($offset).' col-sm-'.($col).' col-md-'.($col) ?>">
+						<div class="checkbox">
+							<label onclick="desplegar('<?php echo $key; ?>');">
+								<input type="checkbox" name="principal" id="principal_<?php echo $key; ?>" value="<?php echo $key; ?>">
+								<?php echo $key; ?>
+							</label>
+						</div>
+					</div>
+					<?php $this->ordenar($value,$offset+1,$col-1,$key);
+				} else { ?>					
+					<div class="<?php echo 'col-sm-offset-'.($offset).' col-md-offset-'.($offset).' col-sm-'.($col).' col-md-'.($col) ?>">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="principal" id="<?php echo $key; ?>" value="<?php echo $key; ?>">
+								<?php echo $key; ?>
+							</label>
+						</div>
+					</div>
+				<?php } ?>
+			</div>
+		<?php }
+	}
 
 	}
 
