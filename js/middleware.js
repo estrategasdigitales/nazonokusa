@@ -7,7 +7,32 @@ function desplegar(item){
 		$('.'+item).slideDown();
 	}
 }
-$(function(){
+function desplega(element){
+	if(!$(element).is(":checked")){
+		$(element).parent().parent().children("div").slideUp(300,function (){
+			$.each($(element).parent().parent()
+			.children("div").children('label')
+			.children('input'),function(){
+				$(this).prop("checked",false);
+				if($(this).parent().parent().children("div").size()>1){
+					desplega(this);
+				}
+			});
+		});	
+	}else{		
+		$(element).parent().parent().children("div").slideDown(300,function (){
+			$.each($(element).parent().parent()
+			.children("div").children('label')
+			.children('input'),function(){
+				$(this).prop("checked",true);
+				if($(this).parent().parent().children("div").size()>1){
+					desplega(this);
+				}
+			});
+		});			
+	}
+}
+$(function(){	
 	$('#form_vertical_nueva').validate({
 		rules: {
 			nombre: {
