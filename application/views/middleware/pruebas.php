@@ -60,7 +60,7 @@ function jsonp(url)
 
 	$xml = simplexml_load_string($contenido);
 	print_r($xml);
-		/*$url=file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/332/jornadas/jornada_3793.js"); // url de la pagina que queremos obtener  
+		$url=file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/332/jornadas/jornada_3793.js"); // url de la pagina que queremos obtener  
 		$pos = strpos($url, '(');
 			$funcion=substr($url, 0, $pos+1);
 			$rest = substr($url, $pos+2, -2);
@@ -114,7 +114,7 @@ function jsonp(url)
 		$cadena = $funcion.(json_encode($final)).")";
 		$remplaza= stripslashes($cadena);
 		fwrite($open, $remplaza);
-		fclose($open);*/
+		fclose($open);
 		?>
 	</div>
 	</nav>

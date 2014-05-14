@@ -14,7 +14,7 @@ function desplega(element){
 			.children("div").children('label')
 			.children('input'),function(){
 				$(this).prop("checked",false);
-				if($(this).parent().parent().children("div").size()>1){
+				if($(this).parent().parent().children("div").size()>0){
 					desplega(this);
 				}
 			});
@@ -25,7 +25,7 @@ function desplega(element){
 			.children("div").children('label')
 			.children('input'),function(){
 				$(this).prop("checked",true);
-				if($(this).parent().parent().children("div").size()>1){
+				if($(this).parent().parent().children("div").size()>0){
 					desplega(this);
 				}
 			});

@@ -391,5 +391,37 @@ class Cms extends CI_Controller {
 
 	}
 
+	public function validar_form_trabajo(){
+
+		if ($this->session->userdata('session') !== TRUE) {
+			redirect('login');
+		} else {
+			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
+
+			if ($this->form_validation->run() === TRUE)
+			{
+				foreach ($json as $value) {
+					unset($value['tournament']);
+					$final[]=$value;
+				}
+
+				$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba.php", "w");
+				$cadena = $funcion.(json_encode($final)).")";
+				$remplaza= stripslashes($cadena);
+				fwrite($open, $remplaza);
+				fclose($open);
+				redirect('usuarios');
+				
+			}
+			else
+			{			
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
+				$this->load->view('cms/admin/nuevo_trabajo',$data);
+			}
+		}
+
+	}
+
 
 }
