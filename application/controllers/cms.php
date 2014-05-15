@@ -42,7 +42,7 @@ class Cms extends CI_Controller {
 			$usuario['password'] 	=	$this->input->post('password');
 			$usuario 				=	$this->security->xss_clean($usuario);
 			$valido 				=	$this->cms->get_usuario($usuario);
-			if( $valido ) {
+			if( $valido !== FALSE ) {
 				$session = array(
 					'session'	 => TRUE,
 					'uuid' 		 => $valido->uuid_usuario,
