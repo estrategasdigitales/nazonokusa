@@ -40,7 +40,7 @@
 								<label class="col-sm-3 col-md-2 control-label">Categoría</label>
 								<?php if( isset($categorias) && !empty($categorias) ): ?>
 									<div class="col-sm-9 col-md-10">
-										<select class="form-control">							
+										<select class="form-control" name="categoria">							
 											<?php foreach($categorias as $categoria): ?>
 												<option value="<?php echo $categoria['uuid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
 											<?php endforeach; ?>
@@ -56,7 +56,7 @@
 								<label class="col-sm-3 col-md-2 control-label">Vertical</label>
 								<?php if( isset($verticales) && !empty($verticales) ): ?>
 									<div class="col-sm-9 col-md-10">
-										<select class="form-control">							
+										<select class="form-control" name="vertical">							
 											<?php foreach($verticales as $vertical): ?>
 												<option value="<?php echo $vertical['uuid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
 											<?php endforeach; ?>
@@ -79,15 +79,15 @@
 							<div class="col-sm-6 col-md-6">							
 								<div class="form-group">
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
-										<div class="checkbox">
+										<div class="radio">
 											<label>
-												<input type="checkbox" name="formato_salida[]" value="json">
+												<input type="radio" name="formato_salida" value="json">
 												JSON
 											</label>
 										</div>
-										<div class="checkbox">
+										<div class="radio">
 											<label>
-												<input type="checkbox" name="formato_salida[]" value="jsonp">
+												<input type="radio" name="formato_salida" value="jsonp">
 												JSON-P
 											</label>
 										</div>										
@@ -96,15 +96,15 @@
 							</div>
 							<div class="col-sm-6 col-md-6">
 								<div class="form-group">
-									<div class="checkbox">
+									<div class="radio">
 											<label>
-												<input type="checkbox" name="formato_salida[]" value="xml">
+												<input type="radio" name="formato_salida" value="xml">
 												XML
 											</label>
 									</div>
-									<div class="checkbox">
+									<div class="radio">
 										<label>
-											<input type="checkbox" name="formato_salida[]" value="rss2">
+											<input type="radio" name="formato_salida" value="rss2">
 											RSS 2.0
 										</label>
 									</div>

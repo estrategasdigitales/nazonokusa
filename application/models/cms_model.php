@@ -134,13 +134,13 @@ class Cms_model extends CI_Model {
         $this->db->update('usuarios');
         if ($this->db->affected_rows() > 0)
         {
-            $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $usuario['uuid_usuario']));
+            $this->db->delete('usuarios_categorias_verticales', array('uuid_usuario' => $usuario['uuid_usuario']));
             foreach ($usuario['categorias'] as $key => $value) {                    
                 foreach ($usuario['verticales'] as $key2 => $value2) {
                     $this->db->set('uuid_usuario', $usuario['uuid_usuario']);
                     $this->db->set('uuid_categoria', $value);
                     $this->db->set('uuid_vertical', $value2);
-                    $this->db->insert($this->db->dbprefix('usuarios_categorias_verticales')); 
+                    $this->db->insert('usuarios_categorias_verticales'); 
                 }
             }
             
@@ -154,7 +154,7 @@ class Cms_model extends CI_Model {
 
     public function delete_usuario($uuid){
         
-        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uuid_usuario' => $uuid));
+        $this->db->delete('usuarios_categorias_verticales', array('uuid_usuario' => $uuid));
         $this->db->set_dbprefix('mw_');
         $this->db->delete('usuarios', array('uuid_usuario' => $uuid));
         if ($this->db->affected_rows() > 0)
@@ -176,6 +176,65 @@ class Cms_model extends CI_Model {
         {
             return False;
         }
+
+    }
+
+    public function get_trabajos_editor($uuid){
+
+        $this->db->select('uuid_trabajo,nombre,url_origen,url_storage,fecha_ejecucion,uuid_usuario');
+        $this->db->where('uuid_usuario',$uuid);
+        $result = $this->db->get('trabajos');
+        if ($result->num_rows() > 0)
+        {
+            return $result->result_array();
+        }
+        else
+        {
+            return False;
+        }
+
+    }
+
+    public function add_trabajo($trabajo){
+
+        $this->db->set('uuid_trabajo', "UUID()", False);
+        $this->db->set('nombre', $trabajo['nombre']);
+        $this->db->set('url_origen', $trabajo['url-origen']);
+        $this->db->set('url_local',  $trabajo['destino-local']);
+        $this->db->set('url_storage', $trabajo['destino-net']);
+        $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->set('fecha_ejecucion', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->set('formato_salida', $trabajo['formato_salida']);
+        $this->db->set('uuid_usuario', $trabajo['usuario']);
+        $this->db->insert('trabajos');
+        if ($this->db->affected_rows() > 0)
+        {            
+            $this->db->select('uuid_trabajo');
+            $this->db->where('nombre',$trabajo['nombre']);
+            $this->db->where('url_origen', $trabajo['url-origen']);
+            $this->db->where('url_local', $trabajo['destino-local']);
+            $this->db->where('url_storage', $trabajo['destino-net']);
+            $this->db->where('formato_salida', $trabajo['formato_salida']);
+            $this->db->where('uuid_usuario', $trabajo['usuario']);
+            $result = $this->db->get('trabajos');
+            if ($result->num_rows() > 0)
+            {
+                $row = $result->row();
+                $result->free_result();
+                $this->db->set('uuid_trabajo', $row->uuid_trabajo);
+                $this->db->set('uuid_categoria', $trabajo['categoria']);
+                $this->db->set('uuid_vertical', $trabajo['vertical']);
+                $this->db->insert('trabajos_categorias'); 
+                                
+            }else
+            {
+                return False;
+            }           
+        }
+        else
+        {
+            return False; 
+        }            
 
     }
 

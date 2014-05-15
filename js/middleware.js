@@ -112,6 +112,42 @@ $(function(){
 			'vertical[]': "Debe seleccionar al menos una vertical",
 		}
 	});
+$("#form_trabajo_nuevo").validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+			"url-origen": {
+				required: true
+			},
+			"destino-local": {
+				required: true
+			},
+			"destino-net": {
+				required: true
+			},
+			"formato_salida": {
+				required: true
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa un nombre para el trabajo",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+			"url-origen": {
+				required: "Por favor, ingresa la URL del feed"
+			},
+			"destino-local": {
+				required: "Por favor, ingresa un destino para el feed creado"
+			},
+			"destino-net": {
+				required: "Por favor, ingresa un destino para el feed creado"
+			},
+			"formato_salida": "Selecciona un formato de salida",
+		}
+	});
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 35, // The length of each line
