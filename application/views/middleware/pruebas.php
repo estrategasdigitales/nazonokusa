@@ -55,13 +55,137 @@ function jsonp(url)
 	<nav class="usuarios">
 		<div class="container">
 	<?php
-	$contenido = file_get_contents("http://feeds.esmas.com/data-feeds-esmas/xml/fotos_dep_tdfutbol.xml");	
-	echo $contenido;
+	function hijos($arreglo,$espacio){
+		foreach ($arreglo as $key => $value) {
+			if(is_array($value)){ ?>
+			<div id="<?php echo $key; ?>" style="display:none; margin-left:<?php echo ($espacio+20)."px"; ?>">
+				<label>
+					<input onchange="desplega(this);" type="checkbox" name="clave[]" value="<?php echo $key; ?>">
+					<?php echo $key; ?>
+				</label>	
+				<?php hijos($value,$espacio); ?>
+			</div>	
+			<?php }else{ ?>
+			<div class="checkbox" style="display:none; margin-left:<?php echo $espacio."px"; ?>">
+				<label>
+					<input type="checkbox" name="arreglo[]" value="<?php echo $value; ?>">
+					<?php echo $key; ?>
+				</label>
+			</div>	
+			<?php }
+		}
+	}
 
-	$xml = simplexml_load_string($contenido);
-	print_r($xml);
+	function claves($arreglo,$origin){
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+							if(!empty($origin[$key])){								
+								$origin[$key] = claves($value,$origin[$key]);
+							}else{
+								$origin[$key] = claves($value,$origin[$key]=[]);
+							}
+						
+					}else{
+						if(!array_key_exists($key, $origin)){
+							$origin[$key]="";
+						}
+					}												
+				}
+			}
+		}else{
+				foreach ($arreglo as $key => $value) {
+					if(is_array($value)){
+							if(!empty($origin[$key])){								
+								$origin[$key] = claves($value,$origin[$key]);
+							}else{
+								$origin[$key] = claves($value,$origin[$key]=[]);
+							}
+					}else{
+						if(!array_key_exists($key, $origin)){
+							$origin[$key]="";
+						}
+					}												
+				}
+		}
+		return $origin;
+	}
+	//$contenido = file_get_contents("http://feeds.esmas.com/data-feeds-esmas/applicaster/prog_dep.xml");
+	$contenido2= file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/tickers/TickerFutbol_12.js");
+	$cont= -1;
+	//$xml = simplexml_load_string($contenido);
+	//$campos = json_decode(json_encode($xml),TRUE);
+	$pos = strpos($contenido2, '(');
+		if($pos > -1 && $pos <20){
+			$contenido2 = substr($contenido2, $pos+1, -1);
+			$campos_orig = json_decode($contenido2,TRUE);
+		}else{
+			$campos_orig = json_decode($contenido2,TRUE);
+		}
+
+		$campos=[];
+		if(!empty($campos_orig[0])){
+			for ($i=0; $i < count($campos_orig) ; $i++) {
+				foreach ($campos_orig[$i] as $key => $value) {
+					if(is_array($value)){
+						if(!empty($campos[$key])){								
+							$campos[$key] = claves($value,$campos[$key]);
+						}else{
+							$campos[$key] = claves($value,$campos[$key]=[]);
+						}
+					}else{
+						if(!array_key_exists($key, $campos)){
+							$campos[$key]="";
+						}
+					}
+				}
+			}
+		}else{
+			foreach ($campos_orig as $key => $value) {
+				if(is_array($value)){
+					if(!empty($campos[$key])){								
+						$campos[$key] = claves($value,$campos[$key]);
+					}else{
+						$campos[$key] = claves($value,$campos[$key]=[]);
+					}
+				}else{
+					if(!array_key_exists($key, $campos)){
+						$campos[$key]="";
+					}
+				}
+			}
+		}
+	foreach ($campos as $key => $value) {
+						$cont++;
+						if($cont%4===0){ ?>
+							<div class="row"></div>
+							<br>
+						<?php }
+						if(is_array($value)){ ?>
+							<div class="col-sm-3 col-md-3">
+								<div class="checkbox" id="<?php echo $key; ?>">
+									<label>
+										<input onchange="desplega(this);" type="checkbox" name="clave[]" value="<?php echo $key; ?>">
+										<?php echo $key; ?>
+									</label>									
+									<?php hijos($value,5); ?>
+								</div>
+							</div>
+						<?php }else{ ?>
+							<div class="col-sm-3 col-md-3">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" name="arreglo[]" value="<?php echo $value; ?>">
+										<?php echo $key; ?>
+									</label>
+								</div>
+							</div>
+						<?php }
+					}
+
 		$url=file_get_contents("http://static-televisadeportes.esmas.com/sportsdata/futbol/data/332/jornadas/jornada_3793.js"); // url de la pagina que queremos obtener  
-		$pos = strpos($url, '(');
+		/*$pos = strpos($url, '(');
 			$funcion=substr($url, 0, $pos+1);
 			$rest = substr($url, $pos+2, -2);
 			$original = substr($url, $pos+1, -1);
@@ -114,7 +238,7 @@ function jsonp(url)
 		$cadena = $funcion.(json_encode($final)).")";
 		$remplaza= stripslashes($cadena);
 		fwrite($open, $remplaza);
-		fclose($open);
+		fclose($open);*/
 		?>
 	</div>
 	</nav>
