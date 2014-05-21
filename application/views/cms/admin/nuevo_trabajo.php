@@ -3,7 +3,7 @@
 	<?php $this->load->view('cms/header'); ?>
 	<nav class="trabajos">
 		<div class="container">
-			<?php echo form_open('cms/validar_form_trabajo',array('class' => 'form-horizontal', 'id' => 'form_trabajo_nuevo', 'role' => 'form')); ?>
+			<?php echo form_open('nucleo/validar_form_trabajo',array('class' => 'form-horizontal', 'id' => 'form_trabajo_nuevo', 'role' => 'form')); ?>
 				<div class="row">
 					<div class="col-sm-8 col-md-8"><h4>Nuevo Trabajo</h4></div>
 				</div>

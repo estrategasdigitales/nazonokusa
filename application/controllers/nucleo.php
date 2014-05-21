@@ -2,26 +2,8 @@
 
 class Nucleo extends CI_Controller {
 
-	private $numeric;
 	public function __construct(){
 		parent::__construct();
-		$this->numeric = [];
-		$this->numeric[0] = "cero";
-		$this->numeric[1] = "uno";
-		$this->numeric[2] = "dos";
-		$this->numeric[3] = "tres";
-		$this->numeric[4] = "cuatro";
-		$this->numeric[5] = "cinco";
-		$this->numeric[6] = "seis";
-		$this->numeric[7] = "siete";
-		$this->numeric[8] = "ocho";
-		$this->numeric[9] = "nueve";
-		$this->numeric[10] = "diez";
-		$this->numeric[11] = "once";
-		$this->numeric[12] = "doce";
-		$this->numeric[13] = "trece";
-		$this->numeric[14] = "catorce";
-		$this->numeric[15] = "quince";
 	}
 
 	public function index() {
@@ -80,7 +62,6 @@ class Nucleo extends CI_Controller {
 			
 			foreach ($campos as $key => $value) {
 				$cont++;
-
 				if($cont%4===0){ ?>
 					<div class="row"></div>
 					<br>
@@ -90,17 +71,17 @@ class Nucleo extends CI_Controller {
 					<div class="col-sm-3 col-md-3">
 						<div class="checkbox" id="<?php echo $key; ?>">
 							<label>
-								<input onchange="desplega(this);" type="checkbox" name="clave[]" value="<?php echo $key; ?>">
+								<input onchange="desplega(this);" type="checkbox" name="claves[]" value="<?php echo $key; ?>">
 								<?php echo $key; ?>
 							</label>
-							<?php $this->hijos($value,5); ?>
+							<?php $this->hijos($value,5,$key); ?>
 						</div>
 					</div>
 				<?php }else{ ?>
 					<div class="col-sm-3 col-md-3">
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="arreglo[]" value="<?php echo $value; ?>">
+								<input type="checkbox" name="claves[]" value="<?php echo $key; ?>">
 								<?php echo $key; ?>
 							</label>
 						</div>
@@ -166,17 +147,17 @@ class Nucleo extends CI_Controller {
 					<div class="col-sm-3 col-md-3">
 						<div class="checkbox" id="<?php echo $key; ?>">
 							<label>
-								<input onchange="desplega(this);" type="checkbox" name="clave[]" value="<?php echo $key; ?>">
+								<input onchange="desplega(this);" type="checkbox" name="claves[]" value="<?php echo $key; ?>">
 								<?php echo $key; ?>
 							</label>
-							<?php $this->hijos($value,5); ?>
+							<?php $this->hijos($value,5,$key); ?>
 						</div>
 					</div>
 				<?php }else{ ?>
 					<div class="col-sm-3 col-md-3">
 						<div class="checkbox">
 							<label>
-								<input type="checkbox" name="arreglo[]" value="<?php echo $value; ?>">
+								<input type="checkbox" name="claves[]" value="<?php echo $key; ?>">
 								<?php echo $key; ?>
 							</label>
 						</div>
@@ -184,40 +165,178 @@ class Nucleo extends CI_Controller {
 				<?php }
 			}
 		}
+
 	}
 
-	function limpiar($arr,$orig){
+	public function validar_form_trabajo(){
 
-		foreach ($arr as $key => $value) {
-			if(is_array($value)){
-				$orig[$key]=$this->limpiar($value,$orig[$key]);
-			}else{
-				if(!array_key_exists($key, $orig)){
-					$orig[$key]='';
+		if ($this->session->userdata('session') !== TRUE) {
+			redirect('login');
+		} else {
+			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('destino-local', 'destino-local', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('destino-net', 'destino-net', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
+			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
+			$this->form_validation->set_rules('formato_salida', 'formato_salida', 'required|xss_clean');
+
+			if ($this->form_validation->run() === TRUE)
+			{
+				$trabajo['usuario'] 		= $this->session->userdata('uuid');
+				$trabajo['nombre']   		= $this->input->post('nombre');
+				$trabajo['url-origen']   	= $this->input->post('url-origen');
+				$trabajo['destino-local']   = $this->input->post('destino-local');
+				$trabajo['destino-net']  	= $this->input->post('destino-net');
+				$trabajo['categoria']   	= $this->input->post('categoria');
+				$trabajo['vertical']   		= $this->input->post('vertical');
+				$trabajo['formato_salida'] 	= $this->input->post('formato_salida');
+				$trabajo['campos'] 			= $this->input->post('claves');
+
+				foreach ($trabajo['campos']  as $key => $value) {
+                    echo "$value <br>";
+                }
+				
+				$url = utf8_encode(file_get_contents($this->input->post('url-origen')));
+				$pos = strpos($url, '(');
+
+				if($pos > -1 && $pos <20){
+					$rest = substr($url, $pos+1, -1);
 				}else{
-					$orig[$key]='';					
+					$rest = $url;
+				}
+
+				if($campos_orig =json_decode($rest, TRUE)){
+
+					if(!empty($campos_orig[0])){
+						for ($i=0; $i < count($campos_orig) ; $i++) {
+							foreach ($campos_orig[$i] as $key => $value) {
+								if(is_array($value)){
+									if(!empty($campos[$key])){
+										$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]);
+									}else{
+										$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]=[]);
+									}
+								}else{
+									if(!array_key_exists($key, $campos)){
+										$campos[$key]="";
+									}
+								}
+							}
+						}
+					}else{
+						foreach ($campos_orig as $key => $value) {
+							if(is_array($value)){
+								if(!empty($campos[$key])){
+									$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]);
+								}else{
+									$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]=[]);
+								}
+							}else{
+								if(!array_key_exists($key, $campos)){
+									$campos[$key]="";
+								}
+							}
+						}
+					}
+
+				}else{
+
+					$xml=simplexml_load_file($this->input->post('url'));
+
+					if($xml->channel->item){
+						$rest=json_encode($xml);
+						$campos_orig =json_decode($rest, TRUE);
+					}else{
+						$rest=json_encode($xml);
+						$campos_orig =json_decode($rest, TRUE);
+					}
+
+					foreach ($campos_orig as $key => $value) {
+						
+					}
+
+				}
+
+				$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba.php", "w");
+				$cadena = $funcion.(json_encode($final)).")";
+				$remplaza= stripslashes($cadena);
+				fwrite($open, $remplaza);
+				fclose($open);
+
+				$guardar = $this->cms->add_trabajo($trabajo);
+				if( $guardar !==false )
+				{
+					redirect('trabajos');
+				}
+				else
+				{
+					$data['usuario'] 	= $this->session->userdata('nombre');
+					$data['error'] = "El nuevo trabajo no pudo ser agregado";
+					$this->load->view('cms/admin/nuevo_trabajo',$data);
+				}				
+			}
+			else
+			{
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
+				$this->load->view('cms/admin/nuevo_trabajo',$data);
+			}
+		}
+
+	}
+
+	function arreglo_nuevo($arreglo,$origin){
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+						if(!empty($origin[$key])){								
+							$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]);
+						}else{
+							$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]=[]);
+						}
+
+					}else{
+						if(!array_key_exists($key, $origin)){
+							$origin[$key]="";
+						}
+					}												
 				}
 			}
-		}			
-		return $orig;
-
+		}else{
+			foreach ($arreglo as $key => $value) {
+				if(is_array($value)){
+					if(!empty($origin[$key])){								
+						$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]);
+					}else{
+						$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]=[]);
+					}
+				}else{
+					if(!array_key_exists($key, $origin)){
+						$origin[$key]="";
+					}
+				}												
+			}
+		}
+		return $origin;
 	}
 
-	function hijos($arreglo,$espacio){
+	function hijos($arreglo,$espacio,$clave){
 
 		foreach ($arreglo as $key => $value) {
 			if(is_array($value)){ ?>
-			<div id="<?php echo $key; ?>" style="display:none; margin-left:<?php echo ($espacio+20)."px"; ?>">
+			<div id="<?php echo $key; ?>" style="display:none; margin-top:8px; margin-left:<?php echo ($espacio+20)."px"; ?>">
 				<label>
-					<input onchange="desplega(this);" type="checkbox" name="clave[]" value="<?php echo $key; ?>">
+					<input onchange="desplega(this);" type="checkbox" name="claves[]" value="<?php echo $clave.",".$key; ?>">
 					<?php echo $key; ?>
 				</label>	
-				<?php $this->hijos($value,$espacio); ?>
+				<?php $this->hijos($value,$espacio,$clave.",".$key); ?>
 			</div>	
 			<?php }else{ ?>
-			<div class="checkbox" style="display:none; margin-left:<?php echo $espacio."px"; ?>">
+			<div class="checkbox" style="display:none; margin-top:8px; margin-left:<?php echo $espacio."px"; ?>">
 				<label>
-					<input type="checkbox" name="arreglo[]" value="<?php echo $value; ?>">
+					<input type="checkbox" name="claves[]" value="<?php echo $clave.",".$key; ?>">
 					<?php echo $key; ?>
 				</label>
 			</div>	
