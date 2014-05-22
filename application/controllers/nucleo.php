@@ -482,10 +482,53 @@ class Nucleo extends CI_Controller {
 	function convert_xml($arreglo){
 
 		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_xml.php", "w");
-		$final= json_encode($arreglo);
-		fwrite($open, stripslashes($final));
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+						fwrite($open, "\n<".$key.">".$this->formato_xml($value)."</".$key.">");
+					}else{
+						fwrite($open, "\n<".$key.">".$value."</".$key.">");
+					}
+				}
+			}
+		}else{
+			foreach ($arreglo as $key => $value) {
+				if(is_array($value)){
+					fwrite($open, "\n<".$key.">".$this->formato_xml($value)."</".$key.">");
+				}else{
+					fwrite($open, "\n<".$key.">".$value."</".$key.">");
+				}															
+			}
+		}
 		fclose($open);
 
+	}
+
+	function formato_xml($arreglo){
+		$etiquetas="";
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				$etiquetas.="\n<elemento>";
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+						$etiquetas.="\n<".$key.">".$this->formato_xml($value)."</".$key.">";
+					}else{
+						$etiquetas.="\n<".$key.">".$value."</".$key.">";
+					}
+				}
+				$etiquetas.="\n</elemento>\n";
+			}
+		}else{
+			foreach ($arreglo as $key => $value) {
+				if(is_array($value)){
+					$etiquetas.="\n<".$key.">".$this->formato_xml($value)."</".$key.">";
+				}else{
+					$etiquetas.="\n<".$key.">".$value."</".$key.">";
+				}															
+			}
+		}
+		return $etiquetas;
 	}
 
 	function convert_rss($arreglo){
