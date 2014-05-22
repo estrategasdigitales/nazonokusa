@@ -112,7 +112,7 @@ $(function(){
 			'vertical[]': "Debe seleccionar al menos una vertical",
 		}
 	});
-$("#form_trabajo_nuevo").validate({
+$("#form_trabajo_nuevo1").validate({
 		rules: {
 			nombre: {
 				required: true,
@@ -127,7 +127,7 @@ $("#form_trabajo_nuevo").validate({
 			"destino-net": {
 				required: true
 			},
-			"formato_salida": {
+			"formato[]": {
 				required: true
 			},
 		},
@@ -145,7 +145,7 @@ $("#form_trabajo_nuevo").validate({
 			"destino-net": {
 				required: "Por favor, ingresa un destino para el feed creado"
 			},
-			"formato_salida": "Selecciona un formato de salida",
+			"formato[]": "Selecciona un formato de salida",
 		}
 	});
 	var opts = {

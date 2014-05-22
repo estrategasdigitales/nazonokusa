@@ -78,15 +78,15 @@
 						<div class="panel-body">
 							<div class="col-sm-6 col-md-6">							
 								<div class="form-group">
-										<div class="radio">
+										<div class="checkbox">
 											<label>
-												<input type="radio" name="formato_salida" value="json">
+												<input type="checkbox" name="formato[]" value="json" id="json">
 												JSON
 											</label>
 										</div>
-										<div class="radio">
+										<div class="checkbox">
 											<label>
-												<input type="radio" name="formato_salida" value="jsonp">
+												<input type="checkbox" name="formato[]" value="jsonp" id="jsonp">
 												JSON-P
 											</label>
 										</div>									
@@ -94,15 +94,15 @@
 							</div>
 							<div class="col-sm-6 col-md-6">
 								<div class="form-group">
-									<div class="radio">
+									<div class="checkbox">
 											<label>
-												<input type="radio" name="formato_salida" value="xml">
+												<input type="checkbox" name="formato[]" value="xml" id="xml">
 												XML
 											</label>
 									</div>
-									<div class="radio">
+									<div class="checkbox">
 										<label>
-											<input type="radio" name="formato_salida" value="rss2">
+											<input type="checkbox" name="formato[]" value="rss2" id="rss2">
 											RSS 2.0
 										</label>
 									</div>
@@ -254,7 +254,7 @@
 				</div>
 			<?php echo form_close(); ?>
 			<?php if ( isset($error) ) : ?>
-				<div class="alert alert-danger"><?php echo $error; ?></div>
+				<div class="alert alert-danger"><?php print_r($error); ?></div>
 			<?php endif; ?>
 		</div>
 	</nav>

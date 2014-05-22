@@ -14,7 +14,7 @@ class Middleware extends CI_Controller {
 	}
 
 	public function pruebas() {
-		$this->load->view('middleware/prueba');
+		$this->load->view('middleware/prueba_jsonp');
 	}
 
 	public function read_feed() {

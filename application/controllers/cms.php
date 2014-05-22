@@ -388,8 +388,13 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
-			$data['categorias'] = $this->cms->get_categorias_usuario($this->session->userdata('uuid'));
-			$data['verticales'] = $this->cms->get_verticales_usuario($this->session->userdata('uuid'));
+			if ($this->session->userdata('nivel') === "1") {
+				$data['categorias'] = $this->cms->get_categorias();
+				$data['verticales'] = $this->cms->get_verticales();
+			}else{
+				$data['categorias'] = $this->cms->get_categorias_usuario($this->session->userdata('uuid'));
+				$data['verticales'] = $this->cms->get_verticales_usuario($this->session->userdata('uuid'));
+			}
 			$this->load->view('cms/admin/nuevo_trabajo',$data);
 		}
 

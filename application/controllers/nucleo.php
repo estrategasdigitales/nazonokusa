@@ -17,11 +17,23 @@ class Nucleo extends CI_Controller {
 		$url = utf8_encode(file_get_contents($this->input->post('url')));
 		$pos = strpos($url, '(');
 
-		if($pos > -1 && $pos <20){
-			$rest = substr($url, $pos+1, -1);
-		}else{
-			$rest = $url;
-		}
+		if($pos > -1 && (substr($url, -1)===")")){
+			$rest = substr($url, $pos+1, -1); ?>
+			<script>jQuery(document).ready(function($) {
+				$('#xml').prop("checked",false);
+				$('#json').prop("checked",false);
+				$('#rss2').prop("checked",false);
+				$('#jsonp').prop("checked",true);
+			});</script>
+		<?php }else{
+			$rest = $url; ?>
+			<script>jQuery(document).ready(function($) {
+				$('#xml').prop("checked",false);
+				$('#rss2').prop("checked",false);
+				$('#jsonp').prop("checked",false);
+				$('#json').prop("checked",true);
+			});</script>
+		<?php }
 
 		if($campos_orig =json_decode($rest, TRUE)){
 			$campos=[];
@@ -94,11 +106,23 @@ class Nucleo extends CI_Controller {
 
 			if($xml->channel->item){
 				$rest=json_encode($xml);
-				$campos_orig =json_decode($rest, TRUE);
-			}else{
+				$campos_orig =json_decode($rest, TRUE); ?>
+				<script>jQuery(document).ready(function($) {
+					$('#xml').prop("checked",false);
+					$('#json').prop("checked",false);
+					$('#jsonp').prop("checked",false);
+					$('#rss2').prop("checked",true);
+			});</script>
+			<?php }else{
 				$rest=json_encode($xml);
-				$campos_orig =json_decode($rest, TRUE);
-			}
+				$campos_orig =json_decode($rest, TRUE); ?>
+				<script>jQuery(document).ready(function($) {
+					$('#rss2').prop("checked",false);
+					$('#json').prop("checked",false);
+					$('#jsonp').prop("checked",false);
+					$('#xml').prop("checked",true);
+			});</script>
+			<?php }
 
 			$campos=[];
 			$cont=-1;
@@ -173,13 +197,13 @@ class Nucleo extends CI_Controller {
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
+			//$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-local', 'destino-local', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-net', 'destino-net', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
-			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
-			$this->form_validation->set_rules('formato_salida', 'formato_salida', 'required|xss_clean');
+			//$this->form_validation->set_rules('destino-local', 'destino-local', 'required|min_length[3]|xss_clean');
+			//$this->form_validation->set_rules('destino-net', 'destino-net', 'required|min_length[3]|xss_clean');
+			//$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
+			//$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
+			//$this->form_validation->set_rules('formato_salida', 'formato_salida', 'required|xss_clean');
 
 			if ($this->form_validation->run() === TRUE)
 			{
@@ -190,136 +214,209 @@ class Nucleo extends CI_Controller {
 				$trabajo['destino-net']  	= $this->input->post('destino-net');
 				$trabajo['categoria']   	= $this->input->post('categoria');
 				$trabajo['vertical']   		= $this->input->post('vertical');
-				$trabajo['formato_salida'] 	= $this->input->post('formato_salida');
 				$trabajo['campos'] 			= $this->input->post('claves');
+				$trabajo['formatos'] 		= $this->input->post('formato');
 
+				$elegidos=[];
 				foreach ($trabajo['campos']  as $key => $value) {
-                    echo "$value <br>";
-                }
-				
-				$url = utf8_encode(file_get_contents($this->input->post('url-origen')));
-				$pos = strpos($url, '(');
-
-				if($pos > -1 && $pos <20){
-					$rest = substr($url, $pos+1, -1);
-				}else{
-					$rest = $url;
+					$elegidos[]=explode(",",$value);
+				}
+				$formatos=[];
+				foreach ($trabajo['formatos']  as $key => $value) {
+					$formatos[]=$value;
 				}
 
-				if($campos_orig =json_decode($rest, TRUE)){
+				/*$guardar = $this->cms->add_trabajo($trabajo);
+				if( $guardar !==false )
+				{*/
+					$indice=0;
+					$url = utf8_encode(file_get_contents($this->input->post('url-origen')));
+					$pos = strpos($url, '(');
 
-					if(!empty($campos_orig[0])){
-						for ($i=0; $i < count($campos_orig) ; $i++) {
-							foreach ($campos_orig[$i] as $key => $value) {
-								if(is_array($value)){
-									if(!empty($campos[$key])){
-										$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]);
-									}else{
-										$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]=[]);
-									}
-								}else{
-									if(!array_key_exists($key, $campos)){
-										$campos[$key]="";
-									}
-								}
-							}
+						if($pos > -1 && (substr($url, -1)===")")){
+							$rest = substr($url, $pos+1, -1);
+						}else{
+							$rest = $url;
 						}
-					}else{
-						foreach ($campos_orig as $key => $value) {
-							if(is_array($value)){
-								if(!empty($campos[$key])){
-									$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]);
-								}else{
-									$campos[$key] = $this->arreglo_nuevo($value,$campos[$key]=[]);
+
+						if($campos_orig =json_decode($rest, TRUE)){
+							if(!empty($campos_orig[0])){
+								for ($i=0; $i < count($campos_orig) ; $i++) {
+									foreach ($campos_orig[$i] as $key => $value) {
+										for ($j=0; $j < count($elegidos) ; $j++) {
+											$tmp=0;
+											if(count($elegidos[$j])>$indice){
+												if($elegidos[$j][$indice] === (string)$key){
+													$tmp = $tmp + 1;
+													break;
+												}
+											}
+										}								
+										if($tmp>0){
+											if(is_array($value)){
+												$campos_orig[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+											}
+										}else{
+											unset($campos_orig[$i][$key]);										
+										}
+									}
 								}
 							}else{
-								if(!array_key_exists($key, $campos)){
-									$campos[$key]="";
+								foreach ($campos_orig as $key => $value) {
+									for ($j=0; $j < count($elegidos) ; $j++) {
+										$tmp=0;
+										if(count($elegidos[$j])>$indice){
+											if($elegidos[$j][$indice] === (string)$key){
+												$tmp = $tmp + 1;
+												break;
+											}
+										}
+									}								
+									if($tmp>0){
+										if(is_array($value)){
+											$campos_orig[$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+										}
+									}else{
+										unset($campos_orig[$key]);										
+									}
 								}
 							}
+
+						}else{
+
+							$xml=simplexml_load_file($this->input->post('url-origen'));
+
+							if($xml->channel->item){
+								$rest=json_encode($xml);
+								$campos_orig =json_decode($rest, TRUE);
+							}else{
+								$rest=json_encode($xml);
+								$campos_orig =json_decode($rest, TRUE);
+							}
+
+							if(!empty($campos_orig[0])){
+								for ($i=0; $i < count($campos_orig) ; $i++) {
+									foreach ($campos_orig[$i] as $key => $value) {
+										for ($j=0; $j < count($elegidos) ; $j++) {
+											$tmp=0;
+											if(count($elegidos[$j])>$indice){
+												if($elegidos[$j][$indice] === (string)$key){
+													$tmp = $tmp + 1;
+													break;
+												}
+											}
+										}								
+										if($tmp>0){
+											if(is_array($value)){
+												$campos_orig[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+											}
+										}else{
+											unset($campos_orig[$i][$key]);										
+										}
+									}
+								}
+							}else{
+								foreach ($campos_orig as $key => $value) {
+									for ($j=0; $j < count($elegidos) ; $j++) {
+										$tmp=0;
+										if(count($elegidos[$j])>$indice){
+											if($elegidos[$j][$indice] === (string)$key){
+												$tmp = $tmp + 1;
+												break;
+											}
+										}
+									}								
+									if($tmp>0){
+										if(is_array($value)){
+											$campos_orig[$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+										}
+									}else{
+										unset($campos_orig[$key]);										
+									}
+								}
+							}
+
 						}
-					}
-
-				}else{
-
-					$xml=simplexml_load_file($this->input->post('url'));
-
-					if($xml->channel->item){
-						$rest=json_encode($xml);
-						$campos_orig =json_decode($rest, TRUE);
-					}else{
-						$rest=json_encode($xml);
-						$campos_orig =json_decode($rest, TRUE);
-					}
-
-					foreach ($campos_orig as $key => $value) {
 						
+						for ($i=0; $i < count($formatos) ; $i++) {
+							if($formatos[$i]==='xml'){
+								$this->convert_xml($campos_orig);
+							}
+							if($formatos[$i]==='rss2'){
+								$this->convert_rss($campos_orig);
+							}
+							if($formatos[$i]==='json'){
+								$this->convert_json($campos_orig);
+							}
+							if($formatos[$i]==='jsonp'){
+								$this->convert_jsonp($campos_orig,$this->input->post('nombre_funcion'));
+							}
+						}
+
+						/*redirect('trabajos');
 					}
-
-				}
-
-				$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba.php", "w");
-				$cadena = $funcion.(json_encode($final)).")";
-				$remplaza= stripslashes($cadena);
-				fwrite($open, $remplaza);
-				fclose($open);
-
-				$guardar = $this->cms->add_trabajo($trabajo);
-				if( $guardar !==false )
-				{
-					redirect('trabajos');
+					else
+					{
+						$data['usuario'] 	= $this->session->userdata('nombre');
+						$data['error'] = "El nuevo trabajo no pudo ser agregado";
+						$this->load->view('cms/admin/nuevo_trabajo',$data);
+					}	*/			
 				}
 				else
 				{
 					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] = "El nuevo trabajo no pudo ser agregado";
+					$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
 					$this->load->view('cms/admin/nuevo_trabajo',$data);
-				}				
+				}
 			}
-			else
-			{
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-				$this->load->view('cms/admin/nuevo_trabajo',$data);
-			}
+
 		}
 
-	}
+	function arreglo_nuevo($arreglo,$elegidos,$indice){
 
-	function arreglo_nuevo($arreglo,$origin){
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
 				foreach ($arreglo[$i] as $key => $value) {
-					if(is_array($value)){
-						if(!empty($origin[$key])){								
-							$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]);
-						}else{
-							$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]=[]);
+					for ($j=0; $j < count($elegidos) ; $j++) {
+						$tmp=0;
+						if(count($elegidos[$j])>$indice){
+							if($elegidos[$j][$indice] === (string)$key){
+								$tmp = $tmp + 1;
+								break;
+							}
 						}
-
+					}								
+					if($tmp>0){
+						if(is_array($value)){
+							$arreglo[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+						}
 					}else{
-						if(!array_key_exists($key, $origin)){
-							$origin[$key]="";
-						}
-					}												
+						unset($arreglo[$i][$key]);										
+					}
 				}
 			}
 		}else{
 			foreach ($arreglo as $key => $value) {
-				if(is_array($value)){
-					if(!empty($origin[$key])){								
-						$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]);
-					}else{
-						$origin[$key] = $this->arreglo_nuevo($value,$origin[$key]=[]);
+				for ($j=0; $j < count($elegidos) ; $j++) {
+					$tmp=0;
+					if(count($elegidos[$j])>$indice){
+						if($elegidos[$j][$indice] === (string)$key){
+							$tmp = $tmp + 1;
+							break;
+						}
+					}
+				}								
+				if($tmp>0){
+					if(is_array($value)){
+						$arreglo[$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
 					}
 				}else{
-					if(!array_key_exists($key, $origin)){
-						$origin[$key]="";
-					}
-				}												
+					unset($arreglo[$key]);										
+				}
 			}
 		}
-		return $origin;
+		return $arreglo;
+
 	}
 
 	function hijos($arreglo,$espacio,$clave){
@@ -346,19 +443,19 @@ class Nucleo extends CI_Controller {
 	}
 
 	function claves($arreglo,$origin){
+
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
 				foreach ($arreglo[$i] as $key => $value) {
 					if(is_array($value)){
-						if(!empty($origin[$key])){								
+						if(!empty($origin[$key])){
 							$origin[$key] = $this->claves($value,$origin[$key]);
 						}else{
 							$origin[$key] = $this->claves($value,$origin[$key]=[]);
 						}
-
 					}else{
 						if(!array_key_exists($key, $origin)){
-							$origin[$key]="";
+							$origin[$key] = "";
 						}
 					}												
 				}
@@ -366,19 +463,56 @@ class Nucleo extends CI_Controller {
 		}else{
 			foreach ($arreglo as $key => $value) {
 				if(is_array($value)){
-					if(!empty($origin[$key])){								
+					if(!empty($origin[$key])){
 						$origin[$key] = $this->claves($value,$origin[$key]);
 					}else{
 						$origin[$key] = $this->claves($value,$origin[$key]=[]);
 					}
 				}else{
 					if(!array_key_exists($key, $origin)){
-						$origin[$key]="";
+						$origin[$key] = "";
 					}
 				}												
 			}
 		}
 		return $origin;
+
+	}
+
+	function convert_xml($arreglo){
+
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_xml.php", "w");
+		$final= json_encode($arreglo);
+		fwrite($open, stripslashes($final));
+		fclose($open);
+
+	}
+
+	function convert_rss($arreglo){
+
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_rss.php", "w");
+		$final= json_encode($arreglo);
+		fwrite($open, stripslashes($final));
+		fclose($open);
+
+	}
+
+	function convert_json($arreglo){
+
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_json.php", "w");
+		$final= json_encode($arreglo);
+		fwrite($open, stripslashes($final));
+		fclose($open);
+
+	}
+
+	function convert_jsonp($arreglo,$funcion){
+
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_jsonp.php", "w");
+		$final= $funcion."(".json_encode($arreglo).")";
+		fwrite($open, stripslashes($final));
+		fclose($open);
+
 	}
 
 }
