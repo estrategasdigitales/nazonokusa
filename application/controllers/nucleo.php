@@ -20,18 +20,12 @@ class Nucleo extends CI_Controller {
 		if($pos > -1 && (substr($url, -1)===")")){
 			$rest = substr($url, $pos+1, -1); ?>
 			<script>jQuery(document).ready(function($) {
-				$('#xml').prop("checked",false);
-				$('#json').prop("checked",false);
-				$('#rss2').prop("checked",false);
-				$('#jsonp').prop("checked",true);
+				$('#tipo_archivo').html("Tipo de Archivo: JSONP");
 			});</script>
 		<?php }else{
 			$rest = $url; ?>
 			<script>jQuery(document).ready(function($) {
-				$('#xml').prop("checked",false);
-				$('#rss2').prop("checked",false);
-				$('#jsonp').prop("checked",false);
-				$('#json').prop("checked",true);
+				$('#tipo_archivo').html("Tipo de Archivo: JSON");
 			});</script>
 		<?php }
 
@@ -102,28 +96,20 @@ class Nucleo extends CI_Controller {
 			}
 		}else{
 //-------------------------------------------------------------- Parte para el XML y RSS 2.0
-			$xml=simplexml_load_file($this->input->post('url'));
-
-			if($xml->channel->item){
+			$xml = simplexml_load_file($this->input->post('url'));
+			if($xml->channel){
 				$rest=json_encode($xml);
 				$campos_orig =json_decode($rest, TRUE); ?>
 				<script>jQuery(document).ready(function($) {
-					$('#xml').prop("checked",false);
-					$('#json').prop("checked",false);
-					$('#jsonp').prop("checked",false);
-					$('#rss2').prop("checked",true);
+				$('#tipo_archivo').html("Tipo de Archivo: RSS 2.0");
 			});</script>
 			<?php }else{
 				$rest=json_encode($xml);
 				$campos_orig =json_decode($rest, TRUE); ?>
 				<script>jQuery(document).ready(function($) {
-					$('#rss2').prop("checked",false);
-					$('#json').prop("checked",false);
-					$('#jsonp').prop("checked",false);
-					$('#xml').prop("checked",true);
+				$('#tipo_archivo').html("Tipo de Archivo: XML");
 			});</script>
 			<?php }
-
 			$campos=[];
 			$cont=-1;
 			$items = count($campos_orig);
@@ -216,6 +202,8 @@ class Nucleo extends CI_Controller {
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['campos'] 			= $this->input->post('claves');
 				$trabajo['formatos'] 		= $this->input->post('formato');
+				$trabajo['valores_rss']		= $this->input->post('valores_rss');
+				$trabajo['claves_rss']		= $this->input->post('claves_rss');
 
 				$elegidos=[];
 				foreach ($trabajo['campos']  as $key => $value) {
@@ -286,7 +274,7 @@ class Nucleo extends CI_Controller {
 
 							$xml=simplexml_load_file($this->input->post('url-origen'));
 
-							if($xml->channel->item){
+							if($xml->channel){
 								$rest=json_encode($xml);
 								$campos_orig =json_decode($rest, TRUE);
 							}else{
@@ -343,13 +331,13 @@ class Nucleo extends CI_Controller {
 								$this->convert_xml($campos_orig);
 							}
 							if($formatos[$i]==='rss2'){
-								$this->convert_rss($campos_orig);
+								$this->convert_rss($campos_orig,$trabajo['claves_rss'],$trabajo['valores_rss']);
 							}
 							if($formatos[$i]==='json'){
 								$this->convert_json($campos_orig);
 							}
 							if($formatos[$i]==='jsonp'){
-								$this->convert_jsonp($campos_orig,$this->input->post('nombre_funcion'));
+								$this->convert_jsonp($campos_orig,$this->input->post('nom_funcion'));
 							}
 						}
 
@@ -481,9 +469,12 @@ class Nucleo extends CI_Controller {
 
 	function convert_xml($arreglo){
 
-		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_xml.php", "w");
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_xml.xml", "w");
+		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n";
+		fwrite($open, $cabeceras);
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
+				fwrite($open,"\n<elemento>");
 				foreach ($arreglo[$i] as $key => $value) {
 					if(is_array($value)){
 						fwrite($open, "\n<".$key.">".$this->formato_xml($value)."</".$key.">");
@@ -491,6 +482,7 @@ class Nucleo extends CI_Controller {
 						fwrite($open, "\n<".$key.">".$value."</".$key.">");
 					}
 				}
+				fwrite($open,"\n</elemento>");
 			}
 		}else{
 			foreach ($arreglo as $key => $value) {
@@ -531,18 +523,69 @@ class Nucleo extends CI_Controller {
 		return $etiquetas;
 	}
 
-	function convert_rss($arreglo){
-
-		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_rss.php", "w");
-		$final= json_encode($arreglo);
-		fwrite($open, stripslashes($final));
+	function convert_rss($arreglo,$nodos,$valores){
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_rss.xml", "w");
+		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
+		fwrite($open, $cabeceras);
+		for ($i=0; $i < count($nodos) ; $i++) {
+			fwrite($open,"\n<".$nodos[$i].">".$valores[$i]."</".$nodos[$i].">");
+		}
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				fwrite($open,"\n<item>");
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+						fwrite($open, "\n<".$key.">".$this->formato_rss($value)."</".$key.">");
+					}else{
+						fwrite($open, "\n<".$key.">".$value."</".$key.">");
+					}
+				}
+				fwrite($open,"\n</item>");
+			}
+		}else{
+			foreach ($arreglo as $key => $value) {
+				if(is_array($value)){
+					fwrite($open, "\n<".$key.">".$this->formato_rss($value)."</".$key.">");
+				}else{
+					fwrite($open, "\n<".$key.">".$value."</".$key.">");
+				}															
+			}
+		}
+		$cierre = "\n</channel>\n</rss>";
+		fwrite($open, $cierre);
 		fclose($open);
 
 	}
 
+	function formato_rss($arreglo){
+		$etiquetas="";
+		if(!empty($arreglo[0])){
+			for ($i=0; $i < count($arreglo) ; $i++) {
+				$etiquetas.="\n<item>";
+				foreach ($arreglo[$i] as $key => $value) {
+					if(is_array($value)){
+						$etiquetas.="\n<".$key.">".$this->formato_rss($value)."</".$key.">";
+					}else{
+						$etiquetas.="\n<".$key.">".$value."</".$key.">";
+					}
+				}
+				$etiquetas.="\n</item>\n";
+			}
+		}else{
+			foreach ($arreglo as $key => $value) {
+				if(is_array($value)){
+					$etiquetas.="\n<".$key.">".$this->formato_rss($value)."</".$key.">";
+				}else{
+					$etiquetas.="\n<".$key.">".$value."</".$key.">";
+				}															
+			}
+		}
+		return $etiquetas;
+	}
+
 	function convert_json($arreglo){
 
-		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_json.php", "w");
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_json.js", "w");
 		$final= json_encode($arreglo);
 		fwrite($open, stripslashes($final));
 		fclose($open);
@@ -551,7 +594,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_jsonp($arreglo,$funcion){
 
-		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_jsonp.php", "w");
+		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_jsonp.js", "w");
 		$final= $funcion."(".json_encode($arreglo).")";
 		fwrite($open, stripslashes($final));
 		fclose($open);

@@ -7,6 +7,7 @@ function desplegar(item){
 		$('.'+item).slideDown();
 	}
 }
+
 function desplega(element){
 	if(!$(element).is(":checked")){
 		$(element).parent().parent().children("div").slideUp(300,function (){
@@ -32,6 +33,33 @@ function desplega(element){
 		});			
 	}
 }
+
+function datosAdicionales(check){
+	if($(check).prop("checked")==true){
+		if($(check).val()==="rss2"){
+			$(".campos_rss").slideDown();
+			$("#channel_title").val("");
+			$("#channel_link").val("");
+			$("#channel_description").val("");
+		}
+		if($(check).val()==="jsonp"){
+			$(".campos_jsonp").slideDown();
+			$("#nom_funcion").val("");
+		}
+	}else{
+		if($(check).val()==="rss2"){
+			$(".campos_rss").slideUp();
+			$("#channel_title").val("");
+			$("#channel_link").val("");
+			$("#channel_description").val("");
+		}
+		if($(check).val()==="jsonp"){
+			$(".campos_jsonp").slideUp();
+			$("#nom_funcion").val("");
+		}
+	}
+}
+
 $(function(){	
 	$('#form_vertical_nueva').validate({
 		rules: {

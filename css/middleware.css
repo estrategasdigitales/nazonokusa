@@ -141,3 +141,15 @@ header{
 .campos-feed{
     display: none;
 }
+.campos_rss{
+    display: none;
+}
+.campos_jsonp{
+    display: none;
+}
+.claves{
+    text-align:right;
+    background: none;
+    border:none;
+    box-shadow: none;
+}

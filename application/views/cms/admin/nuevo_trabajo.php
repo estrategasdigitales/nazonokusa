@@ -80,13 +80,13 @@
 								<div class="form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="formato[]" value="json" id="json">
+												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
 												JSON
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="formato[]" value="jsonp" id="jsonp">
+												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
 												JSON-P
 											</label>
 										</div>									
@@ -96,13 +96,13 @@
 								<div class="form-group">
 									<div class="checkbox">
 											<label>
-												<input type="checkbox" name="formato[]" value="xml" id="xml">
+												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
 												XML
 											</label>
 									</div>
 									<div class="checkbox">
 										<label>
-											<input type="checkbox" name="formato[]" value="rss2" id="rss2">
+											<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="rss2" id="rss2">
 											RSS 2.0
 										</label>
 									</div>
@@ -143,9 +143,61 @@
 				</script>
 				<div class="container row campos-feed">
 					<div class="panel panel-primary">
-						<div class="panel-heading">Selecciona los campos que deseas obtener en la salida</div>
+						<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
 						<div class="panel-body">
 
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="container row campos_rss">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Campos adicionales para el Formato RSS 2.0</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="channel_title" class="col-sm-3 col-md-2 control-label">Title</label>
+								<div class="col-sm-9 col-md-10">
+									<input type="hidden" name="claves_rss[]" value="title">
+									<input type="text" class="form-control" id="channel_title" name="valores_rss[]">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="channel_link" class="col-sm-3 col-md-2 control-label">Link</label>
+								<div class="col-sm-9 col-md-10">
+									<input type="hidden" name="claves_rss[]" value="link">
+									<input type="url" class="form-control" id="channel_link" name="valores_rss[]">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="channel_description" class="col-sm-3 col-md-2 control-label">Description</label>
+								<div class="col-sm-9 col-md-10">
+									<input type="hidden" name="claves_rss[]" value="description">
+									<input type="text" class="form-control" id="channel_description" name="valores_rss[]">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-4 col-md-4">
+								</div>
+								<div class="col-sm-4 col-md-4">
+								</div>
+								<div class="col-sm-4 col-md-4">
+									<div type="button" class="btn btn-success btn-block">Agregar Campo</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="container row campos_jsonp">
+					<div class="panel panel-primary">
+						<div class="panel-heading">Campos adicionales para el Formato JSONP</div>
+						<div class="panel-body">
+							<div class="form-group">
+								<label for="nom_funcion" class="col-sm-3 col-md-2 control-label">Nombre de la Función</label>
+								<div class="col-sm-9 col-md-10">
+									<input type="text" class="form-control" id="nom_funcion" name="nom_funcion">
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -244,7 +296,9 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-warning btn-block">Ejecutar</a></div>
+					<div class="col-sm-4 col-md-4">
+						<a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-warning btn-block">Ejecutar</a>
+					</div>
 					<div class="col-sm-4 col-md-4">
 						<a href="<?php base_url(); ?>usuarios" type="button" class="btn btn-danger btn-block">Cancelar</a>
 					</div>

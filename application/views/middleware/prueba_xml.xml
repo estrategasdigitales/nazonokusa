@@ -1,21 +1,6 @@
+<?xml version='1.0' encoding='utf-8' ?>
 
 <channel>
-<title>Esmas.com</title>
-<link>http://www.esmas.com</link>
-<description>El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más.</description>
-<image>
-<title>Esmas.com</title>
-<url>http://i.esmas.com/img/univ/portal/rss/feed_1.jpg</url>
-<link>http://www.esmas.com</link></image>
-<language>es-mx</language>
-<copyright>2005 Comercio Mas S.A. de C.V</copyright>
-<managingEditor>ulises.blanco@esmas.net (Ulises Blanco)</managingEditor>
-<webMaster>feeds@esmas.com (feeds Esmas.com)</webMaster>
-<pubDate>Thu, 22 May 2014 11:02:38 GMT</pubDate>
-<lastBuildDate>Thu, 22 May 2014 11:02:38 GMT</lastBuildDate>
-<category>Home Principal esmas</category>
-<generator>GALAXY 1.0</generator>
-<ttl>60</ttl>
 <item>
 <elemento>
 <title></title>
