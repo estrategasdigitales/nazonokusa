@@ -2,250 +2,120 @@
 <rss version='2.0'>
 <channel>
 
-<title>Mi titulo</title>
+<title>mititulo</title>
 <link>http://middleware.televisa.localhost/nuevo_trabajo</link>
-<description>Descripcion de ejemplo para el formato xml rss 2.0</description>
-<channel>
+<description>midescripcion</description>
+<enlace>mienlace</enlace>
+<sdsds>cualquier cosa</sdsds>
+<sectionsNews>
 <item>
+<hometd>
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/entrenamineto-real-madrid-champions/61573</link>
-<description></description>
-<pubDate>Tue, 20 May 2014 00:00:00 CDT</pubDate>
-<guid>61573</guid>
+<0>Chelís, fuera de Veracruz</0>
+<1>José Luis Sánchez Solá anuncia su salida de los Tiburones Rojos</1>
+<2>http://i2.esmas.com/2014/05/26/651791/jose-luis-sanchez-sola-300x170.jpg</2>
+<3>http://televisadeportes.esmas.com/futbol/futbolmexico/equipos/veracruz/724316/chelis-fuera-veracruz/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/futbol/futbolmexico/equipos/veracruz/724316/chelis-fuera-veracruz/index_comentarios.html</4>
+<5>1</5>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/entrenamineto-atletico-de-madrid-champions/61578</link>
-<description></description>
-<pubDate>Tue, 20 May 2014 00:00:00 CDT</pubDate>
-<guid>61578</guid>
+<0>Diego Costa baja quince días</0>
+<1>Costa sufre una micro rotura en el bíceps femoral de su pierna derecha y ve alejarse el Mundial de Brasil 2014</1>
+<2>http://i2.esmas.com/2014/05/26/651770/diego-costa-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/espana/724262/diego-costa-baja-quince-dias/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/espana/724262/diego-costa-baja-quince-dias/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-europa-del-16-al-18-de-mayo/61505</link>
-<description></description>
-<pubDate>Sun, 18 May 2014 00:00:00 CDT</pubDate>
-<guid>61505</guid>
+<0>'Brasil debe esquivar a España'</0>
+<1>Pelé afirma que Brasil debe cuidarse en el Mundial Brasil 2014 de no cruzarse con España</1>
+<2>http://i2.esmas.com/2014/05/26/651619/pele-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/brasil/724106/brasil-debe-esquivar-espana/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/brasil/724106/brasil-debe-esquivar-espana/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/pachuca-vs-leon-final-clausura-2014/61512</link>
-<description></description>
-<pubDate>Sun, 18 May 2014 00:00:00 CDT</pubDate>
-<guid>61512</guid>
+<0>Exitoso debut de Maria Sharapova</0>
+<1>Maria Sharapova se instala en la segunda ronda del Roland Garros tras vencer a Ksenia Pervak</1>
+<2>http://i2.esmas.com/2014/05/26/651615/maria-sharapova--120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/tenis/724116/exitoso-debut-maria-sharapova/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/tenis/724116/exitoso-debut-maria-sharapova/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/el-festejo-del-campeon/61519</link>
-<description></description>
-<pubDate>Sun, 18 May 2014 00:00:00 CDT</pubDate>
-<guid>61519</guid>
+<0>Pistorius acude al hospital psiquiátrico</0>
+<1>Oscar Pistorius llega al hospital donde será sometido a un examen mental</1>
+<2>http://i2.esmas.com/2014/05/26/651609/oscar-pistorius--120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/otrosdeportes/724100/pistorius-llega-al-hospital-psiquiatrico/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/otrosdeportes/724100/pistorius-llega-al-hospital-psiquiatrico/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/el-color-de-leon-vs-pachuca-final-ida/61438</link>
-<description></description>
-<pubDate>Thu, 15 May 2014 00:00:00 CDT</pubDate>
-<guid>61438</guid>
+<0>Completos en el Tri</0>
+<1>Giovani, Moreno, Peña, Márquez, Montes y Vázquez se suman a la concentración de México</1>
+<2>http://i2.esmas.com/2014/05/25/651571/giovani-dos-santos-y-hector-moreno-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/mexico/724046/completos-tri/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/mexico/724046/completos-tri/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/leon-vs-pachuca-liguilla-clausura-2014/61440</link>
-<description></description>
-<pubDate>Thu, 15 May 2014 00:00:00 CDT</pubDate>
-<guid>61440</guid>
+<0>Orgulloso del Real Madrid</0>
+<1>Xabi Alonso admitió que el Real Madrid es un club para enorgullecerse y 'engancha' a los jugadores</1>
+<2>http://i2.esmas.com/2014/05/07/645195/xabi-alonso-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/futbol/futbolinternacional/724085/orgulloso-del-real-madrid/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/futbol/futbolinternacional/724085/orgulloso-del-real-madrid/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/sevilla-vs-benfica-final-europa-league/61381</link>
-<description></description>
-<pubDate>Wed, 14 May 2014 00:00:00 CDT</pubDate>
-<guid>61381</guid>
+<0>Mcllroy asciende en el ranking</0>
+<1>Rory Mcllroy se coloca en la sexta posición del ranking mundial de la PGA</1>
+<2>http://i2.esmas.com/2014/02/28/622644/rory-mcilroy--120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/golf/724121/mcllroy-asciende-ranking/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/golf/724121/mcllroy-asciende-ranking/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/toluca-vs-leon-liguilla-clausura-2014/61278</link>
-<description></description>
-<pubDate>Sun, 11 May 2014 00:00:00 CDT</pubDate>
-<guid>61278</guid>
+<0>Nadal elimina a Ginepri</0>
+<1>En su presentación en Roland Garros, Rafael Nadal firma  una cómoda victoria ante Robby Ginepri</1>
+<2>http://i2.esmas.com/2014/05/26/651765/rafael-nadal-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/tenis/724263/nadal-elimina-ginepri/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/tenis/724263/nadal-elimina-ginepri/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-europa-del-9-al-11-de-mayo/61286</link>
-<description></description>
-<pubDate>Sun, 11 May 2014 00:00:00 CDT</pubDate>
-<guid>61286</guid>
+<0>Thunder acorta ante Spurs</0>
+<1>Oklahoma City doblega 106-97 a San Antonio y se acerca 2-1 en la serie final</1>
+<2>http://i2.esmas.com/2014/05/25/651586/san-antonio-spur-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/basquetbol/724070/thunder-acorta-spurs/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/basquetbol/724070/thunder-acorta-spurs/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/santos-vs-pachuca-liguilla-clausura-2014/61274</link>
-<description></description>
-<pubDate>Sat, 10 May 2014 00:00:00 CDT</pubDate>
-<guid>61274</guid>
+<0>Ponte La Verde</0>
+<1>Inicia la gira de apoyo a la Selección Mexicana rumbo al Mundial Brasil 2014</1>
+<2>http://i2.esmas.com/2014/04/24/641171/ponte-la-verde-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/futbol/713370/ponte-verde/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/futbol/713370/ponte-verde/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/leon-vs-toluca-liguilla-clausura-2014/61213</link>
-<description></description>
-<pubDate>Thu, 08 May 2014 00:00:00 CDT</pubDate>
-<guid>61213</guid>
+<0>Donovan rompe récord de goleo</0>
+<1>Landon Donovan rompió el récord de goleo, al lograr sus anotaciones 135 y 136 de temporada regular en la victoria del Galaxy</1>
+<2>http://i2.esmas.com/2014/05/26/651612/landon-donovan-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/futbol/futbolinternacional/724097/donovan-rompe-record-goleo/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/futbol/futbolinternacional/724097/donovan-rompe-record-goleo/index_comentarios.html</4>
 </item>
 
 <item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/correcaminos-vs-estudiantes-tecos-final-liga-de-ascenso-cl-2014/60997</link>
-<description></description>
-<pubDate>Sun, 04 May 2014 00:00:00 CDT</pubDate>
-<guid>60997</guid>
+<0>Diego Costa iba para el Mundial</0>
+<1>Scolari reitera que iba a convocar a Diego Costa para disputar el Mundial Brasil 2014</1>
+<2>http://i2.esmas.com/2014/05/26/651673/luiz-felipe-scolari-120x90.jpg</2>
+<3>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/brasil/724205/diego-costa-iba-mundial/index_mobile_apps.html</3>
+<4>http://televisadeportes.esmas.com/copa-mundial-fifa-brasil-2014/equipos/brasil/724205/diego-costa-iba-mundial/index_comentarios.html</4>
 </item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-europa-del-3-al-6-de-mayo/61017</link>
-<description></description>
-<pubDate>Sun, 04 May 2014 00:00:00 CDT</pubDate>
-<guid>61017</guid>
+</hometd>
 </item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-imagenes-cf/61021</link>
-<description></description>
-<pubDate>Sun, 04 May 2014 00:00:00 CDT</pubDate>
-<guid>61021</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/juventus-vs-benfica-semifinal-de-vuelta-de-la-europa-league/60944</link>
-<description></description>
-<pubDate>Thu, 01 May 2014 00:00:00 CDT</pubDate>
-<guid>60944</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/valencia-vs-sevilla-europa-league/60945</link>
-<description></description>
-<pubDate>Thu, 01 May 2014 00:00:00 CDT</pubDate>
-<guid>60945</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/juventus-vs-benfica-semifinal-de-vuelta-de-la-europa-league/60946</link>
-<description></description>
-<pubDate>Thu, 01 May 2014 00:00:00 CDT</pubDate>
-<guid>60946</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/chelsea-vs-atletico-semifinales-champions-league/60899</link>
-<description></description>
-<pubDate>Wed, 30 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60899</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/bayern-munich-vs-real-madrid-champions-league/60854</link>
-<description></description>
-<pubDate>Tue, 29 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60854</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/todossomosmacacos/60825</link>
-<description></description>
-<pubDate>Mon, 28 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60825</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/chiapas-vs-atlante/60777</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60777</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/chiapas-vs-atlante-clausura-2014/60778</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60778</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/toluca-vs-america-clausura-2014/60780</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60780</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/puebla-vs-morelia-clausura-2014/60781</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60781</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/guadalajara-vs-monterrey-clausura-2014/60783</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60783</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-imagenes-j17/60784</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60784</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/resultados-en-europa-del-25-al-28-de-abril/60786</link>
-<description></description>
-<pubDate>Sun, 27 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60786</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/los-goles-de-vela-20132014/57676</link>
-<description></description>
-<pubDate>Sat, 26 Apr 2014 00:00:00 CDT</pubDate>
-<guid>57676</guid>
-</item>
-
-<item>
-<title></title>
-<link>http://televisadeportes.esmas.com/futbol/fotos/tijuana-vs-leon-clausura-2014/60771</link>
-<description></description>
-<pubDate>Sat, 26 Apr 2014 00:00:00 CDT</pubDate>
-<guid>60771</guid>
-</item>
-</item></channel>
+</sectionsNews>
 </channel>
 </rss>

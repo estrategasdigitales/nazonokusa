@@ -78,27 +78,27 @@
 						<div class="panel-body">
 							<div class="col-sm-6 col-md-6">							
 								<div class="form-group">
-										<div class="checkbox">
-											<label>
-												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
-												JSON
-											</label>
-										</div>
-										<div class="checkbox">
-											<label>
-												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
-												JSON-P
-											</label>
-										</div>									
+									<div class="checkbox">
+										<label>
+											<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
+											JSON
+										</label>
+									</div>
+									<div class="checkbox">
+										<label>
+											<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
+											JSON-P
+										</label>
+									</div>									
 								</div>
 							</div>
 							<div class="col-sm-6 col-md-6">
 								<div class="form-group">
 									<div class="checkbox">
-											<label>
-												<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
+										<label>
+											<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
 												XML
-											</label>
+										</label>
 									</div>
 									<div class="checkbox">
 										<label>
@@ -175,13 +175,13 @@
 									<input type="text" class="form-control" id="channel_description" name="valores_rss[]">
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group agregar_campo">
 								<div class="col-sm-4 col-md-4">
 								</div>
 								<div class="col-sm-4 col-md-4">
 								</div>
 								<div class="col-sm-4 col-md-4">
-									<div type="button" class="btn btn-success btn-block">Agregar Campo</div>
+									<div type="button" onclick="ShowDialog4();" class="btn btn-success btn-block">Agregar Campo</div>
 								</div>
 							</div>
 						</div>
@@ -312,6 +312,15 @@
 			<?php endif; ?>
 		</div>
 	</nav>
+	<div id="agregarCampo" style="display:none;">
+		<div class="row">
+		<div class="form-group">
+			<div class="col-sm-12 col-md-12">
+				<input placeholder="Nombre del Campo" type="text" class="form-control" id="nuevo_nombre" name="nuevo_nombre">
+			</div>
+		</div>
+		</div>
+	</div>
 	<footer>
 		
 	</footer>

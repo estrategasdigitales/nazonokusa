@@ -235,7 +235,7 @@ function ShowDialog(url,nombre) {
         height: 200,
         width: 400,
         modal: true,
-        title: 'Mensaje Modal',
+        title: 'Eliminar',
         buttons: {
             'Aceptar': function () {
             	window.location.href = url;
@@ -254,7 +254,7 @@ function ShowDialog2(url,nombre) {
         height: 200,
         width: 400,
         modal: true,
-        title: 'Mensaje Modal',
+        title: 'Eliminar',
         buttons: {
             'Aceptar': function () {
             	window.location.href = url;
@@ -273,10 +273,35 @@ function ShowDialog3(url,nombre) {
         height: 200,
         width: 400,
         modal: true,
-        title: 'Mensaje Modal',
+        title: 'Eliminar',
         buttons: {
             'Aceptar': function () {
             	window.location.href = url;
+            },
+                'Cancelar': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
+function ShowDialog4() {
+	$("#agregarCampo #nuevo_nombre").val("");
+    $("#agregarCampo").dialog({
+        resizable: false,
+        height: 200,
+        width: 400,
+        modal: true,
+        title: 'Nuevo Campo',
+        buttons: {
+            'Aceptar': function () {
+            	$(".agregar_campo").before('<div class="form-group">'+
+            		'<label for="channel_description" class="col-sm-3 col-md-2 control-label">'+$("#agregarCampo #nuevo_nombre").val()+'</label>'+
+            		'<div class="col-sm-9 col-md-10">'+
+            		'<input type="hidden" name="claves_rss[]" value="'+ $("#agregarCampo #nuevo_nombre").val().toLowerCase()+'">'+
+            		'<input type="text" class="form-control" id="channel_description" name="valores_rss[]">'+
+            		'</div></div>');            	
+                $(this).dialog("close");
             },
                 'Cancelar': function () {
                 $(this).dialog("close");
