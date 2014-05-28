@@ -524,6 +524,7 @@ class Nucleo extends CI_Controller {
 	}
 
 	function convert_rss($arreglo,$nodos,$valores){
+
 		$open = fopen("/home/edigitales/www/televisa.middleware/application/views/middleware/prueba_rss.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
 		fwrite($open, $cabeceras);
@@ -558,6 +559,7 @@ class Nucleo extends CI_Controller {
 	}
 
 	function formato_rss($arreglo){
+
 		$etiquetas="";
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
@@ -581,6 +583,7 @@ class Nucleo extends CI_Controller {
 			}
 		}
 		return $etiquetas;
+		
 	}
 
 	function convert_json($arreglo){
