@@ -247,6 +247,25 @@ function ShowDialog(url,nombre) {
     });
 }
 
+function ShowDialogT(url,nombre) {
+    $('#spanMessage').html('¿Está seguro(a) que desea eliminar el trabajo: '+nombre+'?');
+    $("#dialogConfirm").dialog({
+        resizable: false,
+        height: 200,
+        width: 400,
+        modal: true,
+        title: 'Eliminar',
+        buttons: {
+            'Aceptar': function () {
+            	window.location.href = url;
+            },
+                'Cancelar': function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+}
+
 function ShowDialog2(url,nombre) {
     $('#spanMessage').html('¿Está seguro(a) que desea eliminar la categoría: '+nombre+'?');
     $("#dialogConfirm").dialog({

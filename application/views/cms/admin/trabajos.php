@@ -17,6 +17,12 @@
 							<td>Destino</td>
 							<td>Tarea Programada</td>
 							<td>Ejecutar</td>
+                            
+                            <?php  if(isset($level) && $level == 1){ ?>
+                            <td>Editar</td>
+							<td>Eliminar</td>
+                            <?php  } ?>
+
 						</tr>
 						<?php if ( $trabajos ): ?>
 							<?php foreach( $trabajos as $trabajo ): ?>
@@ -39,7 +45,13 @@
 											</div>
 										<?php } ?>
 									</td>
-									<td><a href="#" type="button" class="btn btn-warning btn-sm btn-block">Ejecutar Ahora</a></td>
+									<td><a href="<?php base_url(); ?>ejecutar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Ejecutar Ahora</a></td>
+                                    
+                                    <?php  if(isset($level) && $level == 1){ ?>
+                                       <td><a href="<?php base_url(); ?>editar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+							           <td><a href="javascript:ShowDialogT('<?php base_url(); ?>eliminar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>','<?php echo $trabajo['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+                                    <?php  } ?>
+
 								</tr>
 							<?php endforeach; ?>
 						<?php endif; ?>
@@ -54,6 +66,7 @@
 				</div>
 			</div>
 		</div>
+		<div id="dialogConfirm"><span id="spanMessage"></span>
 	</nav>
 	<footer>
 		

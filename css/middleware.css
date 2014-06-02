@@ -153,3 +153,25 @@ header{
     border:none;
     box-shadow: none;
 }
+
+.form-trabajos-hora, .form-trabajos-label { 
+    width:30% !important;
+    display:inline-block !important;
+}
+
+.form-trabajos-date { 
+    width:62% !important;
+    display:inline-block !important;
+}
+
+.form-trabajos-date2{
+    width:45% !important;
+    display:inline-block !important;
+}
+
+.form-trabajos-dia { 
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: bold;
+    color: #2E509A;
+}

@@ -78,9 +78,10 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
-			if($this->session->userdata('nivel')==='1')
+			if($this->session->userdata('nivel')==='1'){
 				$data['trabajos']	= $this->cms->get_trabajos();
-			else
+			    $data['level'] = 1;
+			}else
 				$data['trabajos']	= $this->cms->get_trabajos_editor($this->session->userdata('uuid'));
 
 			$this->load->view('cms/admin/trabajos',$data);
@@ -99,7 +100,6 @@ class Cms extends CI_Controller {
 		}
 
 	}
-
 	public function admin_verticales(){
 
 		if ($this->session->userdata('session') !== TRUE) {
@@ -176,8 +176,8 @@ class Cms extends CI_Controller {
 		} else {
 			$usuario = $this->cms->get_usuario_editar($uuid);
 			if( $usuario !== false )
-			{
-				$data['usuario'] 		 = $this->session->userdata('nombre');
+				{
+				$data['usuario']    = $this->session->userdata('nombre');
 				$data['categorias'] = $this->cms->get_categorias();
 				$data['verticales'] = $this->cms->get_verticales();
 				$data['usuario_editar']  = $usuario;
@@ -195,6 +195,7 @@ class Cms extends CI_Controller {
 	}
 
 	public function validar_form_usuario_editar(){
+
 
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');

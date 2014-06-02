@@ -5,7 +5,7 @@
 		<div class="container">
 			<?php echo form_open('cms/validar_form_usuario_editar',array('class' => 'form-horizontal', 'id' => 'form_usuario_nuevo', 'role' => 'form')); ?>
 				<div class="row">
-					<div class="col-sm-8 col-md-8"><h4>Nuevo Usuario</h4></div>
+					<div class="col-sm-8 col-md-8"><h4>Editar Usuario</h4></div>
 				</div>
 				<br>
 				<div class="container row">

@@ -3,12 +3,16 @@
 class Cms_model extends CI_Model {
 
     private $key_encrypt;
+    private $api_token;
 
     function __construct() {
 
         parent::__construct();
         $this->load->database();
         $this->key_encrypt = $_SERVER['HASH_ENCRYPT'];
+
+        //Api Hash 
+        $this->api_token = "40d22dba2081ef5b9da5a0ee13e3089d"; 
 
     }
 
@@ -164,6 +168,16 @@ class Cms_model extends CI_Model {
 
     }
 
+
+    /* 29/05 */    
+    public function delete_trabajo($uuid_trabajo){
+        $this->db->delete('trabajos_categorias', array('uuid_trabajo' => $uuid_trabajo));
+        $this->db->set_dbprefix('mw_');
+        $this->db->delete('trabajos', array('uuid_trabajo' => $uuid_trabajo));
+        return ($this->db->affected_rows()>0);
+    }
+
+
     public function get_trabajos(){
 
         $this->db->select('uuid_trabajo,nombre,url_origen,url_storage,fecha_ejecucion,uuid_usuario');
@@ -195,6 +209,88 @@ class Cms_model extends CI_Model {
 
     }
 
+
+    /* 30/5 -- Posteriormente mover cron/works a modelo para ello*/
+    
+    public function config_cronjob($uuid_trabajo){
+        $this->db->select('cron_config',False);
+        $this->db->where('uuid_trabajo',$uuid_trabajo);
+        $result = $this->db->get('trabajos');
+        if($result->num_rows() > 0){
+            return $result->row();
+        }else{
+            return False;
+        }
+
+
+    }
+
+    private function call($method, $data = array()){
+        $uri = 'https://www.easycron.com/rest/'; //API
+        $arguments = array();
+        foreach ($data as $name => $value) {
+            $arguments[] = $name . '=' . urlencode($value);
+        }
+        $temp = implode('&', $arguments);
+
+        $url = $uri . $method . '?' . $temp;
+        $result = file_get_contents($url);
+
+        if ($result) {
+            return json_decode($result, true);   
+        } else {
+            return $result;
+        }
+    }
+
+    public function save_cronconfig($uuid_trabajo, $config){
+        $this->db->set('cron_config', $config);
+        $this->db->where('uuid_trabajo',$uuid_trabajo);
+        $this->db->update('trabajos');
+        return ($this->db->affected_rows() > 0);
+    }
+
+    public function set_cronjob($name, $expression, $url, $email_me = 0, $output = 0, $token = "bfb06b51988cf4f017606be4c28c89d1", $test = 0){ 
+
+        $data['token'] = $token;
+        $data['cron_job_name'] = $name;
+        $data['cron_expression'] = $expression ;
+        $data['url'] = $url ;
+        $data['email_me'] = $email_me;
+        $data['log_output_length'] = $output ;
+        $data['testfirst'] = $test ;
+
+        return $this->call("add", $data); 
+    }
+
+
+
+    public function delete_cronjob($id, $token = "bfb06b51988cf4f017606be4c28c89d1"){ 
+        $data['token'] = $token;
+        $data['id'] = $id;
+        return $this->call("delete", $data); 
+     }
+
+    //public function status_cronjob($id, $status=1){ return True;  }
+
+    public function edit_cronjob(){ return True; }
+
+
+
+    /* 28/5 */ 
+    public function get_trabajo_editar($uuid_trabajo){
+        $this->db->select('uuid_trabajo,id_trabajo,nombre,url_origen,url_local,url_storage,fecha_registro,fecha_ejecucion,formato_salida,uuid_usuario,cron_config',False);
+        $this->db->where('uuid_trabajo',$uuid_trabajo);
+        $result = $this->db->get('trabajos');
+        if($result->num_rows() > 0){
+            return $result->result_array();
+        }else{
+            return False;
+        }
+
+
+    }
+
     public function add_trabajo($trabajo){
 
         $this->db->set('uuid_trabajo', "UUID()", False);
@@ -205,6 +301,7 @@ class Cms_model extends CI_Model {
         $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
         $this->db->set('fecha_ejecucion', "UNIX_TIMESTAMP(NOW())", False);
         $this->db->set('formato_salida', $trabajo['formato_salida']);
+        $this->db->set('cron_config', $trabajo['cron_date']);
         $this->db->set('uuid_usuario', $trabajo['usuario']);
         $this->db->insert('trabajos');
         if ($this->db->affected_rows() > 0)
@@ -225,6 +322,51 @@ class Cms_model extends CI_Model {
                 $this->db->set('uuid_categoria', $trabajo['categoria']);
                 $this->db->set('uuid_vertical', $trabajo['vertical']);
                 $this->db->insert('trabajos_categorias'); 
+                return $row->uuid_trabajo;
+                                
+            }else
+            {
+                return False;
+            }           
+        }
+        else
+        {
+            return False; 
+        }            
+
+    }
+
+    public function update_trabajo($trabajo){
+
+        $this->db->set('nombre', $trabajo['nombre']);
+        $this->db->set('url_origen', $trabajo['url-origen']);
+        $this->db->set('url_local',  $trabajo['destino-local']);
+        $this->db->set('url_storage', $trabajo['destino-net']);
+        $this->db->set('fecha_registro', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->set('fecha_ejecucion', "UNIX_TIMESTAMP(NOW())", False);
+        $this->db->set('formato_salida', $trabajo['formato_salida']);
+        $this->db->set('cron_config', $trabajo['cron_date']);
+        $this->db->where('uuid_trabajo', $trabajo['uuid_trabajo']);
+        $this->db->update('trabajos');
+        if ($this->db->affected_rows() > 0)
+        {            
+            $this->db->select('uuid_trabajo');
+            $this->db->where('nombre',$trabajo['nombre']);
+            $this->db->where('url_origen', $trabajo['url-origen']);
+            $this->db->where('url_local', $trabajo['destino-local']);
+            $this->db->where('url_storage', $trabajo['destino-net']);
+            $this->db->where('formato_salida', $trabajo['formato_salida']);
+            $this->db->where('uuid_usuario', $trabajo['usuario']);
+            $result = $this->db->get('trabajos');
+            if ($result->num_rows() > 0)
+            {
+                $row = $result->row();
+                $result->free_result();
+                $this->db->set('uuid_categoria', $trabajo['categoria']);
+                $this->db->set('uuid_vertical', $trabajosjo['vertical']);
+                $this->db->where('uuid_trabajo', $row->uuid_trabajo);
+                $this->db->update('trabajos_categorias'); 
+                return $row->uuid_trabajo;
                                 
             }else
             {
