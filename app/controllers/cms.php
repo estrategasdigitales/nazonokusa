@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Cms extends CI_Controller {
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
 	}
 
 	public function index() {
-
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect("login");
 		} else {
