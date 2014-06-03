@@ -903,7 +903,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_xml($arreglo){
 
-		$open = fopen("/home/nazhaj/projects/middle/application/views/middleware/r/prueba_xml.xml", "w");
+		$open = fopen( base_url() ."outputs/prueba_xml.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n";
 		fwrite($open, $cabeceras);
 		if(!empty($arreglo[0])){
@@ -958,7 +958,7 @@ class Nucleo extends CI_Controller {
 	}
 
 	function convert_rss($arreglo,$nodos,$valores){
-		$open = fopen("/home/nazhaj/projects/middle/application/views/middleware/r/prueba_rss.xml", "w");
+		$open = fopen( base_url() ."outputs/prueba_rss.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
 		fwrite($open, $cabeceras);
 		for ($i=0; $i < count($nodos) ; $i++) {
@@ -1019,7 +1019,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_json($arreglo){
 
-		$open = fopen("/home/nazhaj/projects/middle/application/views/middleware/r/prueba_json.js", "w");
+		$open = fopen( base_url() ."outputs/prueba_json.js", "w");
 		$final= json_encode($arreglo);
 		fwrite($open, stripslashes($final));
 		fclose($open);
@@ -1028,7 +1028,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_jsonp($arreglo,$funcion){
 
-		$open = fopen("/home/nazhaj/projects/middle/application/views/middleware/r/prueba_jsonp.js", "w");
+		$open = fopen( base_url() ."outputs/prueba_jsonp.js", "w");
 		$final= $funcion."(".json_encode($arreglo).")";
 		fwrite($open, stripslashes($final));
 		fclose($open);
