@@ -15,8 +15,6 @@ class Nucleo extends CI_Controller {
 			$data['usuario'] = $this->session->userdata('nombre');
 			$this->load->view('middleware/index');
 		}
-		
-
 	}
 
      
@@ -353,8 +351,8 @@ class Nucleo extends CI_Controller {
 		} else {
 			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-local', 'destino-local', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-net', 'destino-net', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('destino-local', 'destino-local', 'min_length[3]|xss_clean');
+			$this->form_validation->set_rules('destino-net', 'destino-net', 'min_length[3]|xss_clean');
 			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
 			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
 			$this->form_validation->set_rules('formato', 'formato', 'required|xss_clean');
@@ -407,7 +405,6 @@ class Nucleo extends CI_Controller {
                 
                 //Trabajo id (cronjob's name)
 				$guardar = $this->cms->add_trabajo($trabajo);
-
 
                	 $trabajo['cron_url'] = site_url("")."ejecutar_trabajo/".$guardar;
                 
@@ -765,16 +762,16 @@ class Nucleo extends CI_Controller {
 						
 						for ($i=0; $i < count($formatos) ; $i++) {
 							if($formatos[$i]==='xml'){
-								$this->convert_xml($campos_orig);
+								$this->convert_xml( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ) );
 							}
 							if($formatos[$i]==='rss2'){
-								$this->convert_rss($campos_orig,$trabajo['claves_rss'],$trabajo['valores_rss']);
+								$this->convert_rss( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ), $trabajo['claves_rss'], $trabajo['valores_rss'] );
 							}
 							if($formatos[$i]==='json'){
-								$this->convert_json($campos_orig);
+								$this->convert_json( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ) );
 							}
 							if($formatos[$i]==='jsonp'){
-								$this->convert_jsonp($campos_orig,$this->input->post('nom_funcion'));
+								$this->convert_jsonp( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ), $this->input->post( 'nom_funcion' ) );
 							}
 						}
 
@@ -901,9 +898,9 @@ class Nucleo extends CI_Controller {
 
 	}
 
-	function convert_xml($arreglo){
+	function convert_xml($arreglo, $nombre){
 
-		$open = fopen( "./outputs/prueba_xml.xml", "w");
+		$open = fopen( "./outputs/". $nombre ."-xml.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n";
 		fwrite($open, $cabeceras);
 		if(!empty($arreglo[0])){
@@ -957,8 +954,8 @@ class Nucleo extends CI_Controller {
 		return $etiquetas;
 	}
 
-	function convert_rss($arreglo,$nodos,$valores){
-		$open = fopen( "./outputs/prueba_rss.xml", "w");
+	function convert_rss($arreglo, $nombre, $nodos, $valores){
+		$open = fopen( "./outputs/". $nombre ."-rss.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
 		fwrite($open, $cabeceras);
 		for ($i=0; $i < count($nodos) ; $i++) {
@@ -1017,18 +1014,18 @@ class Nucleo extends CI_Controller {
 		return $etiquetas;
 	}
 
-	function convert_json($arreglo){
+	function convert_json($arreglo, $nombre){
 
-		$open = fopen( "./outputs/prueba_json.js", "w");
+		$open = fopen( "./outputs/". $nombre ."-json.js", "w");
 		$final= json_encode($arreglo);
 		fwrite($open, stripslashes($final));
 		fclose($open);
 
 	}
 
-	function convert_jsonp($arreglo,$funcion){
+	function convert_jsonp($arreglo, $nombre, $funcion){
 
-		$open = fopen( "./outputs/prueba_jsonp.js", "w");
+		$open = fopen( "./outputs/". $nombre ."-jsonp.js", "w");
 		$final= $funcion."(".json_encode($arreglo).")";
 		fwrite($open, stripslashes($final));
 		fclose($open);

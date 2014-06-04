@@ -32,7 +32,7 @@ $(function(){
 		},
 		messages: {
 			nombre: {
-				required: "Por favor, ingresa el Nombre de la Categoría.",
+				required: "Por favor, ingresa el Nombre de la Vertical.",
 				minlength: "Este campo debe ser de al menos 3 caracteres."
 			},
 		}

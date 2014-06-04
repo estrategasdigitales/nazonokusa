@@ -7,8 +7,8 @@
 				<div class="alert alert-danger"><?php echo $error; ?></div>
 			<?php endif; ?>
 			<div class="row">
-				<div class="col-sm-8 col-md-8"><h4>Administrar Categorias</h4></div>
-				<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nueva_categoria" type="button" class="btn btn-primary btn-block">Nueva Categoria</a></div>
+				<div class="col-sm-8 col-md-8"><h4>Administrar Categorías</h4></div>
+				<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nueva_categoria" type="button" class="btn btn-primary btn-block">Nueva Categoría</a></div>
 			</div>
 			<br>
 			<div class="row">
@@ -17,14 +17,14 @@
 					<div class="table-responsive">
 						<table class="table table-striped table-hover table-bordered">
 							<tr class="titulo-columna">
-								<td>Nombre del Categoria</td>
+								<td>Nombre del Categoría</td>
 								<td>Eliminar</td>
 							</tr>
 							<?php if ( isset($categorias) && !empty($categorias) ): ?>
 								<?php foreach( $categorias as $categoria ): ?>
 									<tr>
 										<td><?php echo $categoria['nombre']; ?></td>
-										<td><a href="javascript:ShowDialog2('<?php base_url(); ?>eliminar_categoria/<?php echo $categoria['uuid_categoria'] ?>','<?php echo $categoria['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+										<td><a href="javascript:ShowDialog2('<?php echo base_url(); ?>eliminar_categoria/<?php echo $categoria['uuid_categoria'] ?>','<?php echo $categoria['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 									</tr>
 								<?php endforeach; ?>
 							<?php endif; ?>

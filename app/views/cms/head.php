@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Cache-control" content="no-cache">
 	<title>Televisa Interactive Media - Middleware</title>
 	<?php echo link_tag('css/bootstrap.min.css'); ?>
 	<?php echo link_tag('css/jquery-ui-1.10.4.custom.css'); ?>
