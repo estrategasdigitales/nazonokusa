@@ -42,6 +42,14 @@
 				</div>
 				<div class="col-md-3"></div>
 			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-3"></div>
+				<div class="col-md-6">
+					<a href="<?php base_url(); ?>reportes" type="button" class="btn btn-primary btn-lg btn-block">Reportes</a>
+				</div>
+				<div class="col-md-3"></div>
+			</div>
 		</div>
 	</nav>
 	<footer>

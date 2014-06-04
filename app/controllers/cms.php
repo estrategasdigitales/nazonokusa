@@ -401,4 +401,14 @@ class Cms extends CI_Controller {
 
 	}
 
+	public function reportes() {
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect( 'login' );
+		} else {
+			$data['usuario']	=	$this->session->userdata('nombre');
+			$data['level']		=	$this->session->userdata('nivel');
+			$this->load->view( 'cms/admin/reportes', $data );
+		}
+	}
+
 }

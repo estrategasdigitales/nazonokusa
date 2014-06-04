@@ -13,10 +13,12 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 <?php $this->load->view('cms/head'); ?>
 <body>
 	<?php $this->load->view('cms/header'); ?>
-	<nav class="trabajos">
-
+	<div class="trabajos">
 		<div class="container">
-			<?php echo form_open('nucleo/validar_form_editar_trabajo',array('class' => 'form-horizontal', 'id' => 'form_trabajo_editar', 'role' => 'form')); ?>
+			<?php if ( isset($error) ) : ?>
+				<div class="alert alert-danger"><?php print_r($error); ?></div>
+			<?php endif; ?>
+			<?php echo form_open( 'nucleo/validar_form_editar_trabajo', array('class' => 'form-horizontal', 'id' => 'form_trabajo_editar', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 				<div class="row">
 					<div class="col-sm-8 col-md-8"><h4>Editar Trabajo</h4></div>
 				</div>
@@ -48,7 +50,7 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 							<div class="form-group">
 								<label for="destino-net" class="col-sm-3 col-md-2 control-label">Destino net-storage</label>
 								<div class="col-sm-9 col-md-10">
-									<input type="tel" class="form-control" id="destino-net" name="destino-net" value="<?php echo isset($trabajo_editar['url_storage']) && !empty($trabajo_editar['url_storage']) ? $trabajo_editar['url_storage']:''; ?>">
+									<input type="text" class="form-control" id="destino-net" name="destino-net" value="<?php echo isset($trabajo_editar['url_storage']) && !empty($trabajo_editar['url_storage']) ? $trabajo_editar['url_storage']:''; ?>">
 								</div>
 							</div>
 							<div class="form-group">
@@ -311,11 +313,8 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 					</div>
 				</div>
 			<?php echo form_close(); ?>
-			<?php if ( isset($error) ) : ?>
-				<div class="alert alert-danger"><?php print_r($error); ?></div>
-			<?php endif; ?>
 		</div>
-	</nav>
+	</div>
 	<div id="agregarCampo" style="display:none;">
 		<div class="row">
 		<div class="form-group">

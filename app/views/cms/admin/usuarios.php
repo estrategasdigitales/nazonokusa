@@ -1,11 +1,14 @@
 <?php $this->load->view('cms/head'); ?>
 <body>
 	<?php $this->load->view('cms/header'); ?>
-	<nav class="usuarios">
+	<div class="usuarios">
 		<div class="container">
+			<?php if ( isset($error) && !empty($error) ) : ?>
+				<div class="alert alert-danger"><?php echo $error; ?></div>
+			<?php endif; ?>
 			<div class="row">
-					<div class="col-sm-8 col-md-8"><h4>Administrar Usuarios</h4></div>
-					<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_usuario" type="button" class="btn btn-primary btn-block">Nuevo Usuario</a></div>
+				<div class="col-sm-8 col-md-8"><h4>Administrar Usuarios</h4></div>
+				<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_usuario" type="button" class="btn btn-primary btn-block">Nuevo Usuario</a></div>
 			</div>
 			<br>
 			<div class="row">
@@ -31,14 +34,6 @@
 				</div>
 			</div>
 			<br>
-			<?php if ( isset($error) && !empty($error) ) : ?>
-			<div class="row">
-				<div class="container">
-					<div class="alert alert-danger"><?php echo $error; ?></div>
-				</div>
-			</div>
-			<br>
-			<?php endif; ?>
 			<div class="row">
 				<div class="col-sm-8 col-md-8"></div>
 				<div class="col-sm-4 col-md-4">
@@ -47,7 +42,7 @@
 			</div>
 		</div>
 		<div id="dialogConfirm"><span id="spanMessage"></span>
-	</nav>
+	</div>
 	<footer>
 		
 	</footer>

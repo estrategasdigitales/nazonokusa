@@ -49,13 +49,15 @@ h3{
 }
 .header-logo{
     background: url(../img/logo_televisa.png)center center no-repeat;
-    width: 159px;
-    height: 123px;
+    width: 130px;
+    height: 90px;
     margin-bottom: 10px;
 }
 .header-titulo{
     color: #fff;
     font-size: 22px;
+    margin-right: 25px;
+    width: 300px;
 }
 .barra-naranja{
     background: #FA7E02;
@@ -68,6 +70,12 @@ h3{
     margin-bottom: 10px;
     border-radius: 10px;
 }
+
+.bloques-en-linea{
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .btn-primary{
     background-image: none;
     background-color: #2155A1;
@@ -96,8 +104,8 @@ header{
 .principal{
     margin: 150px auto;
 }
-.usuarios,.trabajos,.categorias,.verticales{
-    margin: 80px auto;
+.usuarios, .trabajos, .categorias, .verticales{
+    margin: 30px auto 80px auto;
 }
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
     background-color: rgba(33, 85, 161,.4);
@@ -124,7 +132,7 @@ header{
     vertical-align: middle;
 }
 .alert-danger{
-    margin-bottom: 0px;
+    margin-bottom: 25px;
 }
 .table-striped > tbody > tr:nth-child(2n) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
     background-color: rgba(33, 85, 161,.1);

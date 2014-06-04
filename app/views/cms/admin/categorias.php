@@ -1,11 +1,14 @@
 <?php $this->load->view('cms/head'); ?>
 <body>
 	<?php $this->load->view('cms/header'); ?>
-	<nav class="categorias">
+	<div class="categorias">
 		<div class="container">
+			<?php if ( isset($error) && !empty($error) ) : ?>
+				<div class="alert alert-danger"><?php echo $error; ?></div>
+			<?php endif; ?>
 			<div class="row">
-					<div class="col-sm-8 col-md-8"><h4>Administrar Categorias</h4></div>
-					<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nueva_categoria" type="button" class="btn btn-primary btn-block">Nueva Categoria</a></div>
+				<div class="col-sm-8 col-md-8"><h4>Administrar Categorias</h4></div>
+				<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nueva_categoria" type="button" class="btn btn-primary btn-block">Nueva Categoria</a></div>
 			</div>
 			<br>
 			<div class="row">
@@ -31,14 +34,6 @@
 				<div class="col-md-3"></div>
 			</div>
 			<br>
-			<?php if ( isset($error) && !empty($error) ) : ?>
-			<div class="row">
-				<div class="container">
-					<div class="alert alert-danger"><?php echo $error; ?></div>
-				</div>
-			</div>
-			<br>
-			<?php endif; ?>
 			<div class="row">
 				<div class="col-sm-8 col-md-8"></div>
 				<div class="col-sm-4 col-md-4">
@@ -47,8 +42,6 @@
 			</div>
 		</div>
 		<div id="dialogConfirm"><span id="spanMessage"></span>
-	</nav>
-	<footer>
-		
-	</footer>
+	</div>
+	<footer></footer>
 </body>

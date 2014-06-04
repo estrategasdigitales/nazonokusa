@@ -2,6 +2,177 @@
 
 */
 
+$(function(){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 35, // The length of each line
+		width: 10, // The line thickness
+		radius: 30, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#ffffff', // #rgb or #rrggbb or array of colors
+		speed: 1.5, // Rounds per second
+		trail: 50, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: 'auto', // Top position relative to parent in px
+		left: 'auto' // Left position relative to parent in px
+	};
+	var target = document.getElementById('foo');
+
+	$('#form_vertical_nueva').validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa el Nombre de la Categoría.",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+		}
+	});
+
+	$('#form_categoria_nueva').validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa el Nombre de la Categoría.",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+		}
+	});
+
+	$("#form_usuario_nuevo").validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 5
+			},
+			apellidos: {
+				required: true
+			},
+			password: {
+				required: true,
+				minlength: 5
+			},
+			password_2: {
+				required: true,
+				equalTo: "#password"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			'categoria[]': {
+				required: true, 
+				minlength: 1 
+			},
+			'vertical[]': {
+				required: true, 
+				minlength: 1 
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa un Nombre de Usuario",
+				minlength: "Este campo debe ser de al menos 5 caracteres."
+			},
+			apellidos: {
+				required: "Por favor, ingresa un Apellido"
+			},
+			password: {
+				required: "Por favor, ingresa una clave de usuario.",
+				minlength: "Tu clave debe ser de al menos 5 caracteres de longitud o mas."
+			},
+			password_2: {
+				required: "Por favor, vuelve a indicar tu clave.",
+				equalTo: "No coincide con tu clave, por favor, verifica."
+			},
+			email: "Por favor, ingresa un correo valido.",
+			'categoria[]': "Debe seleccionar al menos una categoria",
+			'vertical[]': "Debe seleccionar al menos una vertical",
+		}
+	});
+
+	$("#form_trabajo_nuevo1").validate({
+		rules: {
+			nombre: {
+				required: true,
+				minlength: 3
+			},
+			"url-origen": {
+				required: true
+			},
+			"destino-local": {
+				required: true
+			},
+			"destino-net": {
+				required: true
+			},
+			"formato[]": {
+				required: true
+			},
+		},
+		messages: {
+			nombre: {
+				required: "Por favor, ingresa un nombre para el trabajo",
+				minlength: "Este campo debe ser de al menos 3 caracteres."
+			},
+			"url-origen": {
+				required: "Por favor, ingresa la URL del feed"
+			},
+			"destino-local": {
+				required: "Por favor, ingresa un destino para el feed creado"
+			},
+			"destino-net": {
+				required: "Por favor, ingresa un destino para el feed creado"
+			},
+			"formato[]": "Selecciona un formato de salida",
+		}
+	});
+
+	$('#read_feed_form').submit(function(){
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			beforeSubmit: function(){
+				$('#foo').css('display','block');
+			},
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').html(data);
+					// $('#messages').hide().slideDown("slow");
+					// $("#messages").delay(2500).slideUp(800, function(){
+					// $("#messages").html("");
+					// });
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.reload();
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+});
+
 function desplegar(item){
 	if($('.'+item).css('display')==='none'){
 		$('.'+item).slideDown();
@@ -59,174 +230,6 @@ function datosAdicionales(check){
 		}
 	}
 }
-
-$(function(){	
-	$('#form_vertical_nueva').validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa el Nombre de la Categoría.",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-		}
-	});
-	$('#form_categoria_nueva').validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa el Nombre de la Categoría.",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-		}
-	});
-	$("#form_usuario_nuevo").validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 5
-			},
-			apellidos: {
-				required: true
-			},
-			password: {
-				required: true,
-				minlength: 5
-			},
-			password_2: {
-				required: true,
-				equalTo: "#password"
-			},
-			email: {
-				required: true,
-				email: true
-			},
-			'categoria[]': {
-				required: true, 
-				minlength: 1 
-			},
-			'vertical[]': {
-				required: true, 
-				minlength: 1 
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa un Nombre de Usuario",
-				minlength: "Este campo debe ser de al menos 5 caracteres."
-			},
-			apellidos: {
-				required: "Por favor, ingresa un Apellido"
-			},
-			password: {
-				required: "Por favor, ingresa una clave de usuario.",
-				minlength: "Tu clave debe ser de al menos 5 caracteres de longitud o mas."
-			},
-			password_2: {
-				required: "Por favor, vuelve a indicar tu clave.",
-				equalTo: "No coincide con tu clave, por favor, verifica."
-			},
-			email: "Por favor, ingresa un correo valido.",
-			'categoria[]': "Debe seleccionar al menos una categoria",
-			'vertical[]': "Debe seleccionar al menos una vertical",
-		}
-	});
-$("#form_trabajo_nuevo1").validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-			"url-origen": {
-				required: true
-			},
-			"destino-local": {
-				required: true
-			},
-			"destino-net": {
-				required: true
-			},
-			"formato[]": {
-				required: true
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa un nombre para el trabajo",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-			"url-origen": {
-				required: "Por favor, ingresa la URL del feed"
-			},
-			"destino-local": {
-				required: "Por favor, ingresa un destino para el feed creado"
-			},
-			"destino-net": {
-				required: "Por favor, ingresa un destino para el feed creado"
-			},
-			"formato[]": "Selecciona un formato de salida",
-		}
-	});
-	var opts = {
-		lines: 13, // The number of lines to draw
-		length: 35, // The length of each line
-		width: 10, // The line thickness
-		radius: 30, // The radius of the inner circle
-		corners: 1, // Corner roundness (0..1)
-		rotate: 0, // The rotation offset
-		direction: 1, // 1: clockwise, -1: counterclockwise
-		color: '#ffffff', // #rgb or #rrggbb or array of colors
-		speed: 1.5, // Rounds per second
-		trail: 50, // Afterglow percentage
-		shadow: false, // Whether to render a shadow
-		hwaccel: false, // Whether to use hardware acceleration
-		className: 'spinner', // The CSS class to assign to the spinner
-		zIndex: 2e9, // The z-index (defaults to 2000000000)
-		top: 'auto', // Top position relative to parent in px
-		left: 'auto' // Left position relative to parent in px
-	};
-
-	var target = document.getElementById('foo');
-
-	$('#read_feed_form').submit(function(){
-		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
-			beforeSubmit: function(){
-				$('#foo').css('display','block');
-			},
-			success: function(data){
-				if(data != true){
-					spinner.stop();
-					$('#foo').css('display','none');
-					$('#messages').html(data);
-					// $('#messages').hide().slideDown("slow");
-					// $("#messages").delay(2500).slideUp(800, function(){
-					// $("#messages").html("");
-					// });
-	}else{
-		spinner.stop();
-		$('#foo').css('display','none');
-		window.location.reload();
-	}
-},
-error: function(data){
-	spinner.stop();
-	$('#foo').css('display','none');
-	$('#messages').html(data);
-}
-});
-		return false;
-	});
-});
 
 function ShowDialog(url,nombre) {
     $('#spanMessage').html('¿Está seguro(a) que desea eliminar el usuario: '+nombre+'?');

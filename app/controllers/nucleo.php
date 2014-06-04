@@ -932,10 +932,10 @@ class Nucleo extends CI_Controller {
 	}
 
 	function formato_xml($arreglo){
-		$etiquetas="";
+		$etiquetas = "";
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
-				$etiquetas.="\n<elemento>";
+				$etiquetas.= "\n<elemento>";
 				foreach ($arreglo[$i] as $key => $value) {
 					if(is_array($value)){
 						$etiquetas.="\n<".$key.">".$this->formato_xml($value)."</".$key.">";
@@ -992,7 +992,7 @@ class Nucleo extends CI_Controller {
 	}
 
 	function formato_rss($arreglo){
-		$etiquetas="";
+		$etiquetas = "";
 		if(!empty($arreglo[0])){
 			for ($i=0; $i < count($arreglo) ; $i++) {
 				$etiquetas.="\n<item>";

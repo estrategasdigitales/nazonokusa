@@ -52,6 +52,7 @@ $route['nuevo_usuario']				= 'cms/nuevo_usuario';
 $route['nueva_categoria']			= 'cms/nueva_categoria';
 $route['nueva_vertical']			= 'cms/nueva_vertical';
 $route['nuevo_trabajo']				= 'cms/nuevo_trabajo';
+$route['reportes']					= 'cms/reportes';
 $route['eliminar/(:any)']			= 'cms/eliminar_usuario/$1';
 $route['eliminar_categoria/(:any)']	= 'cms/eliminar_categoria/$1';
 $route['eliminar_vertical/(:any)']	= 'cms/eliminar_vertical/$1';
@@ -59,7 +60,7 @@ $route['editar/(:any)']				= 'cms/editar_usuario/$1';
 $route['editar_trabajo/(:any)']     = 'nucleo/form_editar_trabajo/$1';
 $route['ejecutar_trabajo/(:any)']   = 'nucleo/ejecutar_trabajo/$1';  
 $route['eliminar_trabajo/(:any)']   = 'nucleo/eliminar_trabajo/$1';  
-$route['nucleo'] = 'nucleo/';
+$route['nucleo'] 					= 'nucleo/';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

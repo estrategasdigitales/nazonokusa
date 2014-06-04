@@ -1,9 +1,12 @@
 <?php $this->load->view('cms/head'); ?>
 <body>
 	<?php $this->load->view('cms/header'); ?>
-	<nav class="usuarios">
+	<div class="usuarios">
 		<div class="container">
-			<?php echo form_open('cms/validar_form_usuario_editar',array('class' => 'form-horizontal', 'id' => 'form_usuario_nuevo', 'role' => 'form')); ?>
+			<?php if ( isset($error) ) : ?>
+				<div class="alert alert-danger"><?php echo $error; ?></div>
+			<?php endif; ?>
+			<?php echo form_open( 'cms/validar_form_usuario_editar', array('class' => 'form-horizontal', 'id' => 'form_usuario_nuevo', 'method' => 'POST', 'role' => 'form', 'autcomplete' => 'off' ) ); ?>
 				<div class="row">
 					<div class="col-sm-8 col-md-8"><h4>Editar Usuario</h4></div>
 				</div>
@@ -34,7 +37,7 @@
 							<div class="form-group">
 								<label for="extension" class="col-sm-3 col-md-2 control-label">Extensión Telefónica</label>
 								<div class="col-sm-9 col-md-10">
-									<input type="tel" class="form-control" id="extension" name="extension" value="<?php echo isset($usuario_editar->extension) && !empty($usuario_editar->extension) ? $usuario_editar->extension:''; ?>">
+									<input type="text" class="form-control" id="extension" name="extension" value="<?php echo isset($usuario_editar->extension) && !empty($usuario_editar->extension) ? $usuario_editar->extension:''; ?>">
 								</div>
 							</div>
 							<div class="form-group">
@@ -52,7 +55,7 @@
 							<div class="form-group">
 								<label for="celular" class="col-sm-3 col-md-2 control-label">Número Celular</label>
 								<div class="col-sm-9 col-md-10">
-									<input type="tel" class="form-control" id="celular" name="celular" value="<?php echo isset($usuario_editar->celular) && !empty($usuario_editar->celular) ? $usuario_editar->celular:''; ?>">
+									<input type="text" class="form-control" id="celular" name="celular" value="<?php echo isset($usuario_editar->celular) && !empty($usuario_editar->celular) ? $usuario_editar->celular:''; ?>">
 								</div>
 							</div>
 						</div>
@@ -142,11 +145,8 @@
 					</div>
 				</div>
 			<?php echo form_close(); ?>
-			<?php if ( isset($error) ) : ?>
-				<div class="alert alert-danger"><?php echo $error; ?></div>
-			<?php endif; ?>
 		</div>
-	</nav>
+	</div>
 	<footer>
 		
 	</footer>
