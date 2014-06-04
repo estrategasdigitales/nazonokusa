@@ -538,16 +538,16 @@ class Nucleo extends CI_Controller {
 						
 						for ($i=0; $i < count($formatos) ; $i++) {
 							if($formatos[$i]==='xml'){
-								$this->convert_xml($campos_orig);
+								$this->convert_xml($campos_orig, strtolower( url_title( $trabajo['nombre'] ) ));
 							}
 							if($formatos[$i]==='rss2'){
-								$this->convert_rss($campos_orig,$trabajo['claves_rss'],$trabajo['valores_rss']);
+								$this->convert_rss($campos_orig,strtolower( url_title( $trabajo['nombre'] ) ), $trabajo['claves_rss'], $trabajo['valores_rss']);
 							}
 							if($formatos[$i]==='json'){
-								$this->convert_json($campos_orig);
+								$this->convert_json($campos_orig, strtolower( url_title( $trabajo['nombre'] ) ));
 							}
 							if($formatos[$i]==='jsonp'){
-								$this->convert_jsonp($campos_orig,$this->input->post('nom_funcion'));
+								$this->convert_jsonp($campos_orig,strtolower( url_title( $trabajo['nombre'] ) ), $this->input->post('nom_funcion'));
 							}
 						}
 
@@ -900,7 +900,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_xml($arreglo, $nombre){
 
-		$open = fopen( "./outputs/". $nombre ."-xml.xml", "w");
+		$open = fopen( "./outputs/". $nombre ."xml.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n";
 		fwrite($open, $cabeceras);
 		if(!empty($arreglo[0])){
@@ -955,7 +955,7 @@ class Nucleo extends CI_Controller {
 	}
 
 	function convert_rss($arreglo, $nombre, $nodos, $valores){
-		$open = fopen( "./outputs/". $nombre ."-rss.xml", "w");
+		$open = fopen( "./outputs/". $nombre ."rss.xml", "w");
 		$cabeceras ="<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
 		fwrite($open, $cabeceras);
 		for ($i=0; $i < count($nodos) ; $i++) {
@@ -1016,7 +1016,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_json($arreglo, $nombre){
 
-		$open = fopen( "./outputs/". $nombre ."-json.js", "w");
+		$open = fopen( "./outputs/". $nombre ."json.js", "w");
 		$final= json_encode($arreglo);
 		fwrite($open, stripslashes($final));
 		fclose($open);
@@ -1025,7 +1025,7 @@ class Nucleo extends CI_Controller {
 
 	function convert_jsonp($arreglo, $nombre, $funcion){
 
-		$open = fopen( "./outputs/". $nombre ."-jsonp.js", "w");
+		$open = fopen( "./outputs/". $nombre ."jsonp.js", "w");
 		$final= $funcion."(".json_encode($arreglo).")";
 		fwrite($open, stripslashes($final));
 		fclose($open);
