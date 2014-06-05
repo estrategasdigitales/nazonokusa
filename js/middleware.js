@@ -1,7 +1,3 @@
-/*
-
-*/
-
 $(function(){
 	var opts = {
 		lines: 13, // The number of lines to draw
@@ -23,124 +19,72 @@ $(function(){
 	};
 	var target = document.getElementById('foo');
 
-	$('#form_vertical_nueva').validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa el Nombre de la Vertical.",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-		}
-	});
+	// $('#form_vertical_nueva').validate({
+	// 	rules: {
+	// 		nombre: {
+	// 			required: true,
+	// 			minlength: 3
+	// 		},
+	// 	},
+	// 	messages: {
+	// 		nombre: {
+	// 			required: "Por favor, ingresa el Nombre de la Vertical.",
+	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
+	// 		},
+	// 	}
+	// });
 
-	$('#form_categoria_nueva').validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa el Nombre de la Categoría.",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-		}
-	});
+	// $('#form_categoria_nueva').validate({
+	// 	rules: {
+	// 		nombre: {
+	// 			required: true,
+	// 			minlength: 3
+	// 		},
+	// 	},
+	// 	messages: {
+	// 		nombre: {
+	// 			required: "Por favor, ingresa el Nombre de la Categoría.",
+	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
+	// 		},
+	// 	}
+	// });
 
-	$("#form_usuario_nuevo").validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 5
-			},
-			apellidos: {
-				required: true
-			},
-			password: {
-				required: true,
-				minlength: 5
-			},
-			password_2: {
-				required: true,
-				equalTo: "#password"
-			},
-			email: {
-				required: true,
-				email: true
-			},
-			'categoria[]': {
-				required: true, 
-				minlength: 1 
-			},
-			'vertical[]': {
-				required: true, 
-				minlength: 1 
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa un Nombre de Usuario",
-				minlength: "Este campo debe ser de al menos 5 caracteres."
-			},
-			apellidos: {
-				required: "Por favor, ingresa un Apellido"
-			},
-			password: {
-				required: "Por favor, ingresa una clave de usuario.",
-				minlength: "Tu clave debe ser de al menos 5 caracteres de longitud o mas."
-			},
-			password_2: {
-				required: "Por favor, vuelve a indicar tu clave.",
-				equalTo: "No coincide con tu clave, por favor, verifica."
-			},
-			email: "Por favor, ingresa un correo valido.",
-			'categoria[]': "Debe seleccionar al menos una categoria",
-			'vertical[]': "Debe seleccionar al menos una vertical",
-		}
-	});
-
-	$("#form_trabajo_nuevo1").validate({
-		rules: {
-			nombre: {
-				required: true,
-				minlength: 3
-			},
-			"url-origen": {
-				required: true
-			},
-			"destino-local": {
-				required: true
-			},
-			"destino-net": {
-				required: true
-			},
-			"formato[]": {
-				required: true
-			},
-		},
-		messages: {
-			nombre: {
-				required: "Por favor, ingresa un nombre para el trabajo",
-				minlength: "Este campo debe ser de al menos 3 caracteres."
-			},
-			"url-origen": {
-				required: "Por favor, ingresa la URL del feed"
-			},
-			"destino-local": {
-				required: "Por favor, ingresa un destino para el feed creado"
-			},
-			"destino-net": {
-				required: "Por favor, ingresa un destino para el feed creado"
-			},
-			"formato[]": "Selecciona un formato de salida",
-		}
-	});
+	// $("#form_trabajo_nuevo1").validate({
+	// 	rules: {
+	// 		nombre: {
+	// 			required: true,
+	// 			minlength: 3
+	// 		},
+	// 		"url-origen": {
+	// 			required: true
+	// 		},
+	// 		"destino-local": {
+	// 			required: true
+	// 		},
+	// 		"destino-net": {
+	// 			required: true
+	// 		},
+	// 		"formato[]": {
+	// 			required: true
+	// 		},
+	// 	},
+	// 	messages: {
+	// 		nombre: {
+	// 			required: "Por favor, ingresa un nombre para el trabajo",
+	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
+	// 		},
+	// 		"url-origen": {
+	// 			required: "Por favor, ingresa la URL del feed"
+	// 		},
+	// 		"destino-local": {
+	// 			required: "Por favor, ingresa un destino para el feed creado"
+	// 		},
+	// 		"destino-net": {
+	// 			required: "Por favor, ingresa un destino para el feed creado"
+	// 		},
+	// 		"formato[]": "Selecciona un formato de salida",
+	// 	}
+	// });
 
 	$('#read_feed_form').submit(function(){
 		var spinner = new Spinner(opts).spin(target);
@@ -166,6 +110,90 @@ $(function(){
 			error: function(data){
 				spinner.stop();
 				$('#foo').css('display','none');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_usuario_nuevo').submit(function(){
+		$('#foo').css('display','block');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.href = 'usuarios';
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_login').submit(function(){
+		$('#foo').css('display','block');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.reload();
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_trabajo_nuevo').submit(function(){
+		$('#foo').css('display','block');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.href = 'trabajos';
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
 				$('#messages').html(data);
 			}
 		});

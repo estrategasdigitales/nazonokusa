@@ -8,24 +8,19 @@ class Cms extends CI_Controller {
 	}
 
 	public function index() {
-		if ($this->session->userdata('session') !== TRUE) {
-			redirect("login");
+		if ( $this->session->userdata( 'session' ) !== TRUE ){
+			redirect('login');
 		} else {
-			$data['usuario'] = $this->session->userdata('nombre');
-			$this->load->view('cms/principal',$data);
+			$this->load->view( 'cms/principal' );
 		}
-
 	}
 
 	public function login() {
-
 		if ($this->session->userdata('session') !== TRUE) {
 			$this->load->view('cms/login');
 		} else {
-			$data['usuario'] = $this->session->userdata('nombre');
-			$this->load->view('cms/principal',$data);
+			$this->load->view('cms/principal' );
 		}
-
 	}
 
 	public function logout() {
@@ -33,43 +28,48 @@ class Cms extends CI_Controller {
 		redirect('login');
 	}
 
+	/**
+	 * [validar_usuario description]
+	 * @return [type] [description]
+	 */
 	public function validar_usuario(){
-
-		$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean');
-		if ($this->form_validation->run() === TRUE) {
-			$usuario['usuario'] 	=	$this->input->post('usuario');
-			$usuario['password'] 	=	$this->input->post('password');
-			$usuario 				=	$this->security->xss_clean($usuario);
-			$valido 				=	$this->cms->get_usuario($usuario);
-			if( $valido !== FALSE ) {
+		$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|valid_email|xss_clean');
+		$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|min_length[8]|xss_clean');
+		if ( $this->form_validation->run() === TRUE ){
+			$usuario['usuario'] 	=	$this->input->post( 'usuario' );
+			$usuario['password'] 	=	$this->input->post( 'password' );
+			$usuario 				=	$this->security->xss_clean( $usuario );
+			$valido 				=	$this->cms->get_usuario( $usuario );
+			if ( $valido !== FALSE ){
 				$session = array(
-					'session'	 => TRUE,
-					'uuid' 		 => $valido->uuid_usuario,
-					'nombre' 	 => $valido->nombre,
-					'nivel' 	 => $valido->nivel
+					'session'	 	=> TRUE,
+					'uuid' 		 	=> $valido->uuid_usuario,
+					'nombre' 	 	=> $valido->nombre,
+					'apellidos'		=> $valido->apellidos,
+					'email'			=> $valido->email,
+					'nivel' 	 	=> $valido->nivel
 					);
 				$this->session->set_userdata($session);
-				redirect('inicio');
+				echo TRUE;
 			} else {
-				$data['error'] = "El Usurio y/o la contraseña son incorrectos o no existe el Usuario";
-				$this->load->view('cms/login', $data);
+				echo 'Los datos de usuario son incorrectos o el usuario no existe';
 			}
 		} else {			
-			$this->load->view('cms/login');
+			echo validation_errors('<span class="error">','</span>');
 		}
 	}
 
+	/**
+	 * [admin_usuarios description]
+	 * @return [type] [description]
+	 */
 	public function admin_usuarios(){
-
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			$data['usuarios']	= $this->cms->get_usuarios();
-			$this->load->view('cms/admin/usuarios',$data);
+			$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uuid' ) );
+			$this->load->view( 'cms/admin/usuarios', $data );
 		}
-
 	}
 
 	public function admin_trabajos(){
@@ -125,48 +125,52 @@ class Cms extends CI_Controller {
 
 	}
 
-	public function validar_form_usuario(){
 
+	/**
+	 * [validar_form_usuario description]
+	 * @return [type] [description]
+	 */
+	public function validar_form_usuario(){
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('apellidos', 'Apellidos', 'xss_clean');
-			$this->form_validation->set_rules('email', 'Email', 'required|xss_clean');
-			$this->form_validation->set_rules('extension', 'Extensión', 'xss_clean');
-			$this->form_validation->set_rules('password', 'Contraseña', 'required|min_length[5]|xss_clean');
-			$this->form_validation->set_rules('celular', 'Número Celular', 'required|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|callback_nombre_valido|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean');
+			$this->form_validation->set_rules('extension', 'Extensión', 'trim|numeric|xss_clean');
+			$this->form_validation->set_rules('password', 'Contraseña', 'required|trim|min_length[8]|xss_clean');
+			$this->form_validation->set_rules('password_2', 'Confirmar Contraseña', 'required|trim|min_length[8]|xss_clean');
+			$this->form_validation->set_rules('celular', 'Número Celular', 'required|trim|callback_valid_phone|xss_clean');
+			$this->form_validation->set_rules('compania_celular', 'Compañía Celular', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('rol_usuario', 'Rol de usuario', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
 
-			if ($this->form_validation->run() === TRUE)
-			{
-				$usuario['nombre']   = $this->input->post('nombre');
-				$usuario['apellidos']   = $this->input->post('apellidos');
-				$usuario['email']   = $this->input->post('email');
-				$usuario['extension']   = $this->input->post('extension');
-				$usuario['password']   = $this->input->post('password');
-				$usuario['celular']   = $this->input->post('celular');
-				$usuario['verticales'] = $this->input->post('vertical');
-				$usuario['categorias'] = $this->input->post('categoria');
-				$guardar = $this->cms->add_usuario($usuario);
-				if( $guardar !==false )
-				{
-					redirect('usuarios');
+			if ($this->form_validation->run() === TRUE){
+				if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
+					$usuario['nombre']   			= $this->input->post( 'nombre' );
+					$usuario['apellidos']   		= $this->input->post( 'apellidos' );
+					$usuario['email']   			= $this->input->post( 'email' );
+					$usuario['extension']   		= $this->input->post( 'extension' );
+					$usuario['password']   			= $this->input->post( 'password' );
+					$usuario['celular']   			= $this->input->post( 'celular' );
+					$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
+					$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
+					$usuario['verticales'] 			= $this->input->post( 'vertical' );
+					$usuario['categorias'] 			= $this->input->post( 'categoria' );
+					$guardar 						= $this->cms->add_usuario( $usuario );
+					if ( $guardar !== FALSE ){
+						echo TRUE;
+					} else {
+						echo 'E01 - El nuevo usuario no pudo ser agregado';
+					}
+				} else {
+					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
 				}
-				else
-				{
-					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] = "El nuevo usuario no pudo ser agregado";
-					$this->load->view('cms/admin/nuevo_usuario',$data);
-				}
-			}
-			else
-			{			
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-				$this->load->view('cms/admin/nuevo_usuario',$data);
+			} else {			
+				echo validation_errors('<span class="error">','</span>');
 			}
 		}
-
 	}
 
 	public function editar_usuario($uuid){
@@ -195,49 +199,46 @@ class Cms extends CI_Controller {
 	}
 
 	public function validar_form_usuario_editar(){
-
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ) {
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('apellidos', 'Apellidos', 'xss_clean');
-			$this->form_validation->set_rules('email', 'Email', 'required|xss_clean');
-			$this->form_validation->set_rules('extension', 'Extensión', 'xss_clean');
-			$this->form_validation->set_rules('password', 'Contraseña', 'required|min_length[5]|xss_clean');
-			$this->form_validation->set_rules('celular', 'Número Celular', 'required|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|callback_nombre_valido|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean');
+			$this->form_validation->set_rules('extension', 'Extensión', 'trim|numeric|xss_clean');
+			$this->form_validation->set_rules('password', 'Contraseña', 'required|trim|min_length[8]|xss_clean');
+			$this->form_validation->set_rules('password_2', 'Confirmar Contraseña', 'required|trim|min_length[8]|xss_clean');
+			$this->form_validation->set_rules('celular', 'Número Celular', 'required|trim|callback_valid_phone|xss_clean');
+			$this->form_validation->set_rules('compania_celular', 'Compañía Celular', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('rol_usuario', 'Rol de usuario', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
 
-			if ($this->form_validation->run() === TRUE)
-			{
-				$usuario['uuid_usuario']   = $this->input->post('uuid_usuario');
-				$usuario['nombre']   = $this->input->post('nombre');
-				$usuario['apellidos']   = $this->input->post('apellidos');
-				$usuario['email']   = $this->input->post('email');
-				$usuario['extension']   = $this->input->post('extension');
-				$usuario['password']   = $this->input->post('password');
-				$usuario['celular']   = $this->input->post('celular');
-				$usuario['verticales'] = $this->input->post('vertical');
-				$usuario['categorias'] = $this->input->post('categoria');
-				$guardar = $this->cms->editar_usuario($usuario);
-				if( $guardar !==false )
-				{
-					redirect('usuarios');
+			if ( $this->form_validation->run() === TRUE ){
+				if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
+					$usuario['nombre']   			= $this->input->post( 'nombre' );
+					$usuario['apellidos']   		= $this->input->post( 'apellidos' );
+					$usuario['email']   			= $this->input->post( 'email' );
+					$usuario['extension']   		= $this->input->post( 'extension' );
+					$usuario['password']   			= $this->input->post( 'password' );
+					$usuario['celular']   			= $this->input->post( 'celular' );
+					$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
+					$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
+					$usuario['verticales'] 			= $this->input->post( 'vertical' );
+					$usuario['categorias'] 			= $this->input->post( 'categoria' );
+					$guardar 					= $this->cms->editar_usuario( $usuario );
+					if ( $guardar !== FALSE ){
+						redirect('usuarios');
+					} else {
+						echo 'E02 - La información del usuario no puedo ser actualizada';
+					}
+				} else {
+					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
 				}
-				else
-				{
-					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] = "El nuevo usuario no pudo ser editado";
-					$this->load->view('cms/admin/editar_usuario',$data);
-				}
-			}
-			else
-			{			
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-				$this->load->view('cms/admin/editar_usuario',$data);
+			} else {			
+				echo validation_errors('<span class="error">','</span>');
 			}
 		}
-
 	}
 
 
@@ -411,4 +412,32 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	function nombre_valido($str){
+		if(!preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/', $str)){
+			$this->form_validation->set_message('nombre_valido','<b class="requerido">*</b> La información introducida en <b>%s</b> no es válida.');
+			return FALSE;
+		}else{
+			return TRUE;
+		}
+	}
+
+	function valid_phone($str) {
+        if ($str) {
+            if (!preg_match('/\([0-9]\)| |[0-9]/', $str)) {
+                $this->form_validation->set_message('valid_phone', '<b class="requerido">*</b> El <b>%s</b> no tiene un formato válido.');
+                return FALSE;
+            } else {
+                return TRUE;
+            }
+        }
+    }
+
+    function valid_option($str) {
+        if ($str == 0) {
+            $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 }
