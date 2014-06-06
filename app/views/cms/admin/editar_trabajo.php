@@ -7,7 +7,7 @@ $meses = array(1=>"Enero",2=>"Febrero",3=>"Marzo",4=>"Abril",5=>"Mayo",6=>"Junio
 $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Jueves",5=>"Viernes",6=>'S&aacute;bado');
 
 ?>
-<?php $this->load->view('cms/header'); ?>
+<?php $this->load->view( 'cms/header' ); ?>
 	<?php echo form_open( 'nucleo/validar_form_editar_trabajo', array('class' => 'form-horizontal', 'id' => 'form_trabajo_editar', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">
 			<div class="col-sm-8 col-md-8"><h4>Editar Trabajo</h4></div>
@@ -125,28 +125,26 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 			</div>
 		</div>
 		<br>
-		<script>
-		function cargar_campos(){
-
-			$.ajax({
-				url: '<?= base_url(""); ?>nucleo/detectar_campos',
-				type: 'POST',
-				dataType: 'html',
-				data: {url: $('#url-origen').val()},
-			})
-			.done(function(data) {
-				$('.campos-feed .panel-body').html('');
-				$('.campos-feed .panel-body').append(data);
-				$('.campos-feed').slideDown();
-			})
-			.fail(function() {
-				console.log("error");
-			})
-			.always(function() {
-				console.log("complete");
-			});
-			
-		}
+		<script type="text/javascript">
+			function cargar_campos(){
+				$.ajax({
+					url: '<?= base_url(""); ?>nucleo/detectar_campos',
+					type: 'POST',
+					dataType: 'html',
+					data: {url: $('#url-origen').val()},
+				})
+				.done(function(data) {
+					$('.campos-feed .panel-body').html('');
+					$('.campos-feed .panel-body').append(data);
+					$('.campos-feed').slideDown();
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
+			}
 		</script>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
@@ -409,4 +407,4 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 		</div>
 		</div>
 	</div>
-<?php $this->load->view('cms/footer'); ?>
+<?php $this->load->view( 'cms/footer' ); ?>

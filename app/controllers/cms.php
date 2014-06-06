@@ -52,7 +52,7 @@ class Cms extends CI_Controller {
 				$this->session->set_userdata($session);
 				echo TRUE;
 			} else {
-				echo 'Los datos de usuario son incorrectos o el usuario no existe';
+				echo '<span class="error">Los datos de usuario son incorrectos o el usuario no existe</span>';
 			}
 		} else {			
 			echo validation_errors('<span class="error">','</span>');
@@ -162,7 +162,7 @@ class Cms extends CI_Controller {
 					if ( $guardar !== FALSE ){
 						echo TRUE;
 					} else {
-						echo 'E01 - El nuevo usuario no pudo ser agregado';
+						echo '<span class="error"><b>E01</b> - El nuevo usuario no pudo ser agregado</span>';
 					}
 				} else {
 					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
@@ -173,31 +173,30 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	public function editar_usuario($uuid){
-
-		if ($this->session->userdata('session') !== TRUE) {
-			redirect('login');
+	public function editar_usuario( $uuid ){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect( 'login' );
 		} else {
 			$usuario = $this->cms->get_usuario_editar($uuid);
-			if( $usuario !== false )
-				{
+			if ( $usuario !== FALSE ){
 				$data['usuario']    = $this->session->userdata('nombre');
 				$data['categorias'] = $this->cms->get_categorias();
 				$data['verticales'] = $this->cms->get_verticales();
 				$data['usuario_editar']  = $usuario;
 				$data['ver_cat']  = $this->cms->get_ver_cat($uuid);
 				$this->load->view('cms/admin/editar_usuario',$data);
-			}
-			else
-			{
+			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['error'] = "No se a encontrado el usuario";
 				$this->load->view('cms/admin/editar_usuario',$data);
 			}
 		}
-
 	}
 
+	/**
+	 * [validar_form_usuario_editar description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_usuario_editar(){
 		if ( $this->session->userdata('session') !== TRUE ) {
 			redirect('login');
@@ -230,7 +229,7 @@ class Cms extends CI_Controller {
 					if ( $guardar !== FALSE ){
 						redirect('usuarios');
 					} else {
-						echo 'E02 - La información del usuario no puedo ser actualizada';
+						echo '<span class="error"><b>E02</b> - La información del usuario no puedo ser actualizada</span>';
 					}
 				} else {
 					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
@@ -274,34 +273,22 @@ class Cms extends CI_Controller {
 	}
 
 	public function validar_form_categoria(){
-
-		if ($this->session->userdata('session') !== TRUE) {
-			redirect('login');
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect( 'login' );
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
-			if ($this->form_validation->run() === TRUE)
-			{
-				$categoria['nombre']   = $this->input->post('nombre');
-				$guardar = $this->cms->add_categoria($categoria);
-				if( $guardar !== false )
-				{
-					redirect('categorias');
+			$this->form_validation->set_rules( 'nombre_categoria', 'Nombre de la Categoría', 'required|min_length[3]|xss_clean' );
+			if ( $this->form_validation->run() === TRUE ){
+				$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
+				$guardar = $this->cms->add_categoria( $categoria );
+				if ( $guardar !== FALSE ){
+					echo TRUE;
+				} else {
+					echo '<span class="error">La nueva categoria no pudo ser guardada</span>';
 				}
-				else
-				{
-					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] = "La nueva categoria no pudo ser guardada";
-					$this->load->view('cms/admin/nueva_categoria',$data);
-				}
-			}
-			else
-			{			
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-				$this->load->view('cms/admin/nueva_categoria',$data);
+			} else {			
+				echo validation_errors('<span class="error">','</span>');
 			}
 		}
-
 	}
 
 	public function eliminar_categoria($uuid){

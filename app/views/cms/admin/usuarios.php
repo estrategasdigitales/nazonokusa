@@ -1,4 +1,4 @@
-<?php $this->load->view('cms/header'); ?>
+<?php $this->load->view( 'cms/header' ); ?>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"><h4>Administrar Usuarios</h4></div>
 		<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_usuario" type="button" class="btn btn-primary btn-block">Nuevo Usuario</a></div>
@@ -47,5 +47,5 @@
 			<a href="<?php echo base_url(); ?>index" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
-	<div id="dialogConfirm"><span id="spanMessage"></span>
-<?php $this->load->view('cms/footer'); ?>
+	<div id="dialogConfirm"><span id="spanMessage"></span></div>
+<?php $this->load->view( 'cms/footer' ); ?>

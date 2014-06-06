@@ -23,7 +23,7 @@
 	<div id="foo"></div>
 	<header>
 		<div class="banner">
-			<div class="row">
+			<div>
 				<div class="container header-content text-right">
 					<div class="row bloques-en-linea">
 						<div class="header-titulo col-md-12">Sistema de Administración de Tareas y Contenidos para Middleware</div>

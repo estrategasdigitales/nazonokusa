@@ -531,7 +531,7 @@ class Nucleo extends CI_Controller {
 				}
 				echo TRUE;
 			} else {
-					echo validation_errors('<span class="error">','</span>');
+				echo validation_errors('<span class="error">','</span>');
 			}
 		}
 	}
