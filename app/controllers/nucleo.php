@@ -254,7 +254,8 @@ class Nucleo extends CI_Controller {
 			$pos = strpos($url, '(');
             $rest = ($pos > -1 && (substr($url, -1)===")"))? substr($url, $pos+1, -1) : $url;
 					
-			if($campos_orig =json_decode($rest, TRUE)){
+			if($campos_orig =json_decode($rest, TRUE)) /*Si el formato corresponde a JSON, obtener los datos y procesarlos*/
+			{
 				if(!empty($campos_orig[0])){
 					for ($i=0; $i < count($campos_orig) ; $i++) {
 						foreach ($campos_orig[$i] as $key => $value) {
@@ -282,7 +283,8 @@ class Nucleo extends CI_Controller {
 						}else{ unset($campos_orig[$key]); }
 					}
 				}
-			}else{
+			}
+			else{	/*Si el formato NO es JSON, es XML, obtener los datos y procesarlos*/
 				$xml=simplexml_load_file($trabajo[0]['url_origen']);
 				if($xml->channel){
 					$rest=json_encode($xml);
