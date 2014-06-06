@@ -119,11 +119,11 @@ class Cms_model extends CI_Model {
     public function editar_usuario( $usuario ){
         $this->db->set('nombre', $usuario['nombre']);
         $this->db->set('apellidos', $usuario['apellidos']);
-        $this->db->set('email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",false);
+        $this->db->set('email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE);
         $this->db->set('extension', $usuario['extension']);
-        $this->db->set('celular', "AES_ENCRYPT('{$usuario['celular']}','{$this->key_encrypt}')",false);
-        $this->db->set('password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')",false);
-        $this->db->where('uuid_usuario',$usuario['uuid_usuario']);
+        $this->db->set('celular', "AES_ENCRYPT('{$usuario['celular']}','{$this->key_encrypt}')", FALSE);
+        $this->db->set('password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE);
+        $this->db->where('uuid_usuario', $usuario['uuid_usuario']);
         $this->db->update('usuarios');
         if ( $this->db->affected_rows() > 0 ){
             $this->db->delete('usuarios_categorias_verticales', array('uuid_usuario' => $usuario['uuid_usuario']));

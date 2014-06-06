@@ -225,6 +225,7 @@ class Cms extends CI_Controller {
 					$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
 					$usuario['verticales'] 			= $this->input->post( 'vertical' );
 					$usuario['categorias'] 			= $this->input->post( 'categoria' );
+					$usuario['uuid_usuario']		= $this->input->post( 'uuid_usuario' );
 					$guardar 					= $this->cms->editar_usuario( $usuario );
 					if ( $guardar !== FALSE ){
 						redirect('usuarios');
