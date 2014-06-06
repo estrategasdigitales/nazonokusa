@@ -188,11 +188,11 @@ class Nucleo extends CI_Controller {
 
 
 	/* 28/5 */ 
-	public function form_editar_trabajo($uuid_trabajo){
+	public function form_editar_trabajo($uid_trabajo){
     	if($this->session->userdata('session') !== TRUE){
     		redirect('login');
     	}else {
-    	    $trabajo = $this->cms->get_trabajo_editar($uuid_trabajo);
+    	    $trabajo = $this->cms->get_trabajo_editar($uid_trabajo);
 
             if($trabajo !== false){
             	$data['usuario']    = $this->session->userdata('nombre');
@@ -210,14 +210,14 @@ class Nucleo extends CI_Controller {
 
 
 
-	public function eliminar_trabajo($uuid_trabajo){
+	public function eliminar_trabajo($uid_trabajo){
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$trabajo = $this->cms->get_trabajo_editar($uuid_trabajo);
+			$trabajo = $this->cms->get_trabajo_editar($uid_trabajo);
 			$cronjob = json_decode($trabajo[0]['cron_config'],true);
 			$api_delete = $this->cms->delete_cronjob($cronjob['id']);
-			$eliminar = $this->cms->delete_trabajo($uuid_trabajo);
+			$eliminar = $this->cms->delete_trabajo($uid_trabajo);
 			if( $eliminar !== false && $api_delete !== false)
 			{
 				redirect('trabajos');
@@ -233,8 +233,8 @@ class Nucleo extends CI_Controller {
 	}
 
     
-    public function ejecutar_trabajo($uuid_trabajo){
-    	$trabajo = $this->cms->get_trabajo_editar($uuid_trabajo);
+    public function ejecutar_trabajo($uid_trabajo){
+    	$trabajo = $this->cms->get_trabajo_editar($uid_trabajo);
     	$elegidos=[];
     	$formatos=[];
 
@@ -359,7 +359,7 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('formato', 'formato', 'required|xss_clean');
 
 			if ( $this->form_validation->run() === TRUE ){
-				$trabajo['usuario'] 		= $this->session->userdata('uuid');
+				$trabajo['usuario'] 		= $this->session->userdata('uid');
 				$trabajo['nombre']   		= $this->input->post('nombre');
 				$trabajo['url-origen']   	= $this->input->post('url-origen');
 				// $trabajo['destino-local']   = $this->input->post('destino-local');
@@ -554,7 +554,7 @@ class Nucleo extends CI_Controller {
 
 			if ($this->form_validation->run() === TRUE)
 			{
-				$trabajo['usuario'] 		= $this->session->userdata('uuid');
+				$trabajo['usuario'] 		= $this->session->userdata('uid');
 				$trabajo['nombre']   		= $this->input->post('nombre');
 				$trabajo['url-origen']   	= $this->input->post('url-origen');
 				$trabajo['destino-local']   = $this->input->post('destino-local');
@@ -562,7 +562,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['categoria']   	= $this->input->post('categoria');
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['campos'] 			= $this->input->post('claves');
-				$trabajo['uuid_trabajo']    = $this->input->post('id_trabajo');
+				$trabajo['uid_trabajo']    = $this->input->post('id_trabajo');
 				
 				$formats['campos'] = $this->input->post('claves'); 
                 $formats['formatos'] = $this->input->post('formato'); 
