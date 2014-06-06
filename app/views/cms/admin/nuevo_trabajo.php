@@ -38,7 +38,7 @@
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="categoria">							
 									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria['uuid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
+										<option value="<?php echo $categoria['uid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -54,7 +54,7 @@
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="vertical">							
 									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical['uuid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
+										<option value="<?php echo $vertical['uid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>

@@ -43,7 +43,7 @@ class Cms extends CI_Controller {
 			if ( $valido !== FALSE ){
 				$session = array(
 					'session'	 	=> TRUE,
-					'uuid' 		 	=> $valido->uuid_usuario,
+					'uid' 		 	=> $valido->uid_usuario,
 					'nombre' 	 	=> $valido->nombre,
 					'apellidos'		=> $valido->apellidos,
 					'email'			=> $valido->email,
@@ -67,7 +67,7 @@ class Cms extends CI_Controller {
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uuid' ) );
+			$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
 			$this->load->view( 'cms/admin/usuarios', $data );
 		}
 	}
@@ -82,7 +82,7 @@ class Cms extends CI_Controller {
 				$data['trabajos']	= $this->cms->get_trabajos();
 			    $data['level'] = 1;
 			}else
-				$data['trabajos']	= $this->cms->get_trabajos_editor($this->session->userdata('uuid'));
+				$data['trabajos']	= $this->cms->get_trabajos_editor($this->session->userdata('uid'));
 
 			$this->load->view('cms/admin/trabajos',$data);
 		}
@@ -120,6 +120,7 @@ class Cms extends CI_Controller {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$data['categorias'] = $this->cms->get_categorias();
 			$data['verticales'] = $this->cms->get_verticales();
+			$data['companias']	= $this->cms->get_companias_celular();
 			$this->load->view('cms/admin/nuevo_usuario',$data);
 		}
 
@@ -148,21 +149,26 @@ class Cms extends CI_Controller {
 
 			if ($this->form_validation->run() === TRUE){
 				if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
-					$usuario['nombre']   			= $this->input->post( 'nombre' );
-					$usuario['apellidos']   		= $this->input->post( 'apellidos' );
-					$usuario['email']   			= $this->input->post( 'email' );
-					$usuario['extension']   		= $this->input->post( 'extension' );
-					$usuario['password']   			= $this->input->post( 'password' );
-					$usuario['celular']   			= $this->input->post( 'celular' );
-					$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
-					$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
-					$usuario['verticales'] 			= $this->input->post( 'vertical' );
-					$usuario['categorias'] 			= $this->input->post( 'categoria' );
-					$guardar 						= $this->cms->add_usuario( $usuario );
-					if ( $guardar !== FALSE ){
-						echo TRUE;
+					$check_user = $this->cms->check_user( $this->input->post( 'email' ) );
+					if ( $check_user === FALSE ){
+						$usuario['nombre']   			= $this->input->post( 'nombre' );
+						$usuario['apellidos']   		= $this->input->post( 'apellidos' );
+						$usuario['email']   			= $this->input->post( 'email' );
+						$usuario['extension']   		= $this->input->post( 'extension' );
+						$usuario['password']   			= $this->input->post( 'password' );
+						$usuario['celular']   			= $this->input->post( 'celular' );
+						$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
+						$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
+						$usuario['verticales'] 			= $this->input->post( 'vertical' );
+						$usuario['categorias'] 			= $this->input->post( 'categoria' );
+						$guardar 						= $this->cms->add_usuario( $usuario );
+						if ( $guardar !== FALSE ){
+							echo TRUE;
+						} else {
+							echo '<span class="error"><b>E01</b> - El nuevo usuario no pudo ser agregado</span>';
+						}
 					} else {
-						echo '<span class="error"><b>E01</b> - El nuevo usuario no pudo ser agregado</span>';
+						echo '<span class="error">El <b>Correo electrónico</b> ya se encuentra asignado a una cuenta.</span>';
 					}
 				} else {
 					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
@@ -173,17 +179,18 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	public function editar_usuario( $uuid ){
+	public function editar_usuario( $uid ){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
 		} else {
-			$usuario = $this->cms->get_usuario_editar($uuid);
+			$usuario = $this->cms->get_usuario_editar( $uid );
 			if ( $usuario !== FALSE ){
-				$data['usuario']    = $this->session->userdata('nombre');
-				$data['categorias'] = $this->cms->get_categorias();
-				$data['verticales'] = $this->cms->get_verticales();
-				$data['usuario_editar']  = $usuario;
-				$data['ver_cat']  = $this->cms->get_ver_cat($uuid);
+				$data['usuario']    		= $this->session->userdata('nombre');
+				$data['categorias'] 		= $this->cms->get_categorias();
+				$data['verticales'] 		= $this->cms->get_verticales();
+				$data['usuario_editar']  	= $usuario;
+				$data['cats']				= $this->cms->get_categorias_asignadas( $uid );
+				$data['vers']				= $this->cms->get_verticales_asignadas( $uid );
 				$this->load->view('cms/admin/editar_usuario',$data);
 			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
@@ -215,22 +222,27 @@ class Cms extends CI_Controller {
 
 			if ( $this->form_validation->run() === TRUE ){
 				if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
-					$usuario['nombre']   			= $this->input->post( 'nombre' );
-					$usuario['apellidos']   		= $this->input->post( 'apellidos' );
-					$usuario['email']   			= $this->input->post( 'email' );
-					$usuario['extension']   		= $this->input->post( 'extension' );
-					$usuario['password']   			= $this->input->post( 'password' );
-					$usuario['celular']   			= $this->input->post( 'celular' );
-					$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
-					$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
-					$usuario['verticales'] 			= $this->input->post( 'vertical' );
-					$usuario['categorias'] 			= $this->input->post( 'categoria' );
-					$usuario['uuid_usuario']		= $this->input->post( 'uuid_usuario' );
-					$guardar 					= $this->cms->editar_usuario( $usuario );
-					if ( $guardar !== FALSE ){
-						redirect('usuarios');
+					$check_user = $this->cms->check_user( $this->input->post( 'email' ), $this->input->post( 'uid_usuario' ) );
+					if ( $check_user === FALSE ){
+						$usuario['nombre']   			= $this->input->post( 'nombre' );
+						$usuario['apellidos']   		= $this->input->post( 'apellidos' );
+						$usuario['email']   			= $this->input->post( 'email' );
+						$usuario['extension']   		= $this->input->post( 'extension' );
+						$usuario['password']   			= $this->input->post( 'password' );
+						$usuario['celular']   			= $this->input->post( 'celular' );
+						$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
+						$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
+						$usuario['verticales'] 			= json_encode( $this->input->post( 'vertical' ) );
+						$usuario['categorias'] 			= json_encode( $this->input->post( 'categoria' ) );
+						$usuario['uid_usuario']			= $this->input->post( 'uid_usuario' );
+						$guardar 						= $this->cms->editar_usuario( $usuario );
+						if ( $guardar !== FALSE ){
+							echo TRUE;
+						} else {
+							echo '<span class="error"><b>E02</b> - La información del usuario no puedo ser actualizada</span>';
+						}
 					} else {
-						echo '<span class="error"><b>E02</b> - La información del usuario no puedo ser actualizada</span>';
+						echo '<span class="error">El <b>Correo electrónico</b> ya se encuentra asignado a una cuenta.</span>';
 					}
 				} else {
 					echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verificalas.</span>';
@@ -242,12 +254,12 @@ class Cms extends CI_Controller {
 	}
 
 
-	public function eliminar_usuario($uuid){
+	public function eliminar_usuario($uid){
 
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_usuario($uuid);
+			$eliminar = $this->cms->delete_usuario($uid);
 			if( $eliminar !== false )
 			{
 				redirect('usuarios');
@@ -292,11 +304,11 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	public function eliminar_categoria($uuid){
+	public function eliminar_categoria($uid){
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_categoria($uuid);
+			$eliminar = $this->cms->delete_categoria($uid);
 			if( $eliminar !== false )
 			{
 				redirect('categorias');
@@ -352,12 +364,12 @@ class Cms extends CI_Controller {
 
 	}
 
-	public function eliminar_vertical($uuid){
+	public function eliminar_vertical($uid){
 
 		if ($this->session->userdata('session') !== TRUE) {
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_vertical($uuid);
+			$eliminar = $this->cms->delete_vertical($uid);
 			if( $eliminar !== false )
 			{
 				redirect('verticales');
@@ -382,8 +394,8 @@ class Cms extends CI_Controller {
 				$data['categorias'] = $this->cms->get_categorias();
 				$data['verticales'] = $this->cms->get_verticales();
 			}else{
-				$data['categorias'] = $this->cms->get_categorias_usuario($this->session->userdata('uuid'));
-				$data['verticales'] = $this->cms->get_verticales_usuario($this->session->userdata('uuid'));
+				$data['categorias'] = $this->cms->get_categorias_usuario($this->session->userdata('uid'));
+				$data['verticales'] = $this->cms->get_verticales_usuario($this->session->userdata('uid'));
 			}
 			$this->load->view('cms/admin/nuevo_trabajo',$data);
 		}

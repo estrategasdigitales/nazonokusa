@@ -1,7 +1,7 @@
 <?php $this->load->view( 'cms/header' ); ?>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"><h4>Administrar Usuarios</h4></div>
-		<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_usuario" type="button" class="btn btn-primary btn-block">Nuevo Usuario</a></div>
+		<div class="col-sm-4 col-md-4"><a href="<?php echo base_url(); ?>nuevo_usuario" type="button" class="btn btn-primary btn-block">Nuevo Usuario</a></div>
 	</div>
 	<br>
 	<div class="row">
@@ -32,8 +32,8 @@
 									}
 								?>
 							</td>
-							<td><a href="<?php echo base_url(); ?>editar/<?php echo $usuario->uuid_usuario; ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
-							<td><a href="javascript:ShowDialog('<?php echo base_url(); ?>eliminar/<?php echo $usuario->uuid_usuario; ?>','<?php echo $usuario->nombre; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+							<td><a href="<?php echo base_url(); ?>editar/<?php echo $usuario->uid_usuario; ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+							<td><a href="javascript:ShowDialog('<?php echo base_url(); ?>eliminar/<?php echo $usuario->uid_usuario; ?>','<?php echo $usuario->nombre; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>

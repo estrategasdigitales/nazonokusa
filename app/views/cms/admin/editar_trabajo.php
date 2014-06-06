@@ -15,7 +15,7 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 		<br>
 		<div class="container row">
 			<div class="panel panel-primary">
-				<input type="hidden" value="<?php echo (isset($trabajo_editar['uuid_trabajo']) && !empty($trabajo_editar['uuid_trabajo'])) ? $trabajo_editar['uuid_trabajo']:''; ?>" name="id_trabajo"  />
+				<input type="hidden" value="<?php echo (isset($trabajo_editar['uid_trabajo']) && !empty($trabajo_editar['uid_trabajo'])) ? $trabajo_editar['uid_trabajo']:''; ?>" name="id_trabajo"  />
 
 				<div class="panel-heading">Datos del Trabajo</div>
 				<div class="panel-body">
@@ -49,7 +49,7 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="categoria">							
 									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria['uuid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
+										<option value="<?php echo $categoria['uid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -65,7 +65,7 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="vertical">							
 									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical['uuid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
+										<option value="<?php echo $vertical['uid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>

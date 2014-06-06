@@ -1,7 +1,7 @@
 <?php $this->load->view( 'cms/header' ); ?>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"><h4>Administrar Trabajos</h4></div>
-		<div class="col-sm-4 col-md-4"><a href="<?php base_url(); ?>nuevo_trabajo" type="button" class="btn btn-primary btn-block">Nuevo Trabajo</a></div>
+		<div class="col-sm-4 col-md-4"><a href="<?php echo base_url(); ?>nuevo_trabajo" type="button" class="btn btn-primary btn-block">Nuevo Trabajo</a></div>
 	</div>
 	<br>
 	<div class="row">
@@ -41,11 +41,11 @@
 									</div>
 								<?php } ?>
 							</td>
-							<td><a href="<?php base_url(); ?>ejecutar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Ejecutar Ahora</a></td>
+							<td><a href="<?php base_url(); ?>ejecutar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Ejecutar Ahora</a></td>
                             
                             <?php  if(isset($level) && $level == 1){ ?>
-                               <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
-					           <td><a href="javascript:ShowDialogT('<?php base_url(); ?>eliminar_trabajo/<?php echo $trabajo['uuid_trabajo'] ?>','<?php echo $trabajo['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+                               <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+					           <td><a href="javascript:ShowDialogT('<?php base_url(); ?>eliminar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>','<?php echo $trabajo['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
                             <?php  } ?>
 
 						</tr>

@@ -55,10 +55,9 @@
 						<div class="col-sm-9 col-md-10">
 							<select name="compania_celular" id="compania_celular" class="form-control">
 								<option value="0">Selecciona una opción</option>
-								<option value="1">Telcel</option>
-								<option value="2">Movistar</option>
-								<option value="3">Iusacell</option>
-								<option value="4">Unefón</option>
+								<?php foreach ( $companias as $compania ){ ?>
+									<option value="<?php echo $compania->id; ?>"><?php echo $compania->compania; ?></option>
+								<?php } ?>
 							</select>
 						</div>
 					</div>
@@ -95,7 +94,7 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="categoria[]" value="<?php echo $categoria['uuid_categoria']; ?>">
+												<input type="checkbox" name="categoria[]" value="<?php echo $categoria['uid_categoria']; ?>">
 												<?php echo $categoria['nombre']; ?>
 											</label>
 										</div>
@@ -120,7 +119,7 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="vertical[]" value="<?php echo $vertical['uuid_vertical']; ?>">
+												<input type="checkbox" name="vertical[]" value="<?php echo $vertical['uid_vertical']; ?>">
 												<?php echo $vertical['nombre']; ?>
 											</label>
 										</div>

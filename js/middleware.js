@@ -130,7 +130,7 @@ $(function(){
 				}else{
 					spinner.stop();
 					$('#foo').css('display','none');
-					window.location.href = 'usuarios';
+					window.location.href = '../usuarios';
 				}
 			},
 			error: function(data){

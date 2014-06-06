@@ -8,7 +8,7 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Datos del Usuario</div>
 				<div class="panel-body">
-					<input type="hidden" name="uuid_usuario" value="<?php echo isset($usuario_editar->uuid_usuario) && !empty($usuario_editar->uuid_usuario) ? $usuario_editar->uuid_usuario:''; ?>"/>
+					<input type="hidden" name="uid_usuario" value="<?php echo isset($usuario_editar->uid_usuario) && !empty($usuario_editar->uid_usuario) ? $usuario_editar->uid_usuario:''; ?>"/>
 					<div class="form-group">
 						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
 						<div class="col-sm-9 col-md-10">
@@ -96,15 +96,7 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="categoria[]"
-												<?php if( isset($ver_cat) && !empty($ver_cat) ): ?>
-												<?php foreach($ver_cat as $check): ?>
-												<?php if($categoria['uuid_categoria'] === $check['uuid_categoria']): ?>
-													checked
-												<?php endif; ?>
-												<?php endforeach; ?>
-												<?php endif; ?>
-												 value="<?php echo $categoria['uuid_categoria']; ?>">
+												<input type="checkbox" name="categoria[]" <?php if( isset($cats) && !empty($cats) ): foreach($cats as $cat): if($categoria['uid_categoria'] === $cat->uid_categoria): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $categoria['uid_categoria']; ?>">
 												<?php echo $categoria['nombre']; ?>
 											</label>
 										</div>
@@ -129,15 +121,7 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="vertical[]" 
-												<?php if( isset($ver_cat) && !empty($ver_cat) ): ?>
-												<?php foreach($ver_cat as $check): ?>
-												<?php if($vertical['uuid_vertical'] === $check['uuid_vertical']): ?>
-													checked
-												<?php endif; ?>
-												<?php endforeach; ?> 
-												<?php endif; ?>
-												value="<?php echo $vertical['uuid_vertical']; ?>">
+												<input type="checkbox" name="vertical[]" <?php if( isset($vers) && !empty($vers) ): foreach($vers as $ver): if($vertical['uid_vertical'] === $ver->uid_vertical ): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $vertical['uid_vertical']; ?>">
 												<?php echo $vertical['nombre']; ?>
 											</label>
 										</div>
