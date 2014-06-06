@@ -119,6 +119,8 @@ class Cms_model extends CI_Model {
 
     }
 
+    
+
     public function add_usuario( $usuario ){
         $timestamp = time();
         $this->db->set( 'uid_usuario', "UUID()", FALSE);
