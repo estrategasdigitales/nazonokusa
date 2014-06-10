@@ -19,72 +19,18 @@ $(function(){
 	};
 	var target = document.getElementById('foo');
 
-	// $('#form_vertical_nueva').validate({
-	// 	rules: {
-	// 		nombre: {
-	// 			required: true,
-	// 			minlength: 3
-	// 		},
-	// 	},
-	// 	messages: {
-	// 		nombre: {
-	// 			required: "Por favor, ingresa el Nombre de la Vertical.",
-	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
-	// 		},
-	// 	}
-	// });
+	$('.btn-toggle').click(function(){
+		$(this).find('.btn').toggleClass('active');
+		if ( $(this).find('.btn-danger').size() > 0 ){
+			$(this).find('.btn').toggleClass('btn-default');
+		} 
 
-	// $('#form_categoria_nueva').validate({
-	// 	rules: {
-	// 		nombre: {
-	// 			required: true,
-	// 			minlength: 3
-	// 		},
-	// 	},
-	// 	messages: {
-	// 		nombre: {
-	// 			required: "Por favor, ingresa el Nombre de la Categoría.",
-	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
-	// 		},
-	// 	}
-	// });
+		if ( $(this).find('.btn-success').size() > 0 ){
+			$(this).find('.btn').toggleClass('btn-default');
+		}
 
-	// $("#form_trabajo_nuevo1").validate({
-	// 	rules: {
-	// 		nombre: {
-	// 			required: true,
-	// 			minlength: 3
-	// 		},
-	// 		"url-origen": {
-	// 			required: true
-	// 		},
-	// 		"destino-local": {
-	// 			required: true
-	// 		},
-	// 		"destino-net": {
-	// 			required: true
-	// 		},
-	// 		"formato[]": {
-	// 			required: true
-	// 		},
-	// 	},
-	// 	messages: {
-	// 		nombre: {
-	// 			required: "Por favor, ingresa un nombre para el trabajo",
-	// 			minlength: "Este campo debe ser de al menos 3 caracteres."
-	// 		},
-	// 		"url-origen": {
-	// 			required: "Por favor, ingresa la URL del feed"
-	// 		},
-	// 		"destino-local": {
-	// 			required: "Por favor, ingresa un destino para el feed creado"
-	// 		},
-	// 		"destino-net": {
-	// 			required: "Por favor, ingresa un destino para el feed creado"
-	// 		},
-	// 		"formato[]": "Selecciona un formato de salida",
-	// 	}
-	// });
+		$(this).find('.btn').toggleClass('btn-default');
+	});
 
 	$('#read_feed_form').submit(function(){
 		var spinner = new Spinner(opts).spin(target);
@@ -228,6 +174,103 @@ $(function(){
 		return false;
 	});
 });
+
+function handlerProgramm(status, uidjob){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 25, // The length of each line
+		width: 10, // The line thickness
+		radius: 35, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#f48120', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent in px
+		left: '50%' // Left position relative to parent in px
+	};
+
+	var target = document.getElementById('foo');
+
+	$('#foo').css('display','block');
+	var spinner = new Spinner(opts).spin(target);
+	$.post('cms/job_process', {status: status, uidjob: uidjob}, function(data){
+		if(data != true){
+			spinner.stop();
+			$('#foo').css('display','none');
+			$('#messages').css('display','block');
+			$('#messages').addClass('alert-danger');
+			$('#messages').html(data);
+		}else{
+			spinner.stop();
+			$('#foo').css('display','none');
+		}
+	});
+}
+
+function deleteJob(uidjob){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 25, // The length of each line
+		width: 10, // The line thickness
+		radius: 35, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#f48120', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent in px
+		left: '50%' // Left position relative to parent in px
+	};
+
+	var target = document.getElementById('foo');
+
+	$('#foo').css('display','block');
+	var spinner = new Spinner(opts).spin(target);
+	$.post('eliminar_trabajo', {uidjob: uidjob}, function(data){
+		if(data != true){
+			spinner.stop();
+			$('#foo').css('display','none');
+			$('#messages').css('display','block');
+			$('#messages').addClass('alert-danger');
+			$('#messages').html(data);
+		}else{
+			spinner.stop();
+			$('#foo').css('display','none');
+			window.location.reload();
+		}
+	});
+}
+
+function cargar_campos(){
+	$.ajax({
+		url: 'nucleo/detectar_campos',
+		type: 'POST',
+		dataType: 'html',
+		data: {url: $('#url-origen').val()},
+	})
+	.done(function(data) {
+		$('.campos-feed .panel-body').html('');
+		$('.campos-feed .panel-body').append(data);
+		$('.campos-feed').slideDown();
+	})
+	.fail(function() {
+		console.log("error");
+	})
+	.always(function() {
+		console.log("complete");
+	});
+}
 
 function desplegar(item){
 	if($('.'+item).css('display')==='none'){

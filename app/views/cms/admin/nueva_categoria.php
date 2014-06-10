@@ -13,6 +13,12 @@
 						<input type="text" class="form-control" id="nombre_categoria" name="nombre_categoria" placeholder="Nombre de la Categoría">
 					</div>
 				</div>
+				<div class="form-group">
+					<label for="path_categoria" class="col-sm-4 col-md-4 control-label">Path para la Categoría</label>
+					<div class="col-sm-8 col-md-8">
+						<input type="text" class="form-control" id="path_categoria" name="path_categoria" placeholder="Path para la Categoría">
+					</div>
+				</div>
 			</div>
 			<div class="col-md-2"></div>
 		</div>

@@ -1,10 +1,7 @@
-<?php /* 29/05 */ 
+<?php 
 
-//var_dump($cron_date);
-//var_dump($trabajo_editar); 
-
-$meses = array(1=>"Enero",2=>"Febrero",3=>"Marzo",4=>"Abril",5=>"Mayo",6=>"Junio",7=>"Julio",8=>"Agosto",9=>"Septiembre",10=>"Octubre",11=>"Noviembre",12=>"Diciembre");
-$dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Jueves",5=>"Viernes",6=>'S&aacute;bado');
+	$meses = array( 1 => "Enero", 2 => "Febrero", 3 => "Marzo", 4 => "Abril", 5 => "Mayo",6=>"Junio",7=>"Julio",8=>"Agosto",9=>"Septiembre",10=>"Octubre",11=>"Noviembre",12=>"Diciembre");
+	$dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Jueves",5=>"Viernes",6=>'S&aacute;bado');
 
 ?>
 <?php $this->load->view( 'cms/header' ); ?>
@@ -31,25 +28,13 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 							<input type="url" class="form-control" id="url-origen" name="url-origen" value="<?php echo isset($trabajo_editar['url_origen']) && !empty($trabajo_editar['url_origen']) ? $trabajo_editar['url_origen']:''; ?>">
 						</div>
 					</div>
-					<!--<div class="form-group">
-						<label for="destino-local" class="col-sm-3 col-md-2 control-label">Destino local</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="destino-local" name="destino-local" value="<?php echo isset($trabajo_editar['url_local']) && !empty($trabajo_editar['url_local']) ? $trabajo_editar['url_local']:''; ?>">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="destino-net" class="col-sm-3 col-md-2 control-label">Destino net-storage</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="destino-net" name="destino-net" value="<?php echo isset($trabajo_editar['url_storage']) && !empty($trabajo_editar['url_storage']) ? $trabajo_editar['url_storage']:''; ?>">
-						</div>
-					</div>-->
 					<div class="form-group">
 						<label class="col-sm-3 col-md-2 control-label">Categoría</label>
-						<?php if( isset($categorias) && !empty($categorias) ): ?>
+						<?php if ( isset($categorias) && !empty($categorias) ) : ?>
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="categoria">							
 									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria['uid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
+										<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -65,7 +50,7 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="vertical">							
 									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical['uid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
+										<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -125,27 +110,6 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 			</div>
 		</div>
 		<br>
-		<script type="text/javascript">
-			function cargar_campos(){
-				$.ajax({
-					url: '<?= base_url(""); ?>nucleo/detectar_campos',
-					type: 'POST',
-					dataType: 'html',
-					data: {url: $('#url-origen').val()},
-				})
-				.done(function(data) {
-					$('.campos-feed .panel-body').html('');
-					$('.campos-feed .panel-body').append(data);
-					$('.campos-feed').slideDown();
-				})
-				.fail(function() {
-					console.log("error");
-				})
-				.always(function() {
-					console.log("complete");
-				});
-			}
-		</script>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
@@ -264,8 +228,6 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 					</div>
 					<br>
 					<div class="row">
-						
-						
 						<div class="col-sm-4 col-md-4">
 							<label class="form-trabajos-hora">Hora:</label>
 							<select class="form-control form-trabajos-hora" name="cron_hora">
@@ -279,8 +241,6 @@ $dias = array(0=>"Domingo",1=>"Lunes",2=>"Martes",3=>'Mi&eacute;rcoles',4=>"Juev
 								<option value="18">18</option> <option value="19">19</option> <option value="20">20</option>
 								<option value="21">21</option> <option value="22">22</option> <option value="23">23</option>
 							</select>
-
-
 							<select class="form-control form-trabajos-hora" name="cron_minuto">
 								<option value="*">Cada min</option>
 								<option value="0/5">Cada 5 mins</option>

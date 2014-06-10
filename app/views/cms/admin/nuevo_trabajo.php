@@ -20,25 +20,13 @@
 							<input type="url" class="form-control" id="url-origen" name="url-origen">
 						</div>
 					</div>
-					<!--<div class="form-group">
-						<label for="destino-local" class="col-sm-3 col-md-2 control-label">Destino local</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="destino-local" name="destino-local">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="destino-net" class="col-sm-3 col-md-2 control-label">Destino net-storage</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="destino-net" name="destino-net">
-						</div>
-					</div>-->
 					<div class="form-group">
 						<label class="col-sm-3 col-md-2 control-label">Categoría</label>
 						<?php if( isset($categorias) && !empty($categorias) ): ?>
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="categoria">							
 									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria['uid_categoria']; ?>"><?php echo $categoria['nombre']; ?></option>
+										<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -54,7 +42,7 @@
 							<div class="col-sm-9 col-md-10">
 								<select class="form-control" name="vertical">							
 									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical['uid_vertical']; ?>"><?php echo $vertical['nombre']; ?></option>
+										<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
 									<?php endforeach; ?>
 								</select>
 							</div>
@@ -114,29 +102,6 @@
 			</div>
 		</div>
 		<br>
-		<script>
-		function cargar_campos(){
-
-			$.ajax({
-				url: '<?= base_url(""); ?>nucleo/detectar_campos',
-				type: 'POST',
-				dataType: 'html',
-				data: {url: $('#url-origen').val()},
-			})
-			.done(function(data) {
-				$('.campos-feed .panel-body').html('');
-				$('.campos-feed .panel-body').append(data);
-				$('.campos-feed').slideDown();
-			})
-			.fail(function() {
-				console.log("error");
-			})
-			.always(function() {
-				console.log("complete");
-			});
-			
-		}
-		</script>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
@@ -255,8 +220,6 @@
 					</div>
 					<br>
 					<div class="row">
-						
-						
 						<div class="col-sm-4 col-md-4">
 							<label class="form-trabajos-hora">Hora:</label>
 							<select class="form-control form-trabajos-hora" name="cron_hora">
@@ -270,8 +233,6 @@
 								<option value="18">18</option> <option value="19">19</option> <option value="20">20</option>
 								<option value="21">21</option> <option value="22">22</option> <option value="23">23</option>
 							</select>
-
-
 							<select class="form-control form-trabajos-hora" name="cron_minuto">
 								<option value="*">Cada min</option>
 								<option value="0/5">Cada 5 mins</option>

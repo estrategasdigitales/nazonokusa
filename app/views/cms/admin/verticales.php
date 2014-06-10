@@ -16,7 +16,7 @@
 					<?php if ( isset($verticales) && !empty($verticales) ): ?>
 						<?php foreach( $verticales as $vertical ): ?>
 							<tr>
-								<td><?php echo $vertical['nombre']; ?></td>
+								<td><?php echo $vertical->nombre; ?></td>
 								<td><a href="javascript:ShowDialog3('<?php base_url(); ?>eliminar_vertical/<?php echo $vertical['uid_vertical'] ?>','<?php echo $vertical['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>

@@ -7,6 +7,10 @@ class Cms extends CI_Controller {
 		$this->load->model('cms_model', 'cms');
 	}
 
+	/**
+	 * [index description]
+	 * @return [type] [description]
+	 */
 	public function index() {
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
 			redirect('login');
@@ -15,14 +19,22 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [login description]
+	 * @return [type] [description]
+	 */
 	public function login() {
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			$this->load->view('cms/login');
 		} else {
 			$this->load->view('cms/principal' );
 		}
 	}
 
+	/**
+	 * [logout description]
+	 * @return [type] [description]
+	 */
 	public function logout() {
 		$this->session->sess_destroy();
 		redirect('login');
@@ -72,58 +84,67 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [admin_trabajos description]
+	 * @return [type] [description]
+	 */
 	public function admin_trabajos(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
-			if($this->session->userdata('nivel')==='1'){
+			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
 				$data['trabajos']	= $this->cms->get_trabajos();
-			    $data['level'] = 1;
-			}else
-				$data['trabajos']	= $this->cms->get_trabajos_editor($this->session->userdata('uid'));
-
+			}else {
+				$data['trabajos']	= $this->cms->get_trabajos_editor( $this->session->userdata( 'uid' ) );
+			}
 			$this->load->view('cms/admin/trabajos',$data);
 		}
-
 	}
 
+	/**
+	 * [admin_categorias description]
+	 * @return [type] [description]
+	 */
 	public function admin_categorias(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$data['categorias']	= $this->cms->get_categorias();
-			$this->load->view('cms/admin/categorias',$data);
+			$this->load->view( 'cms/admin/categorias', $data );
 		}
-
 	}
-	public function admin_verticales(){
 
-		if ($this->session->userdata('session') !== TRUE) {
+	/**
+	 * [admin_verticales description]
+	 * @return [type] [description]
+	 */
+	public function admin_verticales(){
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$data['verticales']	= $this->cms->get_verticales();
-			$this->load->view('cms/admin/verticales',$data);
+			$this->load->view('cms/admin/verticales', $data);
 		}
-
 	}
 
+	/**
+	 * [nuevo_usuario description]
+	 * @return [type] [description]
+	 */
 	public function nuevo_usuario(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$data['categorias'] = $this->cms->get_categorias();
 			$data['verticales'] = $this->cms->get_verticales();
 			$data['companias']	= $this->cms->get_companias_celular();
+			$data['roles']		= $this->cms->get_catalogo_roles();
 			$this->load->view('cms/admin/nuevo_usuario',$data);
 		}
-
 	}
 
 
@@ -161,6 +182,7 @@ class Cms extends CI_Controller {
 						$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
 						$usuario['verticales'] 			= $this->input->post( 'vertical' );
 						$usuario['categorias'] 			= $this->input->post( 'categoria' );
+						$usuario 						= $this->security->xss_clean( $usuario );
 						$guardar 						= $this->cms->add_usuario( $usuario );
 						if ( $guardar !== FALSE ){
 							echo TRUE;
@@ -179,6 +201,11 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [editar_usuario description]
+	 * @param  [type] $uid [description]
+	 * @return [type]      [description]
+	 */
 	public function editar_usuario( $uid ){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
@@ -191,6 +218,8 @@ class Cms extends CI_Controller {
 				$data['usuario_editar']  	= $usuario;
 				$data['cats']				= $this->cms->get_categorias_asignadas( $uid );
 				$data['vers']				= $this->cms->get_verticales_asignadas( $uid );
+				$data['companias']			= $this->cms->get_companias_celular();
+				$data['roles']				= $this->cms->get_catalogo_roles();
 				$this->load->view('cms/admin/editar_usuario',$data);
 			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
@@ -235,6 +264,7 @@ class Cms extends CI_Controller {
 						$usuario['verticales'] 			= json_encode( $this->input->post( 'vertical' ) );
 						$usuario['categorias'] 			= json_encode( $this->input->post( 'categoria' ) );
 						$usuario['uid_usuario']			= $this->input->post( 'uid_usuario' );
+						$usuario 						= $this->security->xss_clean( $usuario );
 						$guardar 						= $this->cms->editar_usuario( $usuario );
 						if ( $guardar !== FALSE ){
 							echo TRUE;
@@ -253,38 +283,43 @@ class Cms extends CI_Controller {
 		}
 	}
 
-
+	/**
+	 * [eliminar_usuario description]
+	 * @param  [type] $uid [description]
+	 * @return [type]      [description]
+	 */
 	public function eliminar_usuario($uid){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$eliminar = $this->cms->delete_usuario($uid);
-			if( $eliminar !== false )
-			{
+			if ( $eliminar !== FALSE ){
 				redirect('usuarios');
-			}
-			else
-			{
+			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['error'] = "No se a podido eliminar el usuario";
 				$this->load->view('cms/admin/usuarios',$data);
 			}
 		}
-
 	}
 
+	/**
+	 * [nueva_categoria description]
+	 * @return [type] [description]
+	 */
 	public function nueva_categoria(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$this->load->view('cms/admin/nueva_categoria',$data);
 		}
-
 	}
 
+	/**
+	 * [validar_form_categoria description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_categoria(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
@@ -292,7 +327,9 @@ class Cms extends CI_Controller {
 			$this->form_validation->set_rules( 'nombre_categoria', 'Nombre de la Categoría', 'required|min_length[3]|xss_clean' );
 			if ( $this->form_validation->run() === TRUE ){
 				$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
-				$guardar = $this->cms->add_categoria( $categoria );
+				$categoria['slug_categoria']   	= url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE );
+				$categoria 						= $this->security->xss_clean( $categoria );
+				$guardar 						= $this->cms->add_categoria( $categoria );
 				if ( $guardar !== FALSE ){
 					echo TRUE;
 				} else {
@@ -304,17 +341,19 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [eliminar_categoria description]
+	 * @param  [type] $uid [description]
+	 * @return [type]      [description]
+	 */
 	public function eliminar_categoria($uid){
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$eliminar = $this->cms->delete_categoria($uid);
-			if( $eliminar !== false )
-			{
+			if ( $eliminar !== FALSE ){
 				redirect('categorias');
-			}
-			else
-			{
+			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['error'] = "No se a podido eliminar la categoria";
 				$this->load->view('cms/admin/categorias',$data);
@@ -322,84 +361,96 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [nueva_vertical description]
+	 * @return [type] [description]
+	 */
 	public function nueva_vertical(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
-			$this->load->view('cms/admin/nueva_vertical',$data);
+			$this->load->view( 'cms/admin/nueva_vertical', $data );
 		}
-
 	}
 
+	/**
+	 * [validar_form_vertical description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_vertical(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
-			if ($this->form_validation->run() === TRUE)
-			{
-				$vertical['nombre']   = $this->input->post('nombre');
-				$guardar = $this->cms->add_vertical($vertical);
-				if( $guardar !== false )
-				{
+			if ( $this->form_validation->run() === TRUE ){
+				$vertical['nombre']   		= $this->input->post('nombre');
+				$vertical['slug_vertical']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
+				$vertical 					= $this->security->xss_clean( $vertical );
+				$guardar 					= $this->cms->add_vertical( $vertical );
+				if ( $guardar !== FALSE ){
 					redirect('verticales');
-				}
-				else
-				{
+				} else {
 					$data['usuario'] 	= $this->session->userdata('nombre');
 					$data['error'] = "La nueva vertical no pudo ser guardada";
 					$this->load->view('cms/admin/nueva_vertical',$data);
 				}
-			}
-			else
-			{			
+			} else {			
 				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
 				$this->load->view('cms/admin/nueva_vertical',$data);
 			}
 		}
-
 	}
 
-	public function eliminar_vertical($uid){
-
-		if ($this->session->userdata('session') !== TRUE) {
+	/**
+	 * [eliminar_vertical description]
+	 * @param  [type] $uid [description]
+	 * @return [type]      [description]
+	 */
+	public function eliminar_vertical( $uid ){
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_vertical($uid);
-			if( $eliminar !== false )
-			{
+			$eliminar = $this->cms->delete_vertical( $uid );
+			if ( $eliminar !== FALSE ){
 				redirect('verticales');
-			}
-			else
-			{
+			} else {
 				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['error'] = "No se a podido eliminar la vertical";
 				$this->load->view('cms/admin/verticales',$data);
 			}
 		}
-		
 	}
 
+	/**
+	 * [nuevo_trabajo description]
+	 * @return [type] [description]
+	 */
 	public function nuevo_trabajo(){
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			if ($this->session->userdata('nivel') === "1") {
+			if ( $this->session->userdata( 'nivel' ) == 1 ) {
 				$data['categorias'] = $this->cms->get_categorias();
 				$data['verticales'] = $this->cms->get_verticales();
-			}else{
-				$data['categorias'] = $this->cms->get_categorias_usuario($this->session->userdata('uid'));
-				$data['verticales'] = $this->cms->get_verticales_usuario($this->session->userdata('uid'));
+			} else {
+				$data['categorias'] = $this->cms->get_categorias_usuario( $this->session->userdata( 'uid' ) );
+				$data['verticales'] = $this->cms->get_verticales_usuario( $this->session->userdata( 'uid' ) );
 			}
-			$this->load->view('cms/admin/nuevo_trabajo',$data);
+			$this->load->view( 'cms/admin/nuevo_trabajo', $data );
 		}
+	}
 
+	public function job_process(){
+		$job['status'] 	= $this->input->post('status');
+		$job['uidjob'] 	= $this->input->post('uidjob');
+		$process 		= $this->cms->active_job( $job );
+		if ( $process === TRUE ){
+			echo TRUE;
+		} else {
+			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
+		}
 	}
 
 	public function reportes() {

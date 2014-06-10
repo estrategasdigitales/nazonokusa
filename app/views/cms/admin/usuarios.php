@@ -8,10 +8,10 @@
 		<div class="container table-responsive">
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
-					<td>Nombre de Usuario</td>
+					<td width="45%">Nombre de Usuario</td>
 					<td>Perfil</td>
-					<td>Editar Información</td>
-					<td>Eliminar</td>
+					<td class="text-center" width="15%">Editar Información</td>
+					<td class="text-center" width="15%">Eliminar</td>
 				</tr>
 				<?php if ( isset($usuarios) && !empty($usuarios) ): ?>
 					<?php foreach( $usuarios as $usuario ): ?>

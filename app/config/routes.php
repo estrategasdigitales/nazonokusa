@@ -57,9 +57,9 @@ $route['eliminar/(:any)']			= 'cms/eliminar_usuario/$1';
 $route['eliminar_categoria/(:any)']	= 'cms/eliminar_categoria/$1';
 $route['eliminar_vertical/(:any)']	= 'cms/eliminar_vertical/$1';
 $route['editar/(:any)']				= 'cms/editar_usuario/$1';
-$route['editar_trabajo/(:any)']     = 'nucleo/form_editar_trabajo/$1';
+$route['editar_trabajo/(:any)']     = 'nucleo/editar_trabajo/$1';
 $route['ejecutar_trabajo/(:any)']   = 'nucleo/ejecutar_trabajo/$1';  
-$route['eliminar_trabajo/(:any)']   = 'nucleo/eliminar_trabajo/$1';  
+$route['eliminar_trabajo']   		= 'nucleo/eliminar_trabajo';  
 $route['nucleo'] 					= 'nucleo/';
 
 /* End of file routes.php */

@@ -66,11 +66,14 @@
 						<div class="col-sm-9 col-md-10">
 							<select name="rol_usuario" id="rol_usuario" class="form-control">
 								<option value="0">Selecciona una opción</option>
-								<?php if( $this->session->userdata( 'nivel' ) == 1 ) : ?>
-									<option value="1">Administrador Maestro</option>
-								<?php endif; ?>
-								<option value="2">Administrador</option>
-								<option value="3">Editor</option>
+								<?php foreach ( $roles as $rol ){ ?>
+									<?php if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
+										<option value="<?php echo $rol->id; ?>"><?php echo $rol->nombre_rol; ?></option>
+									<?php } else {
+										if ( $rol->id > 1 ){ ?>
+											<option value="<?php echo $rol->id; ?>"><?php echo $rol->nombre_rol; ?></option>
+										<?php } } ?>
+								<?php } ?>
 							</select>
 						</div>
 					</div>
@@ -94,8 +97,8 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="categoria[]" value="<?php echo $categoria['uid_categoria']; ?>">
-												<?php echo $categoria['nombre']; ?>
+												<input type="checkbox" name="categoria[]" value="<?php echo $categoria->uid_categoria; ?>">
+												<?php echo $categoria->nombre; ?>
 											</label>
 										</div>
 									</div>
@@ -119,8 +122,8 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="vertical[]" value="<?php echo $vertical['uid_vertical']; ?>">
-												<?php echo $vertical['nombre']; ?>
+												<input type="checkbox" name="vertical[]" value="<?php echo $vertical->uid_vertical; ?>">
+												<?php echo $vertical->nombre; ?>
 											</label>
 										</div>
 									</div>

@@ -6,8 +6,10 @@ class Cms_model extends CI_Model {
     private $api_token;
     private $timezone;
 
+    /**
+     * [__construct description]
+     */
     function __construct() {
-
         parent::__construct();
         $this->load->database();
         $this->key_encrypt  = $_SERVER['HASH_ENCRYPT'];
@@ -15,7 +17,6 @@ class Cms_model extends CI_Model {
 
         //Api Hash 
         $this->api_token = "40d22dba2081ef5b9da5a0ee13e3089d"; 
-
     }
 
     /**
@@ -34,6 +35,12 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
+    /**
+     * [get_usuarios description]
+     * @param  [type] $nivel [description]
+     * @param  [type] $uid   [description]
+     * @return [type]        [description]
+     */
     public function get_usuarios( $nivel, $uid ){
         $this->db->select('uid_usuario, nombre, apellidos, nivel');
         // $this->db->select( "AES_DECRYPT( apellidos,'{$this->key_encrypt}') AS apellidos", FALSE );
@@ -62,20 +69,20 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
-    public function get_usuario_editar($uid){
-
-        $this->db->select("uid_usuario,nombre,apellidos,AES_DECRYPT(email,'$this->key_encrypt') as email,extension,AES_DECRYPT(celular,'$this->key_encrypt') as celular, AES_DECRYPT(password,'$this->key_encrypt') as password",False);
-        $this->db->where('uid_usuario',$uid);
-        $result = $this->db->get('usuarios');
-        if ($result->num_rows() > 0)
-        {
-            return $result->row();
-        }
-        else
-        {
-            return False;
-        }
-
+    /**
+     * [get_usuario_editar description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function get_usuario_editar( $uid ){
+        $this->db->select('uid_usuario, nombre, apellidos, extension, compania_celular, nivel ');
+        $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
+        $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
+        $this->db->select( "AES_DECRYPT( password,'{$this->key_encrypt}') AS password", FALSE );
+        $this->db->where('uid_usuario', $uid);
+        $result = $this->db->get($this->db->dbprefix( 'usuarios' ) );
+        if ($result->num_rows() > 0) return $result->row();
+        else return FALSE;
     }
 
     /**
@@ -119,8 +126,22 @@ class Cms_model extends CI_Model {
 
     }
 
-    
+    /**
+     * [get_catalogo_roles description]
+     * @return [type] [description]
+     */
+    public function get_catalogo_roles(){
+        $this->db->select( 'id, nombre_rol' );
+        $roles = $this->db->get($this->db->dbprefix( 'catalogo_rol_usuarios' ) );
+        if ($roles->num_rows() > 0 ) return $roles->result();
+        else return FALSE;
+        $roles->free_result();
+    }
 
+    /**
+     * [add_usuario description]
+     * @param [type] $usuario [description]
+     */
     public function add_usuario( $usuario ){
         $timestamp = time();
         $this->db->set( 'uid_usuario', "UUID()", FALSE);
@@ -179,6 +200,12 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
+    /**
+     * [categorias_asignadas description]
+     * @param  array  $categorias [description]
+     * @param  string $uid        [description]
+     * @return [type]             [description]
+     */
     private function categorias_asignadas( $categorias = array(), $uid = '' ){
         $this->db->delete( $this->db->dbprefix( 'categorias_asignadas'), array( 'uid_usuario' => $uid) );
         $categorias = json_decode( $categorias );
@@ -191,6 +218,12 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
+    /**
+     * [verticales_asigandas description]
+     * @param  array  $verticales [description]
+     * @param  string $uid        [description]
+     * @return [type]             [description]
+     */
     private function verticales_asigandas( $verticales = array(), $uid = '' ){
         $this->db->delete( $this->db->dbprefix( 'verticales_asignadas'), array( 'uid_usuario' => $uid) );
         $verticales = json_decode( $verticales );
@@ -203,43 +236,72 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
+    /**
+     * [delete_usuario description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
     public function delete_usuario( $uid ){
-        $this->db->delete($this->db->dbprefix( 'usuarios_categorias_verticales' ), array( 'uid_usuario' => $uid ) );
-        $this->db->delete($this->db->dbprefix( 'usuarios' ), array( 'uid_usuario' => $uid ) );
+        $this->db->delete( $this->db->dbprefix( 'categorias_asignadas' ), array( 'uid_usuario' => $uid ) );
+        $this->db->delete( $this->db->dbprefix( 'verticales_asignadas' ), array( 'uid_usuario' => $uid ) );
+        $this->db->delete( $this->db->dbprefix( 'usuarios' ), array( 'uid_usuario' => $uid ) );
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
 
-    /* 29/05 */    
+    /**
+     * [delete_trabajo description]
+     * @param  [type] $uid_trabajo [description]
+     * @return [type]              [description]
+     */
     public function delete_trabajo( $uid_trabajo ){
         $this->db->delete($this->db->dbprefix( 'trabajos_categorias' ), array( 'uid_trabajo' => $uid_trabajo ) );
         $this->db->delete($this->db->dbprefix( 'trabajos' ), array( 'uid_trabajo' => $uid_trabajo ) );
         return ( $this->db->affected_rows() > 0 );
     }
 
+    /**
+     * [get_trabajos description]
+     * @return [type] [description]
+     */
     public function get_trabajos(){
-        $this->db->select('uid_trabajo,nombre,url_origen,url_storage,fecha_ejecucion,uid_usuario');
-        $result = $this->db->get('trabajos');
-        if ($result->num_rows() > 0)
-        {
-            return $result->result_array();
-        }
-        else
-        {
-            return False;
-        }
-    }
-
-    public function get_trabajos_editor( $uid ){
-        $this->db->select('uid_trabajo,nombre,url_origen,url_storage,fecha_ejecucion,uid_usuario');
-        $this->db->where('uid_usuario',$uid);
-        $result = $this->db->get('trabajos');
-        if ( $result->num_rows() > 0 ) return $result->result_array();
+        $this->db->select( 'uid_trabajo, nombre, url_origen, activo, uid_usuario' );
+        $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
+        if ($result->num_rows() > 0) return $result->result();
         else return FALSE;
     }
 
+    /**
+     * [get_trabajos_editor description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function get_trabajos_editor( $uid ){
+        $this->db->select('uid_trabajo, nombre, url_origen, activo, uid_usuario');
+        $this->db->where( 'uid_usuario',$uid );
+        $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+    }
 
-    /* 30/5 -- Posteriormente mover cron/works a modelo para ello*/
+    /**
+     * [active_job description]
+     * @param  [type] $job [description]
+     * @return [type]      [description]
+     */
+    public function active_job( $job ){
+        $this->db->set( 'activo', $job['status'] );
+        $this->db->where('uid_trabajo', $job['uidjob'] );
+        $this->db->update($this->db->dbprefix( 'trabajos' ) );
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
+        else return FALSE;
+    }
+
+    /**
+     * [config_cronjob description]
+     * @param  [type] $uid_trabajo [description]
+     * @return [type]              [description]
+     */
     public function config_cronjob($uid_trabajo){
         $this->db->select('cron_config',False);
         $this->db->where('uid_trabajo',$uid_trabajo);
@@ -251,6 +313,12 @@ class Cms_model extends CI_Model {
         }
     }
 
+    /**
+     * [call description]
+     * @param  [type] $method [description]
+     * @param  array  $data   [description]
+     * @return [type]         [description]
+     */
     private function call($method, $data = array()){
         $uri = 'https://www.easycron.com/rest/'; //API
         $arguments = array();
@@ -269,6 +337,12 @@ class Cms_model extends CI_Model {
         }
     }
 
+    /**
+     * [save_cronconfig description]
+     * @param  [type] $uid_trabajo [description]
+     * @param  [type] $config      [description]
+     * @return [type]              [description]
+     */
     public function save_cronconfig($uid_trabajo, $config){
         $this->db->set('cron_config', $config);
         $this->db->where('uid_trabajo',$uid_trabajo);
@@ -276,6 +350,16 @@ class Cms_model extends CI_Model {
         return ($this->db->affected_rows() > 0);
     }
 
+    /**
+     * [set_cronjob description]
+     * @param [type]  $name       [description]
+     * @param [type]  $expression [description]
+     * @param [type]  $url        [description]
+     * @param integer $email_me   [description]
+     * @param integer $output     [description]
+     * @param string  $token      [description]
+     * @param integer $test       [description]
+     */
     public function set_cronjob($name, $expression, $url, $email_me = 0, $output = 0, $token = "bfb06b51988cf4f017606be4c28c89d1", $test = 0){ 
         $data['token'] = $token;
         $data['cron_job_name'] = $name;
@@ -287,25 +371,35 @@ class Cms_model extends CI_Model {
         return $this->call("add", $data); 
     }
 
+    /**
+     * [delete_cronjob description]
+     * @param  [type] $id    [description]
+     * @param  string $token [description]
+     * @return [type]        [description]
+     */
     public function delete_cronjob($id, $token = "bfb06b51988cf4f017606be4c28c89d1"){ 
         $data['token'] = $token;
         $data['id'] = $id;
         return $this->call("delete", $data); 
      }
 
-    //public function status_cronjob($id, $status=1){ return True;  }
+    /**
+     * [edit_cronjob description]
+     * @return [type] [description]
+     */
     public function edit_cronjob(){ return TRUE; }
 
-    /* 28/5 */ 
-    public function get_trabajo_editar($uid_trabajo){
-        $this->db->select('uid_trabajo,id_trabajo,nombre,url_origen,url_local,url_storage,fecha_registro,fecha_ejecucion,formato_salida,uid_usuario,cron_config',False);
+    /**
+     * [get_trabajo_editar description]
+     * @param  [type] $uid_trabajo [description]
+     * @return [type]              [description]
+     */
+    public function get_trabajo_editar( $uid_trabajo ){
+        $this->db->select('uid_trabajo, id_trabajo, nombre, url_origen, fecha_registro, fecha_ejecucion, formato_salida, uid_usuario, cron_config');
         $this->db->where('uid_trabajo',$uid_trabajo);
-        $result = $this->db->get('trabajos');
-        if($result->num_rows() > 0){
-            return $result->result_array();
-        }else{
-            return False;
-        }
+        $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
+        if ( $result->num_rows() > 0 ) return $result->row();
+        else return FALSE;
     }
 
     /**
@@ -350,6 +444,11 @@ class Cms_model extends CI_Model {
         }            
     }
 
+    /**
+     * [update_trabajo description]
+     * @param  [type] $trabajo [description]
+     * @return [type]          [description]
+     */
     public function update_trabajo($trabajo){
         $timestamp = time();
         $this->db->set('nombre', $trabajo['nombre']);
@@ -396,97 +495,106 @@ class Cms_model extends CI_Model {
         $this->db->select( 'uid_categoria,nombre,fecha_registro' );
         $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
         if ($result->num_rows() > 0){
-            return $result->result_array();
+            return $result->result();
         } else {
             return FALSE;
         }
     }
 
-    public function get_categorias_usuario($uid){
-
-        $this->db->select('distinct mw_categorias.uid_categoria,categorias.nombre',false);
-        $this->db->from('categorias');
-        $this->db->join('usuarios_categorias_verticales', 'usuarios_categorias_verticales.uid_categoria = categorias.uid_categoria');
-        $this->db->where('usuarios_categorias_verticales.uid_usuario',$uid);
+    /**
+     * [get_categorias_usuario description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function get_categorias_usuario( $uid ){
+        $this->db->distinct( 'c.uid_categoria' );
+        $this->db->select( 'c.nombre' );
+        $this->db->from( $this->db->dbprefix( 'categorias' ) . ' AS c' );
+        $this->db->join( $this->db->dbprefix( 'categorias_asignadas' ) . ' AS ca', 'ca.uid_categoria = c.uid_categoria', 'INNER' );
+        $this->db->where( 'ca.uid_usuario', $uid );
         $result = $this->db->get();
-        if ($result->num_rows() > 0)
-        {
-            return $result->result_array();
-        }
-        else
-        {
-            return False;
-        }
-
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
     }
 
+    /**
+     * [add_categoria description]
+     * @param [type] $categoria [description]
+     */
     public function add_categoria( $categoria ){
         $timestamp = time();
         $this->db->set('uid_categoria', "UUID()", FALSE);
         $this->db->set('nombre', $categoria['nombre']);
+        $this->db->set('slug_categoria', $categoria['slug_categoria']);
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->insert('categorias');
+        $this->db->insert( $this->db->dbprefix( 'categorias') );
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE; 
     }
 
+    /**
+     * [delete_categoria description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
     public function delete_categoria( $uid ){
-        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uid_categoria' => $uid));
-        $this->db->set_dbprefix('mw_');
-        $this->db->delete('categorias', array('uid_categoria' => $uid));
+        $this->db->delete( $this->db->dbprefix( 'categorias_asignadas' ), array('uid_categoria' => $uid));
+        $this->db->delete( 'categorias', array( 'uid_categoria' => $uid ) );
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
+        else return FALSE;
+    }
+
+    /**
+     * [get_verticales description]
+     * @return [type] [description]
+     */
+    public function get_verticales(){
+        $this->db->select('uid_vertical, nombre');
+        $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+    }
+
+    /**
+     * [get_verticales_usuario description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function get_verticales_usuario( $uid ){
+        $this->db->distinct( 'v.uid_vertical' );
+        $this->db->select( 'v.nombre' );
+        $this->db->from( $this->db->dbprefix( 'verticales' ) . ' AS v' );
+        $this->db->join( $this->db->dbprefix( 'verticales_asignadas' ) . '  AS va', 'va.uid_vertical = v.uid_vertical', 'INNER' );
+        $this->db->where( 'va.uid_usuario', $uid );
+        $result = $this->db->get();
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+    }
+
+    /**
+     * [add_vertical description]
+     * @param [type] $vertical [description]
+     */
+    public function add_vertical( $vertical ){
+        $timestamp = time();
+        $this->db->set('uid_vertical', "UUID()", FALSE);
+        $this->db->set('nombre', $vertical['nombre']);
+        $this->db->set('slug_vertical', $vertical['slug_vertical']);
+        $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+        $this->db->insert( $this->db->dbprefix( 'verticales' ) );
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE;
     }
 
-    public function get_verticales(){
-        $this->db->select('uid_vertical,nombre,fecha_registro');
-        $result = $this->db->get('verticales');
-        if ( $result->num_rows() > 0 ) return $result->result_array();
-        else return FALSE;
+    /**
+     * [delete_vertical description]
+     * @param  [type] $uid [description]
+     * @return [type]      [description]
+     */
+    public function delete_vertical( $uid ){
+        $this->db->delete( $this->db->dbprefix( 'verticales_asignadas' ), array( 'uid_vertical' => $uid ) );
+        $this->db->delete( 'verticales', array( 'uid_vertical' => $uid ) );
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
+        else return FALSE; 
     }
-
-    public function get_verticales_usuario($uid){
-
-        $this->db->select('distinct mw_verticales.uid_vertical,verticales.nombre',false);
-        $this->db->from('verticales');
-        $this->db->join('usuarios_categorias_verticales', 'usuarios_categorias_verticales.uid_vertical = verticales.uid_vertical');
-        $this->db->where('usuarios_categorias_verticales.uid_usuario',$uid);
-        $result = $this->db->get();
-        if ($result->num_rows() > 0)
-        {
-            return $result->result_array();
-        }
-        else
-        {
-            return False;
-        }
-
-    }
-
-    public function add_vertical($vertical){
-        $timestamp = time();
-        $this->db->set('uid_vertical', "UUID()", False);
-        $this->db->set('nombre', $vertical['nombre']);
-        $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->insert('verticales');
-        if ($this->db->affected_rows() > 0)
-            return True;
-        else
-            return False; 
-
-    }
-
-    public function delete_vertical($uid){
-
-        $this->db->delete($this->db->dbprefix('usuarios_categorias_verticales'), array('uid_vertical' => $uid));
-        $this->db->set_dbprefix('mw_');
-        $this->db->delete('verticales', array('uid_vertical' => $uid));
-        if ($this->db->affected_rows() > 0)
-            return True;
-        else
-            return False; 
-
-    }
-
-
 }

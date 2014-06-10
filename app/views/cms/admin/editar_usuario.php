@@ -56,10 +56,9 @@
 						<div class="col-sm-9 col-md-10">
 							<select name="compania_celular" id="compania_celular" class="form-control">
 								<option value="0">Selecciona una opción</option>
-								<option value="1">Telcel</option>
-								<option value="2">Movistar</option>
-								<option value="3">Iusacell</option>
-								<option value="4">Unefón</option>
+								<?php foreach ( $companias as $compania ){ ?>
+									<option value="<?php echo $compania->id; ?>" <?php if( $usuario_editar->compania_celular === $compania->id ) echo 'selected'; ?>><?php echo $compania->compania; ?></option>
+								<?php } ?>
 							</select>
 						</div>
 					</div>
@@ -68,11 +67,14 @@
 						<div class="col-sm-9 col-md-10">
 							<select name="rol_usuario" id="rol_usuario" class="form-control">
 								<option value="0">Selecciona una opción</option>
-								<?php if( $this->session->userdata( 'nivel' ) == 1 ) : ?>
-									<option value="1">Administrador Maestro</option>
-								<?php endif; ?>
-								<option value="2">Administrador</option>
-								<option value="3">Editor</option>
+								<?php foreach ( $roles as $rol ){ ?>
+									<?php if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
+										<option value="<?php echo $rol->id; ?>" <?php if( $usuario_editar->nivel === $rol->id ) echo 'selected'; ?>><?php echo $rol->nombre_rol; ?></option>
+									<?php } else {
+										if ( $rol->id > 1 ){ ?>
+											<option value="<?php echo $rol->id; ?>" <?php if( $usuario_editar->nivel === $rol->id ) echo 'selected'; ?>><?php echo $rol->nombre_rol; ?></option>
+									<?php } } ?>
+								<?php } ?>
 							</select>
 						</div>
 					</div>
@@ -96,8 +98,8 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="categoria[]" <?php if( isset($cats) && !empty($cats) ): foreach($cats as $cat): if($categoria['uid_categoria'] === $cat->uid_categoria): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $categoria['uid_categoria']; ?>">
-												<?php echo $categoria['nombre']; ?>
+												<input type="checkbox" name="categoria[]" <?php if( isset( $cats ) && !empty( $cats ) ): foreach( $cats as $cat ): if( $categoria->uid_categoria === $cat->uid_categoria ): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $categoria->uid_categoria; ?>">
+												<?php echo $categoria->nombre; ?>
 											</label>
 										</div>
 									</div>
@@ -121,8 +123,8 @@
 									<div class="col-sm-offset-1 col-md-offset-1 col-sm-11 col-md-11">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" name="vertical[]" <?php if( isset($vers) && !empty($vers) ): foreach($vers as $ver): if($vertical['uid_vertical'] === $ver->uid_vertical ): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $vertical['uid_vertical']; ?>">
-												<?php echo $vertical['nombre']; ?>
+												<input type="checkbox" name="vertical[]" <?php if( isset( $vers ) && !empty( $vers ) ): foreach( $vers as $ver ): if( $vertical->uid_vertical === $ver->uid_vertical ): ?> checked <?php endif; endforeach; endif; ?> value="<?php echo $vertical->uid_vertical; ?>">
+												<?php echo $vertical->nombre; ?>
 											</label>
 										</div>
 									</div>

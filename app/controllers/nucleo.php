@@ -187,49 +187,47 @@ class Nucleo extends CI_Controller {
 	}
 
 
-	/* 28/5 */ 
-	public function form_editar_trabajo($uid_trabajo){
-    	if($this->session->userdata('session') !== TRUE){
+	/**
+	 * [editar_trabajo description]
+	 * @param  [type] $uid_trabajo [description]
+	 * @return [type]              [description]
+	 */
+	public function editar_trabajo( $uid_trabajo ){
+    	if( $this->session->userdata('session') !== TRUE ){
     		redirect('login');
     	}else {
-    	    $trabajo = $this->cms->get_trabajo_editar($uid_trabajo);
-
-            if($trabajo !== false){
-            	$data['usuario']    = $this->session->userdata('nombre');
-				$data['categorias'] = $this->cms->get_categorias();
-				$data['verticales'] = $this->cms->get_verticales();
-          		$data['trabajo_editar'] = $trabajo[0];
-          		$data['cron_date'] = json_decode($trabajo[0]['cron_config'],true);
-              	$this->load->view('cms/admin/editar_trabajo',$data);
-			}else{
-               	$data['error'] = "Ha ocurrido un error con el trabajo";
-               	$this->load->view('cms/admin/editar_trabajo',$data);
-			}
-    	}
+    	    $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
+           	$data['usuario']    	= $this->session->userdata('nombre');
+			$data['categorias'] 	= $this->cms->get_categorias();
+			$data['verticales'] 	= $this->cms->get_verticales();
+       		$data['trabajo_editar'] = $trabajo->uid_trabajo;
+       		$data['cron_date'] 		= json_decode($trabajo->cron_config, true);
+           	$this->load->view('cms/admin/editar_trabajo', $data);
+	   	}
 	}
 
 
-
-	public function eliminar_trabajo($uid_trabajo){
-		if ($this->session->userdata('session') !== TRUE) {
+	/**
+	 * [eliminar_trabajo description]
+	 * @param  [type] $uid_trabajo [description]
+	 * @return [type]              [description]
+	 */
+	public function eliminar_trabajo(){
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$trabajo = $this->cms->get_trabajo_editar($uid_trabajo);
-			$cronjob = json_decode($trabajo[0]['cron_config'],true);
-			$api_delete = $this->cms->delete_cronjob($cronjob['id']);
+			$uid_trabajo = $this->input->post('uidjob');
+			// $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
+			// $cronjob = json_decode($trabajo->cron_config, true);
+			//$api_delete = $this->cms->delete_cronjob( $uid_trabajo );
 			$eliminar = $this->cms->delete_trabajo($uid_trabajo);
-			if( $eliminar !== false && $api_delete !== false)
-			{
-				redirect('trabajos');
-			}
-			else
-			{
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] = "No se a podido eliminar el trabajo";
-				$this->load->view('cms/admin/trabajos',$data);
+			//if ( $eliminar !== FALSE && $api_delete !== FALSE ){
+			if ( $eliminar !== FALSE ){
+				echo TRUE;
+			} else {
+				echo '<span class="error">No se ha podigo eliminar el <b>trabajo</b>.</span>';
 			}
 		}
-
 	}
 
     
@@ -351,7 +349,7 @@ class Nucleo extends CI_Controller {
 			redirect( 'login' );
 		} else {
 			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
 			// $this->form_validation->set_rules('destino-local', 'destino-local', 'min_length[3]|xss_clean');
 			// $this->form_validation->set_rules('destino-net', 'destino-net', 'min_length[3]|xss_clean');
 			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
@@ -538,10 +536,12 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [validar_form_editar_trabajo description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_editar_trabajo(){
-
-
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
 			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
@@ -552,8 +552,7 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
 			$this->form_validation->set_rules('formato', 'formato', 'required|xss_clean');
 
-			if ($this->form_validation->run() === TRUE)
-			{
+			if ( $this->form_validation->run() === TRUE ){
 				$trabajo['usuario'] 		= $this->session->userdata('uid');
 				$trabajo['nombre']   		= $this->input->post('nombre');
 				$trabajo['url-origen']   	= $this->input->post('url-origen');
@@ -591,9 +590,6 @@ class Nucleo extends CI_Controller {
                 	$cron_date['diasemana'] = (int)$this->input->post('cron_diasemana');
                 }
                 
-                
-
-                
                 //Cron date config 
                 $trabajo['cron_date'] = json_encode($cron_date);
                 $trabajo['cron_expression'] = $cron_date['minuto']." ".$cron_date['hora']." ".$cron_date['diames']." ".$cron_date['mes']." ".$cron_date['diasemana'];
@@ -601,61 +597,52 @@ class Nucleo extends CI_Controller {
                 //Trabajo id (cronjob's name)
 				$guardar = $this->cms->update_trabajo($trabajo);
 
-
                	 $trabajo['cron_url'] = site_url("")."ejecutar_trabajo/".$guardar;
                 
                 //Set cronjob in easycron
                 $cron_result = $this->cms->set_cronjob($guardar, $trabajo['cron_expression'], $trabajo['cron_url']);
                 if($cron_result["status"] === "success"){ 
-
                 	$cron_date["id"] = $cron_result["cron_job_id"];
                 	$saveId = $this->cms->save_cronconfig($guardar,json_encode($cron_date));
-
-
                 } 
                 
-				if( $guardar == false ){
+				if ( $guardar == FALSE ){
 					$data['usuario'] 	= $this->session->userdata('nombre');
 					$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
 					$this->load->view('cms/admin/nuevo_trabajo',$data);
-				}else{	
-					$indice=0;
+				} else {	
+					$indice = 0;
 					$url = utf8_encode(file_get_contents($this->input->post('url-origen')));
 					$pos = strpos($url, '(');
-
-
 						if($pos > -1 && (substr($url, -1)===")")){
 							$rest = substr($url, $pos+1, -1);
 						}else{
 							$rest = $url;
 						}
 
-						
-
-
-						if($campos_orig =json_decode($rest, TRUE)){
+						if ( $campos_orig = json_decode($rest, TRUE ) ){
 							if(!empty($campos_orig[0])){
-								for ($i=0; $i < count($campos_orig) ; $i++) {
-									foreach ($campos_orig[$i] as $key => $value) {
-										for ($j=0; $j < count($elegidos) ; $j++) {
-											$tmp=0;
-											if(count($elegidos[$j])>$indice){
-												if($elegidos[$j][$indice] === (string)$key){
+								for ( $i = 0; $i < count( $campos_orig ) ; $i++) {
+									foreach ( $campos_orig[$i] as $key => $value ){
+										for ( $j = 0; $j < count( $elegidos ) ; $j++ ){
+											$tmp = 0;
+											if ( count($elegidos[$j]) > $indice ){
+												if ( $elegidos[$j][$indice] === (string)$key ){
 													$tmp = $tmp + 1;
 													break;
 												}
 											}
-										}								
-										if($tmp>0){
-											if(is_array($value)){
+										}
+										if ( $tmp > 0 ){
+											if ( is_array( $value ) ){
 												$campos_orig[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
 											}
-										}else{
-											unset($campos_orig[$i][$key]);										
+										} else {
+											unset( $campos_orig[$i][$key] );
 										}
 									}
 								}
-							}else{
+							} else {
 								foreach ($campos_orig as $key => $value) {
 									for ($j=0; $j < count($elegidos) ; $j++) {
 										$tmp=0;
@@ -675,61 +662,57 @@ class Nucleo extends CI_Controller {
 									}
 								}
 							}
-
 						}else{
-
-							$xml=simplexml_load_file($this->input->post('url-origen'));
-
-							if($xml->channel){
-								$rest=json_encode($xml);
-								$campos_orig =json_decode($rest, TRUE);
-							}else{
-								$rest=json_encode($xml);
-								$campos_orig =json_decode($rest, TRUE);
+							$xml = simplexml_load_file( $this->input->post('url-origen') );
+							if ( $xml->channel ){
+								$rest = json_encode( $xml );
+								$campos_orig = json_decode( $rest, TRUE );
+							} else {
+								$rest = json_encode( $xml );
+								$campos_orig = json_decode( $rest, TRUE );
 							}
 
-							if(!empty($campos_orig[0])){
-								for ($i=0; $i < count($campos_orig) ; $i++) {
-									foreach ($campos_orig[$i] as $key => $value) {
-										for ($j=0; $j < count($elegidos) ; $j++) {
-											$tmp=0;
-											if(count($elegidos[$j])>$indice){
-												if($elegidos[$j][$indice] === (string)$key){
+							if ( ! empty( $campos_orig[0] ) ){
+								for ( $i = 0; $i < count( $campos_orig ) ; $i++ ){
+									foreach ( $campos_orig[$i] as $key => $value ){
+										for ( $j = 0; $j < count($elegidos) ; $j++ ){
+											$tmp = 0;
+											if ( count( $elegidos[$j] ) > $indice ){
+												if ( $elegidos[$j][$indice] === (string)$key ){
 													$tmp = $tmp + 1;
 													break;
 												}
 											}
-										}								
-										if($tmp>0){
-											if(is_array($value)){
-												$campos_orig[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+										}
+										if ( $tmp > 0 ){
+											if ( is_array( $value ) ){
+												$campos_orig[$i][$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
 											}
-										}else{
-											unset($campos_orig[$i][$key]);										
+										} else {
+											unset( $campos_orig[$i][$key] );
 										}
 									}
 								}
-							}else{
-								foreach ($campos_orig as $key => $value) {
-									for ($j=0; $j < count($elegidos) ; $j++) {
-										$tmp=0;
-										if(count($elegidos[$j])>$indice){
-											if($elegidos[$j][$indice] === (string)$key){
+							} else {
+								foreach ( $campos_orig as $key => $value ){
+									for ( $j = 0; $j < count( $elegidos ) ; $j++ ){
+										$tmp = 0;
+										if ( count( $elegidos[$j] ) > $indice ){
+											if ( $elegidos[$j][$indice] === (string)$key ){
 												$tmp = $tmp + 1;
 												break;
 											}
 										}
-									}								
-									if($tmp>0){
-										if(is_array($value)){
-											$campos_orig[$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
+									}
+									if ( $tmp > 0 ){
+										if ( is_array( $value ) ){
+											$campos_orig[$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
 										}
-									}else{
-										unset($campos_orig[$key]);										
+									} else {
+										unset( $campos_orig[$key] );
 									}
 								}
 							}
-
 						}
 						
 						for ($i=0; $i < count($formatos) ; $i++) {
@@ -746,21 +729,16 @@ class Nucleo extends CI_Controller {
 								$this->convert_jsonp( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ), $this->input->post( 'nom_funcion' ) );
 							}
 						}
-
-
                  }
 
 			     redirect('trabajos');
-				}
-				else
-				{
-					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-					$this->load->view('cms/admin/nuevo_trabajo',$data);
-				}
+			} else {
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
+				$this->load->view('cms/admin/nuevo_trabajo',$data);
 			}
-
 		}
+	}
 
 
 	function arreglo_nuevo($arreglo,$elegidos,$indice){

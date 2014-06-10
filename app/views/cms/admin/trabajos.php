@@ -11,43 +11,40 @@
 					<td>Nombre del Trabajo</td>
 					<td>URL origen</td>
 					<td>Destino</td>
-					<td>Tarea Programada</td>
-					<td>Ejecutar</td>
-                    
-                    <?php  if(isset($level) && $level == 1){ ?>
-                    <td>Editar</td>
-					<td>Eliminar</td>
+					<td class="text-center">Tarea Programada</td>
+					<td class="text-center">Ejecutar</td>
+                    <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
+	                    <td class="text-center">Editar</td>
+	                <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
+						<td class="text-center">Eliminar</td>
                     <?php  } ?>
-
 				</tr>
 				<?php if ( $trabajos ): ?>
 					<?php foreach( $trabajos as $trabajo ): ?>
 						<tr>
-							<td><?php echo $trabajo['nombre']; ?></td>
-							<td><?php echo $trabajo['url_origen']; ?></td>
-							<td><?php echo $trabajo['url_storage']; ?></td>
-							<td>
-								<?php if( !empty( $trabajo['fecha_ejecucion'] ) ){ ?>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox" checked> programada
+							<td><?php echo $trabajo->nombre; ?></td>
+							<td><?php echo $trabajo->url_origen; ?></td>
+							<!--<td><?php //echo $trabajo['url_storage']; ?></td>-->
+							<td>categoria/vertical/</td>
+							<td class="text-center">
+								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
+									<div class="btn-group btn-toggle" data-toggle="buttons">
+										<label class="btn btn-sm <?php if( $trabajo->activo == 1 ) echo 'btn-success active'; else echo 'btn-default'; ?>">
+											<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php echo $trabajo->uid_trabajo; ?>')">ON
+										</label>
+										<label class="btn btn-sm <?php if( $trabajo->activo == 0 ) echo 'btn-danger active'; else echo 'btn-default'; ?>">
+											<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php echo $trabajo->uid_trabajo; ?>')">OFF
 										</label>
 									</div>
-								<?php }else{ ?>
-									<div class="checkbox">
-										<label>
-											<input type="checkbox"> programada
-										</label>
-									</div>
-								<?php } ?>
+								<?php echo form_close(); ?>
 							</td>
-							<td><a href="<?php base_url(); ?>ejecutar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Ejecutar Ahora</a></td>
+							<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>
                             
-                            <?php  if(isset($level) && $level == 1){ ?>
-                               <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
-					           <td><a href="javascript:ShowDialogT('<?php base_url(); ?>eliminar_trabajo/<?php echo $trabajo['uid_trabajo'] ?>','<?php echo $trabajo['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+                            <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
+                               <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
+                            <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
+					           <td><a href="javascript:deleteJob('<?php echo $trabajo->uid_trabajo; ?>');" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>
                             <?php  } ?>
-
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
