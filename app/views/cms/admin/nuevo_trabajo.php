@@ -24,7 +24,8 @@
 						<label class="col-sm-3 col-md-2 control-label">Categoría</label>
 						<?php if( isset($categorias) && !empty($categorias) ): ?>
 							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="categoria">							
+								<select class="form-control" name="categoria">
+									<option value="0">Selecciona una Categoría</option>					
 									<?php foreach($categorias as $categoria): ?>
 										<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
 									<?php endforeach; ?>
@@ -40,7 +41,8 @@
 						<label class="col-sm-3 col-md-2 control-label">Vertical</label>
 						<?php if( isset($verticales) && !empty($verticales) ): ?>
 							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="vertical">							
+								<select class="form-control" name="vertical">
+									<option value="0">Selecciona una Vertical</option>
 									<?php foreach($verticales as $vertical): ?>
 										<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
 									<?php endforeach; ?>
@@ -105,9 +107,7 @@
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
-				<div class="panel-body">
-
-				</div>
+				<div class="panel-body"></div>
 			</div>
 		</div>
 		<br>

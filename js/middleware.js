@@ -256,36 +256,38 @@ function cargar_campos(){
 	$.ajax({
 		url: 'nucleo/detectar_campos',
 		type: 'POST',
-		dataType: 'html',
-		data: {url: $('#url-origen').val()},
+		dataType: 'json',
+		data: {url: $('#url-origen').val()}
 	})
 	.done(function(data) {
-		$('.campos-feed .panel-body').html('');
-		$('.campos-feed .panel-body').append(data);
-		$('.campos-feed').slideDown();
+	 	$('#tipo_archivo').html('');
+	 	$('#tipo_archivo').html("Tipo de Archivo: "+data.feed_type);
+	 	$('.campos-feed .panel-body').html('');
+	 	$('.campos-feed .panel-body').append(data.campos);
+	 	$('.campos-feed').slideDown();
 	})
 	.fail(function() {
-		console.log("error");
-	})
-	.always(function() {
-		console.log("complete");
+		$('#tipo_archivo').html('');
+	  	$('.campos-feed .panel-body').html('');
+	 	$('.campos-feed .panel-body').append('<p><b>Ocurrió un problema al detectar los campos<b></p>');
+	 	$('.campos-feed').slideDown();
 	});
 }
 
 function desplegar(item){
-	if($('.'+item).css('display')==='none'){
+	if( $('.' + item).css( 'display' ) === 'none' ){
 		$('.'+item).slideDown();
 	}
 }
 
 function desplega(element){
-	if(!$(element).is(":checked")){
-		$(element).parent().parent().children("div").slideUp(300,function (){
+	if ( ! $(element).is( ":checked" ) ){
+		$(element).parent().parent().children('div').slideUp(300, function (){
 			$.each($(element).parent().parent()
 			.children("div").children('label')
-			.children('input'),function(){
-				$(this).prop("checked",false);
-				if($(this).parent().parent().children("div").size()>0){
+			.children('input'), function(){
+				$(this).prop( 'checked', false );
+				if ( $(this).parent().parent().children('div').size()>0 ){
 					desplega(this);
 				}
 			});

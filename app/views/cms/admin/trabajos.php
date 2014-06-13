@@ -9,14 +9,15 @@
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
 					<td>Nombre del Trabajo</td>
-					<td>URL origen</td>
-					<td>Destino</td>
-					<td class="text-center">Tarea Programada</td>
-					<td class="text-center">Ejecutar</td>
+					<td width="30%">URL origen</td>
+					<!--<td>Destino</td>-->
+					<td >Salidas</td>
+					<td class="text-center" width="10%">Programada</td>
+					<td class="text-center" width="10%">Ejecutar</td>
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
-	                    <td class="text-center">Editar</td>
+	                    <td class="text-center" width="10%">Editar</td>
 	                <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
-						<td class="text-center">Eliminar</td>
+						<td class="text-center" width="10%">Eliminar</td>
                     <?php  } ?>
 				</tr>
 				<?php if ( $trabajos ): ?>
@@ -25,7 +26,33 @@
 							<td><?php echo $trabajo->nombre; ?></td>
 							<td><?php echo $trabajo->url_origen; ?></td>
 							<!--<td><?php //echo $trabajo['url_storage']; ?></td>-->
-							<td>categoria/vertical/</td>
+							<!--<td>categoria/vertical/</td>-->
+							<td>
+								<span>
+									<a href="#" title="">
+										<span class="glyphicon glyphicon-link"></span>
+										<span class="glyphicon-class">JSON</span>
+									</a>
+								</span>
+								<span>
+									<a href="#" title="">
+										<span class="glyphicon glyphicon-link"></span>
+										<span class="glyphicon-class">JSONP</span>
+									</a>
+								</span>
+								<span>
+									<a href="#" title="">
+										<span class="glyphicon glyphicon-link"></span>
+										<span class="glyphicon-class">XML</span>
+									</a>
+								</span>
+								<span>
+									<a href="#" title="">
+										<span class="glyphicon glyphicon-link"></span>
+										<span class="glyphicon-class">RSS</span>
+									</a>
+								</span>
+							</td>
 							<td class="text-center">
 								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 									<div class="btn-group btn-toggle" data-toggle="buttons">

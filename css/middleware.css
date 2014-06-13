@@ -94,6 +94,12 @@ header{
     background-color: #316EE3;
 }
 
+.campo-hijo{
+    display:none;
+    margin-top: 8px;
+    margin-left: 25px;
+}
+
 .datos-login{
     background: #EAEBED;
     width: 100%;
