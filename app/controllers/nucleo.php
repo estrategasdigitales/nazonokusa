@@ -27,40 +27,84 @@ class Nucleo extends CI_Controller {
 	 * [detectar_campos description]
 	 * @return [type] [description]
 	 */
+	// public function detectar_campos(){
+	// 	$url = file_get_contents( $this->input->post( 'url' ) );
+	// 	$url = utf8_encode( file_get_contents( $this->input->post( 'url' ) ) );
+	// 	$pos = strpos($url, '(');
+	// 	if ( $pos > -1 && ( substr( $url, -1) === ')' ) ){
+	// 		$rest = substr($url, $pos + 1, -1);
+	// 		$feed_type 			= 'JSON';
+	// 	} else {
+	// 		$rest = $url;
+	// 		$feed_type 			= 'JSON';
+	// 	}
+
+	// 	if ( $campos_orig 	= json_decode( $url, TRUE ) ){
+	// 		$output 			= $this->get_campos_json( $campos_orig );
+	// 	} else {
+	// 		$xml = simplexml_load_file( $this->input->post( 'url' ) );
+	// 		if ( $xml->channel){
+	// 			$rest 			= json_encode( $xml );
+	// 			$campos_orig 	= json_decode( $rest, TRUE );
+	// 			$feed_type 		= 'RSS 2.0';
+	// 		} else {
+	// 			$rest 			= json_encode( $xml );
+	// 			$campos_orig 	= json_decode( $rest, TRUE );
+	// 			$feed_type 		= 'XML';
+	// 		}
+
+	// 		$output = $this->get_campos_xml( $campos_orig );
+	// 	}
+
+	// 	$salida = array(
+	// 			'feed_type'	=>	$feed_type,
+	// 			'campos'	=>	$output
+	// 		);
+
+	// 	echo json_encode($salida);
+	// }
+	// 
 	public function detectar_campos(){
-		$url = utf8_encode( file_get_contents( $this->input->post( 'url' ) ) );
-		$pos = strpos($url, '(');
-		if ( $pos > -1 && ( substr( $url, -1) === ')' ) ){
-			$rest = substr($url, $pos + 1, -1);
-			$feed_type 			= 'JSON';
+		$output = array();
+		$url = file_get_contents( $this->input->post( 'url' ) );
+		$url = utf8_encode( $url );
+		if ( $feed = json_decode( $url ) ){
+			$feed_type 		= 'JSON';
+			$feed_content 	= $url;
 		} else {
-			$rest = $url;
-			$feed_type 			= 'JSON';
-		}
-
-		if ( $campos_orig 	= json_decode( $url, TRUE ) ){
-			$output 			= $this->get_campos_json( $campos_orig );
-		} else {
-			$xml = simplexml_load_file( $this->input->post( 'url' ) );
-			if ( $xml->channel){
-				$rest 			= json_encode( $xml );
-				$campos_orig 	= json_decode( $rest, TRUE );
-				$feed_type 		= 'RSS 2.0';
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$feed = substr( $url, $pos + 1, -1 );
+				$feed_type 		= 'JSONP';
+				$feed_content 	= $feed;
 			} else {
-				$rest 			= json_encode( $xml );
-				$campos_orig 	= json_decode( $rest, TRUE );
-				$feed_type 		= 'XML';
+				$dom = new DOMDocument();
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$feed_type 		= 'RSS';
+					$contents 		= $dom->documentElement->getElementsByTagName( 'resource' );
+					foreach ( $contents as $content ){
+						print_r( $content->nodeName );
+					}
+					die;
+					//$feed_content 	= $dom->getElementsByTagName('resource');
+				} else {
+					$feed_type 		= 'XML';
+					$contents 		= $dom->getElementsByTagName( 'item' );
+					foreach ( $contents as $content ){
+						print_r( $content->nodeName );
+					}
+					die;
+				}
 			}
-
-			$output = $this->get_campos_xml( $campos_orig );
 		}
 
 		$salida = array(
-				'feed_type'	=>	$feed_type,
-				'campos'	=>	$output
-			);
+			'feed_type'		=>	$feed_type,
+			'feed_content'	=>	$feed_content
+		);
 
-		echo json_encode($salida);
+		echo json_encode( $salida );
 	}
 
 	/**

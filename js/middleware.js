@@ -261,16 +261,17 @@ function cargar_campos(){
 	})
 	.done(function(data) {
 	 	$('#tipo_archivo').html('');
-	 	$('#tipo_archivo').html("Tipo de Archivo: "+data.feed_type);
+	 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 	 	$('.campos-feed .panel-body').html('');
-	 	$('.campos-feed .panel-body').append(data.campos);
+	 	$('.campos-feed .panel-body').html( data.feed_content );
 	 	$('.campos-feed').slideDown();
 	})
 	.fail(function() {
-		$('#tipo_archivo').html('');
-	  	$('.campos-feed .panel-body').html('');
-	 	$('.campos-feed .panel-body').append('<p><b>Ocurrió un problema al detectar los campos<b></p>');
-	 	$('.campos-feed').slideDown();
+		console.log(data);
+		// 	$('#tipo_archivo').html('');
+		//  $('.campos-feed .panel-body').html('');
+		// 	$('.campos-feed .panel-body').append('<p><b>Ocurrió un problema al detectar los campos<b></p>');
+		// 	$('.campos-feed').slideDown();
 	});
 }
 
