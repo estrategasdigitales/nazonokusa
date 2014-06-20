@@ -87,6 +87,14 @@ class Nucleo extends CI_Controller {
 		$url = utf8_encode( $url );
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
+			$fields 		= json_decode( $url );
+			$items = $this->deteccion_recursiva_json( $fields );
+			// foreach ( $items as $item ){
+			// 	$item = (object)$item;
+			// 	echo $item->nombre_campo;
+			// }
+			print_r( $items );
+			die;
 			$feed_content 	= $url;
 		} else {
 			$pos = strpos( $url, '(' );
@@ -280,13 +288,13 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
 		} else {
-			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
 			// $this->form_validation->set_rules('destino-local', 'destino-local', 'min_length[3]|xss_clean');
 			// $this->form_validation->set_rules('destino-net', 'destino-net', 'min_length[3]|xss_clean');
-			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
-			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
-			$this->form_validation->set_rules('formato', 'formato', 'required|xss_clean');
+			$this->form_validation->set_rules('categoria', 'Categoría', 'required|xss_clean');
+			$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
+			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
 
 			if ( $this->form_validation->run() === TRUE ){
 				$trabajo['usuario'] 		= $this->session->userdata('uid');
@@ -298,10 +306,10 @@ class Nucleo extends CI_Controller {
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['campos'] 			= $this->input->post('claves');
 				
-				$formats['campos'] = $this->input->post('claves'); 
-                $formats['formatos'] = $this->input->post('formato'); 
-                $formats['valores_rss'] = $this->input->post('valores_rss'); 
-                $formats['claves_rss'] = $this->input->post('claves_rss'); 
+				$formats['campos'] 			= $this->input->post('claves'); 
+                $formats['formatos'] 		= $this->input->post('formato'); 
+                $formats['valores_rss'] 	= $this->input->post('valores_rss'); 
+                $formats['claves_rss'] 		= $this->input->post('claves_rss'); 
                 
                 $trabajo['formato_salida'] = json_encode($formats);
 
@@ -476,29 +484,25 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'nombre', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('url-origen', 'url-origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-local', 'destino-local', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('destino-net', 'destino-net', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('categoria', 'categoria', 'required|xss_clean');
-			$this->form_validation->set_rules('vertical', 'vertical', 'required|xss_clean');
-			$this->form_validation->set_rules('formato', 'formato', 'required|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('categoria', 'Cetegoría', 'required|xss_clean');
+			$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
+			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
 
 			if ( $this->form_validation->run() === TRUE ){
 				$trabajo['usuario'] 		= $this->session->userdata('uid');
 				$trabajo['nombre']   		= $this->input->post('nombre');
 				$trabajo['url-origen']   	= $this->input->post('url-origen');
-				$trabajo['destino-local']   = $this->input->post('destino-local');
-				$trabajo['destino-net']  	= $this->input->post('destino-net');
 				$trabajo['categoria']   	= $this->input->post('categoria');
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['campos'] 			= $this->input->post('claves');
-				$trabajo['uid_trabajo']    = $this->input->post('id_trabajo');
+				$trabajo['uid_trabajo']    	= $this->input->post('id_trabajo');
 				
-				$formats['campos'] = $this->input->post('claves'); 
-                $formats['formatos'] = $this->input->post('formato'); 
-                $formats['valores_rss'] = $this->input->post('valores_rss'); 
-                $formats['claves_rss'] = $this->input->post('claves_rss'); 
+				$formats['campos'] 			= $this->input->post('claves'); 
+                $formats['formatos'] 		= $this->input->post('formato'); 
+                $formats['valores_rss'] 	= $this->input->post('valores_rss'); 
+                $formats['claves_rss'] 		= $this->input->post('claves_rss'); 
                 
                 $trabajo['formato_salida'] = json_encode($formats);
 
@@ -672,6 +676,37 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [deteccion_recursiva_json description]
+	 * @param  [type] $fields [description]
+	 * @return [type]         [description]
+	 */
+	function deteccion_recursiva_json( $fields ){
+		$campos = array();
+		if ( is_object( $fields ) ){
+			foreach ( $fields as $field => $value ){
+				$this->deteccion_recursiva_json( $value );
+				array_push( $campos, $field );
+			}
+		} else {
+			if ( is_array( $fields ) ){
+				foreach ( $fields as $field => $value ){
+					//array_push( $campos, array( 'nombre_campo' => $value ) );
+					$this->deteccion_recursiva_json( $value );
+				}
+			}
+		}
+
+		return $campos;
+	}
+
+	/**
+	 * [arreglo_nuevo description]
+	 * @param  [type] $arreglo  [description]
+	 * @param  [type] $elegidos [description]
+	 * @param  [type] $indice   [description]
+	 * @return [type]           [description]
+	 */
 	function arreglo_nuevo( $arreglo, $elegidos, $indice ){
 		if ( ! empty( $arreglo[0] ) ){
 			for ( $i = 0; $i < count( $arreglo ); $i++ ){
