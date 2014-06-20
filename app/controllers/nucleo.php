@@ -7,7 +7,8 @@ class Nucleo extends CI_Controller {
 	 */
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('cms_model', 'cms');	
+		$this->load->model('cms_model', 'cms');
+		$this->load->helper('cron_manager');	
 	}
 
 	/**
@@ -21,6 +22,22 @@ class Nucleo extends CI_Controller {
 			$data['usuario'] = $this->session->userdata( 'nombre' );
 			$this->load->view( 'middleware/index' );
 		}
+	}
+
+	public function set_cron()
+	{
+		$host='107.170.237.101'; 
+		$port='22';
+		$username='root';	
+		$password='yyqoypklcwza';
+
+		$conectar = new cron_manager();
+		$resp_con = $conectar->connect($host, $port, $username, $password);
+		//print_r($resp_con);
+		$conectar->write_to_file();
+		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
+		$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+				
 	}
 
 	/**
