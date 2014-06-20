@@ -71,7 +71,12 @@ class Nucleo extends CI_Controller {
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
 			$fields 		= json_decode( $url );
-			var_dump( $this->deteccion_recursiva_json( $fields ) );
+			$items = $this->deteccion_recursiva_json( $fields );
+			// foreach ( $items as $item ){
+			// 	$item = (object)$item;
+			// 	echo $item->nombre_campo;
+			// }
+			print_r( $items );
 			die;
 			$feed_content 	= $url;
 		} else {
@@ -654,26 +659,37 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [deteccion_recursiva_json description]
+	 * @param  [type] $fields [description]
+	 * @return [type]         [description]
+	 */
 	function deteccion_recursiva_json( $fields ){
 		$campos = array();
 		if ( is_object( $fields ) ){
 			foreach ( $fields as $field => $value ){
 				$this->deteccion_recursiva_json( $value );
+				array_push( $campos, $field );
 			}
 		} else {
 			if ( is_array( $fields ) ){
 				foreach ( $fields as $field => $value ){
+					//array_push( $campos, array( 'nombre_campo' => $value ) );
 					$this->deteccion_recursiva_json( $value );
-					
 				}
-			} else {
-				array_push( $campos, $field );
 			}
 		}
 
 		return $campos;
 	}
 
+	/**
+	 * [arreglo_nuevo description]
+	 * @param  [type] $arreglo  [description]
+	 * @param  [type] $elegidos [description]
+	 * @param  [type] $indice   [description]
+	 * @return [type]           [description]
+	 */
 	function arreglo_nuevo( $arreglo, $elegidos, $indice ){
 		if ( ! empty( $arreglo[0] ) ){
 			for ( $i = 0; $i < count( $arreglo ); $i++ ){
