@@ -9,6 +9,7 @@ class Nucleo extends CI_Controller {
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
 		$this->load->helper('cron_manager');
+		$this->load->helper('file');
 	}
 
 	/**
