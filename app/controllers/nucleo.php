@@ -24,6 +24,22 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	public function set_cron()
+	{
+		$host='107.170.237.101'; 
+		$port='22';
+		$username='root';	
+		$password='yyqoypklcwza';
+
+		$conectar = new cron_manager();
+		$resp_con = $conectar->connect($host, $port, $username, $password);
+		//print_r($resp_con);
+		$conectar->write_to_file();
+		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
+		$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+				
+	}
+
 	/**
 	 * [set_cron description]
 	 */
