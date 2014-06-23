@@ -9,7 +9,6 @@ class Nucleo extends CI_Controller {
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
 		$this->load->helper('cron_manager');
-		$this->load->spark('curl');
 	}
 
 	/**
@@ -25,20 +24,27 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
-	public function alerta()
+	public function alerta($usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje)
 	{
-		// $usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje
+		
 		// Cadena para hacer las peticiones al servicio de SMS
-		// http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=$PHONE&carrier=telcel&user=onemex&password=mex11&message=$MESSAGE	
+		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
+		// 202 - Respuesta success
 		// Catalogo de errores.
 
-		$phone = "5585320763";
-		$message = "Mensaje de error identificado";
-		$usr_carrier = "iusacell";
+		//$phone = "525585320763";
+		//$message = "Mensaje de error identificado";
+		//$usr_carrier = "iusacell";
 
 		$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
-		//echo $this->curl->simple_get($url_sms);
-		
+		$sms_reponse = $this->curl->simple_get($url_sms);
+
+		if($sms_reponse == 202)
+			echo "Mensaje enviado correctamente";
+		else
+			echo $sms_reponse;
+
+
 
 	}
 	
