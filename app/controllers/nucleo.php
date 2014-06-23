@@ -25,9 +25,13 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+		/**
+	 * [alerta description]
+	 * @return [type] [description]
+	 */
+
 	public function alerta($usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje)
 	{
-		
 		// Cadena para hacer las peticiones al servicio de SMS
 		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
 		// 202 - Respuesta success
@@ -72,8 +76,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos(){
-		$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-		if ( $this->form_validation->run() === TRUE ){
+		if ( ! empty ( $this->input->post( 'url' ) ) ){
 			$output = array();
 			$url = file_get_contents( $this->input->post( 'url' ) );
 			// $url = utf8_encode( $url );
@@ -108,7 +111,7 @@ class Nucleo extends CI_Controller {
 
 			echo json_encode( $salida );
 		} else {
-			echo validation_errors('<span class="error">','</span>');
+			echo '<span class="error">El campo <b>URL</b> es necesario.</span>';
 		}
 	}
 
