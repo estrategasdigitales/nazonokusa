@@ -8,8 +8,7 @@ class Nucleo extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
-		$this->load->helper('cron_manager');
-		$this->load->helper('file');
+		$this->load->helper( array('cron_manager', 'file' ) );
 	}
 
 	/**
@@ -25,13 +24,11 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
-		/**
+	/**
 	 * [alerta description]
 	 * @return [type] [description]
 	 */
-
-	public function alerta($usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje)
-	{
+	public function alerta($usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje){
 		// Cadena para hacer las peticiones al servicio de SMS
 		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
 		// 202 - Respuesta success
@@ -48,9 +45,6 @@ class Nucleo extends CI_Controller {
 			echo "Mensaje enviado correctamente";
 		else
 			echo $sms_reponse;
-
-
-
 	}
 	
 	/**
