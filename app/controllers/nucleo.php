@@ -8,7 +8,8 @@ class Nucleo extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
-		$this->load->helper('cron_manager');	
+		$this->load->helper('cron_manager');
+		$this->load->spark('curl');
 	}
 
 	/**
@@ -36,9 +37,29 @@ class Nucleo extends CI_Controller {
 		//print_r($resp_con);
 		$conectar->write_to_file();
 		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
-		$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+		//$conectar->append_cronjob('{cadena que contendrá el cronjob a escribir}');
 				
 	}
+
+	public function alerta()
+	{
+		// $usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje
+		// Cadena para hacer las peticiones al servicio de SMS
+		// http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=$PHONE&carrier=telcel&user=onemex&password=mex11&message=$MESSAGE	
+		// Catalogo de errores.
+
+		$phone = "5585320763";
+		$message = "Mensaje de error identificado";
+		$usr_carrier = "iusacell";
+
+		$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
+		//echo $this->curl->simple_get($url_sms);
+		
+
+	}
+	
+	
+
 
 	/**
 	 * [set_cron description]
