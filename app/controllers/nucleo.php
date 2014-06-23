@@ -73,7 +73,7 @@ class Nucleo extends CI_Controller {
 		if ( ! empty ( $this->input->post( 'url' ) ) ){
 			$output = array();
 			$url = file_get_contents( $this->input->post( 'url' ) );
-			// $url = utf8_encode( $url );
+			$url = utf8_encode( $url );
 			if ( $feed = json_decode( $url ) ){
 				$feed_type 		= 'JSON';
 				$feed_content 	= $url;
@@ -93,7 +93,7 @@ class Nucleo extends CI_Controller {
 					} else {
 						$feed_type 		= 'XML';
 						$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
-						$feed_content 	= json_encode( $xml );
+						$feed_content 	= json_encode( array( $xml ) );
 					}
 				}
 			}

@@ -286,10 +286,7 @@ function cargar_campos(){
 			spinner.stop();
 			$('#foo').css('display','none')
 		 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-		 	$('#campos-feed').aciTree({
-		 		ajax: data.feed_content,
-		 	 	checkbox: true,
-		 	});
+		 	$('#campos-feed').html(data.feed_content);
 		 	$('.campos-feed').slideDown();
 		},
 		error: function(data){
