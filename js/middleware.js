@@ -253,25 +253,52 @@ function deleteJob(uidjob){
 }
 
 function cargar_campos(){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 25, // The length of each line
+		width: 10, // The line thickness
+		radius: 35, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#f48120', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent in px
+		left: '50%' // Left position relative to parent in px
+	};
+	var target = document.getElementById('foo');
+
+	$('#foo').css('display','block');
+	var spinner = new Spinner(opts).spin(target);
+	$('#tipo_archivo').html('');
+	$('#campos-feed').html('');
 	$.ajax({
 		url: 'nucleo/detectar_campos',
 		type: 'POST',
 		dataType: 'json',
-		data: {url: $('#url-origen').val()}
-	})
-	.done(function(data) {
-	 	$('#tipo_archivo').html('');
-	 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-	 	$('#campos-feed').bonsai();
-	 	// $('.campos-feed .panel-body').html( data.feed_content );
-	 	$('.campos-feed').slideDown();
-	})
-	.fail(function() {
-		console.log(data);
-		// 	$('#tipo_archivo').html('');
-		//  $('.campos-feed .panel-body').html('');
-		// 	$('.campos-feed .panel-body').append('<p><b>Ocurrió un problema al detectar los campos<b></p>');
-		// 	$('.campos-feed').slideDown();
+		data: { url: $('#url-origen').val() },
+		success: function(data){
+			spinner.stop();
+			$('#foo').css('display','none')
+		 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
+		 	$('#campos-feed').aciTree({
+		 		ajax: data.feed_content,
+		 	 	checkbox: true,
+		 	});
+		 	$('.campos-feed').slideDown();
+		},
+		error: function(data){
+			spinner.stop();
+			$('#foo').css('display','none');
+			$('#messages').css('display','block');
+			$('#messages').addClass('alert-danger');
+			$('#messages').html(data);
+		}
 	});
 }
 

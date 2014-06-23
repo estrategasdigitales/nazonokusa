@@ -24,22 +24,6 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
-	public function set_cron()
-	{
-		$host='107.170.237.101'; 
-		$port='22';
-		$username='root';	
-		$password='yyqoypklcwza';
-
-		$conectar = new cron_manager();
-		$resp_con = $conectar->connect($host, $port, $username, $password);
-		//print_r($resp_con);
-		$conectar->write_to_file();
-		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
-		$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
-				
-	}
-
 	/**
 	 * [set_cron description]
 	 */
@@ -63,39 +47,44 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos(){
-		$output = array();
-		$url = file_get_contents( $this->input->post( 'url' ) );
-		$url = utf8_encode( $url );
-		if ( $feed = json_decode( $url ) ){
-			$feed_type 		= 'JSON';
-			$feed_content 	= $url;
-		} else {
-			$pos = strpos( $url, '(' );
-			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$feed = substr( $url, $pos + 1, -1 );
-				$feed_type 		= 'JSONP';
-				$feed_content 	= $feed;
+		$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
+		if ( $this->form_validation->run() === TRUE ){
+			$output = array();
+			$url = file_get_contents( $this->input->post( 'url' ) );
+			// $url = utf8_encode( $url );
+			if ( $feed = json_decode( $url ) ){
+				$feed_type 		= 'JSON';
+				$feed_content 	= $url;
 			} else {
-				$dom = new DOMDocument();
-				$dom->loadXML( $url );
-				if ( $dom->documentElement->nodeName == 'rss' ){
-					$feed_type 		= 'RSS';
-					$rss = fetch_rss( $this->input->post( 'url' ) );
-					$feed_content 	= json_encode( $rss->items );
+				$pos = strpos( $url, '(' );
+				if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+					$feed = substr( $url, $pos + 1, -1 );
+					$feed_type 		= 'JSONP';
+					$feed_content 	= $feed;
 				} else {
-					$feed_type 		= 'XML';
-					$xml 			= simplexml_load_string( $url );
-					$feed_content 	= json_encode( $xml );
+					$dom = new DOMDocument();
+					$dom->loadXML( $url );
+					if ( $dom->documentElement->nodeName == 'rss' ){
+						$feed_type 		= 'RSS';
+						$rss = fetch_rss( $this->input->post( 'url' ) );
+						$feed_content 	= json_encode( $rss->items );
+					} else {
+						$feed_type 		= 'XML';
+						$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
+						$feed_content 	= json_encode( $xml );
+					}
 				}
 			}
+
+			$salida = array(
+				'feed_type'		=>	$feed_type,
+				'feed_content'	=>	$feed_content
+			);
+
+			echo json_encode( $salida );
+		} else {
+			echo validation_errors('<span class="error">','</span>');
 		}
-
-		$salida = array(
-			'feed_type'		=>	$feed_type,
-			'feed_content'	=>	$feed_content
-		);
-
-		echo json_encode( $salida );
 	}
 
 	/**
@@ -256,8 +245,6 @@ class Nucleo extends CI_Controller {
 		} else {
 			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-			// $this->form_validation->set_rules('destino-local', 'destino-local', 'min_length[3]|xss_clean');
-			// $this->form_validation->set_rules('destino-net', 'destino-net', 'min_length[3]|xss_clean');
 			$this->form_validation->set_rules('categoria', 'Categoría', 'required|xss_clean');
 			$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
 			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
