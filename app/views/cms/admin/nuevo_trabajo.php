@@ -107,7 +107,7 @@
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
-				<div class="panel-body"></div>
+				<div class="panel-body" id="campos-feed"></div>
 			</div>
 		</div>
 		<br>

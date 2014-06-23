@@ -27,57 +27,12 @@ class Nucleo extends CI_Controller {
 	 * [detectar_campos description]
 	 * @return [type] [description]
 	 */
-	// public function detectar_campos(){
-	// 	$url = file_get_contents( $this->input->post( 'url' ) );
-	// 	$url = utf8_encode( file_get_contents( $this->input->post( 'url' ) ) );
-	// 	$pos = strpos($url, '(');
-	// 	if ( $pos > -1 && ( substr( $url, -1) === ')' ) ){
-	// 		$rest = substr($url, $pos + 1, -1);
-	// 		$feed_type 			= 'JSON';
-	// 	} else {
-	// 		$rest = $url;
-	// 		$feed_type 			= 'JSON';
-	// 	}
-
-	// 	if ( $campos_orig 	= json_decode( $url, TRUE ) ){
-	// 		$output 			= $this->get_campos_json( $campos_orig );
-	// 	} else {
-	// 		$xml = simplexml_load_file( $this->input->post( 'url' ) );
-	// 		if ( $xml->channel){
-	// 			$rest 			= json_encode( $xml );
-	// 			$campos_orig 	= json_decode( $rest, TRUE );
-	// 			$feed_type 		= 'RSS 2.0';
-	// 		} else {
-	// 			$rest 			= json_encode( $xml );
-	// 			$campos_orig 	= json_decode( $rest, TRUE );
-	// 			$feed_type 		= 'XML';
-	// 		}
-
-	// 		$output = $this->get_campos_xml( $campos_orig );
-	// 	}
-
-	// 	$salida = array(
-	// 			'feed_type'	=>	$feed_type,
-	// 			'campos'	=>	$output
-	// 		);
-
-	// 	echo json_encode($salida);
-	// }
-	// 
 	public function detectar_campos(){
 		$output = array();
 		$url = file_get_contents( $this->input->post( 'url' ) );
 		$url = utf8_encode( $url );
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
-			$fields 		= json_decode( $url );
-			$items = $this->deteccion_recursiva_json( $fields );
-			// foreach ( $items as $item ){
-			// 	$item = (object)$item;
-			// 	echo $item->nombre_campo;
-			// }
-			print_r( $items );
-			die;
 			$feed_content 	= $url;
 		} else {
 			$pos = strpos( $url, '(' );
@@ -90,19 +45,12 @@ class Nucleo extends CI_Controller {
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$feed_type 		= 'RSS';
-					$contents 		= $dom->documentElement->getElementsByTagName( 'resource' );
-					foreach ( $contents as $content ){
-						print_r( $content->nodeName );
-					}
-					die;
-					//$feed_content 	= $dom->getElementsByTagName('resource');
+					$rss = fetch_rss( $this->input->post( 'url' ) );
+					$feed_content 	= json_encode( $rss->items );
 				} else {
 					$feed_type 		= 'XML';
-					$contents 		= $dom->getElementsByTagName( 'item' );
-					foreach ( $contents as $content ){
-						print_r( $content->nodeName );
-					}
-					die;
+					$xml 			= simplexml_load_string( $url );
+					$feed_content 	= json_encode( $xml );
 				}
 			}
 		}
@@ -657,30 +605,6 @@ class Nucleo extends CI_Controller {
 				$this->load->view('cms/admin/nuevo_trabajo',$data);
 			}
 		}
-	}
-
-	/**
-	 * [deteccion_recursiva_json description]
-	 * @param  [type] $fields [description]
-	 * @return [type]         [description]
-	 */
-	function deteccion_recursiva_json( $fields ){
-		$campos = array();
-		if ( is_object( $fields ) ){
-			foreach ( $fields as $field => $value ){
-				$this->deteccion_recursiva_json( $value );
-				array_push( $campos, $field );
-			}
-		} else {
-			if ( is_array( $fields ) ){
-				foreach ( $fields as $field => $value ){
-					//array_push( $campos, array( 'nombre_campo' => $value ) );
-					$this->deteccion_recursiva_json( $value );
-				}
-			}
-		}
-
-		return $campos;
 	}
 
 	/**

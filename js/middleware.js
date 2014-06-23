@@ -260,14 +260,14 @@ function cargar_campos(){
 		data: {url: $('#url-origen').val()}
 	})
 	.done(function(data) {
-	 	// $('#tipo_archivo').html('');
-	 	// $('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-	 	// $('.campos-feed .panel-body').html('');
+	 	$('#tipo_archivo').html('');
+	 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
+	 	$('#campos-feed').bonsai();
 	 	// $('.campos-feed .panel-body').html( data.feed_content );
-	 	// $('.campos-feed').slideDown();
+	 	$('.campos-feed').slideDown();
 	})
 	.fail(function() {
-		//console.log(data);
+		console.log(data);
 		// 	$('#tipo_archivo').html('');
 		//  $('.campos-feed .panel-body').html('');
 		// 	$('.campos-feed .panel-body').append('<p><b>Ocurrió un problema al detectar los campos<b></p>');
