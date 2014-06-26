@@ -64,7 +64,7 @@ class Cms extends CI_Controller {
 				$this->session->set_userdata($session);
 				echo TRUE;
 			} else {
-				echo '<span class="error">Los datos de usuario son incorrectos o el usuario no existe</span>';
+				echo '<span class="error">Datos incorrectos!</span>';
 			}
 		} else {			
 			echo validation_errors('<span class="error">','</span>');
