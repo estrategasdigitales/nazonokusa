@@ -1,0 +1,15 @@
+{
+  "name": "socket",
+  "version": "1.0.0",
+  "description": "Socket o Servicios para detectar, mapear, parsear y convertir feeds",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+  	"xml2object": "*",
+  	"request": "*"
+  },
+  "author": "Eric Bravo",
+  "license": "ISC"
+}
