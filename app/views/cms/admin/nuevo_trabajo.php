@@ -62,8 +62,9 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona el formato de salida</div>
 				<div class="panel-body">
-					<div class="col-sm-6 col-md-6">							
+					<div class="col-sm-6 col-md-6">
 						<div class="form-group">
+							<h5>Puedes seleccionar una salida estándar (conversión directa)</h5>
 							<div class="checkbox">
 								<label>
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
@@ -75,11 +76,7 @@
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
 									JSON-P
 								</label>
-							</div>									
-						</div>
-					</div>
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
+							</div>
 							<div class="checkbox">
 								<label>
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
@@ -94,11 +91,19 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<h5>Selecciona una salida predefinida (mapeo manual)</h5>
+							<select name="" id="" class="form-control">
+								<option value="0">NINGUNO</option>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block">Detectar Campos</button></div>
+			<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button></div>
 			<div class="col-sm-8 col-md-8">
 				<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
 			</div>
@@ -106,8 +111,64 @@
 		<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
-				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
-				<div class="panel-body" id="campos-feed"></div>
+				<div class="panel-heading">Filtros (Selecciona el programa(s) que contenga tu feed)</div>
+				<div class="panel-body">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="container row campos-feed">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
+				<div class="panel-body">
+					<div class="col-sm-4">
+						<h5>Estructura del feed: </h5>
+						<div class="bloque-gris" id="campos-feed">
+							Node Name: <span id="nodename"></span>
+							<br>
+							Node Type: <span id="nodetype"></span>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<h5>Relación: </h5>
+						<div class="bloque-gris"></div>
+					</div>
+					<div class="col-sm-4">
+						<h5>Estructura de salida: </h5>
+						<div class="bloque-gris"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="container row campos-feed">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO ESTANDAR)</div>
+				<div class="panel-body"></div>
 			</div>
 		</div>
 		<br>
@@ -273,7 +334,7 @@
 				<a href="<?php echo site_url("trabajos") ?>" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
 			<div class="col-sm-4 col-md-4">
-				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Enviar"/>
+				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
 	<?php echo form_close(); ?>

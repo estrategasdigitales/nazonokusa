@@ -68,7 +68,7 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona el formato de salida</div>
 				<div class="panel-body">
-					<div class="col-sm-6 col-md-6">							
+					<div class="col-sm-6 col-md-6">
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
@@ -81,11 +81,7 @@
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
 									JSON-P
 								</label>
-							</div>									
-						</div>
-					</div>
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
+							</div>
 							<div class="checkbox">
 								<label>
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
@@ -100,6 +96,14 @@
 							</div>
 						</div>
 					</div>
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<h5>Selecciona una salida predefinida (mapeo manual)</h5>
+							<select name="" id="" class="form-control">
+								<option value="0">NINGUNO</option>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -112,10 +116,60 @@
 		<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
-				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida<span class="navbar-right" id="tipo_archivo"></span></div>
+				<div class="panel-heading">Filtros (Selecciona el programa(s) que contenga tu feed)</div>
 				<div class="panel-body">
-
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">
+							La rosa de Guadalupe
+						</label>
+					</div>
 				</div>
+			</div>
+		</div>
+		<br>
+		<div class="container row campos-feed">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
+				<div class="panel-body">
+					<div class="col-sm-4">
+						<h5>Estructura del feed: </h5>
+						<div class="bloque-gris" id="campos-feed"></div>
+					</div>
+					<div class="col-sm-4">
+						<h5>Relación: </h5>
+						<div class="bloque-gris"></div>
+					</div>
+					<div class="col-sm-4">
+						<h5>Estructura de salida: </h5>
+						<div class="bloque-gris"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="container row campos-feed">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO ESTANDAR)</div>
+				<div class="panel-body"></div>
 			</div>
 		</div>
 		<br>

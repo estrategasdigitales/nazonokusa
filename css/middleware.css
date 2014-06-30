@@ -81,6 +81,14 @@ header{
     vertical-align: middle;
 }
 
+.bloque-gris{
+    background-color: #cecece;
+    display: inline-block;
+    min-height: 200px;
+    vertical-align: top;
+    width: 100%;
+}
+
 .btn-padding{
     padding: 5px;
 }
@@ -198,9 +206,9 @@ header{
 .trabajos .panel-body,.trabajos .panel-primary{
     background-color: rgba(33, 85, 161,.1);
 }
-.campos-feed{
+/*.campos-feed{
     display: none;
-}
+}*/
 .campos_rss{
     display: none;
 }
