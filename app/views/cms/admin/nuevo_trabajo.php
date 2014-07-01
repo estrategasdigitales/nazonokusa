@@ -147,15 +147,11 @@
 				<div class="panel-body">
 					<div class="col-sm-4">
 						<h5>Estructura del feed: </h5>
-						<div class="bloque-gris" id="campos-feed">
-							Node Name: <span id="nodename"></span>
-							<br>
-							Node Type: <span id="nodetype"></span>
-						</div>
+						<div class="bloque-gris" id="campos-feed"></div>
 					</div>
 					<div class="col-sm-4">
 						<h5>Relación: </h5>
-						<div class="bloque-gris"></div>
+						<div class="bloque-gris" id="jsonLocation"></div>
 					</div>
 					<div class="col-sm-4">
 						<h5>Estructura de salida: </h5>

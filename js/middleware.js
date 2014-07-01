@@ -286,20 +286,8 @@ function cargar_campos(){
 			spinner.stop();
 			$('#foo').css('display','none')
 		 	// $('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-		 	var treeInit = function(){
-		 		var tree = new YAHOO.widget.TreeView('campos-feed');
-		 		tree.render();
-		 	};
-		 	YAHOO.util.Event.onDOMReady(treeInit);
-		 	// YUI().use('json-parse', 'tree', 'json-stringify', function(Y){
-		 	// 	var jsonFeed = Y.JSON.stringify(data.feed_content);
-		 	// 	var tree = new Y.Tree({
-		 	// 		nodes: [
-		 	// 			jsonFeed
-		 	// 		]
-		 	// 	});
-		 	// 	$('#campos-feed').append(tree);
-		 	// });
+		 	VIS.init();
+		 	VIS.renderData(data.feed_content);
 		 	//$('#campos-feed').html(data.feed_content);
 		 	//$('.campos-feed').slideDown();
 		}
