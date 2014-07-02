@@ -276,6 +276,7 @@ function cargar_campos(){
 	$('#foo').css('display','block');
 	var spinner = new Spinner(opts).spin(target);
 	$('#tipo_archivo').html('');
+	$('#jsonLocation').html('');
 	$('#campos-feed').html('');
 	$.ajax({
 		url: 'nucleo/detectar_campos',
@@ -285,11 +286,10 @@ function cargar_campos(){
 		success: function(data){
 			spinner.stop();
 			$('#foo').css('display','none')
-		 	// $('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
+		 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 		 	VIS.init();
 		 	VIS.renderData(data.feed_content);
-		 	//$('#campos-feed').html(data.feed_content);
-		 	//$('.campos-feed').slideDown();
+		 	$('.campos-feed').slideDown();
 		}
 		// error: function(data){
 		// 	spinner.stop();
