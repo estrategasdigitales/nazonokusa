@@ -70,43 +70,57 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos(){
+		$this->load->helper( 'tree' );
 		$output = array();
 		$url = file_get_contents( $this->input->post( 'url' ) );
 		$url = utf8_encode( $url );
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
-			//$feed_content 	= $url;
-			$this->mapAttributes( $url );
+			foreach ( $feed as $item ){
+				$cont[] = $this->mapAttributes( json_encode( $item ) );
+			}
+			$contents = $this->array_unique_multidimensional( $cont );
+			$feed_content = create_tree( $contents );
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
 				$feed = substr( $url, $pos + 1, -1 );
 				$feed_type 		= 'JSONP';
-				//$feed_content 	= $feed;
-				$this->mapAttributes( $feed );
+				$feed = json_decode( $feed );
+				foreach ( $feed as $item ){
+					$cont[] = $this->mapAttributes( json_encode( $item ) );
+				}
+				$contents = $this->array_unique_multidimensional( $cont );
+				$feed_content = create_tree( $contents );
 			} else {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$feed_type 		= 'RSS';
 					$rss = fetch_rss( $this->input->post( 'url' ) );
-					//$feed_content 	= json_encode( $rss->items );
-					$this->mapAttributes( json_encode( $rss->items ) );
+					foreach ( $rss->items as $item ){
+						$feed[] = $this->mapAttributes( json_encode( $item ) );
+					}
+					$contents = $this->array_unique_multidimensional( $feed );
+					$feed_content = create_tree( $contents );
 				} else {
 					$feed_type 		= 'XML';
 					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
-					//$feed_content 	= json_encode( array( $xml ) );
-					$this->mapAttributes( json_encode( array( $xml ) ) );
+					foreach ( $xml as $item ){
+						$feed[] = $this->mapAttributes( json_encode( array( $xml ) ) );
+					}
+					$contents = $this->array_unique_multidimensional( $feed );
+					$feed_content = create_tree( $contents );
 				}
 			}
 		}
 
-		// $salida = array(
-		// 	'feed_type'		=>	$feed_type,
-		// 	'feed_content'	=>	$feed_content
-		// );
+		$salida = array(
+			'feed_type'		=>	$feed_type,
+			'feed_content'	=>	$feed_content
+		);
 
-		// echo json_encode( $salida );
+		echo json_encode( $salida );
 	}
 
 	/**
@@ -703,18 +717,18 @@ class Nucleo extends CI_Controller {
 		return $arreglo;
 	}
 
-	function mapAttributes( $feed ){
-		$campos_orig = json_decode( $feed, TRUE );
-		$cont = -1;
-		$items = count( $campos_orig );
+	public function mapAttributes( $feed ){
+		$campos_orig 	= json_decode( $feed, TRUE );
+		$campos 		= [];
+		$items 			= count( $campos_orig );
 		if ( ! empty( $campos_orig[0] ) ){
 			for ($i = 0; $i < count( $campos_orig); $i++){
 				foreach ( $campos_orig[$i] as $key => $value ){
 					if ( is_array( $value ) ){
 						if ( ! empty($campos[$key] ) ){
-							print_r( $campos[$key] );die;
+							$campos[$key] = $this->claves( $value, $campos[$key] );
 						}else{
-							print_r( $campos[$key] );die;
+							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
 						}
 					}else{
 						if ( ! array_key_exists($key, $campos) ){
@@ -727,11 +741,9 @@ class Nucleo extends CI_Controller {
 			foreach ($campos_orig as $key => $value ){
 				if ( is_array( $value ) ){
 					if ( ! empty( $campos[$key] ) ){
-							$campos[$key] = $this->claves( $value, $campos[$key] );
-							print_r( $campos[$key] );die;
+						$campos[$key] = $this->claves( $value, $campos[$key] );
 					}else{
 						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-						print_r( $campos[$key] );die;
 					}
 				}else{
 					if( ! array_key_exists( $key, $campos ) ){
@@ -740,6 +752,14 @@ class Nucleo extends CI_Controller {
 				}
 			}
 		}
+
+		return $campos;
+	}
+
+	public function array_unique_multidimensional( $input ){
+		$serialized = array_map( 'serialize', $input );
+		$unique = array_unique( $serialized );
+		return array_intersect_key( $input, $unique );
 	}
 
 	// public function childs( $arr, $clave ){

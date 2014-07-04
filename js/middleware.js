@@ -289,7 +289,7 @@ function cargar_campos(){
 				spinner.stop();
 				$('#foo').css('display','none');
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-			 	
+			 	$('#campos-feed').html(data.feed_content);
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){
@@ -299,6 +299,7 @@ function cargar_campos(){
 				$('#messages').css('display','block');
 				$('#messages').addClass('alert-danger');
 				$('#messages').html(data);
+				$('.campos-feed').slideUp();
 			}
 		});
 	}else{

@@ -109,18 +109,7 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
 				<div class="panel-body">
-					<div class="col-sm-6">
-						<div class="bloque-arbol" id="campos-feed" data-url="http://middleware.televisa.dev/feed_examples/telenovelas.js"></div>
-					</div>
-					<div class="col-sm-6">
-						<div class="bloque-arbol">
-							[
-								{
-									
-								}
-							]
-						</div>
-					</div>
+					<div class="bloque-arbol" id="campos-feed"></div>
 				</div>
 			</div>
 		</div>
