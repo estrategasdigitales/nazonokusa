@@ -35,7 +35,7 @@
 							<div class="col-sm-9 col-md-10">
 								<h5 class="form-control">Este usuario no tiene asignada ninguna categoría</h5>
 							</div>
-						<?php endif; ?>								
+						<?php endif; ?>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-3 col-md-2 control-label">Vertical</label>
@@ -62,8 +62,12 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona el formato de salida</div>
 				<div class="panel-body">
+<<<<<<< HEAD
 					<h5>Puedes seleccionar una salida estándar (conversión directa)</h5>
 					<div class="col-sm-6 col-md-6">
+=======
+					<div class="col-sm-6 col-md-12">
+>>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
@@ -95,6 +99,17 @@
 							</div>
 						</div>
 					</div>
+<<<<<<< HEAD
+=======
+					<!--<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<h5>Selecciona una salida predefinida (mapeo manual)</h5>
+							<select name="" id="" class="form-control">
+								<option value="0">NINGUNO</option>
+							</select>
+						</div>
+					</div>-->
+>>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
 				</div>
 			</div>
 		</div>
@@ -109,24 +124,54 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
 				<div class="panel-body">
-					<div class="col-sm-6">
-						<h5>Estructura del feed: <div id="jsonLocation"></div></h5>
+<<<<<<< HEAD
+=======
+					<div class="row text-center">
+						<div class="col-sm-4">
+							<h5>Estructura del feed</h5>
+						</div>
+						<div class="col-sm-4">
+							<div id="jsonLocation"></div>
+						</div>
+						<div class="col-sm-4">
+							<h5>Estructura de salida</h5>
+						</div>
+					</div>
+					<!--<div class="col-sm-4">
+						<h5>Estructura del feed: </h5>
 						<div class="bloque-gris" id="campos-feed"></div>
 					</div>
-					<div class="col-sm-6">
+					<div class="col-sm-4">
+						<h5>Relación: </h5>
+						<div class="bloque-gris" id="jsonLocation"></div>
+					</div>
+					<div class="col-sm-4">
 						<h5>Estructura de salida: </h5>
 						<div class="bloque-gris"></div>
+					</div>-->
+>>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
+					<div class="col-sm-6">
+						<div class="bloque-arbol" id="campos-feed" data-url="http://middleware.televisa.dev/feed_examples/telenovelas.js"></div>
+					</div>
+					<div class="col-sm-6">
+						<div class="bloque-arbol">
+							[
+								{
+									
+								}
+							]
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<br>
+		<!--<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO ESTANDAR)</div>
 				<div class="panel-body"></div>
 			</div>
-		</div>
+		</div>-->
 		<br>
 		<div class="container row campos_rss">
 			<div class="panel panel-primary">

@@ -39,21 +39,6 @@ header{
     z-index: 9999;
 }
 
-/*#messages{
-    background-color: #CF2960;
-    border-radius: 0 0 15px 15px;
-    display: none;
-    color: #ffffff;
-    clear: both;
-    height: auto;
-    padding: 10px 0;
-    position: fixed;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    z-index: 9999;
-}*/
-
 #messages {
     display: none;
 }
@@ -81,10 +66,12 @@ header{
     vertical-align: middle;
 }
 
-.bloque-gris{
-    background-color: #cecece;
+.bloque-arbol{
     display: inline-block;
+    font-size: 12px;
     min-height: 200px;
+    max-height: 350px;
+    overflow-x: auto;
     vertical-align: top;
     width: 100%;
 }

@@ -278,27 +278,38 @@ function cargar_campos(){
 	$('#tipo_archivo').html('');
 	$('#jsonLocation').html('');
 	$('#campos-feed').html('');
-	$.ajax({
-		url: 'nucleo/detectar_campos',
-		type: 'POST',
-		dataType: 'json',
-		data: { url: $('#url-origen').val() },
-		success: function(data){
-			spinner.stop();
-			$('#foo').css('display','none')
-		 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-		 	VIS.init();
-		 	VIS.renderData(data.feed_content);
-		 	$('.campos-feed').slideDown();
-		}
-		// error: function(data){
-		// 	spinner.stop();
-		// 	$('#foo').css('display','none');
-		// 	$('#messages').css('display','block');
-		// 	$('#messages').addClass('alert-danger');
-		// 	$('#messages').html(data);
-		// }
-	});
+	$('#messages').css('display','none');
+	if( $('#url-origen').val() != ''){
+		$.ajax({
+			url: 'nucleo/detectar_campos',
+			type: 'POST',
+			dataType: 'json',
+			data: { url: $('#url-origen').val() },
+			success: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
+				VIS.init();
+				VIS.renderData(data.feed_content);
+			 	$('.campos-feed').slideDown();
+			},
+			error: function(){
+				spinner.stop();
+				data = '<span class="error">Ocurrió un problema al intentar detectar los campos del feed.</span>';
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+			}
+		});
+	}else{
+		spinner.stop();
+		data = '<span class="error">Es necesario escribir alguna <b>URL</b> de un feed para detectar los campos.</span>';
+		$('#foo').css('display','none');
+		$('#messages').css('display','block');
+		$('#messages').addClass('alert-danger');
+		$('#messages').html(data);
+	}
 }
 
 function desplegar(item){
