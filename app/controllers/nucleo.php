@@ -703,34 +703,18 @@ class Nucleo extends CI_Controller {
 		return $arreglo;
 	}
 
-	/**
-	 * [hijos description]
-	 * @param  [type] $arreglo [description]
-	 * @param  [type] $espacio [description]
-	 * @param  [type] $clave   [description]
-	 * @return [type]          [description]
-	 */
-	function hijos( $arreglo, $espacio, $clave ){
-		$hijosFeed = array();
-		foreach ( $arreglo as $key => $value ){
-			if ( is_array( $value ) ){
-				echo 'entra aqui';die;
-				$hijos 	= '<div id="' . $key . '" class="campo-hijo"><label><input onchange="desplega(this);" type="checkbox" name="claves[]" value="' . $clave . ',' . $key . '">' . $key . '</label>';
-					$nietos = $this->hijos( $value, $espacio, $clave . ',' . $key );
-					foreach ( $nietos as $nieto ){
-						$hijos .= $nieto;
-					}
-				$hijos .= '</div>';
-				array_push( $hijosFeed, $hijos );
-			} else {
-				echo 'entra sin nietos';die;
-				$hijos = '<div class="checkbox" class="campo-hijo"><label><input type="checkbox" name="claves[]" value="' . $clave . ',' . $key . '">' . $key . '</label></div>';
-				array_push( $hijosFeed, $hijos );
-			}
-			//array_push( $hijosFeed, $hijos );
-		}
-		return $hijosFeed;
-	}
+	// function mapRecursive( $feed ){
+	// 	foreach ( $feed as $key => $value ){
+	// 		if ( is_array( $value ) ){
+	// 			echo 'key:'. $key;
+	// 			echo '<br />';
+	// 			$this->mapRecursive( $key );
+	// 		}else{
+	// 			echo $key.': '.$value;
+	// 			echo '<br />';
+	// 		}
+	// 	}
+	// }
 
 	/**
 	 * [get_campos_json description]
@@ -896,6 +880,12 @@ class Nucleo extends CI_Controller {
 		return $origin;
 	}
 
+	/**
+	 * [convert_xml description]
+	 * @param  [type] $arreglo [description]
+	 * @param  [type] $nombre  [description]
+	 * @return [type]          [description]
+	 */
 	function convert_xml( $arreglo, $nombre ){
 		$open = fopen( "./outputs/". $nombre . "xml.xml", "w");
 		$cabeceras = "<?xml version='1.0' encoding='utf-8' ?>\n";
@@ -924,6 +914,11 @@ class Nucleo extends CI_Controller {
 		fclose( $open );
 	}
 
+	/**
+	 * [formato_xml description]
+	 * @param  [type] $arreglo [description]
+	 * @return [type]          [description]
+	 */
 	function formato_xml( $arreglo ){
 		$etiquetas = "";
 		if ( ! empty( $arreglo[0] ) ){
@@ -950,6 +945,14 @@ class Nucleo extends CI_Controller {
 		return $etiquetas;
 	}
 
+	/**
+	 * [convert_rss description]
+	 * @param  [type] $arreglo [description]
+	 * @param  [type] $nombre  [description]
+	 * @param  [type] $nodos   [description]
+	 * @param  [type] $valores [description]
+	 * @return [type]          [description]
+	 */
 	function convert_rss( $arreglo, $nombre, $nodos, $valores ){
 		$open = fopen( "./outputs/" . $nombre . "rss.xml", "w" );
 		$cabeceras = "<?xml version='1.0' encoding='utf-8' ?>\n<rss version='2.0'>\n<channel>\n";
@@ -983,6 +986,11 @@ class Nucleo extends CI_Controller {
 		fclose( $open );
 	}
 
+	/**
+	 * [formato_rss description]
+	 * @param  [type] $arreglo [description]
+	 * @return [type]          [description]
+	 */
 	function formato_rss( $arreglo ){
 		$etiquetas = "";
 		if ( ! empty( $arreglo[0] ) ){
@@ -1009,6 +1017,12 @@ class Nucleo extends CI_Controller {
 		return $etiquetas;
 	}
 
+	/**
+	 * [convert_json description]
+	 * @param  [type] $arreglo [description]
+	 * @param  [type] $nombre  [description]
+	 * @return [type]          [description]
+	 */
 	function convert_json( $arreglo, $nombre ){
 		$open = fopen( "./outputs/" . $nombre . "json.js", "w" );
 		$final= json_encode( $arreglo );
@@ -1016,6 +1030,13 @@ class Nucleo extends CI_Controller {
 		fclose( $open );
 	}
 
+	/**
+	 * [convert_jsonp description]
+	 * @param  [type] $arreglo [description]
+	 * @param  [type] $nombre  [description]
+	 * @param  [type] $funcion [description]
+	 * @return [type]          [description]
+	 */
 	function convert_jsonp( $arreglo, $nombre, $funcion ){
 		$open = fopen( "./outputs/" . $nombre . "jsonp.js", "w");
 		$final= $funcion . "(" . json_encode( $arreglo ). ")";
