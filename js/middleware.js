@@ -299,7 +299,7 @@ function cargar_campos(){
 				$('#messages').css('display','block');
 				$('#messages').addClass('alert-danger');
 				$('#messages').html(data);
-				$('.campos-feed').slideUp();
+				$('.campos-feed').slideUp()();
 			}
 		});
 	}else{
