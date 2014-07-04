@@ -62,12 +62,8 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona el formato de salida</div>
 				<div class="panel-body">
-<<<<<<< HEAD
 					<h5>Puedes seleccionar una salida estándar (conversión directa)</h5>
 					<div class="col-sm-6 col-md-6">
-=======
-					<div class="col-sm-6 col-md-12">
->>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
 						<div class="form-group">
 							<div class="checkbox">
 								<label>
@@ -99,17 +95,6 @@
 							</div>
 						</div>
 					</div>
-<<<<<<< HEAD
-=======
-					<!--<div class="col-sm-6 col-md-6">
-						<div class="form-group">
-							<h5>Selecciona una salida predefinida (mapeo manual)</h5>
-							<select name="" id="" class="form-control">
-								<option value="0">NINGUNO</option>
-							</select>
-						</div>
-					</div>-->
->>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
 				</div>
 			</div>
 		</div>
@@ -124,32 +109,6 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
 				<div class="panel-body">
-<<<<<<< HEAD
-=======
-					<div class="row text-center">
-						<div class="col-sm-4">
-							<h5>Estructura del feed</h5>
-						</div>
-						<div class="col-sm-4">
-							<div id="jsonLocation"></div>
-						</div>
-						<div class="col-sm-4">
-							<h5>Estructura de salida</h5>
-						</div>
-					</div>
-					<!--<div class="col-sm-4">
-						<h5>Estructura del feed: </h5>
-						<div class="bloque-gris" id="campos-feed"></div>
-					</div>
-					<div class="col-sm-4">
-						<h5>Relación: </h5>
-						<div class="bloque-gris" id="jsonLocation"></div>
-					</div>
-					<div class="col-sm-4">
-						<h5>Estructura de salida: </h5>
-						<div class="bloque-gris"></div>
-					</div>-->
->>>>>>> dea9a2b293dd22362caa700458039ae0147c151b
 					<div class="col-sm-6">
 						<div class="bloque-arbol" id="campos-feed" data-url="http://middleware.televisa.dev/feed_examples/telenovelas.js"></div>
 					</div>

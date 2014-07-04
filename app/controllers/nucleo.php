@@ -75,34 +75,38 @@ class Nucleo extends CI_Controller {
 		$url = utf8_encode( $url );
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
-			$feed_content 	= $url;
+			//$feed_content 	= $url;
+			$this->mapAttributes( $url );
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
 				$feed = substr( $url, $pos + 1, -1 );
 				$feed_type 		= 'JSONP';
-				$feed_content 	= $feed;
+				//$feed_content 	= $feed;
+				$this->mapAttributes( $feed );
 			} else {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$feed_type 		= 'RSS';
 					$rss = fetch_rss( $this->input->post( 'url' ) );
-					$feed_content 	= json_encode( $rss->items );
+					//$feed_content 	= json_encode( $rss->items );
+					$this->mapAttributes( json_encode( $rss->items ) );
 				} else {
 					$feed_type 		= 'XML';
 					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
-					$feed_content 	= json_encode( array( $xml ) );
+					//$feed_content 	= json_encode( array( $xml ) );
+					$this->mapAttributes( json_encode( array( $xml ) ) );
 				}
 			}
 		}
 
-		$salida = array(
-			'feed_type'		=>	$feed_type,
-			'feed_content'	=>	$feed_content
-		);
+		// $salida = array(
+		// 	'feed_type'		=>	$feed_type,
+		// 	'feed_content'	=>	$feed_content
+		// );
 
-		echo json_encode( $salida );
+		// echo json_encode( $salida );
 	}
 
 	/**
@@ -699,141 +703,54 @@ class Nucleo extends CI_Controller {
 		return $arreglo;
 	}
 
-	// function mapRecursive( $feed ){
-	// 	foreach ( $feed as $key => $value ){
-	// 		if ( is_array( $value ) ){
-	// 			echo 'key:'. $key;
-	// 			echo '<br />';
-	// 			$this->mapRecursive( $key );
+	function mapAttributes( $feed ){
+		$campos_orig = json_decode( $feed, TRUE );
+		$cont = -1;
+		$items = count( $campos_orig );
+		if ( ! empty( $campos_orig[0] ) ){
+			for ($i = 0; $i < count( $campos_orig); $i++){
+				foreach ( $campos_orig[$i] as $key => $value ){
+					if ( is_array( $value ) ){
+						if ( ! empty($campos[$key] ) ){
+							print_r( $campos[$key] );die;
+						}else{
+							print_r( $campos[$key] );die;
+						}
+					}else{
+						if ( ! array_key_exists($key, $campos) ){
+							$campos[$key] = '';
+						}
+					}
+				}
+			}
+		}else{
+			foreach ($campos_orig as $key => $value ){
+				if ( is_array( $value ) ){
+					if ( ! empty( $campos[$key] ) ){
+							$campos[$key] = $this->claves( $value, $campos[$key] );
+							print_r( $campos[$key] );die;
+					}else{
+						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
+						print_r( $campos[$key] );die;
+					}
+				}else{
+					if( ! array_key_exists( $key, $campos ) ){
+						$campos[$key] = '';
+					}
+				}
+			}
+		}
+	}
+
+	// public function childs( $arr, $clave ){
+	// 	foreach ($arr as $key => $value) {
+	// 		if( is_array( $value ) ){
+	// 			$this->hijos( $value, $clave.",".$key );
 	// 		}else{
-	// 			echo $key.': '.$value;
-	// 			echo '<br />';
+	// 			echo $key;
 	// 		}
 	// 	}
 	// }
-
-	/**
-	 * [get_campos_json description]
-	 * @param  [type] $campos_orig [description]
-	 * @return [type]              [description]
-	 */
-	function get_campos_json( $campos_orig ){
-		$campos = [];
-		$cont 	= -1;
-		$items 	= count( $campos_orig );
-		if ( !empty( $campos_orig[0] ) ){
-			for ( $i = 0; $i < count( $campos_orig ); $i++){
-				foreach ( $campos_orig[$i] as $key => $value ){
-					if ( is_array( $value ) ){
-						if ( ! empty( $campos[$key] ) ){
-							$campos[$key] = $this->claves( $value, $campos[$key] );
-						} else {
-							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-						}
-					} else {
-						if ( ! array_key_exists( $key, $campos ) ){
-							$campos[$key] = '';
-						}
-					}
-				}
-			}
-		} else {
-			foreach ( $campos_orig as $key => $value ){
-				if ( is_array( $value ) ){
-					if ( ! empty( $campos[$key] ) ){
-						$campos[$key] = $this->claves( $value,$campos[$key] );
-					} else {
-						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-					}
-				} else {
-					if ( ! array_key_exists( $key, $campos ) ){
-						$campos[$key] = '';
-					}
-				}
-			}
-		}
-		
-		foreach ( $campos as $key => $value ){
-			$cont++;
-			if ( $cont%4 === 0 ){
-				$fieldFeed = '<div class="row"></div><br>';
-			}
-
-			if ( is_array( $value ) ){
-				$fieldFeed .= '<div class="col-sm-3 col-md-3"><div class="checkbox" id="' . $key . '"><label><input onchange="desplega(this);" type="checkbox" name="claves[]" value="' . $key . '">' . $key . '</label>';
-					$hijos = $this->hijos( $value, 5, $key );
-					foreach ( $hijos as $hijo ){
-						$fieldFeed .= $hijo;
-					}
-				$fieldFeed .= '</div></div>';
-			} else {
-				$fieldFeed .= '<div class="col-sm-3 col-md-3"><div class="checkbox"><label><input type="checkbox" name="claves[]" value="' . $key . '">' . $key . '</label></div></div>';
-			}
-		}
-		return $fieldFeed;
-	}
-
-	/**
-	 * [get_campos_xml description]
-	 * @param  [type] $campos_orig [description]
-	 * @return [type]              [description]
-	 */
-	function get_campos_xml( $campos_orig ){
-		$campos 	= 	[];
-		$cont 		=	-1;
-		$items 		= count( $campos_orig );
-		if ( ! empty( $campos_orig[0] ) ){
-			for ( $i = 0; $i < count( $campos_orig ); $i++ ){
-				foreach ( $campos_orig[$i] as $key => $value ){
-					if ( is_array( $value ) ){
-						if ( ! empty( $campos[$key] ) ){
-							$campos[$key] = $this->claves( $value, $campos[$key] );
-						} else {
-							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-						}
-					} else {
-						if ( ! array_key_exists( $key, $campos ) ){
-							$campos[$key] = '';
-						}
-					}
-				}
-			}
-		} else {
-			foreach ( $campos_orig as $key => $value ){
-				if ( is_array( $value ) ){
-					if ( ! empty( $campos[$key] ) ){
-						$campos[$key] = $this->claves( $value,$campos[$key] );
-					} else {
-						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-					}
-				} else {
-					if ( ! array_key_exists( $key, $campos ) ){
-						$campos[$key] = '';
-					}
-				}
-			}
-		}
-		
-		foreach ( $campos as $key => $value ){
-			$cont++;
-			if ( $cont%4 === 0 ){
-				$fieldFeed = '<div class="row"></div><br>';
-			}
-
-			if ( is_array( $value ) ){
-				$fieldFeed .= '<div class="col-sm-3 col-md-3"><div class="checkbox" id="' . $key . '"><label><input onchange="desplega(this);" type="checkbox" name="claves[]" value="' . $key . '">' . $key . '</label>';
-					$hijos = $this->hijos( $value, 5, $key );
-					foreach ( $hijos as $hijo){
-						$fieldFeed .= $hijo;
-					}
-				$fieldFeed .= '</div></div>';
-			} else {
-				$fieldFeed .= '<div class="col-sm-3 col-md-3"><div class="checkbox"><label><input type="checkbox" name="claves[]" value="' . $key . '">' . $key . '</label></div></div>';
-			}
-
-			return $fieldFeed;
-		}
-	}
 
 	/**
 	 * [claves description]

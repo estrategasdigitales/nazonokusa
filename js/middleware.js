@@ -289,8 +289,7 @@ function cargar_campos(){
 				spinner.stop();
 				$('#foo').css('display','none');
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-				VIS.init();
-				VIS.renderData(data.feed_content);
+			 	
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){
