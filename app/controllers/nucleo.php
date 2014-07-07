@@ -762,16 +762,6 @@ class Nucleo extends CI_Controller {
 		return array_intersect_key( $input, $unique );
 	}
 
-	// public function childs( $arr, $clave ){
-	// 	foreach ($arr as $key => $value) {
-	// 		if( is_array( $value ) ){
-	// 			$this->hijos( $value, $clave.",".$key );
-	// 		}else{
-	// 			echo $key;
-	// 		}
-	// 	}
-	// }
-
 	/**
 	 * [claves description]
 	 * @param  [type] $arreglo [description]

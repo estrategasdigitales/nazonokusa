@@ -44,18 +44,19 @@ if ( ! function_exists('recursive_nodes') ){
 }
 
 if ( ! function_exists( 'hijos' ) ){
-	function hijos( $arreglo, $clave ){
+	function hijos( $arreglo, $clave, $hijos = [] ){
 		foreach ( $arreglo as $key => $value ){
-			if ( is_array( $value ) ){
-				$hijos = '<div id="' . $key . '">'."\n";
-				$hijos .= '<label><input type="checkbox" name="claves[]" value="' .$clave. '.' . $key . '">' . $key . '</label>'."\n";
-				hijos( $value, $clave . '.' . $key );
-				$hijos .= '</div>'."\n";
-			}else{
-				$hijos = '<div class="checkbox">'."\n";
-				$hijos .= '<label><input type="checkbox" name="claves[]" value="' . $clave . '.' . $key . '">' . $key . '</label>'."\n";
-				$hijos .= '</div>'."\n";
-			}
+			print_r( $key );
+			// if ( is_array( $value ) ){
+			// 	// $hijos = '<div id="' . $key . '">'."\n";
+			// 	// $hijos .= '<label><input type="checkbox" name="claves[]" value="' .$clave. '.' . $key . '">' . $key . '</label>'."\n";
+			// 	// hijos( $value, $clave . '.' . $key );
+			// 	// $hijos .= '</div>'."\n";
+			// }else{
+			// 	// $hijos = '<div class="checkbox">'."\n";
+			// 	// $hijos .= '<label><input type="checkbox" name="claves[]" value="' . $clave . '.' . $key . '">' . $key . '</label>'."\n";
+			// 	// $hijos .= '</div>'."\n";
+			// }
 		}
 	}
 }
