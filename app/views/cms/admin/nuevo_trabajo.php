@@ -113,13 +113,6 @@
 				</div>
 			</div>
 		</div>
-		<!--<br>
-		<div class="container row campos-feed">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO ESTANDAR)</div>
-				<div class="panel-body"></div>
-			</div>
-		</div>-->
 		<br>
 		<div class="container row campos_rss">
 			<div class="panel panel-primary">
@@ -286,6 +279,8 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
+		<input type="hidden" id="tipo_feed_entrada" name="tipo_feed_entrada">
+		<input type="hidden" id="feed_contenido" name="feed_contenido">
 	<?php echo form_close(); ?>
 	<div id="agregarCampo" style="display:none;">
 		<div class="row">

@@ -16,48 +16,29 @@ if ( ! function_exists('create_tree') ){
 }
 
 if ( ! function_exists('recursive_nodes') ){
-	function recursive_nodes( $arrs ){
+	function recursive_nodes( $matriz, $parent = '' ){
 		$tree_node = '';
-		if ( is_array( $arrs ) ){
-			foreach ( $arrs as $arr => $val ){
-				if( is_array( $val ) ){
-					$tree_node .= '<div class="checkbox">';
-					$tree_node .= '<label><input type="checkbox" name="claves[]" value="' . $arr . '">' . $arr . '</label>';
-					$tree_node .= hijos( $val, $arr );
-					$tree_node .= '</div>';
-				}else{
-					$tree_node .= '<div class="checkbox">';
-					$tree_node .= '<label><input type="checkbox" name="claves[]" value="' . $arr . '">' . $arr . '</label>';
-					$tree_node .= '</div>';
-				}
+		foreach ( $matriz as $key => $value ){
+			if( is_array( $value ) ){
+				$tree_node .= '<div class="checkbox" id="' . $key . '">';
+				$tree_node .= '<label><input onchange="desplega(this);" type="checkbox" name="claves[]" value="' . $key . '">' . $key . '</label>';
+				$tree_node .= recursive_nodes( $value, $key );
+				$tree_node .= '</div>';
+			}else{
+				$tree_node .= '<div class="checkbox">';
+				$tree_node .= '<label><input type="checkbox" name="claves[]" value="';
+				if ( ! empty( $parent) ) $tree_node .= $parent . '.';
+				$tree_node .= $key . '">' . $key . '</label>';
+				$tree_node .= '</div>';
 			}
-		}else{
-			// $tree_node .= '<div class="checkbox">'."\n";
-			// $tree_node .= '<label>'."\n";
-			// $tree_node .= '<input type="checkbox" name="claves[]" value="'. $arrs . '">'."\n";
-			// $tree_node .= $arrs;
-			// $tree_node .= '</label>'."\n";
-			// $tree_node .= '</div>'."\n";
 		}
 		return $tree_node;
 	}
 }
 
-if ( ! function_exists( 'hijos' ) ){
-	function hijos( $arreglo, $clave, $hijos = [] ){
-		foreach ( $arreglo as $key => $value ){
-			print_r( $key );
-			// if ( is_array( $value ) ){
-			// 	// $hijos = '<div id="' . $key . '">'."\n";
-			// 	// $hijos .= '<label><input type="checkbox" name="claves[]" value="' .$clave. '.' . $key . '">' . $key . '</label>'."\n";
-			// 	// hijos( $value, $clave . '.' . $key );
-			// 	// $hijos .= '</div>'."\n";
-			// }else{
-			// 	// $hijos = '<div class="checkbox">'."\n";
-			// 	// $hijos .= '<label><input type="checkbox" name="claves[]" value="' . $clave . '.' . $key . '">' . $key . '</label>'."\n";
-			// 	// $hijos .= '</div>'."\n";
-			// }
-		}
+if ( ! function_exists('campos_seleccionados') ){
+	function campos_seleccionados(  ){
+
 	}
 }
 

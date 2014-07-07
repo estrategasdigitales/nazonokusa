@@ -290,6 +290,8 @@ function cargar_campos(){
 				$('#foo').css('display','none');
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 			 	$('#campos-feed').html(data.feed_content);
+			 	$('#tipo_feed_entrada').val(data.feed_type);
+			 	$('#feed_contenido').val( data.feed_content );
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){
@@ -320,27 +322,23 @@ function desplegar(item){
 
 function desplega(element){
 	if ( ! $(element).is( ":checked" ) ){
-		$(element).parent().parent().children('div').slideUp(300, function (){
-			$.each($(element).parent().parent()
-			.children("div").children('label')
-			.children('input'), function(){
-				$(this).prop( 'checked', false );
-				if ( $(this).parent().parent().children('div').size()>0 ){
-					desplega(this);
-				}
-			});
-		});	
-	}else{		
-		$(element).parent().parent().children("div").slideDown(300,function (){
-			$.each($(element).parent().parent()
-			.children("div").children('label')
-			.children('input'),function(){
-				$(this).prop("checked",true);
-				if($(this).parent().parent().children("div").size()>0){
-					desplega(this);
-				}
-			});
-		});			
+		$.each($(element).parent().parent()
+		.children("div").children('label')
+		.children('input'), function(){
+			$(this).prop( 'checked', false );
+			if ( $(this).parent().parent().children('div').size() > 0 ){
+				desplega(this);
+			}
+		});
+	}else{
+		$.each($(element).parent().parent()
+		.children("div").children('label')
+		.children('input'),function(){
+			$(this).prop("checked",true);
+			if( $(this).parent().parent().children("div").size() > 0 ){
+				desplega(this);
+			}
+		});
 	}
 }
 
