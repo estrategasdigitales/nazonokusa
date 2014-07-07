@@ -37,8 +37,14 @@ if ( ! function_exists('recursive_nodes') ){
 }
 
 if ( ! function_exists('campos_seleccionados') ){
-	function campos_seleccionados(  ){
-
+	function campos_seleccionados( $seleccionados, $entradas ){
+		$seleccionados = json_decode( $seleccionados );
+		foreach ( $seleccionados as $sel ){
+			$elegidos[] = explode('.', $sel );
+		}
+		print_r( $elegidos );die;
+		$entradas = json_decode( base64_decode( $entradas ) );
+		print_r( array_intersect_key( $elegidos, (array)$entradas) );
 	}
 }
 

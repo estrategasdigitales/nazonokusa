@@ -280,7 +280,8 @@
 			</div>
 		</div>
 		<input type="hidden" id="tipo_feed_entrada" name="tipo_feed_entrada">
-		<input type="hidden" id="feed_contenido" name="feed_contenido">
+		<input type="hidden" id="feed_tree" name="feed_tree">
+		<input type="hidden" id="feed_entrada" name="feed_entrada">
 	<?php echo form_close(); ?>
 	<div id="agregarCampo" style="display:none;">
 		<div class="row">

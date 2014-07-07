@@ -291,7 +291,8 @@ function cargar_campos(){
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 			 	$('#campos-feed').html(data.feed_content);
 			 	$('#tipo_feed_entrada').val(data.feed_type);
-			 	$('#feed_contenido').val( data.feed_content );
+			 	$('#feed_tree').val( data.feed_tree );
+			 	$('#feed_entrada').val( data.feed_entrada );
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){

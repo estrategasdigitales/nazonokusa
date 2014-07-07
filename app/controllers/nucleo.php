@@ -70,7 +70,6 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos(){
-		$this->load->helper( 'tree' );
 		$output = array();
 		$url = file_get_contents( $this->input->post( 'url' ) );
 		$url = utf8_encode( $url );
@@ -81,11 +80,13 @@ class Nucleo extends CI_Controller {
 			}
 			$contents = $this->array_unique_multidimensional( $cont );
 			$feed_content = create_tree( $contents );
+			$feed_entrada = $url;
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
 				$feed = substr( $url, $pos + 1, -1 );
 				$feed_type 		= 'JSONP';
+				$feed_entrada = $feed;
 				$feed = json_decode( $feed );
 				foreach ( $feed as $item ){
 					$cont[] = $this->mapAttributes( json_encode( $item ) );
@@ -103,6 +104,7 @@ class Nucleo extends CI_Controller {
 					}
 					$contents = $this->array_unique_multidimensional( $feed );
 					$feed_content = create_tree( $contents );
+					$feed_entrada = $rss->items;
 				} else {
 					$feed_type 		= 'XML';
 					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
@@ -111,13 +113,16 @@ class Nucleo extends CI_Controller {
 					}
 					$contents = $this->array_unique_multidimensional( $feed );
 					$feed_content = create_tree( $contents );
+					$feed_entrada = array( $xml );
 				}
 			}
 		}
 
 		$salida = array(
 			'feed_type'		=>	$feed_type,
-			'feed_content'	=>	$feed_content
+			'feed_content'	=>	$feed_content,
+			'feed_tree'		=> 	base64_encode( $feed_content),
+			'feed_entrada'	=> 	base64_encode($feed_entrada)
 		);
 
 		echo json_encode( $salida );
@@ -292,9 +297,10 @@ class Nucleo extends CI_Controller {
 				$trabajo['categoria']   	= $this->input->post('categoria');
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['feed_tipo']		= $this->input->post('tipo_feed_entrada');
-				$trabajo['feed_contenido']	= json_encode( $this->input->post('feed_contenido') );
+				$trabajo['feed_contenido']	= $this->input->post('feed_tree');
 				$trabajo['campos'] 			= json_encode( $this->input->post('claves') );
-				$trabajo['feed_salida']		= campos_seleccionados();
+				$trabajo['json_entrada']	= $this->input->post('feed_entrada');
+				//$trabajo['feed_salida']		= campos_seleccionados( $trabajo['campos'], $trabajo['json_entrada']);
                 $formats['formatos'] 		= $this->input->post('formato'); 
                 $formats['valores_rss'] 	= $this->input->post('valores_rss'); 
                 $formats['claves_rss'] 		= $this->input->post('claves_rss'); 
@@ -456,7 +462,7 @@ class Nucleo extends CI_Controller {
 						// 		$this->convert_jsonp($campos_orig,strtolower( url_title( $trabajo['nombre'] ) ), $this->input->post('nom_funcion'));
 						// 	}
 						// }
-				}
+				//}
 				echo TRUE;
 			} else {
 				echo validation_errors('<span class="error">','</span>');
