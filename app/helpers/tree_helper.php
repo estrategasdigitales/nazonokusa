@@ -48,15 +48,16 @@ if ( ! function_exists('create_indexes') ){
 if ( ! function_exists('recursive_nodes_index') ){
 	function recursive_nodes_index( $matriz ){
 		$tree_node = [];
+		$object = new stdClass();
 		foreach ( $matriz as $key => $value ){
 			if( is_array( $value ) ){
-				$tree_node[] = $key;
-				$tree_node[] = recursive_nodes_index( $value );
+				$tree_node[] = $object->$key = $key;
+				$tree_node[] = $object->$key = recursive_nodes_index( $value );
 			}else{
-				$tree_node[] = $key;
+				$tree_node[] = $object->$key = $key;
 			}
 		}
-		return $tree_node;
+		return $object;
 	}
 }
 
