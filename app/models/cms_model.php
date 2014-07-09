@@ -3,7 +3,6 @@
 class Cms_model extends CI_Model {
 
     private $key_encrypt;
-    private $api_token;
     private $timezone;
 
     /**
@@ -14,9 +13,6 @@ class Cms_model extends CI_Model {
         $this->load->database();
         $this->key_encrypt  = $_SERVER['HASH_ENCRYPT'];
         $this->timezone     = 'UM6';
-
-        //Api Hash 
-        $this->api_token = "40d22dba2081ef5b9da5a0ee13e3089d"; 
     }
 
     /**
@@ -26,7 +22,6 @@ class Cms_model extends CI_Model {
      */
     public function get_usuario( $usuario ){
         $this->db->select('uid_usuario, nombre, apellidos, nivel');
-        // $this->db->select( "AES_DECRYPT( apellidos,'{$this->key_encrypt}') AS apellidos", FALSE );
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
         $this->db->where( 'email', "AES_ENCRYPT('{$usuario['usuario']}','{$this->key_encrypt}')", FALSE );
         $this->db->where( 'password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE );

@@ -62,7 +62,54 @@ class Nucleo extends CI_Controller {
 		$conectar->write_to_file();
 		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
 		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
-				
+	}
+
+	public function feed_service(){
+		$url = $this->input->get('url');
+		$output = array();
+		$url = urldecode( base64_decode( $url ) );
+		$url = file_get_contents( $url );
+		$url = utf8_encode( $url );
+		if ( $feed = json_decode( $url ) ){
+			foreach ( $feed as $item ){
+				$cont[] = $this->mapAttributes( json_encode( $item ) );
+			}
+			$contents = $this->array_unique_multidimensional( $cont );
+			$indices = create_indexes( $contents );
+		} else {
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$feed = substr( $url, $pos + 1, -1 );
+				$feed = json_decode( $feed );
+				foreach ( $feed as $item ){
+					$cont[] = $this->mapAttributes( json_encode( $item ) );
+				}
+				$contents = $this->array_unique_multidimensional( $cont );
+				$indices = create_indexes( $contents );
+			} else {
+				$dom = new DOMDocument();
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$rss = fetch_rss( $url );
+					foreach ( $rss->items as $item ){
+						$feed[] = $this->mapAttributes( json_encode( $item ) );
+					}
+					$contents = $this->array_unique_multidimensional( $feed );
+					$indices = create_indexes( $contents );
+				} else {
+					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
+					foreach ( $xml as $item ){
+						$feed[] = $this->mapAttributes( json_encode( array( $xml ) ) );
+					}
+					$contents = $this->array_unique_multidimensional( $feed );
+					$indices = create_indexes( $contents );
+				}
+			}
+		}
+
+		$data = array( 'indices' => $indices );
+		$this->load->view('cms/service', $data );
+		// echo json_encode( $salida );die;
 	}
 
 	/**

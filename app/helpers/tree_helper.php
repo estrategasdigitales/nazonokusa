@@ -36,6 +36,30 @@ if ( ! function_exists('recursive_nodes') ){
 	}
 }
 
+if ( ! function_exists('create_indexes') ){
+	function create_indexes( $contents ){
+		foreach ( $contents as $content ){
+			$tree[] = recursive_nodes_index( $content );
+		}
+		return $tree;
+	}
+}
+
+if ( ! function_exists('recursive_nodes_index') ){
+	function recursive_nodes_index( $matriz ){
+		$tree_node = [];
+		foreach ( $matriz as $key => $value ){
+			if( is_array( $value ) ){
+				$tree_node[] = $key;
+				$tree_node[] = recursive_nodes_index( $value );
+			}else{
+				$tree_node[] = $key;
+			}
+		}
+		return $tree_node;
+	}
+}
+
 if ( ! function_exists('campos_seleccionados') ){
 	function campos_seleccionados( $seleccionados, $entradas ){
 		$seleccionados = json_decode( $seleccionados );

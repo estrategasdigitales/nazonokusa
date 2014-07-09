@@ -11,12 +11,16 @@
 				<table class="table table-striped table-hover table-bordered">
 					<tr class="titulo-columna">
 						<td>Nombre del Categoría</td>
+						<td>Path</td>
+						<td>Editar</td>
 						<td>Eliminar</td>
 					</tr>
 					<?php if ( isset($categorias) && !empty($categorias) ): ?>
 						<?php foreach( $categorias as $categoria ): ?>
 							<tr>
 								<td><?php echo $categoria->nombre; ?></td>
+								<td>categoria-demo/algo-mas/algo-mas/</td>
+								<td><a href="<?php echo base_url(); ?>editar_categoria?<?php //echo $categoria; ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
 								<!--<td><a href="javascript:ShowDialog2('<?php echo base_url(); ?>eliminar_categoria/<?php //echo $categoria['uid_categoria'] ?>','<?php //echo $categoria['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>-->
 								<td><a href="javascript:eliminarCategoria('<?php echo $categoria->uid_categoria; ?>');" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#myModal">Eliminar</a></td>
 							</tr>

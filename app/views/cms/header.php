@@ -46,6 +46,7 @@
 									<span class="navbar-brand">BIENVENIDO:&nbsp;&nbsp;&nbsp;<?php echo strtoupper( $this->session->userdata( 'nombre' ) ) .' '.strtoupper( $this->session->userdata( 'apellidos' ) ) ; ?> </span>
 								</div>
 							 	<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+							 		<!--<a href="#" class="navbar-brand navbar-right">CAMBIAR CONTRASEÑA</a>-->
 									<a href="<?php echo base_url(); ?>salir" class="navbar-brand navbar-right">
 										SALIR&nbsp;&nbsp;<span class="glyphicon glyphicon-log-out"></span>
 									</a>

@@ -401,9 +401,10 @@
 			</div>
 		</div> -->
 		<div class="row">
-			<div class="col-sm-4 col-md-4">
-				<a href="<?php echo base_url(); ?>trabajos" type="button" class="btn btn-warning btn-block">Ejecutar</a>
-			</div>
+			<!--<div class="col-sm-4 col-md-4">
+				<a href="<?php //echo base_url(); ?>trabajos" type="button" class="btn btn-warning btn-block">Ejecutar</a>
+			</div>-->
+			<div class="col-sm-4 col-md-4"></div>
 			<div class="col-sm-4 col-md-4">
 				<a href="<?php echo base_url(); ?>trabajos" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
