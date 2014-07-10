@@ -173,6 +173,108 @@ $(function(){
 		});
 		return false;
 	});
+
+	$('#form_actualizar_perfil').submit(function(){
+		$('#foo').css('display','block');
+		$('#messages').removeClass('alert-danger');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-success');
+					data = '<span class="success">Datos actualizados satisfactoriamente.</span>';
+					$('#messages').html(data);
+					window.location.reload();
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_recupera_contrasena').submit(function(){
+		$('#foo').css('display','block');
+		$('#messages').removeClass('alert-danger');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#forgot_email').val('');
+					$('#messages').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-success');
+					data = '<span class="success">Acabamos de enviarte un correo para que recuperes tu contraseña.</span>';
+					$('#forgot_email').val('');
+					$('#messages').html(data);
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#forgot_email').val('');
+				$('#messages').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_eliminar_usuario').submit(function(){
+		$('#foo').css('display','block');
+		$('#messagesModal').removeClass('alert-danger');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messagesModal').css('display','block');
+					$('#messagesModal').addClass('alert-danger');
+					$('#messagesModal').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messagesModal').css('display','block');
+					// $('#messagesModal').addClass('alert-success');
+					$('#modalMessage').modal('hide');
+					$('#modalMessage').on('hidden.bs.modal', function (e) {
+					  window.location.reload();
+					});
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messagesModal').css('display','block');
+				$('#messagesModal').addClass('alert-danger');
+				$('#messagesModal').html(data);
+			}
+		});
+		return false;
+	});
 });
 
 function handlerProgramm(status, uidjob){
@@ -291,8 +393,7 @@ function cargar_campos(){
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 			 	$('#campos-feed').html(data.feed_content);
 			 	$('#tipo_feed_entrada').val(data.feed_type);
-			 	$('#feed_tree').val( data.feed_tree );
-			 	$('#feed_entrada').val( data.feed_entrada );
+			 	$('#feed_url').val( data.feed_url );
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){

@@ -109,7 +109,6 @@ class Nucleo extends CI_Controller {
 
 		$data = array( 'indices' => $indices );
 		$this->load->view('cms/service', $data );
-		// echo json_encode( $salida );die;
 	}
 
 	/**
@@ -123,44 +122,44 @@ class Nucleo extends CI_Controller {
 		if ( $feed = json_decode( $url ) ){
 			$feed_type 		= 'JSON';
 			foreach ( $feed as $item ){
-				$cont[] = $this->mapAttributes( json_encode( $item ) );
+				$cont[] 	= $this->mapAttributes( json_encode( $item ) );
 			}
-			$contents = $this->array_unique_multidimensional( $cont );
-			$feed_content = create_tree( $contents );
-			$feed_entrada = $url;
+			$contents 		= $this->array_unique_multidimensional( $cont );
+			$feed_content 	= create_tree( $contents );
+			$feed_url 		= $this->input->post( 'url' );
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$feed = substr( $url, $pos + 1, -1 );
+				$feed 			= substr( $url, $pos + 1, -1 );
 				$feed_type 		= 'JSONP';
-				$feed_entrada = $feed;
-				$feed = json_decode( $feed );
+				$feed 			= json_decode( $feed );
 				foreach ( $feed as $item ){
-					$cont[] = $this->mapAttributes( json_encode( $item ) );
+					$cont[] 	= $this->mapAttributes( json_encode( $item ) );
 				}
-				$contents = $this->array_unique_multidimensional( $cont );
-				$feed_content = create_tree( $contents );
+				$contents 		= $this->array_unique_multidimensional( $cont );
+				$feed_content 	= create_tree( $contents );
+				$feed_url 		= $this->input->post( 'url' );
 			} else {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$feed_type 		= 'RSS';
-					$rss = fetch_rss( $this->input->post( 'url' ) );
+					$rss 			= fetch_rss( $this->input->post( 'url' ) );
 					foreach ( $rss->items as $item ){
-						$feed[] = $this->mapAttributes( json_encode( $item ) );
+						$feed[] 	= $this->mapAttributes( json_encode( $item ) );
 					}
-					$contents = $this->array_unique_multidimensional( $feed );
-					$feed_content = create_tree( $contents );
-					$feed_entrada = $rss->items;
+					$contents 		= $this->array_unique_multidimensional( $feed );
+					$feed_content 	= create_tree( $contents );
+					$feed_url 		= $this->input->post( 'url' );
 				} else {
 					$feed_type 		= 'XML';
 					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
 					foreach ( $xml as $item ){
-						$feed[] = $this->mapAttributes( json_encode( array( $xml ) ) );
+						$feed[] 	= $this->mapAttributes( json_encode( array( $xml ) ) );
 					}
-					$contents = $this->array_unique_multidimensional( $feed );
-					$feed_content = create_tree( $contents );
-					$feed_entrada = array( $xml );
+					$contents 		= $this->array_unique_multidimensional( $feed );
+					$feed_content 	= create_tree( $contents );
+					$feed_url 		= $this->input->post( 'url' );
 				}
 			}
 		}
@@ -168,8 +167,7 @@ class Nucleo extends CI_Controller {
 		$salida = array(
 			'feed_type'		=>	$feed_type,
 			'feed_content'	=>	$feed_content,
-			'feed_tree'		=> 	base64_encode( $feed_content),
-			'feed_entrada'	=> 	base64_encode($feed_entrada)
+			'feed_url'		=> 	urlencode( base64_encode( $feed_url ) )
 		);
 
 		echo json_encode( $salida );
@@ -344,9 +342,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['categoria']   	= $this->input->post('categoria');
 				$trabajo['vertical']   		= $this->input->post('vertical');
 				$trabajo['feed_tipo']		= $this->input->post('tipo_feed_entrada');
-				$trabajo['feed_contenido']	= $this->input->post('feed_tree');
 				$trabajo['campos'] 			= json_encode( $this->input->post('claves') );
-				$trabajo['json_entrada']	= $this->input->post('feed_entrada');
 				//$trabajo['feed_salida']		= campos_seleccionados( $trabajo['campos'], $trabajo['json_entrada']);
                 $formats['formatos'] 		= $this->input->post('formato'); 
                 $formats['valores_rss'] 	= $this->input->post('valores_rss'); 

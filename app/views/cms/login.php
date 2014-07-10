@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
 	<div class="row">				
 		<div class="col-md-2"></div>
@@ -25,7 +26,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-sm-8 col-md-8"></div>
+						<div class="col-sm-8 col-md-8"><a href="<?php echo base_url(); ?>forgot">¿Olvidaste tu contraseña?</a></div>
 						<div class="col-xs-12 col-sm-4 col-md-4">
 							<button type="submit" class="btn btn-primary col-md-12 btn-block">INGRESAR</button>
 						</div>

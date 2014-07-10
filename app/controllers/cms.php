@@ -59,6 +59,9 @@ class Cms extends CI_Controller {
 					'nombre' 	 	=> $valido->nombre,
 					'apellidos'		=> $valido->apellidos,
 					'email'			=> $valido->email,
+					'extension'		=> $valido->extension,
+					'celular'		=> $valido->celular,
+					'telefonica'	=> $valido->compania_celular,
 					'nivel' 	 	=> $valido->nivel
 					);
 				$this->session->set_userdata($session);
@@ -76,11 +79,15 @@ class Cms extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function admin_usuarios(){
-		if ($this->session->userdata('session') !== TRUE) {
+		if ( $this->session->userdata('session') !== TRUE ) {
 			redirect('login');
 		} else {
-			$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
-			$this->load->view( 'cms/admin/usuarios', $data );
+			if ( $this->session->userdata('nivel') <= 2 ){
+				$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
+				$this->load->view( 'cms/admin/usuarios', $data );
+			} else {
+				redirect('inicio');
+			}
 		}
 	}
 
@@ -110,9 +117,13 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			$data['categorias']	= $this->cms->get_categorias();
-			$this->load->view( 'cms/admin/categorias', $data );
+			if ( $this->session->userdata('nivel') <= 2 ){
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['categorias']	= $this->cms->get_categorias();
+				$this->load->view( 'cms/admin/categorias', $data );
+			} else {
+				redirect('inicio');
+			}
 		}
 	}
 
@@ -124,11 +135,160 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			$data['verticales']	= $this->cms->get_verticales();
-			$this->load->view('cms/admin/verticales', $data);
+			if ( $this->session->userdata('nivel') <= 2 ){
+				$data['usuario'] 	= $this->session->userdata('nombre');
+				$data['verticales']	= $this->cms->get_verticales();
+				$this->load->view('cms/admin/verticales', $data);
+			} else {
+				redirect('inicio');
+			}
 		}
 	}
+
+	public function recuperar_contrasena(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			$this->load->view('cms/admin/forgot');
+		} else {
+			redirect('inicio');
+		}
+	}
+
+	public function recupera_contrasena(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			$this->form_validation->set_rules('forgot_email', 'Correo Electrónico', 'trim|required|valid_email|xss_clean');
+			if ( $this->form_validation->run() === TRUE ){
+				$recupera['email'] 		=	$this->input->post( 'forgot_email' );
+				$recupera 				=	$this->security->xss_clean( $recupera );
+				$valido 				=	$this->cms->get_usuario_forgot( $recupera );
+				if ( $valido !== FALSE ){
+					$token 	= urlencode( base64_encode( $valido->uid_usuario ) );
+					$hash 	= base64_encode( $recupera['email'] );
+					$data_forgot['url'] = base_url().'forgot_validate?token=' . $token . '&hash=' . $hash;
+					$this->email->from('eric@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
+	                $this->email->to( $recupera['email'] );
+	                $this->email->subject('Código de recuperación de contraseña');
+	                $this->email->message( $this->load->view('cms/mail/codigo_recuperacion', $data_forgot, TRUE ) );
+	                $this->email->send();
+					echo TRUE;
+				} else {
+					echo '<span class="error">Datos incorrectos!</span>';
+				}
+			} else {
+				echo validation_errors('<span class="error">','</span>');
+			}
+		} else {
+			redirect('inicio');
+		}
+	}
+
+	public function recuperar_contrasena_validar(){
+		if ( ! empty( $this->input->get('token') ) && ! empty( $this->input->get('hash') ) ){
+			$recovery['uid'] 	= urldecode( base64_decode( $this->input->get('token') ) );
+			$recovery['email'] 	= base64_decode( $this->input->get('hash') );
+			$recovery 			= $this->security->xss_clean( $recovery );
+			$usuario_recupera 	= $this->cms->get_recupera_usuario( $recovery );
+			if ( $usuario_recupera !== FALSE ){
+				$data['contrasena'] = $usuario_recupera->contrasena;
+				$this->email->from('eric@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
+                $this->email->to( $recovery['email'] );
+                $this->email->subject('Recuperación de contraseña');
+                $this->email->message( $this->load->view('cms/mail/recovery_password', $data, TRUE ) );
+                $this->email->send();
+				exit('En breve recibiras un correo con tu contrase&ntilde;a');
+			} else {
+				exit('Error');	
+			}
+		} else {
+			exit('Error');
+		}
+	}
+
+	public function actualizar_perfil(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$perfil['uid']			= $this->session->userdata('uid');
+			$perfil['nombre']		= $this->session->userdata('nombre');
+			$perfil['apellidos']	= $this->session->userdata('apellidos');
+			$perfil['email']		= $this->session->userdata('email');
+			$perfil['celular']		= $this->session->userdata('celular');
+			$perfil['extension']	= $this->session->userdata('extension');
+			$perfil['telefonica']	= $this->session->userdata('telefonica');
+			$perfil['companias']	= $this->cms->get_companias_celular();
+			$this->load->view('cms/admin/actualizar_perfil', $perfil);
+		}
+	}
+
+	public function actualizar_perfil_actualizar(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$this->form_validation->set_rules('nombre', 'Nombre', 'required|trim|callback_nombre_valido|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('apellidos', 'Apellidos', 'trim|min_length[3]|max_lenght[180]|xss_clean');
+			$this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email|xss_clean');
+			$this->form_validation->set_rules('extension', 'Extensión', 'trim|numeric|xss_clean');
+			if ( ( ! empty( $this->input->post('password') ) ) || ( ! empty( $this->input->post('password_2') ) ) ){
+				$this->form_validation->set_rules('password', 'Contraseña', 'required|trim|min_length[8]|xss_clean');
+				$this->form_validation->set_rules('password_2', 'Confirmar Contraseña', 'required|trim|min_length[8]|xss_clean');
+			}
+			$this->form_validation->set_rules('celular', 'Número Celular', 'required|trim|callback_valid_phone|xss_clean');
+			$this->form_validation->set_rules('compania_celular', 'Compañía Celular', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('password_actual', 'Contraseña Actual', 'required|trim|min_length[8]|xss_clean');
+
+			if ($this->form_validation->run() === TRUE){
+				$check_user = $this->cms->check_user( $this->input->post( 'email' ), base64_decode( $this->input->post( 'usuario' ) ) );
+				if ( $check_user === FALSE ){
+					$usuario['nombre']   			= $this->input->post( 'nombre' );
+					$usuario['apellidos']   		= $this->input->post( 'apellidos' );
+					$usuario['email']   			= $this->input->post( 'email' );
+					$usuario['extension']   		= $this->input->post( 'extension' );
+					if ( ( ! empty( $this->input->post('password') ) ) || ( ! empty( $this->input->post('password_2') ) ) ){
+						if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
+							$usuario['password']   			= $this->input->post( 'password' );
+						} else {
+							echo '<span class="error">La <b>Contraseña</b> y la <b>Confirmación</b> no coinciden, verifícalas.</span>';
+							break;
+						}
+					}
+					$usuario['celular']   			= $this->input->post( 'celular' );
+					$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
+					$usuario['uid']   				= base64_decode( $this->input->post( 'usuario' ) );
+					$usuario['password_actual']   	= base64_encode( $this->input->post( 'password_actual' ) );
+					$usuario 						= $this->security->xss_clean( $usuario );
+					$actualizar 					= $this->cms->update_perfil_usuario( $usuario );
+					if ( $actualizar !== FALSE ){
+						$session = array(
+							'session'	 	=> TRUE,
+							'uid' 		 	=> $usuario['uid'],
+							'nombre' 	 	=> $usuario['nombre'],
+							'apellidos'		=> $usuario['apellidos'],
+							'email'			=> $usuario['email'],
+							'extension'		=> $usuario['extension'],
+							'celular'		=> $usuario['celular'],
+							'telefonica'	=> $usuario['compania_celular'],
+							'nivel' 	 	=> $this->session->userdata('nivel')
+							);
+						$this->session->set_userdata( $session );
+						echo TRUE;
+					} else {
+						echo '<span class="error">Ocurrió un problema al intentar actualizar la información.</span>';
+					}
+				} else {
+					echo '<span class="error">El <b>Correo electrónico</b> ya se encuentra asignado a una cuenta.</span>';
+				}
+			} else {			
+				echo validation_errors('<span class="error">','</span>');
+			}
+
+		}
+	}
+
+	public function modal_eliminar_usuario(){
+		$data['nombre_completo'] 	= $this->input->get('name');
+		$data['uid'] 				= $this->input->get('token');
+		$this->load->view('cms/admin/modal_eliminar_usuario', $data);
+	}
+
 
 	/**
 	 * [nuevo_usuario description]
@@ -180,8 +340,8 @@ class Cms extends CI_Controller {
 						$usuario['celular']   			= $this->input->post( 'celular' );
 						$usuario['compania_celular']   	= $this->input->post( 'compania_celular' );
 						$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
-						$usuario['verticales'] 			= $this->input->post( 'vertical' );
-						$usuario['categorias'] 			= $this->input->post( 'categoria' );
+						$usuario['verticales'] 			= json_encode( $this->input->post( 'vertical' ) );
+						$usuario['categorias'] 			= json_encode( $this->input->post( 'categoria' ) );
 						$usuario 						= $this->security->xss_clean( $usuario );
 						$guardar 						= $this->cms->add_usuario( $usuario );
 						if ( $guardar !== FALSE ){
@@ -288,19 +448,17 @@ class Cms extends CI_Controller {
 	 * @param  [type] $uid [description]
 	 * @return [type]      [description]
 	 */
-	public function eliminar_usuario($uid){
-		if ( $this->session->userdata('session') !== TRUE ){
-			redirect('login');
-		} else {
-			$eliminar = $this->cms->delete_usuario($uid);
+	public function eliminar_usuario(){
+		// if ( $this->session->userdata('session') !== TRUE ){
+		// 	redirect('login');
+		// } else {
+			$uid = $this->input->post('token');
+			$eliminar = $this->cms->delete_usuario( base64_decode( $uid ) );
 			if ( $eliminar !== FALSE ){
-				redirect('usuarios');
+				echo TRUE;
 			} else {
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] = "No se a podido eliminar el usuario";
-				$this->load->view('cms/admin/usuarios',$data);
+				echo '<span class="error">No se ha podido eliminar al usuario!</span>';
 			}
-		}
 	}
 
 	/**

@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
 	<?php echo form_open( 'cms/validar_form_usuario_editar', array('class' => 'form-horizontal', 'id' => 'form_usuario_nuevo', 'method' => 'POST', 'role' => 'form', 'autcomplete' => 'off' ) ); ?>
 		<div class="row">

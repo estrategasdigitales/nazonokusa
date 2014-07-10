@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
 	<?php echo form_open( 'nucleo/validar_form_trabajo', array('class' => 'form-horizontal', 'id' => 'form_trabajo_nuevo', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">
@@ -281,8 +282,7 @@
 			</div>
 		</div>
 		<input type="hidden" id="tipo_feed_entrada" name="tipo_feed_entrada">
-		<input type="hidden" id="feed_tree" name="feed_tree">
-		<input type="hidden" id="feed_entrada" name="feed_entrada">
+		<input type="hidden" id="feed_url" name="feed_url">
 	<?php echo form_close(); ?>
 	<div id="agregarCampo" style="display:none;">
 		<div class="row">

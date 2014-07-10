@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view( 'cms/header' ); ?>
 	<?php echo form_open( 'cms/validar_form_categoria', array('class' => 'form-horizontal', 'id' => 'form_categoria_nueva', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">

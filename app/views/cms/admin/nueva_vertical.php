@@ -1,3 +1,4 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
 	<?php echo form_open( 'cms/validar_form_vertical', array('class' => 'form-horizontal', 'id' => 'form_vertical_nueva', 'role' => 'form', 'method' => 'POST', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">

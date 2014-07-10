@@ -53,7 +53,7 @@ $route['nueva_categoria']			= 'cms/nueva_categoria';
 $route['nueva_vertical']			= 'cms/nueva_vertical';
 $route['nuevo_trabajo']				= 'cms/nuevo_trabajo';
 $route['reportes']					= 'cms/reportes';
-$route['eliminar/(:any)']			= 'cms/eliminar_usuario/$1';
+$route['eliminar']					= 'cms/eliminar_usuario';
 $route['eliminar_categoria/(:any)']	= 'cms/eliminar_categoria/$1';
 $route['eliminar_vertical/(:any)']	= 'cms/eliminar_vertical/$1';
 $route['editar/(:any)']				= 'cms/editar_usuario/$1';
@@ -61,6 +61,9 @@ $route['editar_trabajo/(:any)']     = 'nucleo/editar_trabajo/$1';
 $route['ejecutar_trabajo/(:any)']   = 'nucleo/ejecutar_trabajo/$1';  
 $route['eliminar_trabajo']   		= 'nucleo/eliminar_trabajo';  
 $route['nucleo'] 					= 'nucleo/';
+$route['actualizar_perfil']			= 'cms/actualizar_perfil';
+$route['forgot']					= 'cms/recuperar_contrasena';
+$route['forgot_validate']			= 'cms/recuperar_contrasena_validar';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

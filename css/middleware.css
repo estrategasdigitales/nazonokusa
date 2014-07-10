@@ -39,7 +39,7 @@ header{
     z-index: 9999;
 }
 
-#messages {
+#messages, #messagesModal {
     display: none;
 }
 
@@ -58,7 +58,7 @@ header{
 
 .barra-naranja{
     background: #FA7E02;
-    height: 5px;
+    min-height: 5px;
 }
 
 .bloques-en-linea{
@@ -103,6 +103,18 @@ header{
     border-radius: 10px;
 }
 
+.datos-recuperar{
+    background: #EAEBED;
+    width: 100%;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.datos-recuperar p {
+    padding: 0px 15px;
+}
+
 .error {
   display: block;
   font-size: 13px;
@@ -143,7 +155,7 @@ header{
 }
 
 .navbar-default .navbar-brand:hover{
-    color:#222;
+    color:#fff;
 }
 
 .login{
@@ -248,4 +260,35 @@ header{
     font-size: 18px;
     font-weight: bold;
     color: #2E509A;
+}
+
+.fondo-naranja{
+    background-color: #FA7E02;
+    color: #ffffff;
+}
+
+.fondo-naranja:hover{
+    background-color: #FA7E02 !important;
+    color: #2155A1;
+    text-decoration: underline !important;
+}
+
+.navbar-custom{
+    border: none !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.blancos{
+    color: #ffffff;
+}
+
+.blancos:hover{
+    color: #ffffff;
 }

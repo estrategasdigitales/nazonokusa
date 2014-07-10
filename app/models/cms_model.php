@@ -21,13 +21,34 @@ class Cms_model extends CI_Model {
      * @return [type]          [description]
      */
     public function get_usuario( $usuario ){
-        $this->db->select('uid_usuario, nombre, apellidos, nivel');
+        $this->db->select('uid_usuario, nombre, apellidos, extension, nivel, compania_celular');
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
+        $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
         $this->db->where( 'email', "AES_ENCRYPT('{$usuario['usuario']}','{$this->key_encrypt}')", FALSE );
         $this->db->where( 'password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE );
+        $result = $this->db->get( $this->db->dbprefix('usuarios') );
+        if ($result->num_rows() === 1) return $result->row();
+        else return FALSE;
+        $result->free_result();
+    }
+
+    public function get_usuario_forgot( $usuario ){
+        $this->db->select('uid_usuario');
+        $this->db->where( 'email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE );
         $result = $this->db->get($this->db->dbprefix('usuarios'));
         if ($result->num_rows() === 1) return $result->row();
         else return FALSE;
+        $result->free_result();
+    }
+
+    public function get_recupera_usuario( $recovery ){
+        $this->db->select("AES_DECRYPT(password,'{$this->key_encrypt}') AS contrasena", FALSE);
+        $this->db->where('uid_usuario', $recovery['uid'] );
+        $this->db->where( 'email', "AES_ENCRYPT('{$recovery['email']}','{$this->key_encrypt}')", FALSE );
+        $result = $this->db->get( $this->db->dbprefix('usuarios') );
+        if( $result->num_rows() > 0 ) return $result->row();
+        else return FALSE;
+        $result->free_result();
     }
 
     /**
@@ -156,15 +177,10 @@ class Cms_model extends CI_Model {
             $result = $this->db->get($this->db->dbprefix( 'usuarios' ) );
             if ($result->num_rows() > 0){
                 $row = $result->row();
-                $result->free_result();
-                foreach ($usuario['categorias'] as $key => $value){                    
-                    foreach ($usuario['verticales'] as $key2 => $value2) {
-                        $this->db->set('uid_usuario', $row->uid_usuario);
-                        $this->db->set('uid_categoria', $value);
-                        $this->db->set('uid_vertical', $value2);
-                        $this->db->insert(  $this->db->dbprefix( 'usuarios_categorias_verticales' ) ); 
-                    }
-                }
+                $c_asign = $this->categorias_asignadas( $usuario['categorias'], $row->uid_usuario );
+                $v_asign = $this->verticales_asigandas( $usuario['verticales'], $row->uid_usuario );
+                if ($c_asign === TRUE && $v_asign === TRUE ) return TRUE;
+                else return FALSE;
             } else {
                 return FALSE;
             }           
@@ -192,6 +208,29 @@ class Cms_model extends CI_Model {
         $c_asign = $this->categorias_asignadas( $usuario['categorias'], $usuario['uid_usuario'] );
         $v_asign = $this->verticales_asigandas( $usuario['verticales'], $usuario['uid_usuario'] );
         if ($c_asign === TRUE && $v_asign === TRUE ) return TRUE;
+        else return FALSE;
+    }
+
+    /**
+     * [update_perfil_usuario description]
+     * @param  [type] $perfil [description]
+     * @return [type]         [description]
+     */
+    public function update_perfil_usuario( $perfil ){
+        $perfil['password_actual'] = base64_decode( $perfil['password_actual'] );
+        $this->db->set( 'nombre', $perfil['nombre'] );
+        $this->db->set( 'apellidos', $perfil['apellidos']);
+        $this->db->set( 'email', "AES_ENCRYPT('{$perfil['email']}','{$this->key_encrypt}')", FALSE );
+        $this->db->set( 'extension', $perfil['extension'] );
+        $this->db->set( 'celular', "AES_ENCRYPT('{$perfil['celular']}','{$this->key_encrypt}')", FALSE );
+        $this->db->set( 'compania_celular', $perfil['compania_celular'] );
+        if ( isset( $perfil['password'] ) ){
+            $this->db->set( 'password', "AES_ENCRYPT('{$perfil['password']}','{$this->key_encrypt}')", FALSE );
+        }
+        $this->db->where('uid_usuario', $perfil['uid'] );
+        $this->db->where('password', "AES_ENCRYPT('{$perfil['password_actual']}','{$this->key_encrypt}')", FALSE );
+        $this->db->update($this->db->dbprefix( 'usuarios' ) );
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
 
