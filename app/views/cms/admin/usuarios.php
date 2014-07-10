@@ -33,9 +33,8 @@
 									}
 								?>
 							</td>
-							<td><a href="<?php echo base_url(); ?>editar/<?php echo $usuario->uid_usuario; ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
-							<!--<td><a href="javascript:ShowDialog('<?php echo base_url(); ?>eliminar/<?php echo $usuario->uid_usuario; ?>','<?php echo $usuario->nombre; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>-->
-							<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_usuario?name=<?php echo $usuario->nombre; ?>&token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="btn btn-danger btn-sm btn-block btn-delete-user" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
+							<td><a href="<?php echo base_url(); ?>editar/<?php echo base64_encode( $usuario->uid_usuario ); ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+							<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_usuario?name=<?php echo base64_encode( $usuario->nombre. ' ' . $usuario->apellidos ); ?>&token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -51,8 +50,7 @@
 	</div>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-	        <div class="modal-content">
-	        </div> <!-- /.modal-content -->
-	    </div> <!-- /.modal-dialog -->
+	        <div class="modal-content"></div>
+	    </div>
 	</div>
 <?php $this->load->view( 'cms/footer' ); ?>

@@ -32,6 +32,11 @@ class Cms_model extends CI_Model {
         $result->free_result();
     }
 
+    /**
+     * [get_usuario_forgot description]
+     * @param  [type] $usuario [description]
+     * @return [type]          [description]
+     */
     public function get_usuario_forgot( $usuario ){
         $this->db->select('uid_usuario');
         $this->db->where( 'email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE );
@@ -41,6 +46,11 @@ class Cms_model extends CI_Model {
         $result->free_result();
     }
 
+    /**
+     * [get_recupera_usuario description]
+     * @param  [type] $recovery [description]
+     * @return [type]           [description]
+     */
     public function get_recupera_usuario( $recovery ){
         $this->db->select("AES_DECRYPT(password,'{$this->key_encrypt}') AS contrasena", FALSE);
         $this->db->where('uid_usuario', $recovery['uid'] );
@@ -97,6 +107,14 @@ class Cms_model extends CI_Model {
         $this->db->select( "AES_DECRYPT( password,'{$this->key_encrypt}') AS password", FALSE );
         $this->db->where('uid_usuario', $uid);
         $result = $this->db->get($this->db->dbprefix( 'usuarios' ) );
+        if ($result->num_rows() > 0) return $result->row();
+        else return FALSE;
+    }
+
+    public function get_categoria_editar( $cid ){
+        $this->db->select( 'nombre, path_storage' );
+        $this->db->where('uid_categoria', $cid);
+        $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
         if ($result->num_rows() > 0) return $result->row();
         else return FALSE;
     }

@@ -145,7 +145,7 @@
 				<a href="<?php echo base_url(); ?>usuarios" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
 			<div class="col-sm-4 col-md-4">
-				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Enviar"/>
+				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
 	<?php echo form_close(); ?>

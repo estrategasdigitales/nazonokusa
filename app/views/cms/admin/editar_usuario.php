@@ -9,7 +9,6 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Datos del Usuario</div>
 				<div class="panel-body">
-					<input type="hidden" name="uid_usuario" value="<?php echo isset($usuario_editar->uid_usuario) && !empty($usuario_editar->uid_usuario) ? $usuario_editar->uid_usuario:''; ?>"/>
 					<div class="form-group">
 						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
 						<div class="col-sm-9 col-md-10">
@@ -146,8 +145,9 @@
 				<a href="<?php echo base_url(); ?>usuarios" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
 			<div class="col-sm-4 col-md-4">
-				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Enviar"/>
+				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Actualizar"/>
 			</div>
 		</div>
+		<input type="hidden" name="token" value="<?php echo base64_encode( $uid ); ?>">
 	<?php echo form_close(); ?>
 <?php $this->load->view('cms/footer'); ?>

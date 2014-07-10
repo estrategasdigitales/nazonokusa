@@ -145,6 +145,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [recuperar_contrasena description]
+	 * @return [type] [description]
+	 */
 	public function recuperar_contrasena(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			$this->load->view('cms/admin/forgot');
@@ -153,6 +157,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [recupera_contrasena description]
+	 * @return [type] [description]
+	 */
 	public function recupera_contrasena(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			$this->form_validation->set_rules('forgot_email', 'Correo Electrónico', 'trim|required|valid_email|xss_clean');
@@ -164,7 +172,7 @@ class Cms extends CI_Controller {
 					$token 	= urlencode( base64_encode( $valido->uid_usuario ) );
 					$hash 	= base64_encode( $recupera['email'] );
 					$data_forgot['url'] = base_url().'forgot_validate?token=' . $token . '&hash=' . $hash;
-					$this->email->from('eric@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
+					$this->email->from('desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
 	                $this->email->to( $recupera['email'] );
 	                $this->email->subject('Código de recuperación de contraseña');
 	                $this->email->message( $this->load->view('cms/mail/codigo_recuperacion', $data_forgot, TRUE ) );
@@ -181,6 +189,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [recuperar_contrasena_validar description]
+	 * @return [type] [description]
+	 */
 	public function recuperar_contrasena_validar(){
 		if ( ! empty( $this->input->get('token') ) && ! empty( $this->input->get('hash') ) ){
 			$recovery['uid'] 	= urldecode( base64_decode( $this->input->get('token') ) );
@@ -189,7 +201,7 @@ class Cms extends CI_Controller {
 			$usuario_recupera 	= $this->cms->get_recupera_usuario( $recovery );
 			if ( $usuario_recupera !== FALSE ){
 				$data['contrasena'] = $usuario_recupera->contrasena;
-				$this->email->from('eric@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
+				$this->email->from('desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
                 $this->email->to( $recovery['email'] );
                 $this->email->subject('Recuperación de contraseña');
                 $this->email->message( $this->load->view('cms/mail/recovery_password', $data, TRUE ) );
@@ -203,6 +215,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [actualizar_perfil description]
+	 * @return [type] [description]
+	 */
 	public function actualizar_perfil(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -219,6 +235,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [actualizar_perfil_actualizar description]
+	 * @return [type] [description]
+	 */
 	public function actualizar_perfil_actualizar(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -283,6 +303,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [modal_eliminar_usuario description]
+	 * @return [type] [description]
+	 */
 	public function modal_eliminar_usuario(){
 		$data['nombre_completo'] 	= $this->input->get('name');
 		$data['uid'] 				= $this->input->get('token');
@@ -366,10 +390,11 @@ class Cms extends CI_Controller {
 	 * @param  [type] $uid [description]
 	 * @return [type]      [description]
 	 */
-	public function editar_usuario( $uid ){
+	public function editar_usuario( $uid = '' ){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
 		} else {
+			$uid = base64_decode( $uid );
 			$usuario = $this->cms->get_usuario_editar( $uid );
 			if ( $usuario !== FALSE ){
 				$data['usuario']    		= $this->session->userdata('nombre');
@@ -380,11 +405,11 @@ class Cms extends CI_Controller {
 				$data['vers']				= $this->cms->get_verticales_asignadas( $uid );
 				$data['companias']			= $this->cms->get_companias_celular();
 				$data['roles']				= $this->cms->get_catalogo_roles();
+				$data['uid']				= $uid;
 				$this->load->view('cms/admin/editar_usuario',$data);
 			} else {
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] = "No se a encontrado el usuario";
-				$this->load->view('cms/admin/editar_usuario',$data);
+				$data['error'] = "No se ha encontrado el usuario";
+				$this->load->view('cms/admin/editar_usuario', $data);
 			}
 		}
 	}
@@ -411,7 +436,8 @@ class Cms extends CI_Controller {
 
 			if ( $this->form_validation->run() === TRUE ){
 				if ($this->input->post( 'password' ) === $this->input->post( 'password_2' ) ){
-					$check_user = $this->cms->check_user( $this->input->post( 'email' ), $this->input->post( 'uid_usuario' ) );
+					$uid = base64_decode( $this->input->post('token') );
+					$check_user = $this->cms->check_user( $this->input->post( 'email' ), $uid );
 					if ( $check_user === FALSE ){
 						$usuario['nombre']   			= $this->input->post( 'nombre' );
 						$usuario['apellidos']   		= $this->input->post( 'apellidos' );
@@ -423,7 +449,7 @@ class Cms extends CI_Controller {
 						$usuario['rol_usuario']   		= $this->input->post( 'rol_usuario' );
 						$usuario['verticales'] 			= json_encode( $this->input->post( 'vertical' ) );
 						$usuario['categorias'] 			= json_encode( $this->input->post( 'categoria' ) );
-						$usuario['uid_usuario']			= $this->input->post( 'uid_usuario' );
+						$usuario['uid_usuario']			= $uid;
 						$usuario 						= $this->security->xss_clean( $usuario );
 						$guardar 						= $this->cms->editar_usuario( $usuario );
 						if ( $guardar !== FALSE ){
@@ -449,16 +475,13 @@ class Cms extends CI_Controller {
 	 * @return [type]      [description]
 	 */
 	public function eliminar_usuario(){
-		// if ( $this->session->userdata('session') !== TRUE ){
-		// 	redirect('login');
-		// } else {
-			$uid = $this->input->post('token');
-			$eliminar = $this->cms->delete_usuario( base64_decode( $uid ) );
-			if ( $eliminar !== FALSE ){
-				echo TRUE;
-			} else {
-				echo '<span class="error">No se ha podido eliminar al usuario!</span>';
-			}
+		$uid = $this->input->post('token');
+		$eliminar = $this->cms->delete_usuario( base64_decode( $uid ) );
+		if ( $eliminar !== FALSE ){
+			echo TRUE;
+		} else {
+			echo '<span class="error">No se ha podido eliminar al usuario!</span>';
+		}
 	}
 
 	/**
@@ -471,6 +494,24 @@ class Cms extends CI_Controller {
 		} else {
 			$data['usuario'] 	= $this->session->userdata('nombre');
 			$this->load->view('cms/admin/nueva_categoria',$data);
+		}
+	}
+
+	public function editar_categoria( $cid = '' ){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect( 'login' );
+		} else {
+			$cid = base64_decode( $cid );
+			$categoria = $this->cms->get_categoria_editar( $cid );
+			if ( $categoria !== FALSE ){
+				$data['nombre']    		= $categoria->nombre;
+				$data['path'] 				= $categoria->path_storage;
+				$data['cid']				= $cid;
+				$this->load->view('cms/admin/editar_categoria',$data);
+			} else {
+				$data['error'] = "No se ha encontrado la categoría";
+				$this->load->view('cms/admin/editar_categoria', $data);
+			}
 		}
 	}
 

@@ -7,15 +7,15 @@
 	<title>Recuperación de contraseña</title>
 </head>
 <body>
-	<table align="center" border="0" cellpadding="0" cellspacing="0" width="600px">
+	<table align="left" border="0" cellpadding="0" cellspacing="0" width="600px">
 		<tr>
-			<td>Hola, Solicitaste el envío de tu contraseña a ésta dirección de correo, te sugerimos no compartirla con nadie y guardarla en un lugar seguro.</td>
+			<td style="padding-bottom:10px;">Hola, Solicitaste el envío de tu contraseña a ésta dirección de correo, te sugerimos no compartirla con nadie y guardarla en un lugar seguro.</td>
 		</tr>
 		<tr>
-			<td>Contraseña: <b><?php echo $contrasena; ?></b></td>
+			<td style="padding-bottom:10px;">Contraseña: <b><?php echo $contrasena; ?></b></td>
 		</tr>
 		<tr>
-			<td>Este mensaje fué remitido automáticamente, por favor no lo reenvíes.</td>
+			<td style="padding-bottom:10px;">Este mensaje fué remitido automáticamente, por favor no lo reenvíes.</td>
 		</tr>
 	</table>
 </body>

@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view( 'cms/header' ); ?>
-	<?php echo form_open( 'cms/validar_form_categoria', array('class' => 'form-horizontal', 'id' => 'form_categoria_nueva', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
+	<?php echo form_open( 'cms/validar_form_categoria_editar', array('class' => 'form-horizontal', 'id' => 'form_categoria_editar', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">
-			<div class="col-sm-8 col-md-8"><h4>Nueva Categoría</h4></div>
+			<div class="col-sm-8 col-md-8"><h4>Editar Categoría</h4></div>
 		</div>
 		<br>
 		<div class="row">
@@ -11,13 +11,13 @@
 				<div class="form-group">
 					<label for="nombre" class="col-sm-4 col-md-4 control-label">Nombre de la Categoría</label>
 					<div class="col-sm-8 col-md-8">
-						<input type="text" class="form-control" id="nombre_categoria" name="nombre_categoria" placeholder="Nombre de la Categoría">
+						<input type="text" class="form-control" id="nombre_categoria" name="nombre_categoria" placeholder="Nombre de la Categoría" value="<?php echo $nombre; ?>">
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="path_categoria" class="col-sm-4 col-md-4 control-label">Path para la Categoría</label>
 					<div class="col-sm-8 col-md-8">
-						<input type="text" class="form-control" id="path_categoria" name="path_categoria" placeholder="Path para la Categoría">
+						<input type="text" class="form-control" id="path_categoria" name="path_categoria" placeholder="Path para la Categoría" value="<?php echo $path; ?>">
 					</div>
 				</div>
 			</div>
@@ -30,9 +30,10 @@
 				<a href="<?php echo base_url(); ?>categorias" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
 			<div class="col-sm-4 col-md-4">
-				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
+				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Actualizar"/>
 			</div>
 			<div class="col-sm-2 col-md-2"></div>
 		</div>
+		<input type="hidden" name="token" value="<?php echo base64_encode( $cid ); ?>">
 	<?php echo form_close(); ?>
 <?php $this->load->view( 'cms/footer' ); ?>
