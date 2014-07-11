@@ -73,5 +73,34 @@ if ( ! function_exists('campos_seleccionados') ){
 	}
 }
 
+if ( ! function_exists('pull_dom_json')) {
+	/**
+	 * Convierte una cadena en un json, con los padres de origen e hijos en nodos secundarios
+	 * 
+	 * @example
+	 * 	[
+	 * 		{"name": "id", "type": "folder"},
+	 * 		{"name": "name", "type": "folder"}
+	 * 		{"name": "program", "type":"folder"}
+	 * 		{"name": "id", "type":"folder", "parent": "program"}
+	 * 		{"name": "subid", "type":"item", "parent": "id"} 
+	 * 	]
+	 * 	// El padre más próximo
+	 * @param  [type] $json_string [description]
+	 * @return [type]              [description]
+	 */
+	function pull_dom_json($json_string = '[
+	  		{"name": "id", "type": "folder"},
+	  		{"name": "name", "type": "folder"},
+	  		{"name": "program", "type":"folder"},
+	  		{"name": "id", "type":"folder", "parent": "program"},
+	  		{"name": "subid", "type":"item", "parent": "id"} 
+	  	]') {
+		// Apilamos todos los objetos, cuando se trata de un folder entonces configuramos todos los
+		// elementos internos a este, esto ocurre hasta que se encuentra otro folder al nivel actual
+		return json_decode($json_string);
+	}
+}
+
 /* End of file tree_helper.php */
 /* Location: ./app/helpers/tree_helper.php */

@@ -385,13 +385,14 @@ function cargar_campos(){
 		$.ajax({
 			url: 'nucleo/detectar_campos',
 			type: 'POST',
-			dataType: 'json',
+			dataType: 'html',
 			data: { url: $('#url-origen').val() },
 			success: function(data){
+				console.log(data);
 				spinner.stop();
 				$('#foo').css('display','none');
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
-			 	$('#campos-feed').html(data.feed_content);
+			 	$('#campos-feed').html(data);
 			 	$('#tipo_feed_entrada').val(data.feed_type);
 			 	$('#feed_url').val( data.feed_url );
 			 	$('.campos-feed').slideDown();
