@@ -111,14 +111,6 @@ class Cms_model extends CI_Model {
         else return FALSE;
     }
 
-    public function get_categoria_editar( $cid ){
-        $this->db->select( 'nombre, path_storage' );
-        $this->db->where('uid_categoria', $cid);
-        $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
-        if ($result->num_rows() > 0) return $result->row();
-        else return FALSE;
-    }
-
     /**
      * [get_categorias_asignadas description]
      * @param  [type] $uid [description]
@@ -544,7 +536,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_categorias(){
-        $this->db->select( 'uid_categoria,nombre,fecha_registro' );
+        $this->db->select( 'uid_categoria, nombre, path_storage, fecha_registro' );
         $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
         if ($result->num_rows() > 0){
             return $result->result();
@@ -578,6 +570,7 @@ class Cms_model extends CI_Model {
         $this->db->set('uid_categoria', "UUID()", FALSE);
         $this->db->set('nombre', $categoria['nombre']);
         $this->db->set('slug_categoria', $categoria['slug_categoria']);
+        $this->db->set('path_storage', $categoria['path']);
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->insert( $this->db->dbprefix( 'categorias') );
         if ($this->db->affected_rows() > 0) return TRUE;
@@ -601,7 +594,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_verticales(){
-        $this->db->select('uid_vertical, nombre');
+        $this->db->select('uid_vertical, nombre, path_storage, fecha_registro');
         $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
         if ( $result->num_rows() > 0 ) return $result->result();
         else return FALSE;

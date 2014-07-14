@@ -2,9 +2,13 @@
 
 class Cms extends CI_Controller {
 
+	private $storage_path;
+
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
+
+		$this->storage_path = './outputs/';
 	}
 
 	/**
@@ -497,24 +501,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	public function editar_categoria( $cid = '' ){
-		if ( $this->session->userdata('session') !== TRUE ){
-			redirect( 'login' );
-		} else {
-			$cid = base64_decode( $cid );
-			$categoria = $this->cms->get_categoria_editar( $cid );
-			if ( $categoria !== FALSE ){
-				$data['nombre']    		= $categoria->nombre;
-				$data['path'] 				= $categoria->path_storage;
-				$data['cid']				= $cid;
-				$this->load->view('cms/admin/editar_categoria',$data);
-			} else {
-				$data['error'] = "No se ha encontrado la categoría";
-				$this->load->view('cms/admin/editar_categoria', $data);
-			}
-		}
-	}
-
 	/**
 	 * [validar_form_categoria description]
 	 * @return [type] [description]
@@ -524,15 +510,26 @@ class Cms extends CI_Controller {
 			redirect( 'login' );
 		} else {
 			$this->form_validation->set_rules( 'nombre_categoria', 'Nombre de la Categoría', 'required|min_length[3]|xss_clean' );
+			$this->form_validation->set_rules( 'path_categoria', 'Ruta del Path para la Categoría', 'required|min_length[3]|xss_clean' );
 			if ( $this->form_validation->run() === TRUE ){
-				$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
-				$categoria['slug_categoria']   	= url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE );
-				$categoria 						= $this->security->xss_clean( $categoria );
-				$guardar 						= $this->cms->add_categoria( $categoria );
-				if ( $guardar !== FALSE ){
-					echo TRUE;
+				$path_storage = $this->storage_path.$this->input->post('path_categoria').'/'.url_title( $this->input->post('nombre_categoria'), 'dash', TRUE );
+				if (! is_dir( $path_storage ) ){
+					if ( mkdir( $path_storage, 0777, TRUE ) ){
+						$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
+						$categoria['slug_categoria']   	= url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE );
+						$categoria['path']   			= base64_encode( $path_storage );
+						$categoria 						= $this->security->xss_clean( $categoria );
+						$guardar 						= $this->cms->add_categoria( $categoria );
+						if ( $guardar !== FALSE ){
+							echo TRUE;
+						} else {
+							echo '<span class="error">La nueva categoria no pudo ser guardada</span>';
+						}
+					} else {
+						echo '<span class="error">La <b>ruta</b> o <b>path</b> especificada no es válida.</span>';
+					}
 				} else {
-					echo '<span class="error">La nueva categoria no pudo ser guardada</span>';
+					echo '<span class="error">La <b>ruta</b> o <b>path</b> especificada no es válida.</span>';
 				}
 			} else {			
 				echo validation_errors('<span class="error">','</span>');
@@ -662,19 +659,19 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	function nombre_valido($str){
-		if(!preg_match('/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/', $str)){
-			$this->form_validation->set_message('nombre_valido','<b class="requerido">*</b> La información introducida en <b>%s</b> no es válida.');
+	function nombre_valido( $str ){
+		if ( ! preg_match( '/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/', $str ) ){
+			$this->form_validation->set_message( 'nombre_valido','<b class="requerido">*</b> La información introducida en <b>%s</b> no es válida.' );
 			return FALSE;
-		}else{
+		} else {
 			return TRUE;
 		}
 	}
 
-	function valid_phone($str) {
-        if ($str) {
-            if (!preg_match('/\([0-9]\)| |[0-9]/', $str)) {
-                $this->form_validation->set_message('valid_phone', '<b class="requerido">*</b> El <b>%s</b> no tiene un formato válido.');
+	function valid_phone( $str ) {
+        if ( $str ) {
+            if ( ! preg_match( '/\([0-9]\)| |[0-9]/', $str ) ){
+                $this->form_validation->set_message( 'valid_phone', '<b class="requerido">*</b> El <b>%s</b> no tiene un formato válido.' );
                 return FALSE;
             } else {
                 return TRUE;

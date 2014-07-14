@@ -13,15 +13,15 @@
 					<tr class="titulo-columna">
 						<td>Nombre del Categoría</td>
 						<td>Path</td>
-						<td>Editar</td>
+						<td>Fecha de creación</td>
 						<td>Eliminar</td>
 					</tr>
 					<?php if ( isset($categorias) && !empty($categorias) ): ?>
 						<?php foreach( $categorias as $categoria ): ?>
 							<tr>
 								<td><?php echo $categoria->nombre; ?></td>
-								<td widht="45%">categoria-demo/algo-mas/algo-mas/</td>
-								<td widht="15%"><a href="<?php echo base_url(); ?>editar_categoria/<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+								<td widht="45%"><?php echo base64_decode( $categoria->path_storage ); ?></td>
+								<td><?php echo unix_to_human( $categoria->fecha_registro ); ?></td>
 								<td><a href="<?php echo base_url(); ?>eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>

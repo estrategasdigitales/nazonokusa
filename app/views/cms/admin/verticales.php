@@ -13,15 +13,15 @@
 					<tr class="titulo-columna">
 						<td>Nombre de la Vertical</td>
 						<td>Path</td>
-						<td>Editar</td>
+						<td>Fecha de creación</td>
 						<td>Eliminar</td>
 					</tr>
 					<?php if ( isset($verticales) && !empty($verticales) ): ?>
 						<?php foreach( $verticales as $vertical ): ?>
 							<tr>
 								<td><?php echo $vertical->nombre; ?></td>
-								<td>vertical-demo/algo-mas/algo-mas/</td>
-								<td><a href="<?php echo base_url(); ?>editar_vertical?<?php //echo $categoria; ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
+								<td><?php echo $vertical->path_storage; ?></td>
+								<td><?php echo unix_to_human( $vertical->fecha_registro ); ?></td>
 								<td><a href="javascript:ShowDialog3('<?php echo base_url(); ?>eliminar_vertical/<?php //echo $vertical['uid_vertical'] ?>','<?php //echo $vertical['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>

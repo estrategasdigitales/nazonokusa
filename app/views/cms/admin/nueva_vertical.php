@@ -11,7 +11,7 @@
 				<div class="form-group">
 					<label for="nombre" class="col-sm-4 col-md-4 control-label">Nombre de la Vertical</label>
 					<div class="col-sm-8 col-md-8">
-						<input type="text" class="form-control" id="nombre" name="nombre">
+						<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la Vertical">
 					</div>
 				</div>
 				<div class="form-group">
