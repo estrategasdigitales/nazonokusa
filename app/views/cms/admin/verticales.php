@@ -25,6 +25,10 @@
 								<td><a href="javascript:ShowDialog3('<?php echo base_url(); ?>eliminar_vertical/<?php //echo $vertical['uid_vertical'] ?>','<?php //echo $vertical['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
+					<?php else : ?>
+						<tr>
+							<td colspan="4">No existen verticales para mostrar</td>
+						</tr>
 					<?php endif; ?>
 				</table>
 			</div>

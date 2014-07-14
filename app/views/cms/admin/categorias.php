@@ -25,6 +25,10 @@
 								<td><a href="<?php echo base_url(); ?>eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
+					<?php else : ?>
+						<tr>
+							<td colspan="4">No existen categorías para mostrar</td>
+						</tr>
 					<?php endif; ?>
 				</table>
 			</div>

@@ -394,7 +394,6 @@ function cargar_campos(){
 			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 			 	$('#campos-feed').html(data);
 			 	$('#tipo_feed_entrada').val(data.feed_type);
-			 	$('#feed_url').val( data.feed_url );
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){

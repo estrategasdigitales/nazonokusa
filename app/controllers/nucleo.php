@@ -6,7 +6,7 @@ class Nucleo extends CI_Controller {
 	 * Composer data json
 	 * @var ComposerDataSet
 	 */
-	private $_composer;
+	//private $_composer;
 
 	/**
 	 * [__construct description]
@@ -17,7 +17,7 @@ class Nucleo extends CI_Controller {
 		$this->load->helper( array('cron_manager', 'file' ) );
 
 		// Creamos composer para armar el arreglo de información
-		$this->_composer = new ComposerDataSet();
+		//$this->_composer = new ComposerDataSet();
 	}
 
 	/**
@@ -152,220 +152,57 @@ class Nucleo extends CI_Controller {
 	 * [detectar_campos description]
 	 * @return [type] [description]
 	 */
-	// public function detectar_campos(){
-	// 	$output = array();
-	// 	$url = file_get_contents( $this->input->post( 'url' ) );
-	// 	$url = utf8_encode( $url );
-	// 	if ( $feed = json_decode( $url ) ){
-	// 		$feed_type 		= 'JSON';
-	// 		foreach ( $feed as $item ){
-	// 			$cont[] 	= $this->mapAttributes( json_encode( $item ) );
-	// 		}
-	// 		$contents 		= $this->array_unique_multidimensional( $cont );
-	// 		$feed_content 	= create_tree( $contents );
-	// 		$feed_url 		= $this->input->post( 'url' );
-	// 	} else {
-	// 		$pos = strpos( $url, '(' );
-	// 		if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-	// 			$feed 			= substr( $url, $pos + 1, -1 );
-	// 			$feed_type 		= 'JSONP';
-	// 			$feed 			= json_decode( $feed );
-	// 			foreach ( $feed as $item ){
-	// 				$cont[] 	= $this->mapAttributes( json_encode( $item ) );
-	// 			}
-	// 			$contents 		= $this->array_unique_multidimensional( $cont );
-	// 			$feed_content 	= create_tree( $contents );
-	// 			$feed_url 		= $this->input->post( 'url' );
-	// 		} else {
-	// 			$dom = new DOMDocument();
-	// 			$dom->loadXML( $url );
-	// 			if ( $dom->documentElement->nodeName == 'rss' ){
-	// 				$feed_type 		= 'RSS';
-	// 				$rss 			= fetch_rss( $this->input->post( 'url' ) );
-	// 				foreach ( $rss->items as $item ){
-	// 					$feed[] 	= $this->mapAttributes( json_encode( $item ) );
-	// 				}
-	// 				$contents 		= $this->array_unique_multidimensional( $feed );
-	// 				$feed_content 	= create_tree( $contents );
-	// 				$feed_url 		= $this->input->post( 'url' );
-	// 			} else {
-	// 				$feed_type 		= 'XML';
-	// 				$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
-	// 				foreach ( $xml as $item ){
-	// 					$feed[] 	= $this->mapAttributes( json_encode( array( $xml ) ) );
-	// 				}
-	// 				$contents 		= $this->array_unique_multidimensional( $feed );
-	// 				$feed_content 	= create_tree( $contents );
-	// 				$feed_url 		= $this->input->post( 'url' );
-	// 			}
-	// 		}
-	// 	}
-
-	// 	$salida = array(
-	// 		'feed_type'		=>	$feed_type,
-	// 		'feed_content'	=>	$feed_content,
-	// 		'feed_url'		=> 	urlencode( base64_encode( $feed_url ) )
-	// 	);
-
-	// 	echo json_encode( $salida );
-	// }
-	
 	public function detectar_campos(){
-		$url_encode = base_url() . "nucleo/feed_service?url=" . urlencode( base64_encode( $this->input->post('url') ) );
-		$content = file_get_contents( $url_encode );
-
-		// Convertir string a objeto
-		$response = json_decode( $content );
-		print_r( $response );die;
-
-		$nodes = array();
-
-		// Iteramos por cada uno de los hijos
-		$nodes = $this->iterateNodesJSON($response, $nodes);
-
-		$nodes = json_encode( $nodes );
-
-		$data = array(
-			'nodes' => $nodes
-		);
-
-		$this->load->view('cms/tree_feed', $data);
-	}
-
-	// function iterateNodesJSON(stdClass $write, array $nodes, $parent = false) {
-	// 	// Configuramos el origen
-	// 	$this->_composer->setWriter($write);
-	// 	// Writer
-	// 	$__writer = (array)$write;
-
-	// 	/**
-	// 	 * Iteramos sobre cada uno de los elementos que tiene el arreglo para poder ir almacenando
-	// 	 * cada uno de los padres (folders e items).
-	// 	 */
-	// 	array_map(
-	// 		array($this, 'reader'),
-	// 		$__writer, array_keys($__writer)
-	// 	);
-
-	// 	//echo json_encode($this->_composer->getNodes());exit;
-	// 	//exit;
-		
-	// 	$tree = [];
-
-	// 	// Obtenemos las propiedades
-	// 	$keys = get_object_vars($write);
-	// 	// Iteramos sobre cada una de las claves
-	// 	foreach ($keys as $key => $value) {
-	// 		$__item = array(
-	// 			'name' => $value,
-	// 			'type' => 'item'
-	// 		);
-
-	// 		if (is_array($value) || $value instanceof stdClass) {
-	// 			$__item = array(
-	// 				'name' => $key,
-	// 				'type' => 'folder'
-	// 			);
-
-	// 			array_push($nodes, $__item);
-
-	// 			// Tiene hijos entonces hacemos recursividad
-	// 			$nodes = $this->iterateNodesJSON($value, $nodes[$key], $key);
-	// 		} else {
-	// 			if ($parent) {
-	// 				$__item = array(
-	// 					'name' => $value,
-	// 					'type' => 'item',
-	// 					'additionalParameters' => [],
-	// 					'parent' => $parent
-	// 				);
-
-	// 				$nodes[count($nodes) - 1]['additionalParameters']['children'][] = $__item;
-	// 			} else {
-	// 				$__item['type'] = 'item';
-	// 				array_push($nodes, $__item);
-	// 			}
-	// 		}
-	// 	}
-
-	// 	return $this->_composer->getNodes();
-	// }
-
-	function iterateNodesJSON(stdClass $write, array $nodes, $parent = false) {
-		$tree = [];
-
-		// Obtenemos las propiedades
-		$keys = get_object_vars($write);
-		// Iteramos sobre cada una de las claves
-		foreach ($keys as $key => $value) {
-			$__item = array(
-				'name' => $value,
-				'type' => 'item'
-			);
-
-			if (is_array($value) || $value instanceof stdClass) {
-				$__item = array(
-					'name' => $key,
-					'type' => 'folder'
-				);
-
-				array_push($nodes, $__item);
-
-				// Tiene hijos entonces hacemos recursividad
-				$nodes = $this->iterateNodesJSON($value, $nodes, $key);
+		$output = array();
+		$url = file_get_contents( $this->input->post( 'url' ) );
+		$url = utf8_encode( $url );
+		if ( $feed = json_decode( $url ) ){
+			$feed_type 		= 'JSON';
+			foreach ( $feed as $item ){
+				$cont[] 	= $this->mapAttributes( json_encode( $item ) );
+			}
+			$contents 		= $this->array_unique_multidimensional( $cont );
+			$feed_content 	= create_tree( $contents );
+		} else {
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$feed 			= substr( $url, $pos + 1, -1 );
+				$feed_type 		= 'JSONP';
+				$feed 			= json_decode( $feed );
+				foreach ( $feed as $item ){
+					$cont[] 	= $this->mapAttributes( json_encode( $item ) );
+				}
+				$contents 		= $this->array_unique_multidimensional( $cont );
+				$feed_content 	= create_tree( $contents );
 			} else {
-				if ($parent) {
-					$__item = array(
-						'name' => $value,
-						'type' => 'item',
-						'additionalParameters' => [],
-						'parent' => $parent
-					);
-
-					$nodes[count($nodes) - 1]['additionalParameters']['children'][] = $__item;
+				$dom = new DOMDocument();
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$feed_type 		= 'RSS';
+					$rss 			= fetch_rss( $this->input->post( 'url' ) );
+					foreach ( $rss->items as $item ){
+						$feed[] 	= $this->mapAttributes( json_encode( $item ) );
+					}
+					$contents 		= $this->array_unique_multidimensional( $feed );
+					$feed_content 	= create_tree( $contents );
 				} else {
-					$__item['type'] = 'item';
-					array_push($nodes, $__item);
+					$feed_type 		= 'XML';
+					$xml 			= simplexml_load_string( $url, 'SimpleXMLElement', LIBXML_NOCDATA );
+					foreach ( $xml as $item ){
+						$feed[] 	= $this->mapAttributes( json_encode( array( $xml ) ) );
+					}
+					$contents 		= $this->array_unique_multidimensional( $feed );
+					$feed_content 	= create_tree( $contents );
 				}
 			}
 		}
 
-		return $nodes;
-	}
+		$salida = array(
+			'feed_type'		=>	$feed_type,
+			'feed_content'	=>	$feed_content
+		);
 
-	/**
-	 * Lee cada uno de los nodos dentro del arreglo base para poder armar un arreglo final
-	 * @param  array $__item
-	 * @param  string $index
-	 * @return
-	 */
-	function reader($__item, $index) {
-		// index será el valor asociativo para el arreglo para poder realizar de forma correcta
-		// los push
-		// id, name, link, description, program
-		$this->_composer->addItem($__item, $index);
-
-
-		// Si es una instancia de clase generica o un arreglo entonces tiene un nível de profundidad más
-		if ($__item instanceof stdClass || is_array($__item)) {
-			$__writer = (array)$__item;
-
-			// añadimos al elemento como padre
-			$this->_composer->addParent($index);
-			// Incrementamos la profundidad
-			$this->_composer->incrementDepth();
-
-			/**
-			 * Iteramos sobre cada uno de los elementos que tiene el arreglo para poder ir almacenando
-			 * cada uno de los padres (folders e items).
-			 */
-			foreach($__writer as $__index => $_subitem) {
-				$this->reader($_subitem, $__index);
-			}
-
-			// Restamos uno por que ya termino de añadir los elementos
-			$this->_composer->decrementDepth();
-		}
+		echo json_encode( $salida );
 	}
 
 	/**

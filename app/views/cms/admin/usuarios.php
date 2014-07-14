@@ -37,6 +37,10 @@
 							<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_usuario?name=<?php echo base64_encode( $usuario->nombre. ' ' . $usuario->apellidos ); ?>&token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 						</tr>
 					<?php endforeach; ?>
+				<?php else : ?>
+					<tr>
+						<td colspan="4">No existen usuarios para mostrar</td>
+					</tr>
 				<?php endif; ?>
 			</table>
 		</div>

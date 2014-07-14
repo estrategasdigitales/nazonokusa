@@ -10,8 +10,7 @@
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
 					<td>Nombre del Trabajo</td>
-					<td width="30%">URL origen</td>
-					<!--<td>Destino</td>-->
+					<!--<td width="30%">URL origen</td>-->
 					<td >Salidas</td>
 					<td class="text-center" width="10%">Programada</td>
 					<td class="text-center" width="10%">Ejecutar</td>
@@ -25,9 +24,7 @@
 					<?php foreach( $trabajos as $trabajo ): ?>
 						<tr>
 							<td><?php echo $trabajo->nombre; ?></td>
-							<td><?php echo $trabajo->url_origen; ?></td>
-							<!--<td><?php //echo $trabajo['url_storage']; ?></td>-->
-							<!--<td>categoria/vertical/</td>-->
+							<!--<td><?php echo $trabajo->url_origen; ?></td>-->
 							<td>
 								<span>
 									<a href="#" title="">
@@ -67,7 +64,6 @@
 								<?php echo form_close(); ?>
 							</td>
 							<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>
-                            
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
                                <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
                             <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
@@ -75,6 +71,14 @@
                             <?php  } ?>
 						</tr>
 					<?php endforeach; ?>
+				<?php else : ?>
+					<tr>
+						<?php if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
+							<td colspan="7">No existen trabajos para mostrar</td>
+						<?php } else { ?>
+							<td colspan="5">No existen trabajos para mostrar</td>
+						<?php } ?>
+					</tr>
 				<?php endif; ?>
 			</table>
 		</div>
