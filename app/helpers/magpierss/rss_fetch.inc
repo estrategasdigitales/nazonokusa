@@ -225,7 +225,7 @@ function fetch_rss ($url) {
     Purpose:    set MAGPIE_ERROR, and trigger error
 \*=======================================================================*/
 
-function error ($errormsg, $lvl=E_USER_WARNING) {
+function error ($errormsg, $lvl = E_USER_WARNING) {
         global $MAGPIE_ERROR;
         
         // append PHP's error message if track_errors enabled
@@ -239,7 +239,7 @@ function error ($errormsg, $lvl=E_USER_WARNING) {
         }
 }
 
-function debug ($debugmsg, $lvl=E_USER_NOTICE) {
+function debug ($debugmsg, $lvl = E_USER_NOTICE) {
     trigger_error("MagpieRSS [debug] $debugmsg", $lvl);
 }
             
@@ -247,7 +247,7 @@ function debug ($debugmsg, $lvl=E_USER_NOTICE) {
     Function:   magpie_error
     Purpose:    accessor for the magpie error variable
 \*=======================================================================*/
-function magpie_error ($errormsg="") {
+function magpie_error ($errormsg = "") {
     global $MAGPIE_ERROR;
     
     if ( isset($errormsg) and $errormsg ) { 

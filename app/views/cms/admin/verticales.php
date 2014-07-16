@@ -6,8 +6,7 @@
 	</div>
 	<br>
 	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6">
+		<div class="col-sm-12 col-md-12">
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered">
 					<tr class="titulo-columna">
@@ -20,9 +19,9 @@
 						<?php foreach( $verticales as $vertical ): ?>
 							<tr>
 								<td><?php echo $vertical->nombre; ?></td>
-								<td><?php echo $vertical->path_storage; ?></td>
+								<td><?php echo '/'.$vertical->slug_vertical; ?></td>
 								<td><?php echo unix_to_human( $vertical->fecha_registro ); ?></td>
-								<td><a href="javascript:ShowDialog3('<?php echo base_url(); ?>eliminar_vertical/<?php //echo $vertical['uid_vertical'] ?>','<?php //echo $vertical['nombre']; ?>');" type="button" class="btn btn-danger btn-sm btn-block">Eliminar</a></td>
+								<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_vertical?name=<?php echo base64_encode( $vertical->nombre ); ?>&token=<?php echo base64_encode( $vertical->uid_vertical ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else : ?>
@@ -33,7 +32,6 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-md-3"></div>
 	</div>
 	<br>
 	<div class="row">
@@ -42,5 +40,9 @@
 			<a href="<?php base_url(); ?>index" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
-	<div id="dialogConfirm"><span id="spanMessage"></span></div>
+	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+	        <div class="modal-content"></div>
+	    </div>
+	</div>
 <?php $this->load->view( 'cms/footer' ); ?>

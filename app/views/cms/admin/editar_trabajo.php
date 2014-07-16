@@ -17,49 +17,53 @@
 
 				<div class="panel-heading">Datos del Trabajo</div>
 				<div class="panel-body">
-					<div class="form-group">
-						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo isset($trabajo_editar['nombre']) && !empty($trabajo_editar['nombre']) ? $trabajo_editar['nombre']:''; ?>">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="nombre" name="nombre" value="<?php echo isset($trabajo_editar['nombre']) && !empty($trabajo_editar['nombre']) ? $trabajo_editar['nombre']:''; ?>">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="url" class="form-control" id="url-origen" name="url-origen" value="<?php echo isset($trabajo_editar['url_origen']) && !empty($trabajo_editar['url_origen']) ? $trabajo_editar['url_origen']:''; ?>">
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="url" class="form-control" id="url-origen" name="url-origen" value="<?php echo isset($trabajo_editar['url_origen']) && !empty($trabajo_editar['url_origen']) ? $trabajo_editar['url_origen']:''; ?>">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label class="col-sm-3 col-md-2 control-label">Categoría</label>
+							<?php if ( isset($categorias) && !empty($categorias) ) : ?>
+								<div class="col-sm-9 col-md-10">
+									<select class="form-control" name="categoria">							
+										<?php foreach($categorias as $categoria): ?>
+											<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							<?php else: ?>
+								<div class="col-sm-9 col-md-10">
+									<h5 class="form-control">Este usuario no tiene asignada ninguna categoría</h5>
+								</div>
+							<?php endif; ?>								
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 col-md-2 control-label">Categoría</label>
-						<?php if ( isset($categorias) && !empty($categorias) ) : ?>
-							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="categoria">							
-									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						<?php else: ?>
-							<div class="col-sm-9 col-md-10">
-								<h5 class="form-control">Este usuario no tiene asignada ninguna categoría</h5>
-							</div>
-						<?php endif; ?>								
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 col-md-2 control-label">Vertical</label>
-						<?php if( isset($verticales) && !empty($verticales) ): ?>
-							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="vertical">							
-									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						<?php else: ?>
-							<div class="col-sm-9 col-md-10">
-								<h5 class="form-control">Este usuario no tiene asignada ninguna vertical</h5>
-							</div>
-						<?php endif; ?>	
+						<div class="form-group">
+							<label class="col-sm-3 col-md-2 control-label">Vertical</label>
+							<?php if( isset($verticales) && !empty($verticales) ): ?>
+								<div class="col-sm-9 col-md-10">
+									<select class="form-control" name="vertical">							
+										<?php foreach($verticales as $vertical): ?>
+											<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							<?php else: ?>
+								<div class="col-sm-9 col-md-10">
+									<h5 class="form-control">Este usuario no tiene asignada ninguna vertical</h5>
+								</div>
+							<?php endif; ?>	
+						</div>
 					</div>
 				</div>
 			</div>

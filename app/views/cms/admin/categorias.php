@@ -6,8 +6,7 @@
 	</div>
 	<br>
 	<div class="row">
-		<div class="col-md-3"></div>
-		<div class="col-md-6">
+		<div class="col-sm-12 col-md-12">
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-bordered">
 					<tr class="titulo-columna">
@@ -20,9 +19,9 @@
 						<?php foreach( $categorias as $categoria ): ?>
 							<tr>
 								<td><?php echo $categoria->nombre; ?></td>
-								<td widht="45%"><?php echo base64_decode( $categoria->path_storage ); ?></td>
+								<td widht="45%"><?php echo '/'.$categoria->slug_categoria; ?></td>
 								<td><?php echo unix_to_human( $categoria->fecha_registro ); ?></td>
-								<td><a href="<?php echo base_url(); ?>eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
+								<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else : ?>
@@ -33,7 +32,6 @@
 				</table>
 			</div>
 		</div>
-		<div class="col-md-3"></div>
 	</div>
 	<br>
 	<div class="row">

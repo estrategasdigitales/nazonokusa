@@ -67,7 +67,6 @@ if ( ! function_exists('campos_seleccionados') ){
 		foreach ( $seleccionados as $sel ){
 			$elegidos[] = explode('.', $sel );
 		}
-		print_r( $elegidos );die;
 		$entradas = json_decode( base64_decode( $entradas ) );
 		print_r( array_intersect_key( $elegidos, (array)$entradas) );
 	}

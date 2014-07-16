@@ -9,73 +9,77 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Datos del Usuario</div>
 				<div class="panel-body">
-					<div class="form-group">
-						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="apellidos" class="col-sm-3 col-md-2 control-label">Apellido(s)</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellido (s)">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="email" class="col-sm-3 col-md-2 control-label">Email</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="extension" class="col-sm-3 col-md-2 control-label">Extensión Telefónica</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="extension" name="extension" placeholder="Extensión Telefónica">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="celular" class="col-sm-3 col-md-2 control-label">Número Celular</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="celular" name="celular" placeholder="Número Celular">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="compania_celular" class="col-sm-3 col-md-2 control-label">Compañía Celular</label>
+							<div class="col-sm-9 col-md-10">
+								<select name="compania_celular" id="compania_celular" class="form-control">
+									<option value="0">Selecciona una opción</option>
+									<?php foreach ( $companias as $compania ){ ?>
+										<option value="<?php echo $compania->id; ?>"><?php echo $compania->compania; ?></option>
+									<?php } ?>
+								</select>
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="apellidos" class="col-sm-3 col-md-2 control-label">Apellido (s)</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Apellido (s)">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label for="password" class="col-sm-3 col-md-2 control-label">Contraseña</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="email" class="col-sm-3 col-md-2 control-label">Email</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="email" class="form-control" id="email" name="email" placeholder="Email">
+						<div class="form-group">
+							<label for="password_2" class="col-sm-3 col-md-2 control-label">Confirmar Contraseña</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="password" class="form-control" id="password_2" name="password_2" placeholder="Confirmar Contraseña">
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<label for="extension" class="col-sm-3 col-md-2 control-label">Extensión Telefónica</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="extension" name="extension" placeholder="Extensión Telefónica">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="password" class="col-sm-3 col-md-2 control-label">Contraseña</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="password_2" class="col-sm-3 col-md-2 control-label">Confirmar Contraseña</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="password" class="form-control" id="password_2" name="password_2" placeholder="Confirmar Contraseña">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="celular" class="col-sm-3 col-md-2 control-label">Número Celular</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="celular" name="celular" placeholder="Número Celular">
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="compania_celular" class="col-sm-3 col-md-2 control-label">Compañía Celular</label>
-						<div class="col-sm-9 col-md-10">
-							<select name="compania_celular" id="compania_celular" class="form-control">
-								<option value="0">Selecciona una opción</option>
-								<?php foreach ( $companias as $compania ){ ?>
-									<option value="<?php echo $compania->id; ?>"><?php echo $compania->compania; ?></option>
-								<?php } ?>
-							</select>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="rol_usuario" class="col-sm-3 col-md-2 control-label">Rol de usuario</label>
-						<div class="col-sm-9 col-md-10">
-							<select name="rol_usuario" id="rol_usuario" class="form-control">
-								<option value="0">Selecciona una opción</option>
-								<?php foreach ( $roles as $rol ){ ?>
-									<?php if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
-										<option value="<?php echo $rol->id; ?>"><?php echo $rol->nombre_rol; ?></option>
-									<?php } else {
-										if ( $rol->id > 1 ){ ?>
+						<div class="form-group">
+							<label for="rol_usuario" class="col-sm-3 col-md-2 control-label">Rol de usuario</label>
+							<div class="col-sm-9 col-md-10">
+								<select name="rol_usuario" id="rol_usuario" class="form-control">
+									<option value="0">Selecciona una opción</option>
+									<?php foreach ( $roles as $rol ){ ?>
+										<?php if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
 											<option value="<?php echo $rol->id; ?>"><?php echo $rol->nombre_rol; ?></option>
-										<?php } } ?>
-								<?php } ?>
-							</select>
+										<?php } else {
+											if ( $rol->id > 1 ){ ?>
+												<option value="<?php echo $rol->id; ?>"><?php echo $rol->nombre_rol; ?></option>
+											<?php } } ?>
+									<?php } ?>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>

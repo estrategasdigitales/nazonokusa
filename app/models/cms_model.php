@@ -453,39 +453,19 @@ class Cms_model extends CI_Model {
     public function add_trabajo( $trabajo ){
         $timestamp = time();
         $this->db->set('uid_trabajo', "UUID()", FALSE);
-        $this->db->set('nombre', $trabajo['nombre']);
-        $this->db->set('url_origen', $trabajo['url-origen']);
-        // $this->db->set('url_local',  $trabajo['destino-local']);
-        // $this->db->set('url_storage', $trabajo['destino-net']);
-        $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->set('formato_salida', $trabajo['formato_salida']);
-        $this->db->set('cron_config', $trabajo['cron_date']);
         $this->db->set('uid_usuario', $trabajo['usuario']);
-        $this->db->insert($this->db->dbprefix( 'trabajos' ) );
-        if ( $this->db->affected_rows() > 0 ){            
-            $this->db->select('uid_trabajo');
-            $this->db->where('nombre',$trabajo['nombre']);
-            $this->db->where('url_origen', $trabajo['url-origen']);
-            // $this->db->where('url_local', $trabajo['destino-local']);
-            // $this->db->where('url_storage', $trabajo['destino-net']);
-            $this->db->where('formato_salida', $trabajo['formato_salida']);
-            $this->db->where('uid_usuario', $trabajo['usuario']);
-            $result = $this->db->get('trabajos');
-            if ( $result->num_rows() > 0 ){
-                $row = $result->row();
-                $result->free_result();
-                $this->db->set('uid_trabajo', $row->uid_trabajo);
-                $this->db->set('uid_categoria', $trabajo['categoria']);
-                $this->db->set('uid_vertical', $trabajo['vertical']);
-                $this->db->insert($this->db->dbprefix( 'trabajos_categorias' ) ); 
-                return $row->uid_trabajo;
-            } else {
-                return FALSE;
-            }           
-        } else {
-            return FALSE; 
-        }            
+        $this->db->set('uid_categoria', $trabajo['categoria']);
+        $this->db->set('uid_vertical', $trabajo['vertical']);
+        $this->db->set('nombre', $trabajo['nombre']);
+        $this->db->set('slug_nombre_feed', $trabajo['slug_nombre_feed']);
+        $this->db->set('url_origen', $trabajo['url-origen']);
+        $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+        //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+        $this->db->set('formatos', json_encode( $trabajo['formatos'] ) );
+        $this->db->set('formato_salida', $trabajo['json_output'] );
+        $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
+        else return FALSE;         
     }
 
     /**
@@ -536,7 +516,8 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_categorias(){
-        $this->db->select( 'uid_categoria, nombre, path_storage, fecha_registro' );
+        $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
+        $this->db->order_by('fecha_registro', 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
         if ($result->num_rows() > 0){
             return $result->result();
@@ -570,11 +551,22 @@ class Cms_model extends CI_Model {
         $this->db->set('uid_categoria', "UUID()", FALSE);
         $this->db->set('nombre', $categoria['nombre']);
         $this->db->set('slug_categoria', $categoria['slug_categoria']);
-        $this->db->set('path_storage', $categoria['path']);
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->insert( $this->db->dbprefix( 'categorias') );
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE; 
+    }
+
+    /**
+     * [validar_categoria description]
+     * @param  [type] $slug [description]
+     * @return [type]       [description]
+     */
+    public function validar_categoria( $slug ){
+        $this->db->where('slug_categoria', $slug );
+        $verifica = $this->db->count_all_results( $this->db->dbprefix( 'categorias' ) );
+        if( $verifica > 0 ) return TRUE;
+        else return FALSE;
     }
 
     /**
@@ -594,7 +586,8 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_verticales(){
-        $this->db->select('uid_vertical, nombre, path_storage, fecha_registro');
+        $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
+        $this->db->order_by('fecha_registro', 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
         if ( $result->num_rows() > 0 ) return $result->result();
         else return FALSE;
@@ -628,6 +621,18 @@ class Cms_model extends CI_Model {
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->insert( $this->db->dbprefix( 'verticales' ) );
         if ($this->db->affected_rows() > 0) return TRUE;
+        else return FALSE;
+    }
+
+    /**
+     * [validar_vertical description]
+     * @param  [type] $slug [description]
+     * @return [type]       [description]
+     */
+    public function validar_vertical( $slug ){
+        $this->db->where('slug_vertical', $slug );
+        $verifica = $this->db->count_all_results( $this->db->dbprefix( 'verticales' ) );
+        if( $verifica > 0 ) return TRUE;
         else return FALSE;
     }
 

@@ -292,3 +292,11 @@ header{
 .blancos:hover{
     color: #ffffff;
 }
+
+.glyphicon-list-alt{
+    font-size: 22px;
+}
+
+.petroleo {
+    color: #010b0f;
+}

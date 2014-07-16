@@ -9,51 +9,55 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Datos del Trabajo</div>
 				<div class="panel-body">
-					<div class="form-group">
-						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="nombre" name="nombre">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="text" class="form-control" id="nombre" name="nombre">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="url" class="form-control" id="url-origen" name="url-origen">
+							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="url" class="form-control" id="url-origen" name="url-origen">
+					<div class="col-sm-6 col-md-6">
+						<div class="form-group">
+							<label class="col-sm-3 col-md-2 control-label">Categoría</label>
+							<?php if( isset($categorias) && !empty($categorias) ): ?>
+								<div class="col-sm-9 col-md-10">
+									<select class="form-control" name="categoria">
+										<option value="0">Selecciona una Categoría</option>					
+										<?php foreach($categorias as $categoria): ?>
+											<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							<?php else: ?>
+								<div class="col-sm-9 col-md-10">
+									<h5 class="form-control">Este usuario no tiene asignada ninguna categoría</h5>
+								</div>
+							<?php endif; ?>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 col-md-2 control-label">Categoría</label>
-						<?php if( isset($categorias) && !empty($categorias) ): ?>
-							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="categoria">
-									<option value="0">Selecciona una Categoría</option>					
-									<?php foreach($categorias as $categoria): ?>
-										<option value="<?php echo $categoria->uid_categoria; ?>"><?php echo $categoria->nombre; ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						<?php else: ?>
-							<div class="col-sm-9 col-md-10">
-								<h5 class="form-control">Este usuario no tiene asignada ninguna categoría</h5>
-							</div>
-						<?php endif; ?>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-3 col-md-2 control-label">Vertical</label>
-						<?php if( isset($verticales) && !empty($verticales) ): ?>
-							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="vertical">
-									<option value="0">Selecciona una Vertical</option>
-									<?php foreach($verticales as $vertical): ?>
-										<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
-									<?php endforeach; ?>
-								</select>
-							</div>
-						<?php else: ?>
-							<div class="col-sm-9 col-md-10">
-								<h5 class="form-control">Este usuario no tiene asignada ninguna vertical</h5>
-							</div>
-						<?php endif; ?>	
+						<div class="form-group">
+							<label class="col-sm-3 col-md-2 control-label">Vertical</label>
+							<?php if( isset($verticales) && !empty($verticales) ): ?>
+								<div class="col-sm-9 col-md-10">
+									<select class="form-control" name="vertical">
+										<option value="0">Selecciona una Vertical</option>
+										<?php foreach($verticales as $vertical): ?>
+											<option value="<?php echo $vertical->uid_vertical; ?>"><?php echo $vertical->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							<?php else: ?>
+								<div class="col-sm-9 col-md-10">
+									<h5 class="form-control">Este usuario no tiene asignada ninguna vertical</h5>
+								</div>
+							<?php endif; ?>	
+						</div>
 					</div>
 				</div>
 			</div>
@@ -85,7 +89,7 @@
 							<div class="checkbox">
 								<label>
 									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
-										XML
+									XML
 								</label>
 							</div>
 							<div class="checkbox">
@@ -138,15 +142,6 @@
 						<div class="col-sm-9 col-md-10">
 							<input type="hidden" name="claves_rss[]" value="description">
 							<input type="text" class="form-control" id="channel_description" name="valores_rss[]">
-						</div>
-					</div>
-					<div class="form-group agregar_campo">
-						<div class="col-sm-4 col-md-4">
-						</div>
-						<div class="col-sm-4 col-md-4">
-						</div>
-						<div class="col-sm-4 col-md-4">
-							<div type="button" onclick="ShowDialog4();" class="btn btn-success btn-block">Agregar Campo</div>
 						</div>
 					</div>
 				</div>
@@ -278,15 +273,11 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<input type="hidden" id="tipo_feed_entrada" name="tipo_feed_entrada">
+		<input type="hidden" id="responseJson" name="responseJson">
 	<?php echo form_close(); ?>
-	<div id="agregarCampo" style="display:none;">
-		<div class="row">
-		<div class="form-group">
-			<div class="col-sm-12 col-md-12">
-				<input placeholder="Nombre del Campo" type="text" class="form-control" id="nuevo_nombre" name="nuevo_nombre">
-			</div>
-		</div>
-		</div>
+	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+	        <div class="modal-content"></div>
+	    </div>
 	</div>
 <?php $this->load->view('cms/footer'); ?>

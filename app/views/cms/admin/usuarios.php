@@ -9,8 +9,10 @@
 		<div class="container table-responsive">
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
-					<td width="45%">Nombre de Usuario</td>
+					<td width="35%">Nombre de Usuario</td>
 					<td>Perfil</td>
+					<td class="text-center">Categorías asignadas</td>
+					<td class="text-center">Verticales asignadas</td>
 					<td class="text-center" width="15%">Editar Información</td>
 					<td class="text-center" width="15%">Eliminar</td>
 				</tr>
@@ -33,6 +35,8 @@
 									}
 								?>
 							</td>
+							<td class="text-center"><a href="#" class="petroleo glyphicon glyphicon-list-alt"></a></td>
+							<td class="text-center"><a href="#" class="petroleo glyphicon glyphicon-list-alt"></a></td>
 							<td><a href="<?php echo base_url(); ?>editar/<?php echo base64_encode( $usuario->uid_usuario ); ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
 							<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_usuario?name=<?php echo base64_encode( $usuario->nombre. ' ' . $usuario->apellidos ); ?>&token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 						</tr>

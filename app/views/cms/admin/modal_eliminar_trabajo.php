@@ -6,7 +6,7 @@
 		<h3 class="text-left">Eliminar usuario</h3>
 	</div>
 	<div class="modal-body">
-		<p>¿Estás seguro de que deseas eliminar al usuario <b><?php echo base64_decode( $nombre_completo ); ?></b>?</p>
+		<p>¿Estás seguro de que deseas eliminar al usuario: <b><?php echo base64_decode( $nombre_completo ); ?></b>?</p>
 		<p>Este proceso es completamente irreversible, y podrían perderse las refencias de los feeds de este usuario.</p>
 		<div class="alert" id="messagesModal"></div>
 	</div>

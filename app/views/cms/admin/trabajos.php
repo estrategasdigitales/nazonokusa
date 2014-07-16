@@ -13,7 +13,7 @@
 					<!--<td width="30%">URL origen</td>-->
 					<td >Salidas</td>
 					<td class="text-center" width="10%">Programada</td>
-					<td class="text-center" width="10%">Ejecutar</td>
+					<!--<td class="text-center" width="10%">Ejecutar</td>-->
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
 	                    <td class="text-center" width="10%">Editar</td>
 	                <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
@@ -44,30 +44,34 @@
 										<span class="glyphicon-class">XML</span>
 									</a>
 								</span>
-								<span>
+								<!--<span>
 									<a href="#" title="">
 										<span class="glyphicon glyphicon-link"></span>
 										<span class="glyphicon-class">RSS</span>
 									</a>
-								</span>
+								</span>-->
 							</td>
 							<td class="text-center">
 								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 									<div class="btn-group btn-toggle" data-toggle="buttons">
 										<label class="btn btn-sm <?php if( $trabajo->activo == 1 ) echo 'btn-success active'; else echo 'btn-default'; ?>">
-											<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php echo $trabajo->uid_trabajo; ?>')">ON
+											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php //echo $trabajo->uid_trabajo; ?>')">ON-->
+											<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?>>ON
 										</label>
 										<label class="btn btn-sm <?php if( $trabajo->activo == 0 ) echo 'btn-danger active'; else echo 'btn-default'; ?>">
-											<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php echo $trabajo->uid_trabajo; ?>')">OFF
+											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php //echo $trabajo->uid_trabajo; ?>')">OFF-->
+											<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?>>OFF
 										</label>
 									</div>
 								<?php echo form_close(); ?>
 							</td>
-							<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>
+							<!--<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>-->
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
-                               <td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
+                               <!--<td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>-->
+                               <td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
                             <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
-					           <td><a href="javascript:deleteJob('<?php echo $trabajo->uid_trabajo; ?>');" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>
+					           <!--<td><a href="javascript:deleteJob('<?php echo $trabajo->uid_trabajo; ?>');" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>-->
+					           <td><a href="#" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>
                             <?php  } ?>
 						</tr>
 					<?php endforeach; ?>

@@ -2,13 +2,23 @@
 
 class Cms extends CI_Controller {
 
-	private $storage_path;
+	private $storage_root;
+	private $netstorage;
 
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
 
-		$this->storage_path = './outputs/';
+		$this->storage_root = '/';
+
+		/** Configuracion de conexión a netstorage */
+		$this->netstorage = array(
+				'hostname' 	=> 'storagemas.upload.akamai.com',
+				'username' 	=> 'marcoplata',
+				'password' 	=> 'y4mi.99yS',
+				'passive'	=> TRUE,
+				'debug'		=> FALSE
+			);
 	}
 
 	/**
@@ -88,6 +98,7 @@ class Cms extends CI_Controller {
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
 				$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
+				//print_r( count($data['usuarios']) );die;
 				$this->load->view( 'cms/admin/usuarios', $data );
 			} else {
 				redirect('inicio');
@@ -307,6 +318,24 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	// public function agregar_campo_rss(){
+	// 	$this->form_validation->set_rules('nuevo_campo_rss', 'Nombre del Campo', 'required|trim|min_length[3]|max_lenght[180]|xss_clean');
+	// 	if ( $this->form_validation->run() === TRUE ){
+	// 		$data['nuevo_campo']	= $this->input->post('nuevo_campo_rss');
+	// 		$success = '<div class="form-group">
+	// 						<label for="channel_description" class="col-sm-3 col-md-2 control-label">' . $data['nuevo_campo'] . '</label>
+	// 						<div class="col-sm-9 col-md-10">
+	// 							<input type="hidden" name="claves_rss[]" value="' . url_title( $data['nuevo_campo'], 'dash', TRUE ) . '">
+ //        						<input type="text" class="form-control" name="valores_rss[]">
+ //    						</div>
+	// 					</div>';
+	// 		echo json_encode( array('success' => $success ) );
+	// 	} else {
+	// 		//echo validation_errors('<span class="error">','</span>');
+	// 		echo json_encode( array('errores' => validation_errors('<span class="error">','</span>') ) );
+	// 	}
+	// }
+
 	/**
 	 * [modal_eliminar_usuario description]
 	 * @return [type] [description]
@@ -316,6 +345,23 @@ class Cms extends CI_Controller {
 		$data['uid'] 				= $this->input->get('token');
 		$this->load->view('cms/admin/modal_eliminar_usuario', $data);
 	}
+
+	public function modal_eliminar_categoria(){
+		$data['nombre_categoria'] 	= $this->input->get('name');
+		$data['uid'] 				= $this->input->get('token');
+		$this->load->view('cms/admin/modal_eliminar_categoria', $data);	
+	}
+
+	public function modal_eliminar_vertical(){
+		$data['nombre_vertical'] 	= $this->input->get('name');
+		$data['uid'] 				= $this->input->get('token');
+		$this->load->view('cms/admin/modal_eliminar_vertical', $data);	
+	}
+
+	// public function modal_agregar_campo_rss(){
+	// 	$data['nuevo_campo_rss'] = '';
+	// 	$this->load->view('cms/admin/modal_agregar_campo_rss', $data);
+	// }
 
 
 	/**
@@ -484,7 +530,7 @@ class Cms extends CI_Controller {
 		if ( $eliminar !== FALSE ){
 			echo TRUE;
 		} else {
-			echo '<span class="error">No se ha podido eliminar al usuario!</span>';
+			echo '<span class="error">No se ha podido eliminar al usuario</span>';
 		}
 	}
 
@@ -510,26 +556,19 @@ class Cms extends CI_Controller {
 			redirect( 'login' );
 		} else {
 			$this->form_validation->set_rules( 'nombre_categoria', 'Nombre de la Categoría', 'required|min_length[3]|xss_clean' );
-			$this->form_validation->set_rules( 'path_categoria', 'Ruta del Path para la Categoría', 'required|min_length[3]|xss_clean' );
 			if ( $this->form_validation->run() === TRUE ){
-				$path_storage = $this->storage_path.$this->input->post('path_categoria').'/'.url_title( $this->input->post('nombre_categoria'), 'dash', TRUE );
-				if (! is_dir( $path_storage ) ){
-					if ( mkdir( $path_storage, 0777, TRUE ) ){
-						$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
-						$categoria['slug_categoria']   	= url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE );
-						$categoria['path']   			= base64_encode( $path_storage );
-						$categoria 						= $this->security->xss_clean( $categoria );
-						$guardar 						= $this->cms->add_categoria( $categoria );
-						if ( $guardar !== FALSE ){
-							echo TRUE;
-						} else {
-							echo '<span class="error">La nueva categoria no pudo ser guardada</span>';
-						}
+				if ( $this->cms->validar_categoria( url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE ) ) != TRUE ){
+					$categoria['nombre']   			= $this->input->post( 'nombre_categoria' );
+					$categoria['slug_categoria']   	= url_title( $this->input->post( 'nombre_categoria' ), 'dash', TRUE );
+					$categoria 						= $this->security->xss_clean( $categoria );
+					$guardar 						= $this->cms->add_categoria( $categoria );
+					if ( $guardar !== FALSE ){
+						echo TRUE;
 					} else {
-						echo '<span class="error">La <b>ruta</b> o <b>path</b> especificada no es válida.</span>';
+						echo '<span class="error">La nueva categoria no pudo ser guardada</span>';
 					}
 				} else {
-					echo '<span class="error">La <b>ruta</b> o <b>path</b> especificada no es válida.</span>';
+					echo '<span class="error">La <b>Categoría</b> ya existe, prueba con otro nombre.</span>';
 				}
 			} else {			
 				echo validation_errors('<span class="error">','</span>');
@@ -542,17 +581,16 @@ class Cms extends CI_Controller {
 	 * @param  [type] $uid [description]
 	 * @return [type]      [description]
 	 */
-	public function eliminar_categoria($uid){
+	public function eliminar_categoria(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_categoria($uid);
+			$uid = $this->input->post('token');
+			$eliminar = $this->cms->delete_categoria( base64_decode( $uid ) );
 			if ( $eliminar !== FALSE ){
-				redirect('categorias');
+				echo TRUE;
 			} else {
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] = "No se a podido eliminar la categoria";
-				$this->load->view('cms/admin/categorias',$data);
+				echo '<span class="error">No se ha podido eliminar la categoría</span>';
 			}
 		}
 	}
@@ -578,23 +616,23 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('nombre_vertical', 'Nombre de la Vertical', 'required|min_length[3]|xss_clean');
 			if ( $this->form_validation->run() === TRUE ){
-				$vertical['nombre']   		= $this->input->post('nombre');
-				$vertical['slug_vertical']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
-				$vertical 					= $this->security->xss_clean( $vertical );
-				$guardar 					= $this->cms->add_vertical( $vertical );
-				if ( $guardar !== FALSE ){
-					redirect('verticales');
+				if ( $this->cms->validar_vertical( url_title( $this->input->post( 'nombre_vertical' ), 'dash', TRUE ) ) != TRUE ){
+					$vertical['nombre']   		= $this->input->post('nombre_vertical');
+					$vertical['slug_vertical']	= url_title( $this->input->post('nombre_vertical'), 'dash', TRUE );
+					$vertical 					= $this->security->xss_clean( $vertical );
+					$guardar 					= $this->cms->add_vertical( $vertical );
+					if ( $guardar !== FALSE ){
+						echo TRUE;
+					} else {
+						echo '<span class="error">La nueva vertical no pudo ser guardada</span>';
+					}
 				} else {
-					$data['usuario'] 	= $this->session->userdata('nombre');
-					$data['error'] = "La nueva vertical no pudo ser guardada";
-					$this->load->view('cms/admin/nueva_vertical',$data);
+					echo '<span class="error">La <b>Vertical</b> ya existe, prueba con otro nombre.</span>';
 				}
 			} else {			
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-				$this->load->view('cms/admin/nueva_vertical',$data);
+				echo validation_errors('<span class="error">','</span>');
 			}
 		}
 	}
@@ -604,17 +642,16 @@ class Cms extends CI_Controller {
 	 * @param  [type] $uid [description]
 	 * @return [type]      [description]
 	 */
-	public function eliminar_vertical( $uid ){
+	public function eliminar_vertical(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$eliminar = $this->cms->delete_vertical( $uid );
+			$uid = $this->input->post('token');
+			$eliminar = $this->cms->delete_vertical( base64_decode( $uid ) );
 			if ( $eliminar !== FALSE ){
-				redirect('verticales');
+				echo TRUE;
 			} else {
-				$data['usuario'] 	= $this->session->userdata('nombre');
-				$data['error'] = "No se a podido eliminar la vertical";
-				$this->load->view('cms/admin/verticales',$data);
+				echo '<span class="error">No se ha podido eliminar la vertical</span>';
 			}
 		}
 	}
