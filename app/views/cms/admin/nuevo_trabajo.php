@@ -112,7 +112,7 @@
 		<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
-				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)<span class="navbar-right" id="tipo_archivo"></span></div>
+				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)</div>
 				<div class="panel-body">
 					<div class="bloque-arbol" id="campos-feed"></div>
 				</div>
@@ -273,7 +273,7 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<input type="hidden" id="responseJson" name="responseJson">
+		<input type="hidden" id="claves" name="claves">
 	<?php echo form_close(); ?>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

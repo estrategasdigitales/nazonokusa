@@ -43,7 +43,7 @@
 					<?php endforeach; ?>
 				<?php else : ?>
 					<tr>
-						<td colspan="4">No existen usuarios para mostrar</td>
+						<td colspan="6">No existen usuarios para mostrar</td>
 					</tr>
 				<?php endif; ?>
 			</table>

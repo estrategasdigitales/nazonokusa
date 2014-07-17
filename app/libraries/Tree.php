@@ -54,13 +54,15 @@ class Tree {
 	 * Nível de profundidad escalada
 	 * @var integer
 	 */
-	protected $_depth = 0;
+	protected static $_depth = 0;
 
 	/**
 	 * Todos los elementos no estan seleccionados por defecto
 	 * @var boolean
 	 */
-	protected $_selected = false;
+	public $_selected = false;
+
+	protected static $_nodes = [];
 
 	/**
 	 * Árbol base
@@ -68,11 +70,8 @@ class Tree {
 	 */
 	public function Tree($node, $root = false) {
 		$this->_additionalParameters = new Parameters();
-
 		// Es un elemento raíz (?)
 		if ($root === true) {
-			//$this->setParent(null);
-
 			// Le damos un nombre al elemento
 			$this->setIdentifier($node, md5('root'));
 		} else {
@@ -83,8 +82,22 @@ class Tree {
 
 		// Añade los hijos a la clase
 		if ($node instanceof stdClass) {
+			//
+			if (!isset($this::$_nodes[$this::$_depth])) {
+				$this::$_nodes[$this::$_depth] = array();
+			}
+
+			array_push($this::$_nodes[$this::$_depth], $this);
+
 			$this->setChildrens($node);
-		}		
+			// Decrementa el nivel de profundidad
+		} else {
+			if (!isset($this::$_nodes[$this::$_depth])) {
+				$this::$_nodes[$this::$_depth] = array();
+			}
+
+			array_push($this::$_nodes[$this::$_depth], $this);
+		}
 	}
 
 	/**
@@ -94,21 +107,26 @@ class Tree {
 	 */
 	public function setChildrens(stdClass $node) {
 		$this->setType(NODE_TYPE_FOLDER);
+
+
 		// iteración
 		foreach ($node as $key => $value) {
+			$this->toIncrement();
 			// Recorrido
 			// Si es un objeto entonces creamos otro objeto treebase
 			if ($value instanceof stdClass) {
+
 				$children = new Tree($value, $key);
 				// Añadimos el nombre del nodo
-				//$this->setName((string)$children);
 				$children->setParent($this);
 
 				$this->_additionalParameters->addChildren($children);
 			} else {
 				$children = new Tree($value, $key);
+				$children->setParent($this);
 				$this->_additionalParameters->addChildren($children);
 			}
+			$this->toDecrement();
 		}
 	}
 
@@ -204,7 +222,7 @@ class Tree {
 	 * @return
 	 */
 	public function toIncrement() {
-		$this->_depth++;
+		$this::$_depth++;
 	}
 
 	/**
@@ -213,11 +231,11 @@ class Tree {
 	 */
 	public function toDecrement() {
 		// Generamos excepción si ya se ha llegado al elementop raíz
-		if ($this->_depth === 0) {
-			throw new Exception("No hay más por decrementar, estamos en raíz", 1);
+		if ($this::$_depth === 0) {
+			return;
 		}
 
-		$this->_depth--;
+		$this::$_depth--;
 	}
 
 	/**
@@ -271,5 +289,13 @@ class Tree {
 		}
 
 		return false;
+	}
+
+	public function getNodes() {
+		return $this::$_nodes;
+	}
+
+	public function setNodes($_nodes) {
+		$this::$_nodes = $_nodes;
 	}
 }

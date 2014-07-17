@@ -97,41 +97,15 @@ $(function(){
 			}
 		});
 		return false;
-		// $(this).ajaxSubmit({
-		// 	success: function(data){
-		// 		if(data != true){
-		// 			spinner.stop();
-		// 			$('#foo').css('display','none');
-		// 			$('#messages').css('display','block');
-		// 			$('#messages').addClass('alert-danger');
-		// 			$('#messages').html(data);
-		// 			$('html,body').animate({
-		// 				'scrollTop': $('#messages').offset().top
-		// 			}, 1000);
-		// 		}else{
-		// 			spinner.stop();
-		// 			$('#foo').css('display','none');
-		// 			window.location.href = '../usuarios';
-		// 		}
-		// 	},
-		// 	error: function(data){
-		// 		spinner.stop();
-		// 		$('#foo').css('display','none');
-		// 		$('#messages').css('display','block');
-		// 		$('#messages').addClass('alert-danger');
-		// 		$('#messages').html(data);
-		// 		$('html, body').animate({
-		// 			'scrollTop': $('#messages').offset().top
-		// 		}, 1000);
-		// 	}
-		// });
-		// return false;
 	});
 
 	$('#form_login').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -165,7 +139,10 @@ $(function(){
 	$('#form_trabajo_nuevo').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -199,7 +176,10 @@ $(function(){
 	$('#form_categoria_nueva').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -233,7 +213,10 @@ $(function(){
 	$('#form_vertical_nueva').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -268,7 +251,10 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messages').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -307,7 +293,10 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messages').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -348,7 +337,10 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -360,8 +352,7 @@ $(function(){
 					spinner.stop();
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
-					// $('#messagesModal').addClass('alert-success');
-					$('#modalMessage').modal('hide');
+					jQuery('#modalMessage').modal('hide');
 					$('#modalMessage').on('hidden.bs.modal', function (e) {
 					  window.location.reload();
 					});
@@ -382,7 +373,10 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -394,7 +388,6 @@ $(function(){
 					spinner.stop();
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
-					// $('#messagesModal').addClass('alert-success');
 					$('#modalMessage').modal('hide');
 					$('#modalMessage').on('hidden.bs.modal', function (e) {
 					  window.location.reload();
@@ -416,7 +409,10 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$(this).ajaxSubmit({
+		$.ajax({
+			url: $(this).attr('action'),
+			type: 'POST',
+			data: $(this).serialize(),
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -428,8 +424,7 @@ $(function(){
 					spinner.stop();
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
-					// $('#messagesModal').addClass('alert-success');
-					$('#modalMessage').modal('hide');
+					jQuery('#modalMessage').modal('hide');
 					$('#modalMessage').on('hidden.bs.modal', function (e) {
 					  window.location.reload();
 					});
@@ -445,41 +440,6 @@ $(function(){
 		});
 		return false;
 	});
-
-	// $('#form_agregar_campo_rss').submit(function(){
-	// 	$('#foo').css('display','block');
-	// 	$('#messagesModal').removeClass('alert-danger');
-	// 	var spinner = new Spinner(opts).spin(target);
-	// 	$(this).ajaxSubmit({
-	// 		success: function(data){
-	// 			var obj = $.parseJSON(data);
-	// 			if( obj['errores'] != null ){
-	// 				spinner.stop();
-	// 				$('#foo').css('display','none');
-	// 				$('#messagesModal').css('display','block');
-	// 				$('#messagesModal').addClass('alert-danger');
-	// 				$('#messagesModal').html(obj['errores']);
-	// 			}else{
-	// 				spinner.stop();
-	// 				$('#foo').css('display','none');
-	// 				$('#messagesModal').css('display','block');
-	// 				$('#modalMessage').modal('hide');
-	// 				$('#modalMessage').on('hidden.bs.modal', function (e) {
-	// 				  $(".agregar_campo").before(obj['success']);
-	// 				  $('#messagesModal').html('');
-	// 				});
-	// 			}
-	// 		},
-	// 		error: function(data){
-	// 			spinner.stop();
-	// 			$('#foo').css('display','none');
-	// 			$('#messagesModal').css('display','block');
-	// 			$('#messagesModal').addClass('alert-danger');
-	// 			$('#messagesModal').html(data);
-	// 		}
-	// 	});
-	// 	return false;
-	// });
 });
 
 function handlerProgramm(status, uidjob){
@@ -593,12 +553,9 @@ function cargar_campos(){
 			dataType: 'html',
 			data: { url: $('#url-origen').val() },
 			success: function(data){
-				console.log(data);
 				spinner.stop();
 				$('#foo').css('display','none');
-			 	$('#tipo_archivo').html( "Tipo de Archivo: " + data.feed_type );
 			 	$('#campos-feed').html(data);
-			 	$('#tipo_feed_entrada').val(data.feed_type);
 			 	$('.campos-feed').slideDown();
 			},
 			error: function(){
@@ -619,6 +576,45 @@ function cargar_campos(){
 		$('#messages').addClass('alert-danger');
 		$('#messages').html(data);
 	}
+}
+
+function activarTrabajo(uid, flag){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 25, // The length of each line
+		width: 10, // The line thickness
+		radius: 35, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#f48120', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent in px
+		left: '50%' // Left position relative to parent in px
+	};
+
+	var target = document.getElementById('foo');
+
+	$('#foo').css('display','block');
+	var spinner = new Spinner(opts).spin(target);
+	$.post('nucleo/job_process', {status: flag, uidjob: uid}, function(data){
+		if(data != true){
+			spinner.stop();
+			$('#foo').css('display','none');
+			$('#messages').css('display','block');
+			$('#messages').addClass('alert-danger');
+			$('#messages').html(data);
+		}else{
+			spinner.stop();
+			$('#foo').css('display','none');
+			window.location.reload();
+		}
+	});
 }
 
 function desplegar(item){

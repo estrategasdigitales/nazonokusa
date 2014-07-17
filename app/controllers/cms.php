@@ -65,10 +65,10 @@ class Cms extends CI_Controller {
 		$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|valid_email|xss_clean');
 		$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|min_length[8]|xss_clean');
 		if ( $this->form_validation->run() === TRUE ){
-			$usuario['usuario'] 	=	$this->input->post( 'usuario' );
-			$usuario['password'] 	=	$this->input->post( 'password' );
-			$usuario 				=	$this->security->xss_clean( $usuario );
-			$valido 				=	$this->cms->get_usuario( $usuario );
+			$usuario['usuario'] 	= $this->input->post( 'usuario' );
+			$usuario['password'] 	= $this->input->post( 'password' );
+			$usuario 				= $this->security->xss_clean( $usuario );
+			$valido 				= $this->cms->get_usuario( $usuario );
 			if ( $valido !== FALSE ){
 				$session = array(
 					'session'	 	=> TRUE,
@@ -693,17 +693,6 @@ class Cms extends CI_Controller {
 				$data['verticales'] = $this->cms->get_verticales_usuario( $this->session->userdata( 'uid' ) );
 			}
 			$this->load->view( 'cms/admin/nuevo_trabajo', $data );
-		}
-	}
-
-	public function job_process(){
-		$job['status'] 	= $this->input->post('status');
-		$job['uidjob'] 	= $this->input->post('uidjob');
-		$process 		= $this->cms->active_job( $job );
-		if ( $process === TRUE ){
-			echo TRUE;
-		} else {
-			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
 		}
 	}
 
