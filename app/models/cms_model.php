@@ -124,7 +124,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_categorias_asignadas( $uid ){
-        $this->db->cache_on();
+        $this->db->cache_off();
         $this->db->select( 'uid_categoria' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'categorias_asignadas' ) );
@@ -139,7 +139,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_verticales_asignadas( $uid ){
-        $this->db->cache_on();
+        $this->db->cache_off();
         $this->db->select( 'uid_vertical' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'verticales_asignadas' ) );
