@@ -397,7 +397,7 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('categoria', 'Categoría', 'required|xss_clean');
 			$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
 			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
-			//$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
+			$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
 			if ( ! empty( $this->input->post('formato') ) ){
 				if ( in_array('rss2', $this->input->post('formato' ) ) ){
 					$this->form_validation->set_rules('valores_rss[]', 'Campos adicionales para RSS', 'required|xss_clean');
