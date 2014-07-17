@@ -440,9 +440,17 @@ class Nucleo extends CI_Controller {
 		foreach ( $campos->info as $campo ){
 			$this->selected( $tree, $campo->identifier, $nodesSelected );
 		}
-		$feed = json_decode( file_get_contents_curl( $urlFeed ) )->category;
+		$feed = json_decode( $this->jsonContent( $urlFeed ) );
 
-		new TreeMatch($feed, $nodesSelected);
+		if ( is_array( $feed ) ){
+			$root = array_keys( $feed );
+		} else {
+			$root = array_keys( get_object_vars( $feed ) );
+
+			$feed  = $feed->$root[0];
+		}
+
+		new TreeMatch( $feed, $nodesSelected );
 
 		$jsonStr = "[";
 		$jsonStr .= $this->treeBuild($tree, true);
@@ -460,7 +468,9 @@ class Nucleo extends CI_Controller {
 		}
 
 		$jsontmp = '{"category": ' . $jsontmp . '}';
+		
 		$jsonValidate = new TreeFeed($feed, 1, $jsontmp, 'category');
+
 		return json_encode( $feed );
 		// echo json_encode($feed);exit;
 		// $content = file_get_contents_curl( $urlFeed );
@@ -491,7 +501,7 @@ class Nucleo extends CI_Controller {
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					$contenido_feed = json_encode( $rss );
+					$contenido_feed = json_encode( $rss->channel );
 				} else {
 					$xml = new SimpleXMLElement( $url );
 					$contenido_feed = json_encode( $xml, LIBXML_NOCDATA );

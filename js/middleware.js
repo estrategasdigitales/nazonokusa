@@ -542,6 +542,7 @@ function cargar_campos(){
 
 	$('#foo').css('display','block');
 	var spinner = new Spinner(opts).spin(target);
+	$('#claves').val('');
 	$('#tipo_archivo').html('');
 	$('#jsonLocation').html('');
 	$('#campos-feed').html('');
