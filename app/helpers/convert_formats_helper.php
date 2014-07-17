@@ -9,18 +9,21 @@
 			foreach ( $formatos as $formato ){
 				switch ( $formato ) {
 					case 'json':
+						print_r( $output );die;
 						$salida[] = array( 'formato' => $formato, 'output' => $output, 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-json.js' );
 						break;
 					case 'jsonp':
 						$salida[] = array( 'formato' => $formato, 'output' => $jsonp_funcion . "(" . $output . ")", 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-jsonp.js' );
 						break;
 					case 'xml':
+						print_r( $output );die;
 						$array = json_decode( $output, TRUE );
+						print_r( $array );die;
 						$salida[] = array( 'formato' => $formato, 'output' => array_to_xml( $array ), 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-xml.xml' );
 						break;
 					case 'rss':
-						// $array = json_decode( $output, TRUE );
-						// $salida[] = array( 'formato' => $formato, 'output' => array_to_rss( $array, $claves_rss, $valores_rss ), 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-rss.xml' );
+						//$array = json_decode( $output, TRUE );
+						$salida[] = array( 'formato' => $formato, 'output' => '', 'url' => '#' );
 						break;
 				}
 			}
@@ -52,6 +55,7 @@
 
 	if ( ! function_exists('array_to_xml') ){
 		function array_to_xml( array $array, $xml = FALSE ){
+			print_r( $array );die;
 			if ( $xml === FALSE ){
 				$xml = new SimpleXMLElement('<root/>');
 			}
@@ -60,6 +64,7 @@
 				 	? array_to_xml($value, $xml->addChild( $key ) )
 				 	: $xml->addChild( $key, $value );
 			}
+			print_r( $xml->asXML );die;
 			return $xml->asXML();
 		}
 	}

@@ -392,10 +392,10 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'trim|required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('categoria', 'Categoría', 'required|xss_clean');
-			$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
+			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
 			$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
 			if ( ! empty( $this->input->post('formato') ) ){
@@ -404,7 +404,7 @@ class Nucleo extends CI_Controller {
 				}
 
 				if ( in_array('jsonp', $this->input->post('formato' ) ) ){
-					$this->form_validation->set_rules('nom_funcion', 'Campos adicionales para JSONP', 'required|min_length[3]|xss_clean');
+					$this->form_validation->set_rules('nom_funcion', 'Campos adicionales para JSONP', 'trim|alpha_dash|required|min_length[3]|xss_clean');
 				}
 			}
 			if ( $this->form_validation->run() === TRUE ){
@@ -419,11 +419,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
-                // $trabajo['formatos'] 			= $this->input->post('formato');
-                // $trabajo['jsonp_function']		= $this->input->post('nom_funcion');
-                // $trabajo['valores_rss'] 		= $this->input->post('valores_rss');
-                // $trabajo['claves_rss'] 			= $this->input->post('claves_rss');
-				//$trabajo 						= $this->security->xss_clean( $trabajo );
+				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_trabajo( $trabajo );
 				if ( $guardar !== FALSE ){
 					echo TRUE;
@@ -965,4 +961,13 @@ class Nucleo extends CI_Controller {
 			}
 		}
 	}
+
+	function valid_option($str) {
+        if ($str == 0) {
+            $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
 }
