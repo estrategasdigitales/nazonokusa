@@ -25,21 +25,21 @@
 						<tr>
 							<td><?php echo $trabajo->nombre; ?></td>
 							<!--<td><?php echo $trabajo->url_origen; ?></td>-->
-							<td>
+							<td class="text-center">
 								<span>
-									<a href="#" title="">
+									<a href="#" title="" class="petroleo">
 										<span class="glyphicon glyphicon-link"></span>
 										<span class="glyphicon-class">JSON</span>
 									</a>
 								</span>
 								<span>
-									<a href="#" title="">
+									<a href="#" title="" class="petroleo">
 										<span class="glyphicon glyphicon-link"></span>
 										<span class="glyphicon-class">JSONP</span>
 									</a>
 								</span>
 								<span>
-									<a href="#" title="">
+									<a href="#" title="" class="petroleo">
 										<span class="glyphicon glyphicon-link"></span>
 										<span class="glyphicon-class">XML</span>
 									</a>
@@ -70,8 +70,7 @@
                                <!--<td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>-->
                                <td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
                             <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
-					           <!--<td><a href="javascript:deleteJob('<?php echo $trabajo->uid_trabajo; ?>');" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>-->
-					           <td><a href="#" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Eliminar</a></td>
+								<td><a href="<?php echo base_url(); ?>eliminar_trabajo?name=<?php echo base64_encode( $trabajo->nombre ); ?>&token=<?php echo base64_encode( $trabajo->uid_trabajo ); ?>" type="button" class="btn btn-danger btn-sm btn-block btn-padding" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
                             <?php  } ?>
 						</tr>
 					<?php endforeach; ?>
@@ -94,5 +93,9 @@
 			<a href="<?php echo base_url(); ?>index" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
-	<div id="dialogConfirm"><span id="spanMessage"></span></div>
+	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+	        <div class="modal-content"></div>
+	    </div>
+	</div>
 <?php $this->load->view( 'cms/footer' ); ?>

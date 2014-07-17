@@ -252,6 +252,7 @@ header{
 }
 
 .wrapper{
+    color: #001533;
     margin: 30px auto 80px auto;
 }
 
@@ -298,5 +299,5 @@ header{
 }
 
 .petroleo {
-    color: #010b0f;
+    color: #001533;
 }

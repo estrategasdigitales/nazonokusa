@@ -21,7 +21,7 @@
 								<td><?php echo $categoria->nombre; ?></td>
 								<td widht="45%"><?php echo '/'.$categoria->slug_categoria; ?></td>
 								<td><?php echo unix_to_human( $categoria->fecha_registro ); ?></td>
-								<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
+								<td><a href="<?php echo base_url(); ?>eliminar_categoria?name=<?php echo base64_encode( $categoria->nombre ); ?>&token=<?php echo base64_encode( $categoria->uid_categoria ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else : ?>

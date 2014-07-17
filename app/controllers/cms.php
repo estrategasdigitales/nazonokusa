@@ -5,6 +5,9 @@ class Cms extends CI_Controller {
 	private $storage_root;
 	private $netstorage;
 
+	/**
+	 * [__construct description]
+	 */
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
@@ -343,19 +346,37 @@ class Cms extends CI_Controller {
 	public function modal_eliminar_usuario(){
 		$data['nombre_completo'] 	= $this->input->get('name');
 		$data['uid'] 				= $this->input->get('token');
-		$this->load->view('cms/admin/modal_eliminar_usuario', $data);
+		$this->load->view( 'cms/admin/modal_eliminar_usuario', $data );
 	}
 
+	/**
+	 * [modal_eliminar_categoria description]
+	 * @return [type] [description]
+	 */
 	public function modal_eliminar_categoria(){
 		$data['nombre_categoria'] 	= $this->input->get('name');
 		$data['uid'] 				= $this->input->get('token');
-		$this->load->view('cms/admin/modal_eliminar_categoria', $data);	
+		$this->load->view( 'cms/admin/modal_eliminar_categoria', $data );
 	}
 
+	/**
+	 * [modal_eliminar_vertical description]
+	 * @return [type] [description]
+	 */
 	public function modal_eliminar_vertical(){
 		$data['nombre_vertical'] 	= $this->input->get('name');
 		$data['uid'] 				= $this->input->get('token');
-		$this->load->view('cms/admin/modal_eliminar_vertical', $data);	
+		$this->load->view( 'cms/admin/modal_eliminar_vertical', $data );
+	}
+
+	/**
+	 * [modal_eliminar_trabajo description]
+	 * @return [type] [description]
+	 */
+	public function modal_eliminar_trabajo(){
+		$data['nombre_trabajo']		= $this->input->get('name');
+		$data['uid']				= $this->input->get('token');
+		$this->load->view( 'cms/admin/modal_eliminar_trabajo', $data );
 	}
 
 	// public function modal_agregar_campo_rss(){

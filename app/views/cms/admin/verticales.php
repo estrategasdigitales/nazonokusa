@@ -21,7 +21,7 @@
 								<td><?php echo $vertical->nombre; ?></td>
 								<td><?php echo '/'.$vertical->slug_vertical; ?></td>
 								<td><?php echo unix_to_human( $vertical->fecha_registro ); ?></td>
-								<td><a href="<?php echo base_url(); ?>cms/modal_eliminar_vertical?name=<?php echo base64_encode( $vertical->nombre ); ?>&token=<?php echo base64_encode( $vertical->uid_vertical ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
+								<td><a href="<?php echo base_url(); ?>eliminar_vertical?name=<?php echo base64_encode( $vertical->nombre ); ?>&token=<?php echo base64_encode( $vertical->uid_vertical ); ?>" type="button" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else : ?>
