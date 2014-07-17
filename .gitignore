@@ -22,4 +22,5 @@ Thumbs.db
 *.dll
 *.so
 *.exe
+*.sql
 /cache/
