@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+	<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view( 'cms/header' ); ?>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"><h4>Administrar Trabajos</h4></div>
@@ -12,7 +12,7 @@
 					<td>Nombre del Trabajo</td>
 					<!--<td width="30%">URL origen</td>-->
 					<td >Salidas</td>
-					<td class="text-center" width="10%">Programada</td>
+					<td class="text-center" width="10%">Activar / Desactivar</td>
 					<!--<td class="text-center" width="10%">Ejecutar</td>-->
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
 	                    <td class="text-center" width="10%">Editar</td>
@@ -26,44 +26,40 @@
 							<td><?php echo $trabajo->nombre; ?></td>
 							<!--<td><?php echo $trabajo->url_origen; ?></td>-->
 							<td class="text-center">
-								<span>
-									<a href="#" title="" class="petroleo">
-										<span class="glyphicon glyphicon-link"></span>
-										<span class="glyphicon-class">JSON</span>
-									</a>
-								</span>
-								<span>
-									<a href="#" title="" class="petroleo">
-										<span class="glyphicon glyphicon-link"></span>
-										<span class="glyphicon-class">JSONP</span>
-									</a>
-								</span>
-								<span>
-									<a href="#" title="" class="petroleo">
-										<span class="glyphicon glyphicon-link"></span>
-										<span class="glyphicon-class">XML</span>
-									</a>
-								</span>
-								<!--<span>
-									<a href="#" title="">
-										<span class="glyphicon glyphicon-link"></span>
-										<span class="glyphicon-class">RSS</span>
-									</a>
-								</span>-->
+								<?php
+									if ( $trabajo->activo == 1 ){
+										$salidas = json_decode( $trabajo->feeds_output );
+										foreach ( $salidas as $salida ){
+								?>
+								
+									<span>
+										<a href="<?php echo base_url().$salida->url; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+											<span class="glyphicon glyphicon-link"></span>
+											<span class="glyphicon-class"><?php echo $salida->formato; ?></span>
+										</a>
+									</span>
+								<?php } } ?>
 							</td>
-							<td class="text-center">
+							<!--<td class="text-center">
 								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 									<div class="btn-group btn-toggle" data-toggle="buttons">
 										<label class="btn btn-sm <?php if( $trabajo->activo == 1 ) echo 'btn-success active'; else echo 'btn-default'; ?>">
 											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php //echo $trabajo->uid_trabajo; ?>')">ON-->
-											<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?>>ON
+											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?>>ON
 										</label>
 										<label class="btn btn-sm <?php if( $trabajo->activo == 0 ) echo 'btn-danger active'; else echo 'btn-default'; ?>">
 											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php //echo $trabajo->uid_trabajo; ?>')">OFF-->
-											<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?>>OFF
+											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?>>OFF
 										</label>
 									</div>
 								<?php echo form_close(); ?>
+							</td>-->
+							<td class="text-center">
+								<?php if ( $trabajo->activo == 0 ){ ?>
+									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 1);" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Activar</a>
+								<?php } else { ?>
+									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 0);" type="button" class="btn btn-success btn-sm btn-block btn-padding">Desactivar</a>
+								<?php } ?>
 							</td>
 							<!--<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>-->
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>

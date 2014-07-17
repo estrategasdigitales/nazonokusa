@@ -1,12 +1,12 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once(__DIR__ . '/tree_json_library/BaseMatch.php');
-require_once(__DIR__ . '/tree_json_library/ValidatorLevel.php');
+/*require_once(__DIR__ . '/tree_json_library/ValidatorLevel.php');
 
 /**
 * 
 */
-class TreeMatch extends BaseMatch {	
+class TreeMatch extends BaseMatch{	
 	/**
 	 * Objeto a analizar
 	 * @var stdClass
@@ -61,6 +61,10 @@ class TreeMatch extends BaseMatch {
 				$_keys = array_keys($item);
 				// Recorremos inmediatamente
 				$this->workByType($item[$_keys[0]]);
+			} else {
+				foreach ($item as $key => $value) {
+					$this->workByType($value);
+				}
 			}
 		} else {
 			// Eliminamos los elementos que no son necesarios
@@ -88,9 +92,6 @@ class TreeMatch extends BaseMatch {
 		if (is_array($item) && count($item) === 1) {
 			return true;
 		}
-		if (count($item) === 1) {
-			return true;
-		}
 		return false; 
 	}
 
@@ -105,37 +106,10 @@ class TreeMatch extends BaseMatch {
 			$allowed = [];
 
 			foreach ($item as $key => $value) {
-				// Obtenemos las etiquetas, para en caso de que fuera un string añadimos
-				$keys = [];
-
-				if ($value instanceof stdClass) {
-					$keys = array_keys((array)$value);
-				} else {
-					$keys = array_keys($value);
+				//
+				if ($value->getSelected()) {
+					array_push($allowed, $value->getName());
 				}
-				// Significa que era un arreglo asociativo
-				if (count($keys) > 0) {
-					// Si es un string accedemos a el mediante $keys[0]
-					if (is_string($keys[0])) {
-						$_valueFormatted = $value->$keys[0];
-					}
-				} else {
-					$_valueFormatted = $value;
-				}
-				// Si es un arreglo entonces ponemos el nombre de key
-				if ( is_array($_valueFormatted) ) {
-					$_valueFormatted = $keys[0];
-					// Valor sobreescrito
-					if (!property_exists($nowItem, $keys[0])){
-						//var_dump($item);exit;
-						var_dump($nowItem);exit;
-					}
-
-					//$nowItem->$keys[0] = new TreeMatch($nowItem->$keys[0], $this->_jsonValidate);
-				}
-
-				// Recorremos para obtener cada una de las claves que componen el validador
-				array_push($allowed, $_valueFormatted);
 			}
 
 			return $allowed;
@@ -193,6 +167,16 @@ class TreeMatch extends BaseMatch {
 				// Eliminamos el elemento
 				unset($item->$key);
 			}
+			// Si es un arreglo o una clase mandamos a llamar a workbytype
+			if (is_array($value)) {
+				$this->next();
+				$this->workByType($value);
+				$this->prev();
+			} elseif(is_object($value)) {
+				$this->next();
+				$this->workByType($value);
+				$this->prev();
+			}
 		}
 	}
 
@@ -208,19 +192,9 @@ class TreeMatch extends BaseMatch {
 	 * Devuelve un validador en base al nivel actual
 	 * @return stdClass
 	 */
-	public function getValidatorByLevel($item) {
+	public function getValidatorByLevel( $item ) {
 		// El número de nivel
 		$level  = $this->getLevel();
-
-		// Creamos instancia para devolver el elemento que estamos iterando
-		$validatorLevel = new ValidatorLevel($item, $this->_jsonValidate, $level, false);
-
-		// Obtenemos el objeto validador
-		$_levelItem = $validatorLevel->getLevelItem();
-
-		// Reiniciamos al nivel actual
-		$validatorLevel->setLevel(0);
-
-		return $_levelItem;
+		return $this->_jsonValidate[ $level + 1 ];
 	}
 }

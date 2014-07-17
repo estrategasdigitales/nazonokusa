@@ -21,7 +21,7 @@ class Cms_model extends CI_Model {
      * @return [type]          [description]
      */
     public function get_usuario( $usuario ){
-        $this->db->cache_on();
+        $this->db->cache_off();
         $this->db->select('uid_usuario, nombre, apellidos, extension, nivel, compania_celular');
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
         $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
@@ -124,7 +124,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_categorias_asignadas( $uid ){
-        $this->db->cache_on();
+        $this->db->cache_off();
         $this->db->select( 'uid_categoria' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'categorias_asignadas' ) );
@@ -139,7 +139,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_verticales_asignadas( $uid ){
-        $this->db->cache_on();
+        $this->db->cache_off();
         $this->db->select( 'uid_vertical' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'verticales_asignadas' ) );
@@ -329,7 +329,7 @@ class Cms_model extends CI_Model {
      */
     public function get_trabajos(){
         $this->db->cache_on();
-        $this->db->select( 'uid_trabajo, nombre, url_origen, activo, uid_usuario' );
+        $this->db->select( 'uid_trabajo, uid_usuario, uid_categoria, uid_vertical, nombre, slug_nombre_feed, feeds_output, activo' );
         $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
         if ($result->num_rows() > 0) return $result->result();
         else return FALSE;
@@ -347,6 +347,16 @@ class Cms_model extends CI_Model {
         $this->db->where( 'uid_usuario',$uid );
         $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
         if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+        $result->free_result();
+    }
+
+    public function get_trabajo_ejecutar( $uid ){
+        $this->db->cache_off();
+        $this->db->select( 'uid_usuario, uid_categoria, uid_vertical, slug_nombre_feed, feeds_output, activo' );
+        $this->db->where( 'uid_trabajo ', $uid );
+        $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
+        if ($result->num_rows() > 0) return $result->row();
         else return FALSE;
         $result->free_result();
     }
@@ -485,10 +495,13 @@ class Cms_model extends CI_Model {
         $this->db->set('nombre', $trabajo['nombre']);
         $this->db->set('slug_nombre_feed', $trabajo['slug_nombre_feed']);
         $this->db->set('url_origen', $trabajo['url-origen']);
+        $this->db->set('campos_seleccionados', $trabajo['campos']);
+        $this->db->set('arbol_json', $trabajo['arbol_json']);
+        $this->db->set('json_output', $trabajo['json_output'] );
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->set('formatos', json_encode( $trabajo['formatos'] ) );
-        $this->db->set('formato_salida', $trabajo['json_output'] );
+        $this->db->set('formatos', $trabajo['formatos'] );
+        $this->db->set('feeds_output', $trabajo['feeds_output'] );
         $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
         $this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;

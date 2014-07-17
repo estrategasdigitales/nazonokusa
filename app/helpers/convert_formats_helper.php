@@ -4,22 +4,31 @@
 	 * Helper para convertir las salidas a los formatos especificados
 	 */
 	
-	if ( ! function_exists('convert_formats') ){
-		function convert_formats( $output, $formatos, $jsonp_funcion, $valores_rss, $claves_rss ){
+	if ( ! function_exists('conversion_feed_output') ){
+		function conversion_feed_output( $formatos, $output, $jsonp_funcion, $valores_rss, $claves_rss, $storage, $usuario, $categoria, $vertical, $nombre ){
 			foreach ( $formatos as $formato ){
 				switch ( $formato ) {
 					case 'json':
-						$salida[] = array( 'formato' => $formato, 'output' => $output, 'extension' => '-json.js' );
+						$salida[] = array( 'formato' => $formato, 'output' => $output, 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-json.js' );
 						break;
 					case 'jsonp':
-						$salida[] = array( 'formato' => 'jsonp', 'output' => $jsonp_funcion . "(" . $output . ")", 'extension' => '-jsonp.js' );
+						$salida[] = array( 'formato' => $formato, 'output' => $jsonp_funcion . "(" . $output . ")", 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-jsonp.js' );
 						break;
 					case 'xml':
 						$array = json_decode( $output, TRUE );
-						$salida[] = array( 'formato' => 'xml', 'output' => array_to_xml( $array ), 'extension' => '-xml.xml' );
+						$xml = new XMLWriter();
+						$xml->openMemory();
+						$xml->startDocument('1.0','utf-8');
+						$xml->startElement('root');
+						array_to_xml( $xml, $array[0] );
+						$xml->endElement();
+						$output = $xml->outputMemory( true );
+						print_r( $output );die;
+						$salida[] = array( 'formato' => $formato, 'output' => array_to_xml( $array ), 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-xml.xml' );
 						break;
 					case 'rss':
-						# code...
+						//$array = json_decode( $output, TRUE );
+						$salida[] = array( 'formato' => $formato, 'output' => '', 'url' => '#' );
 						break;
 				}
 			}
@@ -27,19 +36,56 @@
 		}
 	}
 
-	if ( ! function_exists('array_to_xml') ){
-		function array_to_xml( array $array, $xml = FALSE ){
-			if ( $xml === FALSE ){
-				$xml = new SimpleXMLElement('<root/>');
+	if ( ! function_exists('formatos_output_seleccionados') ){
+		function formatos_output_seleccionados( $formatos, $jsonp_funcion, $valores_rss, $claves_rss ){
+			foreach ( $formatos as $formato ){
+				switch ( $formato ){
+					case 'json':
+						$fseleccionados[] = array('formato' => $formato, 'funcion' => '', 'claves_rss' => '', 'valores_rss' => '' );
+						break;
+					case 'jsonp':
+						$fseleccionados[] = array('formato' => $formato, 'funcion' => $jsonp_funcion, 'claves_rss' => '', 'valores_rss' => '' );
+						break;
+					case 'xml':
+						$fseleccionados[] = array('formato' => $formato, 'funcion' => '', 'claves_rss' => '', 'valores_rss' => '' );
+						break;
+					case 'rss':
+						$fseleccionados[] = array('formato' => $formato, 'funcion' => '', 'claves_rss' => $claves_rss, 'valores_rss' => $valores_rss );
+						break;
+				}
 			}
-			foreach ( $array as $key => $value ){
-				is_array( $value )
-				 	? array_to_xml($value, $xml->addChild( $key ) )
-				 	: $xml->addChild( $key, $value );
-			}
-			return $xml->asXML();
+			return json_encode( $fseleccionados );
 		}
 	}
+
+	if ( ! function_exists('array_to_xml') ){
+		function array_to_xml( XMLWriter $xml, $data ){
+			print_r( $array );die;
+			foreach( $data as $key => $value ) {
+		        if( is_array( $value )) {
+		            $xml->startElement( $key );
+		            write_xml( $xml, $value );
+		            $xml->endElement( );
+		            continue;
+		        }
+		        $xml->writeElement( $key, $value );
+		    }
+		}
+	}
+
+	// if ( ! function_exists('array_to_rss') ){
+	// 	function array_to_rss( array $array, $xml = FALSE ){
+	// 		if ( $xml === FALSE ){
+	// 			$xml = new SimpleXMLElement('<root/>');
+	// 		}
+	// 		foreach ( $array as $key => $value ){
+	// 			is_array( $value )
+	// 			 	? array_to_xml($value, $xml->addChild( $key ) )
+	// 			 	: $xml->addChild( $key, $value );
+	// 		}
+	// 		return $xml->asXML();
+	// 	}
+	// }
 
 /* End of file convert_formats_helper.php */
 /* Location: ./app/helpers/convert_formats_helper.php */
