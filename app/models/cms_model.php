@@ -21,7 +21,7 @@ class Cms_model extends CI_Model {
      * @return [type]          [description]
      */
     public function get_usuario( $usuario ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select('uid_usuario, nombre, apellidos, extension, nivel, compania_celular');
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
         $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
@@ -39,7 +39,7 @@ class Cms_model extends CI_Model {
      * @return [type]          [description]
      */
     public function get_usuario_forgot( $usuario ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select('uid_usuario');
         $this->db->where( 'email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE );
         $result = $this->db->get($this->db->dbprefix('usuarios'));
@@ -54,7 +54,7 @@ class Cms_model extends CI_Model {
      * @return [type]           [description]
      */
     public function get_recupera_usuario( $recovery ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select("AES_DECRYPT(password,'{$this->key_encrypt}') AS contrasena", FALSE);
         $this->db->where('uid_usuario', $recovery['uid'] );
         $this->db->where( 'email', "AES_ENCRYPT('{$recovery['email']}','{$this->key_encrypt}')", FALSE );
@@ -71,7 +71,7 @@ class Cms_model extends CI_Model {
      * @return [type]        [description]
      */
     public function get_usuarios( $nivel, $uid ){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select('uid_usuario, nombre, apellidos, nivel');
         if ($nivel == 1)
             $this->db->where( 'nivel >=', 1 );
@@ -91,7 +91,7 @@ class Cms_model extends CI_Model {
      * @return [type]        [description]
      */
     public function check_user( $email, $uid = '' ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->where('uid_usuario !=', $uid );
         $this->db->where('email', "AES_ENCRYPT('{$email}','{$this->key_encrypt}')", FALSE);
         $verifica = $this->db->count_all_results($this->db->dbprefix('usuarios'));
@@ -106,7 +106,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_usuario_editar( $uid ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select('uid_usuario, nombre, apellidos, extension, compania_celular, nivel ');
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
         $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
@@ -124,7 +124,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_categorias_asignadas( $uid ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select( 'uid_categoria' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'categorias_asignadas' ) );
@@ -139,7 +139,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_verticales_asignadas( $uid ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select( 'uid_vertical' );
         $this->db->where( 'uid_usuario', $uid );
         $result = $this->db->get($this->db->dbprefix( 'verticales_asignadas' ) );
@@ -153,7 +153,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_companias_celular(){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select( 'id, compania' );
         $companias = $this->db->get($this->db->dbprefix( 'catalogo_compania_celular' ) );
         if ($companias->num_rows() > 0 ) return $companias->result();
@@ -166,7 +166,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_catalogo_roles(){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select( 'id, nombre_rol' );
         $roles = $this->db->get($this->db->dbprefix( 'catalogo_rol_usuarios' ) );
         if ($roles->num_rows() > 0 ) return $roles->result();
@@ -191,9 +191,9 @@ class Cms_model extends CI_Model {
         $this->db->set( 'password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE );
         $this->db->set( 'fecha_registro',  gmt_to_local( $timestamp, $this->timezone, TRUE) );
         $this->db->insert($this->db->dbprefix( 'usuarios' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ($this->db->affected_rows() > 0){
-            $this->db->cache_off();
+            //$this->db->cache_off();
             $this->db->select('uid_usuario');
             $this->db->where('email',"AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",FALSE);
             $result = $this->db->get($this->db->dbprefix( 'usuarios' ) );
@@ -228,7 +228,7 @@ class Cms_model extends CI_Model {
         $this->db->set( 'password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE );
         $this->db->where('uid_usuario', $usuario['uid_usuario'] );
         $this->db->update($this->db->dbprefix( 'usuarios' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         $c_asign = $this->categorias_asignadas( $usuario['categorias'], $usuario['uid_usuario'] );
         $v_asign = $this->verticales_asigandas( $usuario['verticales'], $usuario['uid_usuario'] );
         if ($c_asign === TRUE && $v_asign === TRUE ) return TRUE;
@@ -254,7 +254,7 @@ class Cms_model extends CI_Model {
         $this->db->where('uid_usuario', $perfil['uid'] );
         $this->db->where('password', "AES_ENCRYPT('{$perfil['password_actual']}','{$this->key_encrypt}')", FALSE );
         $this->db->update($this->db->dbprefix( 'usuarios' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -273,7 +273,7 @@ class Cms_model extends CI_Model {
             $this->db->set('uid_categoria', $categoria);
             $this->db->insert($this->db->dbprefix( 'categorias_asignadas' ) );
         }
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -292,7 +292,7 @@ class Cms_model extends CI_Model {
             $this->db->set('uid_vertical', $vertical);
             $this->db->insert($this->db->dbprefix( 'verticales_asignadas' ) );
         }
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -306,7 +306,7 @@ class Cms_model extends CI_Model {
         $this->db->delete( $this->db->dbprefix( 'categorias_asignadas' ), array( 'uid_usuario' => $uid ) );
         $this->db->delete( $this->db->dbprefix( 'verticales_asignadas' ), array( 'uid_usuario' => $uid ) );
         $this->db->delete( $this->db->dbprefix( 'usuarios' ), array( 'uid_usuario' => $uid ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -319,7 +319,7 @@ class Cms_model extends CI_Model {
     public function delete_trabajo( $uid_trabajo ){
         $this->db->delete($this->db->dbprefix( 'trabajos_categorias' ), array( 'uid_trabajo' => $uid_trabajo ) );
         $this->db->delete($this->db->dbprefix( 'trabajos' ), array( 'uid_trabajo' => $uid_trabajo ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         return ( $this->db->affected_rows() > 0 );
     }
 
@@ -328,7 +328,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_trabajos(){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select( 'uid_trabajo, uid_usuario, uid_categoria, uid_vertical, nombre, slug_nombre_feed, feeds_output, activo' );
         $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
         if ($result->num_rows() > 0) return $result->result();
@@ -342,7 +342,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_trabajos_editor( $uid ){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select('uid_trabajo, nombre, url_origen, activo, uid_usuario');
         $this->db->where( 'uid_usuario',$uid );
         $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
@@ -352,7 +352,7 @@ class Cms_model extends CI_Model {
     }
 
     public function get_trabajo_ejecutar( $uid ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->select( 'uid_usuario, uid_categoria, uid_vertical, slug_nombre_feed, feeds_output, activo' );
         $this->db->where( 'uid_trabajo ', $uid );
         $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
@@ -370,7 +370,7 @@ class Cms_model extends CI_Model {
         $this->db->set( 'activo', $job['status'] );
         $this->db->where('uid_trabajo', $job['uidjob'] );
         $this->db->update($this->db->dbprefix( 'trabajos' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -473,7 +473,7 @@ class Cms_model extends CI_Model {
      * @return [type]              [description]
      */
     public function get_trabajo_editar( $uid_trabajo ){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select('uid_trabajo, id_trabajo, nombre, url_origen, fecha_registro, fecha_ejecucion, formato_salida, uid_usuario, cron_config');
         $this->db->where('uid_trabajo',$uid_trabajo);
         $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
@@ -503,7 +503,7 @@ class Cms_model extends CI_Model {
         $this->db->set('formatos', $trabajo['formatos'] );
         $this->db->set('feeds_output', $trabajo['feeds_output'] );
         $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;         
     }
@@ -525,7 +525,7 @@ class Cms_model extends CI_Model {
         $this->db->set('cron_config', $trabajo['cron_date']);
         $this->db->where('uid_trabajo', $trabajo['uid_trabajo']);
         $this->db->update('trabajos');
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ($this->db->affected_rows() > 0){            
             $this->db->select('uid_trabajo');
             $this->db->where('nombre',$trabajo['nombre']);
@@ -557,7 +557,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_categorias(){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
         $this->db->order_by('fecha_registro', 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
@@ -572,7 +572,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_categorias_usuario( $uid ){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->distinct( 'c.uid_categoria' );
         $this->db->select( 'c.nombre' );
         $this->db->from( $this->db->dbprefix( 'categorias' ) . ' AS c' );
@@ -595,7 +595,7 @@ class Cms_model extends CI_Model {
         $this->db->set('slug_categoria', $categoria['slug_categoria']);
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->insert( $this->db->dbprefix( 'categorias') );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE; 
     }
@@ -606,7 +606,7 @@ class Cms_model extends CI_Model {
      * @return [type]       [description]
      */
     public function validar_categoria( $slug ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->where('slug_categoria', $slug );
         $verifica = $this->db->count_all_results( $this->db->dbprefix( 'categorias' ) );
         if( $verifica > 0 ) return TRUE;
@@ -621,7 +621,7 @@ class Cms_model extends CI_Model {
     public function delete_categoria( $uid ){
         $this->db->delete( $this->db->dbprefix( 'categorias_asignadas' ), array('uid_categoria' => $uid));
         $this->db->delete( 'categorias', array( 'uid_categoria' => $uid ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;
     }
@@ -631,7 +631,7 @@ class Cms_model extends CI_Model {
      * @return [type] [description]
      */
     public function get_verticales(){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
         $this->db->order_by('fecha_registro', 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
@@ -646,7 +646,7 @@ class Cms_model extends CI_Model {
      * @return [type]      [description]
      */
     public function get_verticales_usuario( $uid ){
-        $this->db->cache_on();
+        //$this->db->cache_on();
         $this->db->distinct( 'v.uid_vertical' );
         $this->db->select( 'v.nombre' );
         $this->db->from( $this->db->dbprefix( 'verticales' ) . ' AS v' );
@@ -669,7 +669,7 @@ class Cms_model extends CI_Model {
         $this->db->set('slug_vertical', $vertical['slug_vertical']);
         $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->insert( $this->db->dbprefix( 'verticales' ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE;
     }
@@ -680,7 +680,7 @@ class Cms_model extends CI_Model {
      * @return [type]       [description]
      */
     public function validar_vertical( $slug ){
-        $this->db->cache_off();
+        //$this->db->cache_off();
         $this->db->where('slug_vertical', $slug );
         $verifica = $this->db->count_all_results( $this->db->dbprefix( 'verticales' ) );
         if( $verifica > 0 ) return TRUE;
@@ -695,7 +695,7 @@ class Cms_model extends CI_Model {
     public function delete_vertical( $uid ){
         $this->db->delete( $this->db->dbprefix( 'verticales_asignadas' ), array( 'uid_vertical' => $uid ) );
         $this->db->delete( 'verticales', array( 'uid_vertical' => $uid ) );
-        $this->db->cache_delete_all();
+        //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE; 
     }
