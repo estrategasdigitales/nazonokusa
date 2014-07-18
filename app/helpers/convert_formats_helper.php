@@ -16,15 +16,8 @@
 						break;
 					case 'xml':
 						$array = json_decode( $output, TRUE );
-						$xml = new XMLWriter();
-						$xml->openMemory();
-						$xml->startDocument('1.0','utf-8');
-						$xml->startElement('root');
-						array_to_xml( $xml, $array[0] );
-						$xml->endElement();
-						$output = $xml->outputMemory( true );
-						print_r( $output );die;
-						$salida[] = array( 'formato' => $formato, 'output' => array_to_xml( $array ), 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-xml.xml' );
+						print_r( array_to_xml( $array ) );die;
+						$salida[] = array( 'formato' => $formato, 'output' => '', 'url' => '' );
 						break;
 					case 'rss':
 						//$array = json_decode( $output, TRUE );
@@ -59,17 +52,24 @@
 	}
 
 	if ( ! function_exists('array_to_xml') ){
-		function array_to_xml( XMLWriter $xml, $data ){
-			print_r( $array );die;
-			foreach( $data as $key => $value ) {
-		        if( is_array( $value )) {
-		            $xml->startElement( $key );
-		            write_xml( $xml, $value );
-		            $xml->endElement( );
-		            continue;
-		        }
-		        $xml->writeElement( $key, $value );
-		    }
+		function array_to_xml( $data ){
+			$CI =& get_instance();
+			$CI->load->library('MY_Xml_writer');
+			$xml = new MY_Xml_writer();
+			$xml->setRootName('root');
+			$xml->initiate();
+			// foreach( $data as $key => $value ) {
+		 //        if( is_array( $value ) ) {
+		 //            $xml->startElement( $key );
+		 //            array_to_xml( $xml, $value );
+		 //            $xml->endElement( );
+		 //            continue;
+		 //        }
+		 //        $xml->writeElement( $key, $value );
+		 //    }
+			$xml->endBranch();
+			$xml->getXML(true);
+			return $xml;
 		}
 	}
 

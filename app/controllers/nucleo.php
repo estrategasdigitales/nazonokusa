@@ -133,11 +133,11 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function feed_service(){
-		$url = $this->input->get('url');
 		$output = array();
+		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
-		$url = html_entity_decode( utf8_decode( $url ) );
+		$url = html_entity_decode( $url );
 		if ( $feed = json_decode( $url ) ){
 			foreach ( $feed as $item ){
 				$cont[] = $this->mapAttributes( json_encode( $item ) );
@@ -158,14 +158,14 @@ class Nucleo extends CI_Controller {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
-					$rss = new SimpleXMLElement( $url );
-					foreach ( $rss as $item ){
+					$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+					foreach ( $rss->channel as $item ){
 						$feed[] = $this->mapAttributes( json_encode( $item ) );
 					}
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
 				} else {
-					$xml = new SimpleXMLElement( $url );
+					$xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
 					foreach ( $xml as $item ){
 						$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					}
@@ -176,6 +176,39 @@ class Nucleo extends CI_Controller {
 		}
 		$data = array( 'indices' => $indices[0] );
 		$this->load->view('cms/service', $data );
+	}
+
+	/**
+	 * [feed_service_content description]
+	 * @return [type] [description]
+	 */
+	public function feed_service_content(){
+		$output = array();
+		$url = $this->input->get('url');
+		$url = urldecode( base64_decode( $url ) );
+		$url = file_get_contents_curl( $url );
+		$url = html_entity_decode( $url );
+		if ( $feed = json_decode( $url ) ){
+			$contenido_feed = $url;
+		} else {
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$feed = substr( $url, $pos + 1, -1 );
+				$contenido_feed = $feed;
+			} else {
+				$dom = new DOMDocument();
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+					$contenido_feed = $rss->channel;
+				} else {
+					$xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+					$contenido_feed = $xml;
+				}
+			}
+		}
+		$data = array( 'contenido_feed' => $contenido_feed );
+		$this->load->view('cms/service_content', $data );
 	}
 
 	/**
@@ -440,7 +473,8 @@ class Nucleo extends CI_Controller {
 		foreach ( $campos->info as $campo ){
 			$this->selected( $tree, $campo->identifier, $nodesSelected );
 		}
-		$feed = json_decode( $this->jsonContent( $urlFeed ) );
+		$feed = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $urlFeed ) );
+		$feed = json_decode( file_get_contents_curl( $feed ) );
 
 		if ( is_array( $feed ) ){
 			$root = array_keys( $feed );
@@ -471,18 +505,9 @@ class Nucleo extends CI_Controller {
 		
 		$jsonValidate = new TreeFeed($feed, 1, $jsontmp, 'category');
 
-		return json_encode( $feed );
-		// echo json_encode($feed);exit;
-		// $content = file_get_contents_curl( $urlFeed );
-		// $content = (array)json_decode($content);
-		// $content = $this->getFinalFeed($json['category'], $content['category']);
-		// $content[0]->program = $this->getFinalFeed($json['category'][2]->program, $content[0]->program);
-		// foreach ($content[0]->program as $key => $value) {
-		// 	$content[0]->program[$key]->videos = $this->getFinalFeed($json['category'][2]->program[5]->videos, $content[0]->program[$key]->videos);
-		// }
+		print_r( $feed );die;
 
-		// echo json_encode($content);exit;
-		// return $jsontmp;
+		return json_encode( $feed );
 	}
 
 	private function jsonContent( $url ){
@@ -508,8 +533,6 @@ class Nucleo extends CI_Controller {
 				}
 			}
 		}
-
-		//print_r( $contenido_feed );die;
 		return $contenido_feed;
 	}
 
