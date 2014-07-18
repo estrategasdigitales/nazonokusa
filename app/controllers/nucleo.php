@@ -92,6 +92,10 @@ class Nucleo extends CI_Controller {
 		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
 	}
 
+	/**
+	 * [job_process description]
+	 * @return [type] [description]
+	 */
 	public function job_process(){
 		$job['status'] 	= $this->input->post('status');
 		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
@@ -236,6 +240,13 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/tree_feed', $data);
 	}
 
+	/**
+	 * [iterateNodesJSON description]
+	 * @param  stdClass $write  [description]
+	 * @param  array    $nodes  [description]
+	 * @param  boolean  $parent [description]
+	 * @return [type]           [description]
+	 */
 	function iterateNodesJSON(stdClass $write, array $nodes, $parent = false) {
 		$tree = [];
 		// Obtenemos las propiedades
@@ -475,6 +486,7 @@ class Nucleo extends CI_Controller {
 			$this->selected( $tree, $campo->identifier, $nodesSelected );
 		}
 		$feed = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $urlFeed ) );
+		print_r( $feed );die;
 		$feed = json_decode( file_get_contents_curl( $feed ) );
 
 		if ( is_array( $feed ) ){
