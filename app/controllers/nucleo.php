@@ -217,7 +217,6 @@ class Nucleo extends CI_Controller {
 	 */
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
-		print_r( $url );die;
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree($content, true);
 		$arbol = array('tree' => serialize( $tree ) );
@@ -236,6 +235,13 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/tree_feed', $data);
 	}
 
+	/**
+	 * [iterateNodesJSON description]
+	 * @param  stdClass $write  [description]
+	 * @param  array    $nodes  [description]
+	 * @param  boolean  $parent [description]
+	 * @return [type]           [description]
+	 */
 	function iterateNodesJSON(stdClass $write, array $nodes, $parent = false) {
 		$tree = [];
 		// Obtenemos las propiedades

@@ -1,4 +1,4 @@
-$(function(){
+tvs(function($){
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 25, // The length of each line
@@ -65,10 +65,7 @@ $(function(){
 	$('#form_usuario_nuevo').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -102,10 +99,7 @@ $(function(){
 	$('#form_login').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -139,10 +133,7 @@ $(function(){
 	$('#form_trabajo_nuevo').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -176,10 +167,7 @@ $(function(){
 	$('#form_categoria_nueva').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -213,10 +201,7 @@ $(function(){
 	$('#form_vertical_nueva').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -251,10 +236,7 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messages').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -293,10 +275,7 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messages').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -337,10 +316,7 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -373,10 +349,7 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();
@@ -409,10 +382,7 @@ $(function(){
 		$('#foo').css('display','block');
 		$('#messagesModal').removeClass('alert-danger');
 		var spinner = new Spinner(opts).spin(target);
-		$.ajax({
-			url: $(this).attr('action'),
-			type: 'POST',
-			data: $(this).serialize(),
+		$(this).ajaxSubmit({
 			success: function(data){
 				if(data != true){
 					spinner.stop();

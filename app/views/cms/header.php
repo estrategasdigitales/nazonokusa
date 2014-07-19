@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.custom.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/spin.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.form.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
 </head>
 <body>

@@ -1,1 +1,1 @@
-var $ = jQuery.noConflict();
+var tvs = jQuery.noConflict();
