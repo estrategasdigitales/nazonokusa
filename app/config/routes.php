@@ -48,6 +48,7 @@ $route['usuarios']					= 'cms/admin_usuarios';
 $route['trabajos']					= 'cms/admin_trabajos';
 $route['categorias']				= 'cms/admin_categorias';
 $route['verticales']				= 'cms/admin_verticales';
+$route['estructuras']				= 'cms/admin_estructuras';
 $route['nuevo_usuario']				= 'cms/nuevo_usuario';
 $route['nueva_categoria']			= 'cms/nueva_categoria';
 $route['nueva_vertical']			= 'cms/nueva_vertical';

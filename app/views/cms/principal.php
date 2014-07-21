@@ -38,6 +38,16 @@
 		<div class="col-md-3"></div>
 	</div>
 	<br>
+	<div class="row">
+		<div class="col-md-3"></div>
+		<?php if( $this->session->userdata('nivel') >= '1' && $this->session->userdata('nivel') <= '2' ): ?>
+			<div class="col-md-6">
+				<a href="<?php echo base_url(); ?>estructuras" type="button" class="btn btn-primary btn-lg btn-block">Administrador de Estructuras de Salida</a>
+			</div>
+		<?php endif; ?>
+		<div class="col-md-3"></div>
+	</div>
+	<br>
 	<!--<div class="row">
 		<div class="col-md-3"></div>
 		<div class="col-md-6">

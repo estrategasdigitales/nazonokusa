@@ -164,6 +164,20 @@ class Cms extends CI_Controller {
 	}
 
 	/**
+	 * [admin_estructuras description]
+	 * @return [type] [description]
+	 */
+	public function admin_estructuras(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			if ( $this->session->userdata('nivel') <= 2 ){
+				$this->load->view( 'cms/admin/estructuras' );
+			}
+		}
+	}
+
+	/**
 	 * [recuperar_contrasena description]
 	 * @return [type] [description]
 	 */
