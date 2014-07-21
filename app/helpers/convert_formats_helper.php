@@ -58,18 +58,20 @@
 			$xml = new MY_Xml_writer();
 			$xml->setRootName('root');
 			$xml->initiate();
-			// foreach( $data as $key => $value ) {
-		 //        if( is_array( $value ) ) {
-		 //            $xml->startElement( $key );
-		 //            array_to_xml( $xml, $value );
-		 //            $xml->endElement( );
-		 //            continue;
-		 //        }
-		 //        $xml->writeElement( $key, $value );
-		 //    }
-			$xml->endBranch();
-			$xml->getXML(true);
-			return $xml;
+			foreach( $data as $key => $value ) {
+		        if( is_array( $value ) ) {
+		        	print_r( $value );
+		            // $xml->startElement( $key );
+		            // array_to_xml( $xml, $value );
+		            // $xml->endElement( );
+		            // continue;
+		        }
+		        // $xml->writeElement( $key, $value );
+		    }
+			// $xml->endBranch();
+			// $xml->getXML(true);
+			// return $xml;
+			die;
 		}
 	}
 

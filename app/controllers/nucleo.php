@@ -193,7 +193,7 @@ class Nucleo extends CI_Controller {
 		$url = file_get_contents_curl( $url );
 		$url = html_entity_decode( $url );
 		if ( $feed = json_decode( $url ) ){
-			$contenido_feed = $url;
+			$contenido_feed = json_decode( $url );
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
@@ -432,6 +432,10 @@ class Nucleo extends CI_Controller {
     	} else return false;
     }
 
+    /**
+     * [validar_form_trabajo description]
+     * @return [type] [description]
+     */
 	public function validar_form_trabajo(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -441,7 +445,7 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
-			//$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
+			$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
 			if ( ! empty( $this->input->post('formato') ) ){
 				if ( in_array('rss2', $this->input->post('formato' ) ) ){
 					$this->form_validation->set_rules('valores_rss[]', 'Campos adicionales para RSS', 'required|xss_clean');
@@ -459,7 +463,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['categoria']   		= $this->input->post('categoria');
 				$trabajo['vertical']   			= $this->input->post('vertical');
 				$trabajo['campos']				= $this->input->post('claves');
-				$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
+				$trabajo['arbol_json']			= $this->input->post('tree_json');
 				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
@@ -476,6 +480,12 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [getItems description]
+	 * @param  [type] $campos  [description]
+	 * @param  [type] $urlFeed [description]
+	 * @return [type]          [description]
+	 */
 	private function getItems( $campos, $urlFeed ){
 		$tree = $this->session->userdata('tree');
 		$nodesSelected = $this->session->userdata('nodes');
@@ -485,8 +495,8 @@ class Nucleo extends CI_Controller {
 			$this->selected( $tree, $campo->identifier, $nodesSelected );
 		}
 		$feed = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $urlFeed ) );
-		print_r( $feed );die;
 		$feed = json_decode( file_get_contents_curl( $feed ) );
+		// print_r( $feed );die;
 
 		if ( is_array( $feed ) ){
 			$root = array_keys( $feed );
@@ -516,37 +526,34 @@ class Nucleo extends CI_Controller {
 		$jsontmp = '{"category": ' . $jsontmp . '}';
 		
 		$jsonValidate = new TreeFeed($feed, 1, $jsontmp, 'category');
-
-		print_r( $feed );die;
-
 		return json_encode( $feed );
 	}
 
-	private function jsonContent( $url ){
-		$output = array();
-		$url = file_get_contents_curl( $url );
-		$url = html_entity_decode( utf8_decode( $url ) );
-		if ( $feed = json_decode( $url ) ){
-			$contenido_feed = $url;
-		} else {
-			$pos = strpos( $url, '(' );
-			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$feed = substr( $url, $pos + 1, -1 );
-				$contenido_feed = $feed;
-			} else {
-				$dom = new DOMDocument();
-				$dom->loadXML( $url );
-				if ( $dom->documentElement->nodeName == 'rss' ){
-					$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					$contenido_feed = json_encode( $rss->channel );
-				} else {
-					$xml = new SimpleXMLElement( $url );
-					$contenido_feed = json_encode( $xml, LIBXML_NOCDATA );
-				}
-			}
-		}
-		return $contenido_feed;
-	}
+	// private function jsonContent( $url ){
+	// 	$output = array();
+	// 	$url = file_get_contents_curl( $url );
+	// 	$url = html_entity_decode( utf8_decode( $url ) );
+	// 	if ( $feed = json_decode( $url ) ){
+	// 		$contenido_feed = $url;
+	// 	} else {
+	// 		$pos = strpos( $url, '(' );
+	// 		if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+	// 			$feed = substr( $url, $pos + 1, -1 );
+	// 			$contenido_feed = $feed;
+	// 		} else {
+	// 			$dom = new DOMDocument();
+	// 			$dom->loadXML( $url );
+	// 			if ( $dom->documentElement->nodeName == 'rss' ){
+	// 				$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+	// 				$contenido_feed = json_encode( $rss->channel );
+	// 			} else {
+	// 				$xml = new SimpleXMLElement( $url );
+	// 				$contenido_feed = json_encode( $xml, LIBXML_NOCDATA );
+	// 			}
+	// 		}
+	// 	}
+	// 	return $contenido_feed;
+	// }
 
 	/**
 	 * [validar_form_editar_trabajo description]
