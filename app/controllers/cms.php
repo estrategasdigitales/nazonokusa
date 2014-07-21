@@ -117,13 +117,12 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
 			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
 				$data['trabajos']	= $this->cms->get_trabajos();
 			}else {
 				$data['trabajos']	= $this->cms->get_trabajos_editor( $this->session->userdata( 'uid' ) );
 			}
-			$this->load->view('cms/admin/trabajos',$data);
+			$this->load->view( 'cms/admin/trabajos', $data );
 		}
 	}
 
@@ -136,7 +135,6 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['categorias']	= $this->cms->get_categorias();
 				$this->load->view( 'cms/admin/categorias', $data );
 			} else {
@@ -154,7 +152,6 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['usuario'] 	= $this->session->userdata('nombre');
 				$data['verticales']	= $this->cms->get_verticales();
 				$this->load->view('cms/admin/verticales', $data);
 			} else {
@@ -407,7 +404,6 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
 			$data['categorias'] = $this->cms->get_categorias();
 			$data['verticales'] = $this->cms->get_verticales();
 			$data['companias']	= $this->cms->get_companias_celular();
@@ -577,8 +573,7 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			$this->load->view('cms/admin/nueva_categoria',$data);
+			$this->load->view( 'cms/admin/nueva_categoria' );
 		}
 	}
 
@@ -638,8 +633,7 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['usuario'] 	= $this->session->userdata('nombre');
-			$this->load->view( 'cms/admin/nueva_vertical', $data );
+			$this->load->view( 'cms/admin/nueva_vertical' );
 		}
 	}
 
@@ -707,6 +701,14 @@ class Cms extends CI_Controller {
 				$data['verticales'] = $this->cms->get_verticales_usuario( $this->session->userdata( 'uid' ) );
 			}
 			$this->load->view( 'cms/admin/nuevo_trabajo', $data );
+		}
+	}
+
+	public function nueva_estructura(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$this->load->view( 'cms/admin/nueva_estructura' );
 		}
 	}
 

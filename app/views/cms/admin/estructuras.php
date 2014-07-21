@@ -2,7 +2,7 @@
 <?php $this->load->view( 'cms/header' ); ?>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"><h4>Administrar Estructuras de Salida</h4></div>
-		<div class="col-sm-4 col-md-4"><a href="<?php echo base_url(); ?>nuevo_trabajo" type="button" class="btn btn-primary btn-block">Nueva Estructura</a></div>
+		<div class="col-sm-4 col-md-4"><a href="<?php echo base_url(); ?>nueva_estructura" type="button" class="btn btn-primary btn-block">Nueva Estructura</a></div>
 	</div>
 	<br>
 	<div class="row">

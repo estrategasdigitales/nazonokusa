@@ -267,13 +267,13 @@
 		<div class="row">
 			<div class="col-sm-4 col-md-4"></div>
 			<div class="col-sm-4 col-md-4">
-				<a href="<?php echo site_url("trabajos") ?>" type="button" class="btn btn-danger btn-block">Cancelar</a>
+				<a href="<?php echo base_url(); ?>trabajos" type="button" class="btn btn-danger btn-block">Cancelar</a>
 			</div>
 			<div class="col-sm-4 col-md-4">
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<input type="hidden" id="claves" name="claves">
+		<!--<input type="hidden" id="claves" name="claves">-->
 	<?php echo form_close(); ?>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
