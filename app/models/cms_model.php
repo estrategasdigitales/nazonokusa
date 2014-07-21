@@ -25,8 +25,8 @@ class Cms_model extends CI_Model {
         $this->db->select('uid_usuario, nombre, apellidos, extension, nivel, compania_celular');
         $this->db->select( "AES_DECRYPT( email,'{$this->key_encrypt}') AS email", FALSE );
         $this->db->select( "AES_DECRYPT( celular,'{$this->key_encrypt}') AS celular", FALSE );
-        $this->db->where( 'email', "AES_ENCRYPT('{$usuario['usuario']}','{$this->key_encrypt}')", FALSE );
-        $this->db->where( 'password', "AES_ENCRYPT('{$usuario['password']}','{$this->key_encrypt}')", FALSE );
+        $this->db->where( 'email', "AES_ENCRYPT('{$this->db->escape_str( $usuario['usuario'] )}','{$this->key_encrypt}')", FALSE );
+        $this->db->where( 'password', "AES_ENCRYPT('{$this->db->escape_str( $usuario['password'] )}','{$this->key_encrypt}')", FALSE );
         $result = $this->db->get( $this->db->dbprefix('usuarios') );
         if ($result->num_rows() === 1) return $result->row();
         else return FALSE;
