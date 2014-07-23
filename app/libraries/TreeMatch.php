@@ -28,7 +28,7 @@ class TreeMatch extends BaseMatch{
 	 * @param String $json         Objeto a analizar
 	 * @param String $jsonValidate Objeto de validación
 	 */
-	public function TreeMatch($json, $jsonValidate) {
+	public function TreeMatch( $json, $jsonValidate ){
 		// Incrementamos valor por ingreso a clase
 		$this->next();
 
