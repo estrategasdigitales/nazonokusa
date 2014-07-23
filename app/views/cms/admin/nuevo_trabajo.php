@@ -273,7 +273,7 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<!--<input type="hidden" id="claves" name="claves">-->
+		<input type="hidden" id="claves" name="claves">
 	<?php echo form_close(); ?>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
