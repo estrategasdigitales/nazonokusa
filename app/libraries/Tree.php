@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once( __DIR__. '/tree_json_library/Parameters.php' );
-define("NODE_TYPE_ITEM", 'item');
-define("NODE_TYPE_FOLDER", 'folder');
+define( 'NODE_TYPE_ITEM', 'item');
+define( 'NODE_TYPE_FOLDER', 'folder');
 
 /**
  * @property String $type Para identificar si es una carpeta o un elemento seleccionable

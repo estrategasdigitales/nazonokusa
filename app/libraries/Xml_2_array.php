@@ -1,4 +1,4 @@
-<?php
+<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * XML2Array: A class to convert XML to array in PHP
  * It returns the array which can be converted back to XML using the Array2XML script
@@ -16,9 +16,16 @@
  *
  * Usage:
  *       $array = XML2Array::createArray($xml);
+ * 
+ * Modded: Eric Bravo
+ * Implements for Codeigniter '2.1.4'
+ * Version 0.3 (23 Jul 2014)
+ * Usage:
+ * $this->load->library('xml_2_array') in controller or 'xml_2_array' in autoload library
+ * $this->xml_2_array->createArray( $xml );
  */
  
-class XML2Array {
+class Xml_2_array {
  
     private static $xml = null;
 	private static $encoding = 'UTF-8';

@@ -166,9 +166,9 @@ class Nucleo extends CI_Controller {
 					// foreach ( $rss->channel as $item ){
 					// 	$feed[] = $this->mapAttributes( json_encode( $item ) );
 					// }
-					$xml2array = new XML2Array();
-					$rss = $xml2array->createArray( $url );
-					$feed[] = $this->mapAttributes( json_encode( $rss['rss'] ) );
+					// $xml2array = new XML_();
+					$rss = $this->xml_2_array->createArray( $url );
+					$feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel'] ) );
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
 				} else {
@@ -176,8 +176,8 @@ class Nucleo extends CI_Controller {
 					// foreach ( $xml as $item ){
 					// 	$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					// }
-					$xml2array = new XML2Array();
-					$xml = $xml2array->createArray( $url );
+					// $xml2array = new XML_();
+					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
@@ -213,14 +213,14 @@ class Nucleo extends CI_Controller {
 					// foreach ( $rss->channel as $item ){
 					// 	$feed[] = $item;
 					// }
-					$xml2array = new XML2Array();
-					$rss = $xml2array->createArray( $url );
-					$feed[] = $rss['rss'];
+					// $xml2array = new XML2Array();
+					$rss = $this->xml_2_array->createArray( $url );
+					$feed[] = $rss['rss']['channel'];
 					$contenido_feed = $feed;
 					//$contenido_feed = $rss->channel;
 				} else {
-					$xml2array = new XML2Array();
-					$xml = $xml2array->createArray( $url );
+					// $xml2array = new XML2Array();
+					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $xml;
 					$contenido_feed = $xml;
 				}
