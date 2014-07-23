@@ -172,10 +172,13 @@ class Nucleo extends CI_Controller {
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
 				} else {
-					$xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					foreach ( $xml as $item ){
-						$feed[] = $this->mapAttributes( json_encode( $xml ) );
-					}
+					// $xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+					// foreach ( $xml as $item ){
+					// 	$feed[] = $this->mapAttributes( json_encode( $xml ) );
+					// }
+					$xml2array = new XML2Array();
+					$xml = $xml2array->createArray( $url );
+					$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
 				}
@@ -216,7 +219,9 @@ class Nucleo extends CI_Controller {
 					$contenido_feed = $feed;
 					//$contenido_feed = $rss->channel;
 				} else {
-					$xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
+					$xml2array = new XML2Array();
+					$xml = $xml2array->createArray( $url );
+					$feed[] = $xml;
 					$contenido_feed = $xml;
 				}
 			}
@@ -456,7 +461,7 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
-			//$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
+			$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
 			if ( ! empty( $this->input->post('formato') ) ){
 				if ( in_array('rss2', $this->input->post('formato' ) ) ){
 					$this->form_validation->set_rules('valores_rss[]', 'Campos adicionales para RSS', 'required|xss_clean');
@@ -476,7 +481,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['campos']				= $this->input->post('claves');
 				$trabajo['arbol_json']			= $this->input->post('tree_json');
 				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
-				print_r( $trabajo['json_output'] );die;
+				//print_r( $trabajo['json_output'] );die;
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
 				$trabajo 						= $this->security->xss_clean( $trabajo );
