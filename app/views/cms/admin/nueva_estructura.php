@@ -77,116 +77,101 @@
 	</div>
 	<script type="text/javascript">
 		tvs(function($){
-			var data = [
-				{
-				    label: 'item',
-				    children: [
-				        { label: 'title' },
-				        { label: 'link' },
-				        { label: 'description' },
-				        { label: 'pubDate' },
-				        { label: 'media:thumbnail',
-				        	children: [
-				        		{ label: '@attribute',
-				        			children: [
-				        				{ label : 'url' },
-				        			]
-				        		},
-				        	]
-				        },
-				        { label: 'media:group',
-				        	children: [
-				        		{ label : 'media:title',
-				        			children: [
-				        				{ label : '@cdata' },
-				        			]
-				        		},
-				        		{ label : 'media:content',
-				        			children: [
-				        				{ label : '@attribute',
-				        					children: [
-				        						{ label: 'url' },	
-				        						{ label: 'medium' },
-				        						{ label: 'width' },
-				        						{ label: 'height' },
-				        					]
-				        				},
-				        			]
-				        		},
-				        	]
-				        },
-				        { label: 'media:group',
-				        	children: [
-				        		{ label : 'media:title',
-				        			children: [
-				        				{ label : '@cdata' },
-				        			]
-				        		},
-				        		{ label : 'media:content',
-				        			children: [
-				        				{ label : '@attribute',
-				        					children: [
-				        						{ label: 'url' },	
-				        						{ label: 'medium' },
-				        						{ label: 'width' },
-				        						{ label: 'height' },
-				        					]
-				        				},
-				        			]
-				        		},
-				        	]
-				        },
-				        { label: 'media:group',
-				        	children: [
-				        		{ label : 'media:title',
-				        			children: [
-				        				{ label : '@cdata' },
-				        			]
-				        		},
-				        		{ label : 'media:content',
-				        			children: [
-				        				{ label : '@attribute',
-				        					children: [
-				        						{ label: 'url' },	
-				        						{ label: 'medium' },
-				        						{ label: 'width' },
-				        						{ label: 'height' },
-				        					]
-				        				},
-				        			]
-				        		},
-				        	]
-				        },
-				        { label: 'media:group',
-				        	children: [
-				        		{ label : 'media:title',
-				        			children: [
-				        				{ label : '@cdata' },
-				        			]
-				        		},
-				        		{ label : 'media:content',
-				        			children: [
-				        				{ label : '@attribute',
-				        					children: [
-				        						{ label: 'url' },	
-				        						{ label: 'medium' },
-				        						{ label: 'width' },
-				        						{ label: 'height' },
-				        					]
-				        				},
-				        			]
-				        		},
-				        	]
-				        },
-				    ]
-				}
-			];
-			$('#tree-constructor').tree({
-				data: data,
-				dragAndDrop: true,
-				autoOpen: 0,
-				saveState: 'treeStructure',
-			});
-		});
+			$("#tree-constructor").jstree({
+				'json_data' : {
+					'data' : [
+						{
+							'data' : {
+								'title' : 'title',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'link',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'description',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'image',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'language',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'copyright',
+							},
+						},
+						{
+							'data' : {
+							'title' : 'managingEditor',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'webMaster',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'pubDate',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'lastBuildDate',
+							},
+						},
+						{
+							'data' : {
+								'title' : 'category',
+							},
+						},
+						{
+							'data' : {
+							'title' : 'generator',
+							},
+						},
+					]
+				},
+                 'types' : {
+					// I set both options to -2, as I do not need depth and children count checking
+					// Those two checks may slow jstree a lot, so use only when needed
+					'max_depth' : -2,
+					'max_children' : -2,
+					// I want only `drive` nodes to be root nodes
+					// This will prevent moving or creating any other type as a root node
+					'valid_children' : [ 'all' ],
+					'types' : {
+					// The default type
+						"default" : {
+							"valid_children" : "all",
+                            "check_node" : false,
+                            "uncheck_node" : false
+						}
+                     },
+                 },
+                 'plugins' : [ 'themes', 'types', 'json_data', 'ui', 'dnd' ],
+                 'ui' : {
+                     'initially_select' : [ 'node3' ]
+                 },
+                 'core' : {
+                     'initially_open' : [ 'node1' , 'node2' ]
+                 },
+                 // set a theme
+				'themes' : {
+            		'theme' : 'proton',
+            		'icons': false
+        		}
+             });
+         });
 	</script>
 <?php $this->load->view('cms/footer'); ?>
