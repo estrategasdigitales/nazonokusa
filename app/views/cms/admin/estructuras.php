@@ -15,7 +15,7 @@
 	                <td class="text-center" width="10%">Editar</td>
 					<td class="text-center" width="10%">Eliminar</td>
 				</tr>
-				<?php if ( $trabajos ): ?>
+<!-- 				<?php if ( $trabajos ): ?>
 					<?php foreach( $trabajos as $trabajo ): ?>
 						<tr>
 							<td><?php echo $trabajo->nombre; ?></td>
@@ -44,11 +44,11 @@
 							<td><a href="<?php echo base_url(); ?>eliminar_trabajo?name=<?php echo base64_encode( $trabajo->nombre ); ?>&token=<?php echo base64_encode( $trabajo->uid_trabajo ); ?>" type="button" class="btn btn-danger btn-sm btn-block btn-padding" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 						</tr>
 					<?php endforeach; ?>
-				<?php else : ?>
+				<!-- <?php else : ?> -->
 					<tr>
 						<td colspan="7">No existen estructuras para mostrar</td>
 					</tr>
-				<?php endif; ?>
+				<!-- <?php endif; ?> -->
 			</table>
 		</div>
 	</div>

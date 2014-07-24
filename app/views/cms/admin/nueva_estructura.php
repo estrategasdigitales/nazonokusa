@@ -68,7 +68,7 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<input type="hidden" id="claves" name="claves">
+		<input type="hidden" id="treeStructure" name="treeStructure" value="">
 	<?php echo form_close(); ?>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -79,21 +79,113 @@
 		tvs(function($){
 			var data = [
 				{
-				    label: 'node1',
+				    label: 'item',
 				    children: [
-				        { label: 'child1' },
-				        { label: 'child2' }
-				    ]
-				},
-				{
-				    label: 'node2',
-				    children: [
-				        { label: 'child3' }
+				        { label: 'title' },
+				        { label: 'link' },
+				        { label: 'description' },
+				        { label: 'pubDate' },
+				        { label: 'media:thumbnail',
+				        	children: [
+				        		{ label: '@attribute',
+				        			children: [
+				        				{ label : 'url' },
+				        			]
+				        		},
+				        	]
+				        },
+				        { label: 'media:group',
+				        	children: [
+				        		{ label : 'media:title',
+				        			children: [
+				        				{ label : '@cdata' },
+				        			]
+				        		},
+				        		{ label : 'media:content',
+				        			children: [
+				        				{ label : '@attribute',
+				        					children: [
+				        						{ label: 'url' },	
+				        						{ label: 'medium' },
+				        						{ label: 'width' },
+				        						{ label: 'height' },
+				        					]
+				        				},
+				        			]
+				        		},
+				        	]
+				        },
+				        { label: 'media:group',
+				        	children: [
+				        		{ label : 'media:title',
+				        			children: [
+				        				{ label : '@cdata' },
+				        			]
+				        		},
+				        		{ label : 'media:content',
+				        			children: [
+				        				{ label : '@attribute',
+				        					children: [
+				        						{ label: 'url' },	
+				        						{ label: 'medium' },
+				        						{ label: 'width' },
+				        						{ label: 'height' },
+				        					]
+				        				},
+				        			]
+				        		},
+				        	]
+				        },
+				        { label: 'media:group',
+				        	children: [
+				        		{ label : 'media:title',
+				        			children: [
+				        				{ label : '@cdata' },
+				        			]
+				        		},
+				        		{ label : 'media:content',
+				        			children: [
+				        				{ label : '@attribute',
+				        					children: [
+				        						{ label: 'url' },	
+				        						{ label: 'medium' },
+				        						{ label: 'width' },
+				        						{ label: 'height' },
+				        					]
+				        				},
+				        			]
+				        		},
+				        	]
+				        },
+				        { label: 'media:group',
+				        	children: [
+				        		{ label : 'media:title',
+				        			children: [
+				        				{ label : '@cdata' },
+				        			]
+				        		},
+				        		{ label : 'media:content',
+				        			children: [
+				        				{ label : '@attribute',
+				        					children: [
+				        						{ label: 'url' },	
+				        						{ label: 'medium' },
+				        						{ label: 'width' },
+				        						{ label: 'height' },
+				        					]
+				        				},
+				        			]
+				        		},
+				        	]
+				        },
 				    ]
 				}
 			];
 			$('#tree-constructor').tree({
-				data: data
+				data: data,
+				dragAndDrop: true,
+				autoOpen: 0,
+				saveState: 'treeStructure',
 			});
 		});
 	</script>
