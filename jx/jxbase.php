@@ -8,6 +8,8 @@ require "fdom.php";  // pull in XML helpers
 require "util.php";  // pull in PHP utility functions
 
 class ConversionException extends UnexpectedValueException {}
+class EmptyInput extends ConversionException {}
+class NullData extends ConversionException {}
 
 /**
  * Top level class for all JS <-> XML conversions
@@ -41,21 +43,30 @@ class J2X_Recipe extends JX_Recipe {
      */
 
     function process_string($content, $version='1.0', $encoding='UTF-8') {
-
-
+        if (!$content) {
+            throw new EmptyInput("empty content provided to process_string");
+        }
         $jsonp_tag = jsonp_wrapper($content);
         $json_content = $jsonp_tag ? jsonp_unwrap($content) : $content;
-        $j = json_decode($json_content);
-        $this->process($j, $version, $encoding);
+        $json_data = json_decode($json_content);
+        if (!$json_data) {
+            throw new NullData("json_decode returns nothing in process_string");
+        }
+        $this->process($json_data, $version, $encoding);
     }
 
 
     /**
-     * Process the data node. Create the XML tree structure.
+     * Process the data node. Create the XML tree structure
+     * in $this->tree as it goes alog.
      */
 
     function process($node, $version='1.0', $encoding='UTF-8') {
         global $domtree;
+
+        if (!$node) {
+            throw new EmptyInput("no data provided to process");
+        }
         $this->tree = new DOMDocument($version, $encoding);
         $this->xpathobj = new DOMXpath($this->tree);
 

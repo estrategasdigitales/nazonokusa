@@ -263,6 +263,11 @@ at this time.
 A handful of general recipes for document conversion are provided.
 Study these for insights into how to write further recipes.
 
+`jx/tests/test_js2xml.php` provides a good study-case for how
+recipes are adjusted. It steps through the stock conversion, then
+adds custom list item tags, and then custom post-processing
+of element text.
+
 **more how-to tbd**
 
 ### Open Questions
