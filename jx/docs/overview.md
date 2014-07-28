@@ -1,10 +1,14 @@
 
 
-## JavaScript-XML (JX) Translation Module
+## JS-XML (JX) Translation Module
 
 JX is a PHP-based module for translating between
 JavaScript- and XML-based data formats such as JSON, JSONP,
 RSS 2.0, and generic XML.
+
+In this document, "JS" refers to either of the JavaScript-
+based formats (JSON and JSONP), and "XML" refers to any
+XML-based format (including RSS).
 
 ### Requirements
 
@@ -255,7 +259,7 @@ would run the generic JS -> XML recipe on `gameinfo.json`. Output
 is always sent to the standard output. Capture it or pipe it with
 standard redirect or pipe operations (`>` or `|`).
 
-It is very important that the input path have an absolute filepath
+It is very important that the input path have an absolute file path
 at this time.
 
 ### Writing Recipes
@@ -263,15 +267,129 @@ at this time.
 A handful of general recipes for document conversion are provided.
 Study these for insights into how to write further recipes.
 
-`jx/tests/test_js2xml.php` provides a good study-case for how
-recipes are adjusted. It steps through the stock conversion, then
-adds custom list item tags, and then custom post-processing
-of element text.
+#### JS -> XML
 
-**more how-to tbd**
+JS to XML is an easier conversion than the opposite, at least at a base level.
+JS is the simpler encoding, so it presents simpler choices. To be sure, there
+are things in JS that do not have direct XML equivalents (notably anonymous
+arrays and scalar values such as numbers (ints and floats), booleans, and the
+`null` value). Conversion programs must decide the best ways to encoding those
+in XML. But, good news: There are reasonably clean ways of doing so that seem
+sufficiently idoimatic to both JS and XML practitioners.
 
-### Open Questions
+It is possible to produce custom recipes for each JS schema that will very
+precisely produce XML. The `js2tracks` recipe in `recipes/js2tracks.php` is one
+such example; it converts a simple list of music tracks.
+`tests/js2tracks_demo.php` shows how it is used.
 
- 1. Do you have a defined error reporting or logging scheme? What should
-    JX do if it finds parsing errors or malformed data structures in
-    the feeds it imports?
+The generic `js2xml` recipe in `recipes/js2xml.php` shows how general
+conversions can be made, regardless of input schema. See `tests/test_js2xml.php`
+for a case study in how recipes are used and adjusted. It steps through the
+stock conversion, then adds custom list item tags, and then custom
+post-processing of element text.
+
+
+TBD: explain array hoisting
+TBD: explain custom value transforms
+
+
+#### : XML -> JS
+
+XML to JS is the more challenging direction, as there is more
+complexity and fluidity in the input structure (especially
+element attributes, namespaces, and entities), and because
+there are no direct ways to translate some XML structures
+(e.g. document type declarations, "mixed" content
+containing interleaved text and elements). This sometimes happens
+in JS to XML (e.g. anonymous array elements, non-string types),
+but is much more pronounced going XML to JS.
+
+Note, while there are easy ways in PHP to convert from XML to
+JS through the use of `encode_json` and friends, they do not
+handle any of these complexities. They will drop attributes
+and other information in order to make their conversions.
+
+Dropping information is a possible decision in any conversion
+process, but it should be because a decision was made, not
+because the tools simply and quietly threw the information away.
+We will be more careful.
+
+Therefore during the translation, choices will have to be made
+about elements, attributes, and such are transformed. The core
+of doing this automatically is a `NodeTransformer`. It accepts
+an XML DOM node and amends a PHP data structure that will then
+be later exported to JSON. Along the way, it must handle
+attributes, child elements nodes, and text nodes.
+
+For example, what should the following be translated as:
+
+    <hotel type='premium'><name>Franklin<name><cost>140</cost></hotel>
+
+A common approach might be:
+
+    { "hotel": { "type": "premium",
+                 "name": "Franklin",
+                 "cost": "100" } }
+
+Though this hoists the `cost` field to the same level
+as the `type` field, it produces nicely idiomatic JS.
+
+What about:
+
+    <hotels>
+        <hotel type='premium'><name>Franklin<name><cost>140</cost></hotel>
+        <hotel type='economy'><name>Jones<name><cost>84</cost></hotel>
+        <hotel type='economy'><name>Soman<name><cost>53</cost></hotel>
+    </hotels>
+
+The easy conversion would be:
+
+    {
+        "hotels": {
+            "hotel": [
+                {
+                    "type": "premium",
+                    "name": "Franklin",
+                    "cost": "100"
+                },
+                {
+                    "type": "economy",
+                    "name": "Jones",
+                    "cost": "84"
+                },
+                {
+                    "type": "economy",
+                    "name": "Soman",
+                    "cost": "53"
+                }
+            ]
+        }
+    }
+
+But that is not idiomatic JS. Better would be to collapse the "hotel" level:
+
+    {
+        "hotels": [
+            {
+                "type": "premium",
+                "name": "Franklin",
+                "cost": "100"
+            },
+            {
+                "type": "economy",
+                "name": "Jones",
+                "cost": "84"
+            },
+            {
+                "type": "economy",
+                "name": "Soman",
+                "cost": "53"
+            }
+        ]
+    }
+
+Because this is more idiomatic and closer to what JS consumers will expect.
+
+The trick to doing such transforms easily is having a `NodeTransformer` that
+is prepared to make such conversions simply by specifying (rather than coding)
+them. And happily, we do.

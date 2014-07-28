@@ -10,12 +10,31 @@ require "util.php";  // pull in PHP utility functions
 class ConversionException extends UnexpectedValueException {}
 class EmptyInput extends ConversionException {}
 class NullData extends ConversionException {}
+class ParseError extends ConversionException {}
 
 /**
  * Top level class for all JS <-> XML conversions
  */
 
-abstract class JX_Recipe { }
+class JX_Recipe {
+
+    // steps to take before and after transformation (but before emitting)
+    public $preprocessors  = array();
+    public $postprocessors = array();
+
+    function preprocess() {
+        foreach ($this->preprocessors as $p) {
+            $p($this);
+        }
+    }
+
+    function postprocess() {
+        foreach ($this->postprocessors as $p) {
+            $p($this);
+        }
+    }
+
+}
 
 
 /**
@@ -25,31 +44,38 @@ abstract class JX_Recipe { }
 
 class J2X_Recipe extends JX_Recipe {
 
-    # Generalized supprot for JX conversion.
+    # Generalized support for JX conversion.
 
+    public $source = null;      # the original source, if availbale
     public $tree = null;        # DOM tree
     public $xpathobj = null;    # For XPath access
 
-    function __construct($node=null, $version='1.0', $encoding='UTF-8') {
-        if ($node === null) {
+    function __construct($input=null, $version='1.0', $encoding='UTF-8') {
+        if ($input === null) {
             return;
         }
-        $this->process($node, $version, $encoding);
+        if (is_string($input)) {
+            $this->process_string($input, $version, $encoding);
+        }
+        else {
+            $this->process($input, $version, $encoding);
+        }
     }
 
 
     /**
-     * Process ras wring contents. Create the XML tree structure.
+     * Process string contents. Create the XML tree structure.
      */
 
     function process_string($content, $version='1.0', $encoding='UTF-8') {
         if (!$content) {
             throw new EmptyInput("empty content provided to process_string");
         }
+        $this->source = $content;
         $jsonp_tag = jsonp_wrapper($content);
         $json_content = $jsonp_tag ? jsonp_unwrap($content) : $content;
         $json_data = json_decode($json_content);
-        if (!$json_data) {
+        if (!json_data) {
             throw new NullData("json_decode returns nothing in process_string");
         }
         $this->process($json_data, $version, $encoding);
@@ -67,11 +93,18 @@ class J2X_Recipe extends JX_Recipe {
         if (!$node) {
             throw new EmptyInput("no data provided to process");
         }
+        else {
+            $this->node = $node;
+        }
+
         $this->tree = new DOMDocument($version, $encoding);
         $this->xpathobj = new DOMXpath($this->tree);
 
         $domtree = $this->tree;
+
+        $this->preprocess();
         $this->topnode($node, $this->tree);
+        $this->postprocess();
     }
 
     /**
@@ -201,6 +234,63 @@ function jsonp_unwrap($jsonp) {
  */
 
 class X2J_Recipe extends JX_Recipe {
+
+    public $source = null;      # the original source, if availbale
+    public $tree = null;        # DOM tree
+    public $xpathobj = null;    # For XPath access
+    public $jsonp_wrap = null;  # JSONP wrapping call, if desired
+
+    function __construct($input=null, $jsonp_wrap=null) {
+        if ($input === null) {
+            return;
+        }
+        if ($is_string($input)) {
+            $this->process_string($input, $jsonp_wrap);
+        }
+        else {
+            $this->process($input, $jsonp_wrap);
+        }
+    }
+
+    /**
+     * Process a string into a dom, then make JS out of it.
+     */
+
+    function process_string($content, $jsonp_wrap=null, $assoc=false) {
+        if (!$content) {
+            throw new EmptyInput("empty content provided to process_string");
+        }
+        $this->source = $content;
+        $tree = DOMDocument::loadXML($content);
+        if ($tree === false) {
+            throw new ParseError("could not parse XML");
+        }
+        $this->process($tree, $jsonp_wrap, $assoc);
+    }
+
+
+    /**
+     * Process the dom.
+     */
+
+    function process($dom, $jsonp_wrap=null, $assoc=false) {
+        $this->jsonp_wrap = $jsonp_wrap;
+        $this->assoc = $assoc;
+
+        if (!$dom) {
+            throw new NullData("no tree given to process");
+        }
+        $this->tree = $dom;
+        $this->xpathobj = new DOMXpath($dom);
+
+        $this->preprocess();
+        $this->topnode();
+        $this->postprocess();
+    }
+
+    function emit() {
+        return json_encode($this->node);
+    }
 
 }
 

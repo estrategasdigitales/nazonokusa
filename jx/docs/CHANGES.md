@@ -1,4 +1,9 @@
 
+### Drop 3
+
+ * Upgrading docs.
+ * Upgrading automation of converters for more automated operation.
+ * Preparing to drop XML->JS machinery in Drop 4 (major version).
 
 ### Drop 2
 
