@@ -1,4 +1,15 @@
 
+
+
+### Drop 4
+
+  * Major cleanup of XML helpers. Old functional module replaced with
+    new object-oriented `DOMDoc` class in `jx/domdoc.php`.
+  * More tests.
+  * Focus of Drop 4 shifted, however, to focus on dynamic nature of
+    recipies. Some helper code for this visible, but majority postponed to
+    Drop 5.
+
 ### Drop 3
 
  * Upgrading docs.

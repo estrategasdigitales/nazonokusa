@@ -33,6 +33,25 @@ function properties($obj, $as_string=false) {
     return $as_string ? join(", ", $keys) : $keys;
 }
 
+
+/**
+ * Does the given haystack string start with the needle string?
+ */
+
+function startsWith($haystack, $needle)
+{
+    return $needle === "" || strpos($haystack, $needle) === 0;
+}
+
+/**
+ * Does the given haystack string end with the needle string?
+ */
+
+function endsWith($haystack, $needle)
+{
+    return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
+}
+
 /**
  * Generate a random string of the given length
  */

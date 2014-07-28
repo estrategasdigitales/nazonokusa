@@ -147,9 +147,13 @@ inform development of how to convert in the other.
     with different APIs and capabilities. `SimpleXML` objects can be
     conveniently parsed out of XML strings, and can be converted to JSON via
     `encode_json()`. They cannot be meaningfully altered or edited, however.
-    Luckily, they can be imported into `DOMDocument` objects. `DOMDocument`
+    Luckily, they can be imported into `DOMDocument` objects.
+
+ * `DOMDocument`
     objects are nominally editable, albeit at a very low level that requires
-    notable care and considerable effort.
+    notable care and considerable effort. JX provide a `DOMDoc` class that
+    simplifies `DOMDocument` usage and enhances it with additional editing
+    functions.
 
  *  XML contains the XPath query language for easily accessing components of a
     document. Reasonably good support is bundled with both of PHP's major XML
@@ -203,7 +207,9 @@ inform development of how to convert in the other.
 
     * `jxbase.php` Base code
     * `jxrun.php` Command line runner
-    * `fdom.php`  Functional simplification of PHP's `DOMDocument`
+    * `domdoc.php` Simplification and up-leveling of PHP's `DOMDocument` for
+       representing XML structures
+    * `findnode.php` Helper functions for finding contents in PHP structures
     * `util.php` Utility functions
 
 ### Performance
@@ -267,6 +273,8 @@ at this time.
 A handful of general recipes for document conversion are provided.
 Study these for insights into how to write further recipes.
 
+
+
 #### JS -> XML
 
 JS to XML is an easier conversion than the opposite, at least at a base level.
@@ -275,7 +283,7 @@ are things in JS that do not have direct XML equivalents (notably anonymous
 arrays and scalar values such as numbers (ints and floats), booleans, and the
 `null` value). Conversion programs must decide the best ways to encoding those
 in XML. But, good news: There are reasonably clean ways of doing so that seem
-sufficiently idoimatic to both JS and XML practitioners.
+sufficiently idiomatic to both JS and XML practitioners.
 
 It is possible to produce custom recipes for each JS schema that will very
 precisely produce XML. The `js2tracks` recipe in `recipes/js2tracks.php` is one
@@ -288,6 +296,19 @@ for a case study in how recipes are used and adjusted. It steps through the
 stock conversion, then adds custom list item tags, and then custom
 post-processing of element text.
 
+Typical JS->XML workflow, showing what kind of data is handled at each step:
+
+ * Start (JSON or JSONP input)
+ * split off JSONP wrapper, if any (string, JSON)
+ * decode_json (JSON -> PHP)
+ * preprocess (PHP)
+ * process (PHP -> DOMDoc, an enhanced version of PHP's native DOMDocument)
+ * postprocess (DOMDoc)
+ * emit (DOMDoc -> XML)
+
+Note that this is just the typical workflow. JX is flexible enough
+so that if a recipe wishes to use an alternate process, or work
+through alternate data structures, that is possible.
 
 TBD: explain array hoisting
 TBD: explain custom value transforms
@@ -312,9 +333,13 @@ and other information in order to make their conversions.
 Dropping information is a possible decision in any conversion
 process, but it should be because a decision was made, not
 because the tools simply and quietly threw the information away.
-We will be more careful.
+JX allows a very "stock" translation that discards minimal
+information. It does not seek to transform all possible XML--in particular,
+it does not attempt to transform "mixed" XML formats that are
+not readily realizable in JS--but for the information carrying
+XML most common in inter-app communication, it does so straightforwardly.
 
-Therefore during the translation, choices will have to be made
+During the translation, choices will have to be made
 about elements, attributes, and such are transformed. The core
 of doing this automatically is a `NodeTransformer`. It accepts
 an XML DOM node and amends a PHP data structure that will then
@@ -393,3 +418,22 @@ Because this is more idiomatic and closer to what JS consumers will expect.
 The trick to doing such transforms easily is having a `NodeTransformer` that
 is prepared to make such conversions simply by specifying (rather than coding)
 them. And happily, we do.
+
+PHP's `DOMDocument` is fairly low-level, and not on its own the easiest
+library to work with when manipulating contents.
+JX therefore provides several procedures for more simply
+adjusting XML contents, such as
+`setText` (setting the text of a node) or `renameTag`/`renameTags`.
+
+Typical XML->JS workflow, showing what kind of data is handled at each step:
+
+ * Start (XML)
+ * loadXML (XML -> DOMDoc, an enhanced version of PHP's native DOMDocument)
+ * preprocess (DOMDoc)
+ * process (DOMDoc -> PHP)
+ * postprocess (PHP)
+ * emit (PHP -> XML)
+
+Note that this is just the typical workflow. JX is flexible enough
+so that if a recipe wishes to use an alternate process, or work
+through alternate data structures, that is possible.

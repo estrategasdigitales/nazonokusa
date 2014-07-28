@@ -4,8 +4,8 @@
  * Home of conversion foundation classes, functions, and exceptions
  */
 
-require "fdom.php";  // pull in XML helpers
-require "util.php";  // pull in PHP utility functions
+require_once __DIR__ . "/domdoc.php";  // XML DOMDocument helpers
+require_once __DIR__ . "/util.php";    // utility functions
 
 class ConversionException extends UnexpectedValueException {}
 class EmptyInput extends ConversionException {}
@@ -48,7 +48,6 @@ class J2X_Recipe extends JX_Recipe {
 
     public $source = null;      # the original source, if availbale
     public $tree = null;        # DOM tree
-    public $xpathobj = null;    # For XPath access
 
     function __construct($input=null, $version='1.0', $encoding='UTF-8') {
         if ($input === null) {
@@ -88,7 +87,6 @@ class J2X_Recipe extends JX_Recipe {
      */
 
     function process($node, $version='1.0', $encoding='UTF-8') {
-        global $domtree;
 
         if (!$node) {
             throw new EmptyInput("no data provided to process");
@@ -97,10 +95,7 @@ class J2X_Recipe extends JX_Recipe {
             $this->node = $node;
         }
 
-        $this->tree = new DOMDocument($version, $encoding);
-        $this->xpathobj = new DOMXpath($this->tree);
-
-        $domtree = $this->tree;
+        $this->tree = new DOMDoc($version, $encoding);
 
         $this->preprocess();
         $this->topnode($node, $this->tree);
@@ -124,7 +119,7 @@ class J2X_Recipe extends JX_Recipe {
      */
 
     function copyDirect($node, $dom, $tag) {
-        return addElement($dom, $tag, $node->{$tag});
+        return $this->tree->addElement($dom, $tag, $node->{$tag});
     }
 
     /**
@@ -136,7 +131,7 @@ class J2X_Recipe extends JX_Recipe {
     function copyAll($node, $dom) {
         $keys = array_keys(get_object_vars($node));
         foreach ($keys as $key) {
-            addElement($dom, $key, $node->{$key});
+            $this->tree->addElement($dom, $key, $node->{$key});
         }
     }
 
@@ -158,23 +153,7 @@ class J2X_Recipe extends JX_Recipe {
         return $this->emit();
     }
 
-    /**
-     * Run the given XPath query, return the result
-     */
 
-    function xpath($query) {
-        return $this->xpathobj->query($query);
-    }
-
-    /**
-     * set the text of the given elemnt to the given string
-     */
-
-    function setText($element, $str) {
-        $newtext = $this->tree->createTextNode($str);
-        $element->normalize();
-        $element->replaceChild($newtext, $element->firstChild);
-    }
 }
 
 /**
@@ -261,7 +240,7 @@ class X2J_Recipe extends JX_Recipe {
             throw new EmptyInput("empty content provided to process_string");
         }
         $this->source = $content;
-        $tree = DOMDocument::loadXML($content);
+        $tree = DOMDoc::loadXML($content);
         if ($tree === false) {
             throw new ParseError("could not parse XML");
         }

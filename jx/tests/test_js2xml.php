@@ -86,8 +86,8 @@ END_XML;
 
         // but now we add custom post processing using XPath search
         // and a setText helper to upper-case the titles
-        foreach ($converter->xpath('//title') as $element) {
-            $converter->setText($element, strtoupper($element->textContent));
+        foreach ($converter->tree->xpath('//title') as $element) {
+            $converter->tree->setText($element, strtoupper($element->textContent));
         }
 
         $xstr = trim($converter->emit());

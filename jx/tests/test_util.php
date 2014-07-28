@@ -38,6 +38,28 @@ class Util_Test extends PHPUnit_Framework_TestCase
         $this->assertEquals(properties($o, true), "a, b");
     }
 
+    public function test_startsWith()
+    {
+        $this->assertEquals(startsWith("a string", "a"), true);
+        $this->assertEquals(startsWith("a string", "a "), true);
+        $this->assertEquals(startsWith("a string", "a str"), true);
+        $this->assertEquals(startsWith("a string", "a string"), true);
+        $this->assertEquals(startsWith("a string", "a string and more"), false);
+        $this->assertEquals(startsWith("a string", ""), true);
+    }
+
+    public function test_endsWith()
+    {
+        $this->assertEquals(endsWith("a string", "g"), true);
+        $this->assertEquals(endsWith("a string", "ng"), true);
+        $this->assertEquals(endsWith("a string", "string"), true);
+        $this->assertEquals(endsWith("a string", " string"), true);
+        $this->assertEquals(endsWith("a string", "a string"), true);
+        $this->assertEquals(endsWith("a string", "more than a string"), false);
+        $this->assertEquals(endsWith("a string", ""), true);
+    }
+
+
     public function test_generateRandomString()
     {
         $rs = generateRandomString();

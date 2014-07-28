@@ -15,17 +15,17 @@ class js2tracks extends J2X_Recipe {
 
     function rss($node, $dom) {
         $this->need_property($node, 'rss');
-        $xmlRoot = addElement($dom, 'rss', null, array('version' => '2.0'));
+        $xmlRoot = $this->tree->addElement($dom, 'rss', null, array('version' => '2.0'));
         $this->tracks($node->{'rss'}, $xmlRoot);
     }
 
     function tracks($node, $dom) {
         $this->need_property($node, 'tracks');
-        $tracksElt = addElement($dom, 'tracks');
+        $tracksElt = $this->tree->addElement($dom, 'tracks');
         foreach ($node->{'tracks'} as $trackObj) {
             // note insertion of track tag as replacement for
             // anonymous array element in JS source
-            $trackElt = addElement($tracksElt, 'track');
+            $trackElt = $this->tree->addElement($tracksElt, 'track');
             $this->track($trackObj, $trackElt);
         }
     }
