@@ -574,7 +574,7 @@ class Cms_model extends CI_Model {
     public function get_categorias_usuario( $uid ){
         //$this->db->cache_on();
         $this->db->distinct( 'c.uid_categoria' );
-        $this->db->select( 'c.nombre' );
+        $this->db->select( 'c.nombre, c.uid_categoria' );
         $this->db->from( $this->db->dbprefix( 'categorias' ) . ' AS c' );
         $this->db->join( $this->db->dbprefix( 'categorias_asignadas' ) . ' AS ca', 'ca.uid_categoria = c.uid_categoria', 'INNER' );
         $this->db->where( 'ca.uid_usuario', $uid );
@@ -648,7 +648,7 @@ class Cms_model extends CI_Model {
     public function get_verticales_usuario( $uid ){
         //$this->db->cache_on();
         $this->db->distinct( 'v.uid_vertical' );
-        $this->db->select( 'v.nombre' );
+        $this->db->select( 'v.nombre, v.uid_vertical' );
         $this->db->from( $this->db->dbprefix( 'verticales' ) . ' AS v' );
         $this->db->join( $this->db->dbprefix( 'verticales_asignadas' ) . '  AS va', 'va.uid_vertical = v.uid_vertical', 'INNER' );
         $this->db->where( 'va.uid_usuario', $uid );
