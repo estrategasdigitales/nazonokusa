@@ -4,7 +4,6 @@
 		<div class="row">
 			<div class="col-sm-8 col-md-8"><h4>Nuevo Trabajo</h4></div>
 		</div>
-		<br>
 		<div class="container row">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Datos del Trabajo</div>
@@ -62,12 +61,28 @@
 				</div>
 			</div>
 		</div>
-		<br>
 		<div class="container row">
 			<div class="panel panel-primary">
-				<div class="panel-heading">Selecciona el formato de salida</div>
+				<div class="panel-heading">Selecciona el tipo de salida</div>
 				<div class="panel-body">
-					<h5>Puedes seleccionar una salida estándar (conversión directa)</h5>
+					<h5>Puedes seleccionar una salida estándar (conversión directa) o salida específica (conversión estricta)</h5>
+					<div class="col-sm-12 col-md-12">
+						<div class="form-group">
+							<label for="tipo_salida" class="form-trabajos-label">Tipo de salida: </label>
+							<select class="form-control form-trabajos-date" name="tipo_salida" id="tipo_salida">
+								<option value="0">Selecciona un tipo de salida</option>
+								<option value="1">Salida estándar</option>
+								<option value="2">Salida específica</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="container row hide" id="formatos_estandar">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Formatos estándar</div>
+				<div class="panel-body">
 					<div class="col-sm-6 col-md-6">
 						<div class="form-group">
 							<div class="checkbox">
@@ -103,13 +118,29 @@
 				</div>
 			</div>
 		</div>
+		<div class="container row hide" id="formatos_especificos">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Formatos específicos</div>
+				<div class="panel-body">
+					<div class="col-sm-12 col-md-12">
+						<div class="form-group">
+							<label for="formato_especifico" class="form-trabajos-label">Salida específica: </label>
+							<select class="form-control form-trabajos-date" name="formato_especifico" id="formato_especifico">
+								<option value="0">Selecciona un formato de salida específico</option>
+								<option value="1">TV Samsung</option>
+								<option value="2">Applicaster</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button></div>
 			<div class="col-sm-8 col-md-8">
 				<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
 			</div>
 		</div>
-		<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)</div>
@@ -118,7 +149,6 @@
 				</div>
 			</div>
 		</div>
-		<br>
 		<div class="container row campos_rss">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Campos adicionales para el Formato RSS 2.0</div>
@@ -147,7 +177,6 @@
 				</div>
 			</div>
 		</div>
-		<br>
 		<div class="container row campos_jsonp">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Campos adicionales para el Formato JSONP</div>

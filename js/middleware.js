@@ -410,6 +410,24 @@ tvs(function($){
 		});
 		return false;
 	});
+
+	$('#tipo_salida').change(function(){
+		var tipo = $(this).val();
+		switch( tipo ){
+			case '1':
+				$('#formatos_especificos').addClass('hide');
+				$('#formatos_estandar').removeClass('hide');
+			break;
+			case '2':
+				$('#formatos_estandar').addClass('hide');
+				$('#formatos_especificos').removeClass('hide');
+			break;
+			default:
+				$('#formatos_estandar').addClass('hide');
+				$('#formatos_especificos').addClass('hide');
+			break;
+		}
+	});
 });
 
 function handlerProgramm(status, uidjob){

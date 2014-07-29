@@ -27,7 +27,7 @@
 	<div class="row">
 		<div class="col-sm-8 col-md-8"></div>
 		<div class="col-sm-4 col-md-4">
-			<a href="<?php base_url(); ?>index" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
+			<a href="<?php base_url(); ?>inicio" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
 	<div id="dialogConfirm"><span id="spanMessage"></span></div>
