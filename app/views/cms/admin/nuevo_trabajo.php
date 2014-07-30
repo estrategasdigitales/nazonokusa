@@ -141,6 +141,7 @@
 				<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
 			</div>
 		</div>
+		<br>
 		<div class="container row campos-feed">
 			<div class="panel panel-primary">
 				<div class="panel-heading">Selecciona los campos que deseas obtener en la salida (MAPEO MANUAL DE CAMPOS)</div>

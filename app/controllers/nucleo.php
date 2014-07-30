@@ -136,11 +136,9 @@ class Nucleo extends CI_Controller {
 	 * [feed_service description]
 	 * @return [type] [description]
 	 */
-	public function feed_service($feed_url){
-		if($feed_url && $feed_url != "")$url = $feed_url;
-		else $url = $this->input->get('url');
-
+	public function feed_service( ){
 		$output = array();
+		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
 		$url = html_entity_decode( $url );
@@ -164,21 +162,11 @@ class Nucleo extends CI_Controller {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
-					//$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					// foreach ( $rss->channel as $item ){
-					// 	$feed[] = $this->mapAttributes( json_encode( $item ) );
-					// }
-					// $xml2array = new XML_();
 					$rss = $this->xml_2_array->createArray( $url );
 					$feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel'] ) );
 					$contents = $this->array_unique_multidimensional( $feed );
 					$indices = create_indexes( $contents );
 				} else {
-					// $xml = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					// foreach ( $xml as $item ){
-					// 	$feed[] = $this->mapAttributes( json_encode( $xml ) );
-					// }
-					// $xml2array = new XML_();
 					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					$contents = $this->array_unique_multidimensional( $feed );
@@ -211,17 +199,10 @@ class Nucleo extends CI_Controller {
 				$dom = new DOMDocument();
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
-					//$rss = new SimpleXMLElement( $url, LIBXML_NOCDATA );
-					// foreach ( $rss->channel as $item ){
-					// 	$feed[] = $item;
-					// }
-					// $xml2array = new XML2Array();
 					$rss = $this->xml_2_array->createArray( $url );
 					$feed[] = $rss['rss']['channel'];
 					$contenido_feed = $feed;
-					//$contenido_feed = $rss->channel;
 				} else {
-					// $xml2array = new XML2Array();
 					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $xml;
 					$contenido_feed = $xml;
@@ -239,14 +220,14 @@ class Nucleo extends CI_Controller {
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
 		//print_r( $url );die;
-		$content = json_decode( file_get_contents_curl( $url ) );
-		$tree = new Tree($content, true);
+		$content = json_decode( file_get_contents( $url ) );
+		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
 		$nodes = array('nodes' => serialize( $tree->getNodes() ) );
 		$this->session->set_userdata( $arbol );
 		$this->session->set_userdata( $nodes );
 		$jsonStr = "[";
-		$jsonStr .= $this->treeBuild($tree);
+		$jsonStr .= $this->treeBuild( $tree );
 		$jsonStr = substr($jsonStr, 0, -5) . "]";
 		$jsonStr =  preg_replace("/,\]\}/", "]}", $jsonStr);
 
@@ -549,206 +530,6 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
-	 * [validar_form_editar_trabajo description]
-	 * @return [type] [description]
-	 */
-	// public function validar_form_editar_trabajo(){
-	// 	if ( $this->session->userdata('session') !== TRUE ){
-	// 		redirect('login');
-	// 	} else {
-	// 		$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'required|min_length[3]|xss_clean');
-	// 		$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-	// 		$this->form_validation->set_rules('categoria', 'Cetegoría', 'required|xss_clean');
-	// 		$this->form_validation->set_rules('vertical', 'Vertical', 'required|xss_clean');
-	// 		$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
-
-	// 		if ( $this->form_validation->run() === TRUE ){
-	// 			$trabajo['usuario'] 		= $this->session->userdata('uid');
-	// 			$trabajo['nombre']   		= $this->input->post('nombre');
-	// 			$trabajo['url-origen']   	= $this->input->post('url-origen');
-	// 			$trabajo['categoria']   	= $this->input->post('categoria');
-	// 			$trabajo['vertical']   		= $this->input->post('vertical');
-	// 			$trabajo['campos'] 			= $this->input->post('claves');
-	// 			$trabajo['uid_trabajo']    	= $this->input->post('id_trabajo');
-				
-	// 			$formats['campos'] 			= $this->input->post('claves'); 
- //                $formats['formatos'] 		= $this->input->post('formato'); 
- //                $formats['valores_rss'] 	= $this->input->post('valores_rss'); 
- //                $formats['claves_rss'] 		= $this->input->post('claves_rss'); 
-                
- //                $trabajo['formato_salida'] = json_encode($formats);
-
-	// 			$elegidos=[];
-	// 			foreach ($trabajo['campos']  as $key => $value) {
-	// 				$elegidos[]=explode(",",$value);
-	// 			}
-	// 			$formatos=[];
-	// 			foreach ($formats['formatos']  as $key => $value) {
-	// 				$formatos[]=$value;
-	// 			}
-
- //                $cron_date['mes'] = ($this->input->post('cron_mes')!=="*") ? (int)$this->input->post('cron_mes'):"*";
- //                $cron_date['hora'] =  ($this->input->post('cron_hora')!=="*") ? (int)$this->input->post('cron_hora') : "*";
- //                $cron_date['minuto'] = (is_string($this->input->post('cron_minuto')) && $this->input->post('cron_minuto') != "0" ) ? $this->input->post('cron_minuto') : (int)$this->input->post('cron_minuto') ;
- //                if((int)$this->input->post('cron_diames')){
- //                	$cron_date['diames'] = (int)$this->input->post('cron_diames');
- //                	$cron_date['diasemana'] = "*";
- //                }else{ 
- //                	$cron_date['diames'] = "*";
- //                	$cron_date['diasemana'] = (int)$this->input->post('cron_diasemana');
- //                }
-                
- //                //Cron date config 
- //                $trabajo['cron_date'] = json_encode($cron_date);
- //                $trabajo['cron_expression'] = $cron_date['minuto']." ".$cron_date['hora']." ".$cron_date['diames']." ".$cron_date['mes']." ".$cron_date['diasemana'];
-                
- //                //Trabajo id (cronjob's name)
-	// 			$guardar = $this->cms->update_trabajo($trabajo);
-
- //               	 $trabajo['cron_url'] = site_url("")."ejecutar_trabajo/".$guardar;
-                
- //                //Set cronjob in easycron
- //                $cron_result = $this->cms->set_cronjob($guardar, $trabajo['cron_expression'], $trabajo['cron_url']);
- //                if($cron_result["status"] === "success"){ 
- //                	$cron_date["id"] = $cron_result["cron_job_id"];
- //                	$saveId = $this->cms->save_cronconfig($guardar,json_encode($cron_date));
- //                } 
-                
-	// 			if ( $guardar == FALSE ){
-	// 				$data['usuario'] 	= $this->session->userdata('nombre');
-	// 				$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-	// 				$this->load->view('cms/admin/nuevo_trabajo',$data);
-	// 			} else {	
-	// 				$indice = 0;
-	// 				$url = utf8_encode(file_get_contents($this->input->post('url-origen')));
-	// 				$pos = strpos($url, '(');
-	// 					if($pos > -1 && (substr($url, -1)===")")){
-	// 						$rest = substr($url, $pos+1, -1);
-	// 					}else{
-	// 						$rest = $url;
-	// 					}
-
-	// 					if ( $campos_orig = json_decode($rest, TRUE ) ){
-	// 						if(!empty($campos_orig[0])){
-	// 							for ( $i = 0; $i < count( $campos_orig ) ; $i++) {
-	// 								foreach ( $campos_orig[$i] as $key => $value ){
-	// 									for ( $j = 0; $j < count( $elegidos ) ; $j++ ){
-	// 										$tmp = 0;
-	// 										if ( count($elegidos[$j]) > $indice ){
-	// 											if ( $elegidos[$j][$indice] === (string)$key ){
-	// 												$tmp = $tmp + 1;
-	// 												break;
-	// 											}
-	// 										}
-	// 									}
-	// 									if ( $tmp > 0 ){
-	// 										if ( is_array( $value ) ){
-	// 											$campos_orig[$i][$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
-	// 										}
-	// 									} else {
-	// 										unset( $campos_orig[$i][$key] );
-	// 									}
-	// 								}
-	// 							}
-	// 						} else {
-	// 							foreach ($campos_orig as $key => $value) {
-	// 								for ($j=0; $j < count($elegidos) ; $j++) {
-	// 									$tmp=0;
-	// 									if(count($elegidos[$j])>$indice){
-	// 										if($elegidos[$j][$indice] === (string)$key){
-	// 											$tmp = $tmp + 1;
-	// 											break;
-	// 										}
-	// 									}
-	// 								}								
-	// 								if($tmp>0){
-	// 									if(is_array($value)){
-	// 										$campos_orig[$key] = $this->arreglo_nuevo($value,$elegidos,$indice + 1);
-	// 									}
-	// 								}else{
-	// 									unset($campos_orig[$key]);										
-	// 								}
-	// 							}
-	// 						}
-	// 					}else{
-	// 						$xml = simplexml_load_file( $this->input->post('url-origen') );
-	// 						if ( $xml->channel ){
-	// 							$rest = json_encode( $xml );
-	// 							$campos_orig = json_decode( $rest, TRUE );
-	// 						} else {
-	// 							$rest = json_encode( $xml );
-	// 							$campos_orig = json_decode( $rest, TRUE );
-	// 						}
-
-	// 						if ( ! empty( $campos_orig[0] ) ){
-	// 							for ( $i = 0; $i < count( $campos_orig ) ; $i++ ){
-	// 								foreach ( $campos_orig[$i] as $key => $value ){
-	// 									for ( $j = 0; $j < count($elegidos) ; $j++ ){
-	// 										$tmp = 0;
-	// 										if ( count( $elegidos[$j] ) > $indice ){
-	// 											if ( $elegidos[$j][$indice] === (string)$key ){
-	// 												$tmp = $tmp + 1;
-	// 												break;
-	// 											}
-	// 										}
-	// 									}
-	// 									if ( $tmp > 0 ){
-	// 										if ( is_array( $value ) ){
-	// 											$campos_orig[$i][$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
-	// 										}
-	// 									} else {
-	// 										unset( $campos_orig[$i][$key] );
-	// 									}
-	// 								}
-	// 							}
-	// 						} else {
-	// 							foreach ( $campos_orig as $key => $value ){
-	// 								for ( $j = 0; $j < count( $elegidos ) ; $j++ ){
-	// 									$tmp = 0;
-	// 									if ( count( $elegidos[$j] ) > $indice ){
-	// 										if ( $elegidos[$j][$indice] === (string)$key ){
-	// 											$tmp = $tmp + 1;
-	// 											break;
-	// 										}
-	// 									}
-	// 								}
-	// 								if ( $tmp > 0 ){
-	// 									if ( is_array( $value ) ){
-	// 										$campos_orig[$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
-	// 									}
-	// 								} else {
-	// 									unset( $campos_orig[$key] );
-	// 								}
-	// 							}
-	// 						}
-	// 					}
-						
-	// 					for ($i=0; $i < count($formatos) ; $i++) {
-	// 						if($formatos[$i]==='xml'){
-	// 							$this->convert_xml( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ) );
-	// 						}
-	// 						if($formatos[$i]==='rss2'){
-	// 							$this->convert_rss( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ), $trabajo['claves_rss'], $trabajo['valores_rss'] );
-	// 						}
-	// 						if($formatos[$i]==='json'){
-	// 							$this->convert_json( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ) );
-	// 						}
-	// 						if($formatos[$i]==='jsonp'){
-	// 							$this->convert_jsonp( $campos_orig, strtolower( url_title( $trabajo['nombre'] ) ), $this->input->post( 'nom_funcion' ) );
-	// 						}
-	// 					}
- //                 }
-
-	// 		     redirect('trabajos');
-	// 		} else {
-	// 			$data['usuario'] 	= $this->session->userdata('nombre');
-	// 			$data['error'] 	= "Ocurrio un problema y los datos no pudieron ser guardados";
-	// 			$this->load->view('cms/admin/nuevo_trabajo',$data);
-	// 		}
-	// 	}
-	// }
-
-	/**
 	 * [arreglo_nuevo description]
 	 * @param  [type] $arreglo  [description]
 	 * @param  [type] $elegidos [description]
@@ -1030,7 +811,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
 				$trabajo['formato_salida']		= $this->input->post('formato_salida');
-				$trabajo['json_estructura']		= $this->feed_service( $this->input->post('url-origen') );
+				$trabajo['json_estructura']		= base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_estructura( $trabajo );
 				if ( $guardar !== FALSE ){

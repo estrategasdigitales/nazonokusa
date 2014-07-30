@@ -16,10 +16,13 @@
 								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la estructura">
 							</div>
 						</div>
+						<div class="form-group">
+							<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
+							<div class="col-sm-9 col-md-10">
+								<input type="url" class="form-control" id="url-origen" name="url-origen">
+							</div>
+						</div>
 					</div>
-					
-				
-					
 					<div class="col-sm-6 col-md-6">
 						<div class="form-group">
 							<label for="url-origen" class="col-sm-3 col-md-2 control-label">Formato</label>
@@ -32,42 +35,10 @@
 							</div>
 						</div>
 					</div>
-					
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
-							<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
-							<div class="col-sm-9 col-md-10">
-								<input type="url" class="form-control" id="url-origen" name="url-origen">
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				
-
-			</div>
-		</div>
-		<br>
-		
-		<div class="row">
-					<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button></div>
-					<div class="col-sm-8 col-md-8">
-						<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
-					</div>
-			</div>
-		</br>	
-
-		<div class="container row campos-feed">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Estructura del feed de salida</div>
-				<div class="panel-body">
-					<div class="bloque-arbol" id="campos-feed"></div>
 				</div>
 			</div>
 		</div>
-
-		
+		<br>		
 <!--
 		<div class="container row">
 			<div class="panel panel-primary">
