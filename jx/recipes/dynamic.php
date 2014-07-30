@@ -5,6 +5,10 @@ require_once(__DIR__ . "/../jxbase.php");
 require_once(__DIR__ . "/../findnode.php");
 
 
+/**
+ * Main dynamic JS -> XML recipe. Data drive conversions.
+ */
+
 class dynamic_js2xml extends J2X_Recipe {
 
     public $recipe = null;
@@ -27,7 +31,13 @@ class dynamic_js2xml extends J2X_Recipe {
                 $xpathparts = pathparts($xpath);
                 $xpathtail = end($xpathparts);
 
-                if (startsWith($xpathtail, "@")) {
+                if ($extras === "CDATA") {
+                    $dom->add_tree($xpath);
+                    $elt = $dom->xpathone($xpath);
+                    $cdata_node = new DOMCdataSection($dnode);
+                    $elt->appendChild($cdata_node);
+                }
+                elseif (startsWith($xpathtail, "@")) {
                     $elt_xpathparts = array_slice($xpathparts, 0, count($xpathparts)-1);
                     $elt_xpath = "/" . join('/', $elt_xpathparts);
                     $attname = substr($xpathtail, 1, strlen($xpathtail)-1);

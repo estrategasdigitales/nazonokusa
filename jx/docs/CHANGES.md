@@ -1,4 +1,14 @@
 
+### Drop 6
+
+  * Added examples of  special processing instructions/transformations
+    such as CDATA nodes, and proper handling of HTML content/tags embedded in
+    JSON not disrupting XML structure.
+
+  * Minor cleanups of Drop 5 and better demonstration/testing
+    apparatus for dynamic recipes.
+
+
 ### Drop 5
 
   * Major drop. See `tests/demo_dynamic.php` for proof of concept of

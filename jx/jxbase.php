@@ -11,6 +11,7 @@ class ConversionException extends UnexpectedValueException {}
 class EmptyInput extends ConversionException {}
 class NullData extends ConversionException {}
 class ParseError extends ConversionException {}
+class BadOption extends ConversionException {}
 
 /**
  * Top level class for all JS <-> XML conversions
