@@ -1,5 +1,13 @@
 
+### Drop 5
 
+  * Major drop. See `tests/demo_dynamic.php` for proof of concept of
+    dynamic, data-drive recipes.
+
+  * Major upgrades to `DOMDoc`, `util`, and other modules to support
+    dynamic recipes.
+
+  * Improved testing.
 
 ### Drop 4
 
