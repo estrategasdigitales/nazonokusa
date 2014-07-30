@@ -42,7 +42,7 @@
 						</div>
 						<div class="form-group">
 							<label class="col-sm-3 col-md-2 control-label">Vertical</label>
-							<?php if( isset($verticales) && !empty($verticales) ): ?>
+							<?php if ( isset( $verticales ) && ! empty( $verticales ) ): ?>
 								<div class="col-sm-9 col-md-10">
 									<select class="form-control" name="vertical">
 										<option value="0">Selecciona una Vertical</option>
@@ -122,16 +122,23 @@
 			<div class="panel panel-primary">
 				<div class="panel-heading">Formatos específicos</div>
 				<div class="panel-body">
-					<div class="col-sm-12 col-md-12">
-						<div class="form-group">
-							<label for="formato_especifico" class="form-trabajos-label">Salida específica: </label>
-							<select class="form-control form-trabajos-date" name="formato_especifico" id="formato_especifico">
-								<option value="0">Selecciona un formato de salida específico</option>
-								<option value="1">TV Samsung</option>
-								<option value="2">Applicaster</option>
-							</select>
+					<?php if ( isset( $estructuras ) && ! empty( $estructuras ) ): ?>
+						<div class="col-sm-12 col-md-12">
+							<div class="form-group">
+								<label for="formato_especifico" class="form-trabajos-label">Salida específica: </label>
+								<select class="form-control form-trabajos-date" name="formato_especifico" id="formato_especifico">
+									<option value="0">Selecciona un formato de salida específico</option>
+									<?php foreach($estructuras as $estructura): ?>
+										<option value="<?php echo $estructura->uid_estructura; ?>"><?php echo $estructura->nombre; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
 						</div>
-					</div>
+					<?php else: ?>
+						<div class="col-sm-12 col-md-12">
+							<h5 class="form-control">No existen estructuras específicas disponibles</h5>
+						</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>

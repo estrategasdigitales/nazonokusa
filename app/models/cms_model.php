@@ -700,7 +700,7 @@ class Cms_model extends CI_Model {
         else return FALSE; 
     }
 
-    public function add_estructura($datos_estructura){
+    public function add_estructura($trabajo){
         $timestamp = time();
         $this->db->set('uid_estructura', "UUID()", FALSE);
         $this->db->set('uid_usuario', $trabajo['usuario']);
@@ -713,5 +713,15 @@ class Cms_model extends CI_Model {
         $this->db->insert( $this->db->dbprefix( 'estructuras_salida' ) );
         if ( $this->db->affected_rows() > 0 ) return TRUE;
         else return FALSE;       
+    }
+
+    public function get_estructuras(){
+        $this->db->select('uid_estructura, nombre');
+        $this->db->where('activo', 1);
+        $this->db->order_by('nombre', 'ASC');
+        $result = $this->db->get($this->db->dbprefix( 'estructuras_salida' ) );
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+        $result->free_result();
     }
 }

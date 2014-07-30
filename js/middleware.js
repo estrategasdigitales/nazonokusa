@@ -181,7 +181,7 @@ tvs(function($){
 				}else{
 					spinner.stop();
 					$('#foo').css('display','none');
-					window.location.href = 'trabajos';
+					window.location.href = 'estructuras';
 				}
 			},
 			error: function(data){

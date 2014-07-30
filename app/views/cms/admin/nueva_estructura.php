@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
-	<?php echo form_open( 'nucleo/validar_form_estructura', array('class' => 'form-horizontal', 'id' => 'form_estructura_nuevo', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
+	<?php echo form_open( 'nucleo/validar_form_nueva_estructura', array('class' => 'form-horizontal', 'id' => 'form_estructura_nuevo', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">
 			<div class="col-sm-8 col-md-8"><h4>Nueva Estructura</h4></div>
 		</div>
@@ -38,34 +38,6 @@
 				</div>
 			</div>
 		</div>
-		<br>		
-<!--
-		<div class="container row">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Agrega campos de salida</div>
-				<div class="panel-body">
-					<div class="col-sm-6 col-md-7">
-						<div class="form-group">
-							<label for="" class="col-sm-3 col-md-2 control-label">Nombre del campo</label>
-							<div class="col-sm-5 col-md-7">
-								<input type="text" class="form-control" id="" name="" placeholder="Nombre del campo">
-							</div>
-							<div class="col-sm-4 col-md-3">
-								<select class="form-control" name="tipo_campo">
-									<option value="0">Selecciona una Formato de Salida</option>					
-									<option value="1">RSS</option>
-									<option value="2">XML</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6 col-md-5">
-						<div id="tree-constructor"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-	-->
 		<br>
 		<div class="row">
 			<div class="col-sm-4 col-md-4"></div>

@@ -700,6 +700,7 @@ class Cms extends CI_Controller {
 				$data['categorias'] = $this->cms->get_categorias_usuario( $this->session->userdata( 'uid' ) );
 				$data['verticales'] = $this->cms->get_verticales_usuario( $this->session->userdata( 'uid' ) );
 			}
+			$data['estructuras']	= $this->cms->get_estructuras();
 			$this->load->view( 'cms/admin/nuevo_trabajo', $data );
 		}
 	}

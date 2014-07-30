@@ -811,7 +811,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
 				$trabajo['formato_salida']		= $this->input->post('formato_salida');
-				$trabajo['json_estructura']		= base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
+				$trabajo['json_estructura']		= file_get_contents_curl( base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) ) );
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_estructura( $trabajo );
 				if ( $guardar !== FALSE ){
