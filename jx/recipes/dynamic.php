@@ -20,9 +20,9 @@ class dynamic_js2xml extends J2X_Recipe {
         }
         foreach ($this->recipe as $instruction) {
             list($datapath, $xpath, $extras) = $instruction;
-            echo "datapath: $datapath xpath: $xpath extras: $extras\n";
+            // echo "datapath: $datapath xpath: $xpath extras: $extras\n";
             $dnode = findnode($datapath, $node);
-            var_dump($dnode);
+            // var_dump($dnode);
             if (is_scalar($dnode)) {
                 $xpathparts = pathparts($xpath);
                 $xpathtail = end($xpathparts);
@@ -38,21 +38,12 @@ class dynamic_js2xml extends J2X_Recipe {
                     $dom->add_tree($xpath, $dnode);
                 }
             }
-            echo "---\n";
+            // echo "---\n";
         }
-        echo "about to convert\n";
 
     }
 }
 
-
-
-    $recipe = array(
-        // array('/songs', '/resources'),
-        // array('/songs/tracks/[]', '/resources/resource'),
-        array('/songs/tracks/[]/path', '/resources/resource/@src'),
-        array('/songs/tracks/[]/title', '/resources/resource/song-name'),
-    );
-
+// TODO: more richly handle [*] as part of specifications
 
 ?>
