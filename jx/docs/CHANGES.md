@@ -1,4 +1,33 @@
 
+### Drop 6
+
+  * Added examples of  special processing instructions/transformations
+    such as CDATA nodes, and proper handling of HTML content/tags embedded in
+    JSON not disrupting XML structure.
+
+  * Minor cleanups of Drop 5 and better demonstration/testing
+    apparatus for dynamic recipes.
+
+
+### Drop 5
+
+  * Major drop. See `tests/demo_dynamic.php` for proof of concept of
+    dynamic, data-drive recipes.
+
+  * Major upgrades to `DOMDoc`, `util`, and other modules to support
+    dynamic recipes.
+
+  * Improved testing.
+
+### Drop 4
+
+  * Major cleanup of XML helpers. Old functional module replaced with
+    new object-oriented `DOMDoc` class in `jx/domdoc.php`.
+  * More tests.
+  * Focus of Drop 4 shifted, however, to focus on dynamic nature of
+    recipies. Some helper code for this visible, but majority postponed to
+    Drop 5.
+
 ### Drop 3
 
  * Upgrading docs.

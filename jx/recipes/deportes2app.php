@@ -1,13 +1,15 @@
 <?php
 
 require_once(__DIR__ . "/../jxbase.php");
+require_once(__DIR__ . "/../findnode.php");
 
 /**
  * Example of a custom JS to XML recipe class.
  * Manages the conversion of every stage.
  */
 
-class js2tracks extends J2X_Recipe {
+
+class deportes2app extends J2X_Recipe {
 
     function topnode($node, $dom) {
         $this->rss($node, $dom);
@@ -15,17 +17,17 @@ class js2tracks extends J2X_Recipe {
 
     function rss($node, $dom) {
         $this->need_property($node, 'rss');
-        $xmlRoot = $this->tree->addElement($dom, 'rss', null, array('version' => '2.0'));
+        $xmlRoot = addElement($dom, 'rss', null, array('version' => '2.0'));
         $this->tracks($node->{'rss'}, $xmlRoot);
     }
 
     function tracks($node, $dom) {
         $this->need_property($node, 'tracks');
-        $tracksElt = $this->tree->addElement($dom, 'tracks');
+        $tracksElt = addElement($dom, 'tracks');
         foreach ($node->{'tracks'} as $trackObj) {
             // note insertion of track tag as replacement for
             // anonymous array element in JS source
-            $trackElt = $this->tree->addElement($tracksElt, 'track');
+            $trackElt = addElement($tracksElt, 'track');
             $this->track($trackObj, $trackElt);
         }
     }

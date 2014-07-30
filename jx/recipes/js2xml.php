@@ -37,18 +37,18 @@ class js2xml extends J2X_Recipe {
                 $item_tag = $lastkey . "-item";
             }
             foreach ($node as $index => $item) {
-                $elt = addElement($dom, xtag($item_tag));
+                $elt = $this->tree->addElement($dom, xtag($item_tag));
                 $this->anynode($item, $elt, $item_tag);
             }
         }
         else {
             foreach (properties($node) as $value) {
                 $value_of_value = $node->{$value};
-                if (isScalar($value_of_value)) {
-                    $elt = addElement($dom, xtag($value), $value_of_value);
+                if (is_scalar($value_of_value)) {
+                    $elt = $this->tree->addElement($dom, xtag($value), $value_of_value);
                 }
                 else {
-                    $elt = addElement($dom, xtag($value));
+                    $elt = $this->tree->addElement($dom, xtag($value));
                     $this->anynode($value_of_value, $elt, $value);
                 }
             }
