@@ -164,6 +164,40 @@ tvs(function($){
 		return false;
 	});
 
+	$('#form_estructura_nuevo').submit(function(){
+		$('#foo').css('display','block');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+					$('html,body').animate({
+						'scrollTop': $('#messages').offset().top
+					}, 1000);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.href = 'trabajos';
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+				$('html,body').animate({
+					'scrollTop': $('#messages').offset().top
+				}, 1000);
+			}
+		});
+		return false;
+	});
+
 	$('#form_categoria_nueva').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
