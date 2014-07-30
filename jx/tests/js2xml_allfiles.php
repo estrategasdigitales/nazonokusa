@@ -1,6 +1,6 @@
 <?php
 
-require "../recipes/js2xml.php";
+require_once "../recipes/js2xml.php";
 
 $debug = false;
 

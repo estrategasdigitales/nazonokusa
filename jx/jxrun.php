@@ -43,7 +43,7 @@ function import_recipes() {
     foreach (scandir($basedir) as $file) {
         $path = "$basedir/$file";
         if (endsWith($file, '.php')) {
-            require($path);
+            require_once($path);
         }
     }
 

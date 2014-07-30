@@ -1,8 +1,7 @@
 <?php
 
-require __DIR__ . '/../domdoc.php';
-require __DIR__ . '/../util.php';
-
+require_once __DIR__ . '/../domdoc.php';
+require_once __DIR__ . '/../util.php';
 
 class Test_DOMDoc extends PHPUnit_Framework_TestCase
 {
@@ -76,6 +75,53 @@ END_XML;
         $this->assertEquals($y, $before);
     }
 
+
+    public function test_add_node_parts() {
+        $t = new DOMDoc;
+
+        $t->add_node_parts(array('one'));
+        $this->assertEquals(line2($t->saveXML()), "<one/>");
+
+        // intended repetition; should be idempotent
+        $t->add_node_parts(array('one'));
+        $this->assertEquals(line2($t->saveXML()), "<one/>");
+
+        $t->add_node_parts(array('one', 'two'));
+        $this->assertEquals(line2($t->saveXML()), "<one><two/></one>");
+
+        // intended repetition; should be idempotent
+        $t->add_node_parts(array('one', 'two'));
+        $this->assertEquals(line2($t->saveXML()), "<one><two/></one>");
+
+        $t->add_node_parts(array('one', 'two', 'three'));
+        $this->assertEquals(line2($t->saveXML()), "<one><two><three/></two></one>");
+
+        $t->add_node_parts(array('one', 'more', 'time'));
+        $this->assertEquals(line2($t->saveXML()), "<one><two><three/></two><more><time/></more></one>");
+
+    }
+
+    public function test_xresults() {
+        $xml = "<one><two><three>3</three><three type='roman'>iii</three><three>tres</three></two></one>";
+        $d = new DOMDoc;
+        $d->loadXML($xml);
+
+        $this->assertEquals(xresults($d->xpath('//two')), true);
+        $this->assertEquals(xresults($d->xpath('//three')), true);
+        $this->assertEquals(xresults($d->xpath('//four')), false);
+    }
+    
+}
+
+/**
+ * Helper function to return the second line of a string.
+ * Useful in testing XML results, where the first line is usually
+ * an XML header, and the second line is the actual XML content.
+ */
+
+function line2($s) {
+    $lines = split("\n", $s);
+    return $lines[1];
 }
 
 ?>

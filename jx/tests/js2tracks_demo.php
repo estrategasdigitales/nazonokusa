@@ -1,7 +1,7 @@
 <?php
 
 
-require "../recipes/js2tracks.php";
+require_once "../recipes/js2tracks.php";
 
 $jstr = <<<END_JSON
 

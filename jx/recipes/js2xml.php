@@ -44,7 +44,7 @@ class js2xml extends J2X_Recipe {
         else {
             foreach (properties($node) as $value) {
                 $value_of_value = $node->{$value};
-                if (isScalar($value_of_value)) {
+                if (is_scalar($value_of_value)) {
                     $elt = $this->tree->addElement($dom, xtag($value), $value_of_value);
                 }
                 else {

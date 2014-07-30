@@ -2,7 +2,7 @@
 
 // best run as `php js2xml_allfiles.php >testout` else the character IO will eat you alive
 
-require __DIR__ . "/../recipes/js2xml.php";
+require_once __DIR__ . "/../recipes/js2xml.php";
 
 $jstr = <<<END_JSON
 

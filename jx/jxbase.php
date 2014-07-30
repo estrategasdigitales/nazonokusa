@@ -216,7 +216,6 @@ class X2J_Recipe extends JX_Recipe {
 
     public $source = null;      # the original source, if availbale
     public $tree = null;        # DOM tree
-    public $xpathobj = null;    # For XPath access
     public $jsonp_wrap = null;  # JSONP wrapping call, if desired
 
     function __construct($input=null, $jsonp_wrap=null) {
@@ -260,7 +259,6 @@ class X2J_Recipe extends JX_Recipe {
             throw new NullData("no tree given to process");
         }
         $this->tree = $dom;
-        $this->xpathobj = new DOMXpath($dom);
 
         $this->preprocess();
         $this->topnode();

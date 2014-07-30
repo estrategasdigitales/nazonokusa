@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . "/../findnode.php";
+require_once __DIR__ . "/../findnode.php";
 
 class M {
     public $y = array(3.3, 4.4, 5.5);
@@ -9,14 +9,6 @@ class M {
 
 class Findnode_Test extends PHPUnit_Framework_TestCase
 {
-
-
-    public function test_pathparts() {
-        $this->assertEquals(pathparts("/x/y/[0]"), array('x', 'y', '[0]'));
-        $this->assertEquals(pathparts("x/y/[0]"), array('x', 'y', '[0]'));
-        $this->assertEquals(pathparts("/x/y/[0]/a/b/c/[1]"), array('x', 'y', '[0]','a','b','c','[1]'));
-
-    }
 
     public function test_pure_array()
     {
@@ -46,6 +38,37 @@ class Findnode_Test extends PHPUnit_Framework_TestCase
         // NB last tests, indexing into a partially associative array
         // is super-dangerous because indices don't necessarily line
         // up to human expectations
+    }
+
+    public function test_absolute_path() {
+
+        // trival cases
+        $cur = "/";
+        $this->assertEquals(absolute_path($cur, ''), '/');
+        $this->assertEquals(absolute_path($cur, '/'), '/');
+        $this->assertEquals(absolute_path($cur, '/this/and/that'), '/this/and/that');
+
+        // indentity cases
+        $this->assertEquals(absolute_path($cur, '.'), '/');
+        $this->assertEquals(absolute_path($cur, '..'), '/');
+
+        // basic cases
+        $this->assertEquals(absolute_path($cur, 'andy'), '/andy');
+        $this->assertEquals(absolute_path($cur, 'andy/mandy'), '/andy/mandy');
+        $this->assertEquals(absolute_path($cur, 'andy/mandy/sandy'), '/andy/mandy/sandy');
+
+        // mixed cases
+        $cur = '/andy/mandy/sandy';
+        $this->assertEquals(absolute_path($cur, '.'), '/andy/mandy/sandy');
+        $this->assertEquals(absolute_path($cur, '..'), '/andy/mandy');
+        $this->assertEquals(absolute_path($cur, '../..'), '/andy');
+
+        // complex cases
+        $cur = '/andy/mandy/sandy';
+        $this->assertEquals(absolute_path($cur, '././../handy'), '/andy/mandy/handy');
+        $this->assertEquals(absolute_path($cur, '../james/ray'), '/andy/mandy/james/ray');
+        $this->assertEquals(absolute_path($cur, '../james/ray/..'), '/andy/mandy/james');
+
     }
 
 }

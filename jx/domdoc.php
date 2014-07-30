@@ -6,14 +6,16 @@
  * trees.
  */
 
+require_once __DIR__ . '/util.php';
+
+class DOMDocException extends DOMException {}
+
 class DOMDoc extends DOMDocument {
 
     public $namespaces = array();
-    public $xpathobj = null;
 
     public function __construct($version='1.0', $encoding='UTF-8') {
         parent::__construct($version, $encoding);
-        $this->xpathobj = new DOMXPath($this);
     }
 
     public function addNS($ns, $uri) {
@@ -50,8 +52,26 @@ class DOMDoc extends DOMDocument {
      */
 
     function xpath($query) {
-        return $this->xpathobj->query($query);
+        $xpathobj = new DOMXPath($this);
+        try {
+            return $xpathobj->query($query);
+        }
+        catch (Exception $e) {
+            throw new DOMDocException("failed to match xpath '$query'");
+        }
     }
+
+    /**
+     * Run the given XPath query, return the first result
+     */
+
+    function xpathone($query) {
+        $result = $this->xpath($query);
+        foreach ($result as $r) { return $r; }
+        return null;
+    }
+
+
 
     /**
      * set the text of the given elemnt to the given string
@@ -62,7 +82,85 @@ class DOMDoc extends DOMDocument {
         $element->normalize();
         $element->replaceChild($newtext, $element->firstChild);
     }
+
+
+    /**
+     * Make the given xpath real in the given DOMDoc tree. Accepts
+     * only a very limited subset of xpath expressions--specifically,
+     * absolute paths that extend all the way from the root to the desired
+     * node. Only tag names may be specified, not indices. Intended
+     * for tree construction not querying. Order that nodes added is important.
+     */
+
+    function add_tree($xpath, $value=null, $attribs=null) {
+        $results = $this->xpath($xpath);
+        $xpathparts = pathparts($xpath);
+
+        if (!xresults($results)) {   // must build to this point
+            if (count($xpathparts) > 1) {
+                $allbutlast = array_slice($xpathparts, 0, count($xpathparts)-1);
+                $here = $this->add_node_parts($allbutlast);
+            }
+            else {
+                $here = $this;
+            }
+            $this->addElement($here, end($xpathparts), $value, $attribs);
+        }
+        else {
+            if (startsWith(end($xpathparts), "@")) {
+                $allbutlast = array_slice($xpathparts, 0, count($xpathparts)-1);
+                $results = $this->xpath($allbutlast);
+                foreach (iterator_to_array($results) as $here) {
+                    $this->addAttrib($here, end($xpathpaths), $value);
+                }
+            }
+            else {
+                foreach (iterator_to_array($results) as $here) {
+                    $this->addElement($here, $value, $attribs);
+                }
+            }
+        }
+
+    }
+    /**
+     * Given an array of xpath components, make sure the nodes
+     * exist in the tree.
+     */
+
+    function add_node_parts($parts) {
+        $xpath = makepath($parts);
+        $results = $this->xpath($xpath);
+        if ($results->length === 0) {
+            if (count($parts) > 1) {
+                $prev = $this->add_node_parts(array_slice($parts, 0, count($parts)-1));
+            }
+            else {
+                $prev = null;
+            }
+            $where = $prev ? $prev : $this;  // where to add node?
+            $here = $this->addElement($where, end($parts));
+            return $here;
+        }
+        else {        // else path exists already; pass it back
+            return iterator_to_array($results)[0];
+
+        }
+    }
+
+
 }
+
+/**
+ * Are there xpath results?
+ */
+
+function xresults($results) {
+    return ($results !== null) && ($results->length > 0);
+}
+
+/**
+ * Unwrap CDATA-wrapped content into just the content
+ */
 
 function de_CDATA($s) {
     $start = strpos($s, "<![CDATA[");
@@ -73,48 +171,12 @@ function de_CDATA($s) {
 
 }
 
+/**
+ * Wrap content in CDATA markup
+ */
+
 function CDATA($s) {
     return "<![CDATA[$s]]>";
-}
-
-
-/**
- * Parse the given path into an array of path componetns
- */
-
-function _pathparts($path) {
-    if (startsWith($path, "/")) {
-        $path = substr($path, 1, strlen($path)-1);
-    }
-    $parts = split("/", $path);
-    return $parts;
-}
-
-
-/**
- * Make the given xpath real in the given DOMDocument tree. Accepts
- * only a very limited subset of xpath expressions--specifically,
- * absolute paths that extend all the way from the root to the desired
- * node. Only tag names may be specified, not indices. Intended
- * for tree construction not querying. Order that nodes added is important.
- */
-
-function dom_add_tree($tree, $xpath, $value=null, $attribs=null) {
-    $xpathobj = new DOMXpath($tree);
-    $xparts = _pathparts($xpath);
-    $traversed = array();
-    $cursor = $tree;
-    $xprefix = '/';
-    foreach ($xparts as $xpart) {
-        $xprefix = "$xprefix/$xpart";
-        $results =  $xpathobj->query($xprefix);
-        if ($results !== null) {
-            $cursor = $results[0];
-        }
-        else {
-            $cursor = "TO BE DONE";
-        }
-    }
 }
 
 
