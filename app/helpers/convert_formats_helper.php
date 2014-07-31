@@ -15,13 +15,10 @@
 						$salida[] = array( 'formato' => $formato, 'output' => $jsonp_funcion . "(" . $output . ")", 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-jsonp.js' );
 						break;
 					case 'xml':
-						$array = json_decode( $output, TRUE );
-						print_r( array_to_xml( $array ) );die;
-						$salida[] = array( 'formato' => $formato, 'output' => '', 'url' => '' );
+						$salida[] = array( 'formato' => $formato, 'output' => $output, 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-xml.xml' );
 						break;
 					case 'rss':
-						//$array = json_decode( $output, TRUE );
-						$salida[] = array( 'formato' => $formato, 'output' => '', 'url' => '#' );
+						$salida[] = array( 'formato' => $formato, 'output' => $output, 'url' => $storage.'/'.$categoria.'/'.$vertical.'/'.$usuario.'/'.$nombre.'-rss.xml' );
 						break;
 				}
 			}
@@ -54,40 +51,50 @@
 	if ( ! function_exists('array_to_xml') ){
 		function array_to_xml( $data ){
 			$CI =& get_instance();
-			$CI->load->library('MY_Xml_writer');
-			$xml = new MY_Xml_writer();
-			$xml->setRootName('root');
-			$xml->initiate();
-			foreach( $data as $key => $value ) {
-		        if( is_array( $value ) ) {
-		        	print_r( $value );
-		            // $xml->startElement( $key );
-		            // array_to_xml( $xml, $value );
-		            // $xml->endElement( );
-		            // continue;
-		        }
-		        // $xml->writeElement( $key, $value );
-		    }
-			// $xml->endBranch();
-			// $xml->getXML(true);
-			// return $xml;
-			die;
+			$CI->load->library('Array_2_xml');
+			$xml = $CI->array_2_xml->createXML( 'root', $data );
+			$xml->formatOutput = true;
+			return $xml;
 		}
 	}
 
-	// if ( ! function_exists('array_to_rss') ){
-	// 	function array_to_rss( array $array, $xml = FALSE ){
-	// 		if ( $xml === FALSE ){
-	// 			$xml = new SimpleXMLElement('<root/>');
-	// 		}
-	// 		foreach ( $array as $key => $value ){
-	// 			is_array( $value )
-	// 			 	? array_to_xml($value, $xml->addChild( $key ) )
-	// 			 	: $xml->addChild( $key, $value );
-	// 		}
-	// 		return $xml->asXML();
-	// 	}
-	// }
+	if ( ! function_exists('array_to_rss') ){
+		function array_to_rss( $rss_values, $data ){
+			$CI =& get_instance();
+			$CI->load->library('Array_2_xml');
+			$xml = new SimpleXMLElement('<rss/>');
+			$xml->addAttribute('version','2.0');
+			$channel = $xml->addChild('channel');
+			$channel->addChild('title', $rss_values[0]);
+			$channel->addChild('link', $rss_values[1]);
+			$channel->addChild('description', $rss_values[2]);
+			$items = $CI->array_2_xml->createXML('item', $data );
+			$item = new SimpleXMLElement( $items->saveXML() );
+			xml_adopt( $channel, $item );
+			// $item = $xml->addChild('item');
+			// recursive_nodes_items( $item, $data );
+			return $xml;
+		}
+	}
+
+	if ( ! function_exists('xml_adopt') ){
+		function xml_adopt($root, $new, $namespace = null) {
+			// first add the new node
+			$node = $root->addChild($new->getName(), (string) $new, $namespace);
+			// add any attributes for the new node
+			foreach($new->attributes() as $attr => $value) {
+				$node->addAttribute($attr, $value);
+			}
+			// get all namespaces, include a blank one
+			$namespaces = array_merge(array(null), $new->getNameSpaces(true));
+			// add any child nodes, including optional namespace
+			foreach($namespaces as $space) {
+				foreach ($new->children($space) as $child) {
+					xml_adopt($node, $child, $space);
+				}
+			}
+		}
+	}
 
 /* End of file convert_formats_helper.php */
 /* Location: ./app/helpers/convert_formats_helper.php */

@@ -135,7 +135,7 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['categorias']	= $this->cms->get_categorias();
+				$data['categorias']	= $this->cms->get_categorias('fecha_registro');
 				$this->load->view( 'cms/admin/categorias', $data );
 			} else {
 				redirect('inicio');
@@ -152,7 +152,7 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['verticales']	= $this->cms->get_verticales();
+				$data['verticales']	= $this->cms->get_verticales('fecha_registro');
 				$this->load->view('cms/admin/verticales', $data);
 			} else {
 				redirect('inicio');
@@ -404,8 +404,8 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['categorias'] = $this->cms->get_categorias();
-			$data['verticales'] = $this->cms->get_verticales();
+			$data['categorias'] = $this->cms->get_categorias('nombre');
+			$data['verticales'] = $this->cms->get_verticales('nombre');
 			$data['companias']	= $this->cms->get_companias_celular();
 			$data['roles']		= $this->cms->get_catalogo_roles();
 			$this->load->view('cms/admin/nuevo_usuario',$data);
@@ -479,8 +479,8 @@ class Cms extends CI_Controller {
 			$usuario = $this->cms->get_usuario_editar( $uid );
 			if ( $usuario !== FALSE ){
 				$data['usuario']    		= $this->session->userdata('nombre');
-				$data['categorias'] 		= $this->cms->get_categorias();
-				$data['verticales'] 		= $this->cms->get_verticales();
+				$data['categorias'] 		= $this->cms->get_categorias('nombre');
+				$data['verticales'] 		= $this->cms->get_verticales('nombre');
 				$data['usuario_editar']  	= $usuario;
 				$data['cats']				= $this->cms->get_categorias_asignadas( $uid );
 				$data['vers']				= $this->cms->get_verticales_asignadas( $uid );
@@ -694,8 +694,8 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata( 'nivel' ) == 1 ) {
-				$data['categorias'] = $this->cms->get_categorias();
-				$data['verticales'] = $this->cms->get_verticales();
+				$data['categorias'] = $this->cms->get_categorias('nombre');
+				$data['verticales'] = $this->cms->get_verticales('nombre');
 			} else {
 				$data['categorias'] = $this->cms->get_categorias_usuario( $this->session->userdata( 'uid' ) );
 				$data['verticales'] = $this->cms->get_verticales_usuario( $this->session->userdata( 'uid' ) );

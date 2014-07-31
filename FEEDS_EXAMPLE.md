@@ -20,7 +20,6 @@ http://feeds.esmas.com/data-feeds-esmas/tvs/panasonic/0129240101.json​
 
 http://feeds.esmas.com/data-feeds-esmas/xml/tdhome_carh.xml
 http://feeds.esmas.com/data-feeds-esmas/appjs/tdhome.js
-http://feeds.esmas.com/data-feeds-esmas/xml/fotos_dep_tdfutbol.xml
 http://feeds.esmas.com/data-feeds-esmas/appjs/fotos_iphone_deportes.js
 http://feeds.esmas.com/data-feeds-esmas/iphone/td/fotogalerias/59639.xml
 http://feeds.esmas.com/data-feeds-esmas/applicaster/prog_dep.xml

@@ -670,7 +670,7 @@ function desplega(element){
 
 function datosAdicionales(check){
 	if($(check).prop("checked")==true){
-		if($(check).val()==="rss2"){
+		if($(check).val()==="rss"){
 			$(".campos_rss").slideDown();
 			$("#channel_title").val("");
 			$("#channel_link").val("");
@@ -681,7 +681,7 @@ function datosAdicionales(check){
 			$("#nom_funcion").val("");
 		}
 	}else{
-		if($(check).val()==="rss2"){
+		if($(check).val()==="rss"){
 			$(".campos_rss").slideUp();
 			$("#channel_title").val("");
 			$("#channel_link").val("");

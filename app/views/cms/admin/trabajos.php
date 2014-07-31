@@ -15,7 +15,7 @@
 					<td class="text-center" width="10%">Activar / Desactivar</td>
 					<!--<td class="text-center" width="10%">Ejecutar</td>-->
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
-	                    <td class="text-center" width="10%">Editar</td>
+	                    <!-- <td class="text-center" width="10%">Editar</td> -->
 	                <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
 						<td class="text-center" width="10%">Eliminar</td>
                     <?php  } ?>
@@ -64,7 +64,7 @@
 							<!--<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>-->
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
                                <!--<td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>-->
-                               <td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>
+                               <!-- <td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td> -->
                             <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
 								<td><a href="<?php echo base_url(); ?>eliminar_trabajo?name=<?php echo base64_encode( $trabajo->nombre ); ?>&token=<?php echo base64_encode( $trabajo->uid_trabajo ); ?>" type="button" class="btn btn-danger btn-sm btn-block btn-padding" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
                             <?php  } ?>

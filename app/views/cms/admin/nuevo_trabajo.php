@@ -109,7 +109,7 @@
 							</div>
 							<div class="checkbox">
 								<label>
-									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="rss2" id="rss2">
+									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="rss" id="rss">
 									RSS 2.0
 								</label>
 							</div>

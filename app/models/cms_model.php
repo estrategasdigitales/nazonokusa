@@ -353,7 +353,7 @@ class Cms_model extends CI_Model {
 
     public function get_trabajo_ejecutar( $uid ){
         //$this->db->cache_off();
-        $this->db->select( 'uid_usuario, uid_categoria, uid_vertical, slug_nombre_feed, feeds_output, activo' );
+        $this->db->select( 'uid_usuario, uid_categoria, uid_vertical, slug_nombre_feed, formatos, feeds_output, activo' );
         $this->db->where( 'uid_trabajo ', $uid );
         $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
         if ($result->num_rows() > 0) return $result->row();
@@ -556,10 +556,10 @@ class Cms_model extends CI_Model {
      * [get_categorias description]
      * @return [type] [description]
      */
-    public function get_categorias(){
+    public function get_categorias($order){
         //$this->db->cache_on();
         $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
-        $this->db->order_by('fecha_registro', 'DESC');
+        $this->db->order_by($order, 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
         if ($result->num_rows() > 0) return $result->result();
         else return FALSE;
@@ -630,10 +630,10 @@ class Cms_model extends CI_Model {
      * [get_verticales description]
      * @return [type] [description]
      */
-    public function get_verticales(){
+    public function get_verticales($order){
         //$this->db->cache_on();
         $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
-        $this->db->order_by('fecha_registro', 'DESC');
+        $this->db->order_by($order, 'DESC');
         $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
         if ( $result->num_rows() > 0 ) return $result->result();
         else return FALSE;
