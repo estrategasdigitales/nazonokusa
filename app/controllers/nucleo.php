@@ -78,8 +78,11 @@ class Nucleo extends CI_Controller {
 	/**
 	 * [set_cron description]
 	 */
-	public function set_cron(){
+	public function set_cron($config_cron, $trabajo_url_id){
 		
+		$config_cron= '*/2 * * * *';
+		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/ejecutar_trabajo?id=1';
+
 		$host='107.170.237.101'; 
 		$port='22';
 		$username='root';	
@@ -90,11 +93,11 @@ class Nucleo extends CI_Controller {
 		$username=	$_SERVER['CRON_HOST_USER'];	
 		$password=	$_SERVER['CRON_HOST_PASS'];
 		*/
+		
 		$cron_setup = new cron_manager();
 		// Si no se puede conectar, enviar error a pantalla.
 		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
 		//print_r($resp_con);
-		
 		
 		$path 	 = '/var/www/html/';
 		$handle	 = 'crontab.txt';
@@ -102,11 +105,15 @@ class Nucleo extends CI_Controller {
 		$path 	 = $_SERVER['CRON_PATH'];
 		$handle	 = $_SERVER['CRON_HANDLE'];
 		*/
-
-		$cron_setup->write_to_file($path, $handle);
-
+		if ($trabajo_url_id && $trabajo_url_id != "")
+		{
+			$nueva_tarea = $cron_setup->write_to_file($path, $handle);
 		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
+			$cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
 		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+		}
+
+		
 	}
 
 	/**
