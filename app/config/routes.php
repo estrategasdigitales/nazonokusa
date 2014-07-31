@@ -59,6 +59,7 @@ $route['eliminar_usuario']			= 'cms/modal_eliminar_usuario';
 $route['eliminar_categoria']		= 'cms/modal_eliminar_categoria';
 $route['eliminar_vertical']			= 'cms/modal_eliminar_vertical';
 $route['eliminar_trabajo']   		= 'cms/modal_eliminar_trabajo';
+$route['eliminar_estructura']   	= 'cms/modal_eliminar_estructura';
 $route['editar/(:any)']				= 'cms/editar_usuario/$1';
 $route['editar_trabajo/(:any)']     = 'nucleo/editar_trabajo/$1';
 $route['ejecutar_trabajo/(:any)']   = 'nucleo/ejecutar_trabajo/$1';

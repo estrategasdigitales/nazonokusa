@@ -169,7 +169,8 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$this->load->view( 'cms/admin/estructuras' );
+				$data['estructuras'] = $this->cms->get_all_estructuras();
+				$this->load->view( 'cms/admin/estructuras', $data );
 			}
 		}
 	}
@@ -388,6 +389,12 @@ class Cms extends CI_Controller {
 		$data['nombre_trabajo']		= $this->input->get('name');
 		$data['uid']				= $this->input->get('token');
 		$this->load->view( 'cms/admin/modal_eliminar_trabajo', $data );
+	}
+
+	public function modal_eliminar_estructura(){
+		$data['nombre_estructura']		= $this->input->get('name');
+		$data['uid']				= $this->input->get('token');
+		$this->load->view( 'cms/admin/modal_eliminar_estructura', $data );
 	}
 
 	// public function modal_agregar_campo_rss(){
@@ -710,6 +717,48 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			$this->load->view( 'cms/admin/nueva_estructura' );
+		}
+	}
+
+	public function validar_form_nueva_estructura(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$this->form_validation->set_rules('nombre', 'Nombre de la estructura', 'trim|required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
+			$this->form_validation->set_rules('formato_salida', 'Formato', 'required|callback_valid_option|xss_clean');
+			
+			if ( $this->form_validation->run() === TRUE ){
+				$trabajo['usuario'] 			= $this->session->userdata('uid');
+				$trabajo['nombre']   			= $this->input->post('nombre');
+				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
+				$trabajo['url-origen']   		= $this->input->post('url-origen');
+				$trabajo['formato_salida']		= $this->input->post('formato_salida');
+				$trabajo['json_estructura']		= file_get_contents_curl( base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) ) );
+				$trabajo 						= $this->security->xss_clean( $trabajo );
+				$guardar 						= $this->cms->add_estructura( $trabajo );
+				if ( $guardar !== FALSE ){
+					echo TRUE;
+				} else {
+					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Trabajo</b></span>';
+				}
+			} else {
+				echo validation_errors('<span class="error">','</span>');
+			}
+		}
+	}
+
+	public function eliminar_estructura(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$uid = $this->input->post('token');
+			$eliminar = $this->cms->delete_estructura( base64_decode( $uid ) );
+			if ( $eliminar !== FALSE ){
+				echo TRUE;
+			} else {
+				echo '<span class="error">No se ha podido eliminar la estructura</span>';
+			}
 		}
 	}
 

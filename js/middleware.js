@@ -362,10 +362,9 @@ tvs(function($){
 					spinner.stop();
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
-					jQuery('#modalMessage').modal('hide');
-					$('#modalMessage').on('hidden.bs.modal', function (e) {
-					  window.location.reload();
-					});
+					$('#modalMessage').modal('hide');
+					$('#modalMessage').on('hidden.bs.modal');
+					window.location.reload();
 				}
 			},
 			error: function(data){
@@ -396,9 +395,8 @@ tvs(function($){
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
 					$('#modalMessage').modal('hide');
-					$('#modalMessage').on('hidden.bs.modal', function (e) {
-					  window.location.reload();
-					});
+					$('#modalMessage').on('hidden.bs.modal');
+					window.location.reload();
 				}
 			},
 			error: function(data){
@@ -428,10 +426,41 @@ tvs(function($){
 					spinner.stop();
 					$('#foo').css('display','none');
 					$('#messagesModal').css('display','block');
-					jQuery('#modalMessage').modal('hide');
-					$('#modalMessage').on('hidden.bs.modal', function (e) {
-					  window.location.reload();
-					});
+					$('#modalMessage').modal('hide');
+					$('#modalMessage').on('hidden.bs.modal');
+					window.location.reload();
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messagesModal').css('display','block');
+				$('#messagesModal').addClass('alert-danger');
+				$('#messagesModal').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_eliminar_estructura').submit(function(){
+		$('#foo').css('display','block');
+		$('#messagesModal').removeClass('alert-danger');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messagesModal').css('display','block');
+					$('#messagesModal').addClass('alert-danger');
+					$('#messagesModal').html(data);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messagesModal').css('display','block');
+					$('#modalMessage').modal('hide');
+					$('#modalMessage').on('hidden.bs.modal');
+					window.location.reload();
 				}
 			},
 			error: function(data){

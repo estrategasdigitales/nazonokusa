@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <?php $this->load->view('cms/header'); ?>
-	<?php echo form_open( 'nucleo/validar_form_nueva_estructura', array('class' => 'form-horizontal', 'id' => 'form_estructura_nuevo', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
+	<?php echo form_open( 'cms/validar_form_nueva_estructura', array('class' => 'form-horizontal', 'id' => 'form_estructura_nuevo', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
 		<div class="row">
 			<div class="col-sm-8 col-md-8"><h4>Nueva Estructura</h4></div>
 		</div>

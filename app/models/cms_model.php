@@ -724,4 +724,20 @@ class Cms_model extends CI_Model {
         else return FALSE;
         $result->free_result();
     }
+
+    public function get_all_estructuras(){
+        $this->db->select('uid_estructura, nombre, formato_salida, fecha_registro, activo');
+        $this->db->order_by('nombre', 'ASC');
+        $result = $this->db->get($this->db->dbprefix( 'estructuras_salida' ) );
+        if ( $result->num_rows() > 0 ) return $result->result();
+        else return FALSE;
+        $result->free_result();
+    }
+
+    public function delete_estructura( $uid ){
+        $this->db->delete( 'estructuras_salida', array( 'uid_estructura' => $uid ) );
+        //$this->db->cache_delete_all();
+        if ( $this->db->affected_rows() > 0 ) return TRUE;
+        else return FALSE;
+    }
 }

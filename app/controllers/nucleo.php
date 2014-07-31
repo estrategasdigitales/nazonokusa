@@ -826,33 +826,5 @@ class Nucleo extends CI_Controller {
             return TRUE;
         }
     }
-
-    public function validar_form_nueva_estructura(){
-		if ( $this->session->userdata('session') !== TRUE ){
-			redirect('login');
-		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre de la estructura', 'trim|required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('formato_salida', 'Formato', 'required|callback_valid_option|xss_clean');
-			
-			if ( $this->form_validation->run() === TRUE ){
-				$trabajo['usuario'] 			= $this->session->userdata('uid');
-				$trabajo['nombre']   			= $this->input->post('nombre');
-				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
-				$trabajo['url-origen']   		= $this->input->post('url-origen');
-				$trabajo['formato_salida']		= $this->input->post('formato_salida');
-				$trabajo['json_estructura']		= file_get_contents_curl( base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) ) );
-				$trabajo 						= $this->security->xss_clean( $trabajo );
-				$guardar 						= $this->cms->add_estructura( $trabajo );
-				if ( $guardar !== FALSE ){
-					echo TRUE;
-				} else {
-					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Trabajo</b></span>';
-				}
-			} else {
-				echo validation_errors('<span class="error">','</span>');
-			}
-		}
-	}
 }
 
