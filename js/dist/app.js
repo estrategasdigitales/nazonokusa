@@ -1224,7 +1224,7 @@ define('appglobal',['require','exports','module','datastore','fuelux-tree'],func
 				'close-icon' : 'icon-plus',
 				'selectable' : true,
 				'selected-icon' : 'icon-ok',
-				'unselected-icon' : 'icon-remove'
+				'unselected-icon' : 'icon-remove',
 			});
 
 			$('#tree-feed').on('selected', function (evt, data) {
