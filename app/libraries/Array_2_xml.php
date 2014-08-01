@@ -112,18 +112,30 @@ class Array_2_xml {
             // recurse to get the node for that key
             foreach($arr as $key=>$value){
                 if(!self::isValidTagName($key)) {
-                    throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
-                }
-                if(is_array($value) && is_numeric(key($value))) {
-                    // MORE THAN ONE NODE OF ITS KIND;
-                    // if the new array is numeric index, means it is array of nodes of the same kind
-                    // it should follow the parent key name
-                    foreach($value as $k=>$v){
-                        $node->appendChild(self::convert($key, $v));
+                    //throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                    if(is_array($value) && is_numeric(key($value))) {
+                        // MORE THAN ONE NODE OF ITS KIND;
+                        // if the new array is numeric index, means it is array of nodes of the same kind
+                        // it should follow the parent key name
+                        foreach($value as $k=>$v){
+                            $node->appendChild(self::convert('_'.$key, $v));
+                        }
+                    } else {
+                        // ONLY ONE NODE OF ITS KIND
+                        $node->appendChild(self::convert('_'.$key, $value));
                     }
                 } else {
-                    // ONLY ONE NODE OF ITS KIND
-                    $node->appendChild(self::convert($key, $value));
+                    if(is_array($value) && is_numeric(key($value))) {
+                        // MORE THAN ONE NODE OF ITS KIND;
+                        // if the new array is numeric index, means it is array of nodes of the same kind
+                        // it should follow the parent key name
+                        foreach($value as $k=>$v){
+                            $node->appendChild(self::convert($key, $v));
+                        }
+                    } else {
+                        // ONLY ONE NODE OF ITS KIND
+                        $node->appendChild(self::convert($key, $value));
+                    }
                 }
                 unset($arr[$key]); //remove the key from the array once done.
             }
