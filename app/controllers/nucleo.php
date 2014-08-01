@@ -16,7 +16,7 @@ class Nucleo extends CI_Controller {
 	private $storage_root;
 
 	/**
-	 * [__construct description]
+	 * Constructor de la clase, se inicializan valores e instancias
 	 */
 	public function __construct(){
 		parent::__construct();
@@ -79,7 +79,6 @@ class Nucleo extends CI_Controller {
 	 * [set_cron description]
 	 */
 	public function set_cron($config_cron, $trabajo_url_id){
-		
 		$config_cron= '*/2 * * * *';
 		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/ejecutar_trabajo?id=1';
 
@@ -112,8 +111,6 @@ class Nucleo extends CI_Controller {
 			$cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
 		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
 		}
-
-		
 	}
 
 	/**
@@ -130,7 +127,7 @@ class Nucleo extends CI_Controller {
 				/**
 				 * Se generan los archivos de salida en outputs
 				 */
-				//$trabajos = json_decode( $trabajo );
+
 				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria ) ){
 					mkdir( './outputs/' . $trabajoObject->uid_categoria );
 				}
@@ -154,8 +151,6 @@ class Nucleo extends CI_Controller {
 						foreach ( $formatos as $formato ){
 							$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
 						}
-						
-						
 					}else {
 						$final = $trabajo->output;	
 					}
@@ -173,7 +168,7 @@ class Nucleo extends CI_Controller {
 	 * [feed_service description]
 	 * @return [type] [description]
 	 */
-	public function feed_service( ){
+	public function feed_service(){
 		$output = array();
 		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
@@ -256,7 +251,6 @@ class Nucleo extends CI_Controller {
 	 */
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
-		//print_r( $url );die;
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
@@ -274,53 +268,6 @@ class Nucleo extends CI_Controller {
 
 		$this->load->view('cms/tree_feed', $data);
 	}
-
-	/**
-	 * [iterateNodesJSON description]
-	 * @param  stdClass $write  [description]
-	 * @param  array    $nodes  [description]
-	 * @param  boolean  $parent [description]
-	 * @return [type]           [description]
-	 */
-	// function iterateNodesJSON(stdClass $write, array $nodes, $parent = false) {
-	// 	$tree = [];
-	// 	// Obtenemos las propiedades
-	// 	$keys = get_object_vars($write);
-	// 	// Iteramos sobre cada una de las claves
-	// 	foreach ($keys as $key => $value) {
-	// 		$__item = array(
-	// 			'name' => $value,
-	// 			'type' => 'item'
-	// 		);
-
-	// 		if (is_array($value) || $value instanceof stdClass) {
-	// 			$__item = array(
-	// 				'name' => $key,
-	// 				'type' => 'folder'
-	// 			);
-
-	// 			array_push($nodes, $__item);
-
-	// 			// Tiene hijos entonces hacemos recursividad
-	// 			$nodes = $this->iterateNodesJSON($value, $nodes, $key);
-	// 		} else {
-	// 			if ($parent) {
-	// 				$__item = array(
-	// 					'name' => $value,
-	// 					'type' => 'item',
-	// 					'additionalParameters' => [],
-	// 					'parent' => $parent
-	// 				);
-
-	// 				$nodes[count($nodes) - 1]['additionalParameters']['children'][] = $__item;
-	// 			} else {
-	// 				$__item['type'] = 'item';
-	// 				array_push($nodes, $__item);
-	// 			}
-	// 		}
-	// 	}
-	// 	return $nodes;
-	// }
 
 	/**
 	 * [editar_trabajo description]
@@ -364,111 +311,6 @@ class Nucleo extends CI_Controller {
 	}
 
     /**
-     * [ejecutar_trabajo description]
-     * @param  [type] $uid_trabajo [description]
-     * @return [type]              [description]
-     */
-    public function ejecutar_trabajo( $uid_trabajo ){
-    	$trabajo 	=	$this->cms->get_trabajo_editar( $uid_trabajo );
-    	$elegidos 	=	[];
-    	$formatos 	=	[];
-		$cf 		= 	json_decode( $trabajo[0]['formato_salida'], TRUE );
-
-		foreach ( $cf['campos']  as $key => $value ){ $elegidos[] = explode( "," , $value ); }
-		foreach ( $cf['formatos']  as $key => $value ){ $formatos[] = $value; }
-
-    	if ( $trabajo !== FALSE ){
-    		$indice = 0;
-			$url 	= utf8_encode( file_get_contents_curl( $trabajo[0]['url_origen'] ) );
-			$pos 	= strpos( $url, '(' );
-            $rest 	= ( $pos > -1 && ( substr( $url, -1 ) === ")" ) ) ? substr( $url, $pos + 1, -1 ) : $url;
-					
-			if ( $campos_orig = json_decode( $rest, TRUE ) ){/*Si el formato corresponde a JSON, obtener los datos y procesarlos*/
-				if ( ! empty( $campos_orig[0] ) ){
-					for ( $i = 0; $i < count( $campos_orig ); $i++ ){
-						foreach ( $campos_orig[$i] as $key => $value ){
-							for ($j = 0; $j < count( $elegidos ); $j++ ){
-								$tmp = 0;
-								if ( count( $elegidos[$j]) > $indice ){
-									if ( $elegidos[$j][$indice] === (string)$key ){ $tmp++; break; }
-								}
-							}
-							if ( $tmp > 0 ){
-								if ( is_array( $value ) ){ $campos_orig[$i][$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 ); }
-			     			} else { unset( $campos_orig[$i][$key] ); }
-						}
-					}
-				} else {
-					foreach ( $campos_orig as $key => $value ){
-						for ( $j = 0; $j < count( $elegidos ); $j++ ){
-							$tmp = 0;
-							if ( count( $elegidos[$j]) > $indice ){
-								if ( $elegidos[$j][$indice] === (string)$key ){ $tmp = $tmp + 1; break; }
-							}
-						}
-						if ( $tmp > 0 ){
-							if ( is_array( $value ) ){ $campos_orig[$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 ); }
-						} else { unset($campos_orig[$key]); }
-					}
-				}
-			} else {	/*Si el formato NO es JSON, es XML, obtener los datos y procesarlos*/
-				$xml = simplexml_load_file( $trabajo[0]['url_origen'] );
-				if ( $xml->channel ){
-					$rest 			= 	json_encode( $xml );
-					$campos_orig 	=	json_decode( $rest, TRUE );
-				} else {
-					$rest 			= 	json_encode( $xml );
-					$campos_orig 	= 	json_decode( $rest, TRUE );
-				}
-				if ( ! empty( $campos_orig[0] ) ){
-					for ( $i = 0; $i < count( $campos_orig ); $i++ ){
-						foreach ( $campos_orig[$i] as $key => $value ) {
-							for ( $j = 0; $j < count( $elegidos ); $j++ ){
-								$tmp = 0;
-								if ( count( $elegidos[$j] ) > $indice ){
-									if ( $elegidos[$j][$indice] === (string)$key ){
-										$tmp = $tmp + 1;
-										break;
-									}
-								}
-							}	
-							if ( $tmp > 0 ){
-								if ( is_array( $value ) ){
-									$campos_orig[$i][$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
-								}
-							} else {
-								unset( $campos_orig[$i][$key] );										
-							}
-						}
-					}
-				} else {
-					foreach ( $campos_orig as $key => $value ){
-						for ( $j = 0; $j < count( $elegidos ); $j++ ){
-							$tmp = 0;
-							if ( count($elegidos[$j] ) > $indice ){
-								if ( $elegidos[$j][$indice] === (string)$key ){
-									$tmp = $tmp + 1;
-									break;
-								}
-							}
-						}			
-						if ( $tmp > 0 ){
-							if ( is_array( $value ) ){ $campos_orig[$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 ); }
-						} else { unset( $campos_orig[$key] ); }
-					}
-				}
-			}
-			for ( $i = 0; $i < count( $formatos ); $i++ ){
-				if( $formatos[$i] === 'xml' ){ $this->convert_xml( $campos_orig ); }
-				if( $formatos[$i] === 'rss2' ){ $this->convert_rss( $campos_orig, $trabajo['claves_rss'], $trabajo['valores_rss'] ); }
-				if( $formatos[$i] === 'json' ){ $this->convert_json( $campos_orig ); }
-				if( $formatos[$i] === 'jsonp' ){ $this->convert_jsonp( $campos_orig, $this->input->post( 'nom_funcion' ) ); }
-			}
-    	redirect('trabajos');
-    	} else return false;
-    }
-
-    /**
      * [validar_form_trabajo description]
      * @return [type] [description]
      */
@@ -503,7 +345,6 @@ class Nucleo extends CI_Controller {
 				$trabajo['campos']				= $this->input->post('claves');
 				$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
 				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
-				//print_r( $trabajo['json_output'] );die;
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
 				$trabajo['cron_config']			= $cronjob_config;
@@ -567,58 +408,6 @@ class Nucleo extends CI_Controller {
 		
 		$jsonValidate = new TreeFeed( $feed, 1, $jsontmp, 'category' );
 		return json_encode( $feed[0] );
-	}
-
-	/**
-	 * [arreglo_nuevo description]
-	 * @param  [type] $arreglo  [description]
-	 * @param  [type] $elegidos [description]
-	 * @param  [type] $indice   [description]
-	 * @return [type]           [description]
-	 */
-	function arreglo_nuevo( $arreglo, $elegidos, $indice ){
-		if ( ! empty( $arreglo[0] ) ){
-			for ( $i = 0; $i < count( $arreglo ); $i++ ){
-				foreach ( $arreglo[$i] as $key => $value ){
-					for ( $j = 0; $j < count( $elegidos ); $j++ ){
-						$tmp = 0;
-						if ( count( $elegidos[$j] ) > $indice ){
-							if ( $elegidos[$j][$indice] === (string)$key ){
-								$tmp = $tmp + 1;
-								break;
-							}
-						}
-					}
-					if ( $tmp > 0 ){
-						if ( is_array( $value ) ){
-							$arreglo[$i][$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
-						}
-					} else {
-						unset( $arreglo[$i][$key] );										
-					}
-				}
-			}
-		} else {
-			foreach ( $arreglo as $key => $value ){
-				for ( $j = 0; $j < count( $elegidos ); $j++ ){
-					$tmp = 0;
-					if ( count( $elegidos[$j]) > $indice ){
-						if ( $elegidos[$j][$indice] === (string)$key ){
-							$tmp = $tmp + 1;
-							break;
-						}
-					}
-				}				
-				if ( $tmp > 0){
-					if ( is_array( $value ) ){
-						$arreglo[$key] = $this->arreglo_nuevo( $value, $elegidos, $indice + 1 );
-					}
-				} else {
-					unset( $arreglo[$key] );										
-				}
-			}
-		}
-		return $arreglo;
 	}
 
 	/**
@@ -795,7 +584,12 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
-	 * Selecciona un elemento con determinado indice
+	 * [selected description]
+	 * @param  [type]  $tree          [description]
+	 * @param  [type]  $index         [description]
+	 * @param  [type]  $nodesSelected [description]
+	 * @param  boolean $depth         [description]
+	 * @return [type]                 [description]
 	 */
 	function selected ($tree, $index, &$nodesSelected, $depth = false) {
 		if ($depth === false) {
@@ -828,6 +622,11 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Funcion extra para form_validate, para detectar si en un selector se ha elegido algo diferente de cero o la opción por defecto
+	 * @param  [type] $str valor
+	 * @return [type]      Regresa FALSE si el dato no es válido, TRUE si el dato es válido
+	 */
 	function valid_option($str) {
         if ($str == 0) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
