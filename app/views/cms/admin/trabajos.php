@@ -9,9 +9,10 @@
 		<div class="container table-responsive">
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
-					<td>Nombre del Trabajo</td>
+					<td width="35%">Nombre del Trabajo</td>
 					<!--<td width="30%">URL origen</td>-->
-					<td >Salidas</td>
+					<td width="25%">Salidas</td>
+					<td>Fecha de alta</td>
 					<td class="text-center" width="10%">Activar / Desactivar</td>
 					<!--<td class="text-center" width="10%">Ejecutar</td>-->
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
@@ -40,20 +41,7 @@
 									</span>
 								<?php } } ?>
 							</td>
-							<!--<td class="text-center">
-								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
-									<div class="btn-group btn-toggle" data-toggle="buttons">
-										<label class="btn btn-sm <?php if( $trabajo->activo == 1 ) echo 'btn-success active'; else echo 'btn-default'; ?>">
-											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php //echo $trabajo->uid_trabajo; ?>')">ON-->
-											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?>>ON
-										</label>
-										<label class="btn btn-sm <?php if( $trabajo->activo == 0 ) echo 'btn-danger active'; else echo 'btn-default'; ?>">
-											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php //echo $trabajo->uid_trabajo; ?>')">OFF-->
-											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?>>OFF
-										</label>
-									</div>
-								<?php echo form_close(); ?>
-							</td>-->
+							<td class="text-center"><?php echo unix_to_human($trabajo->fecha_registro); ?></td>
 							<td class="text-center">
 								<?php if ( $trabajo->activo == 0 ){ ?>
 									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 1);" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Activar</a>

@@ -74,93 +74,81 @@ class Nucleo extends CI_Controller {
 		else
 			echo $sms_reponse;
 	}
-	
-	/**
-	 * [set_cron description]
-	 */
-	public function set_cron($config_cron, $trabajo_url_id){
-		$config_cron= '*/2 * * * *';
-		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/ejecutar_trabajo?id=1';
 
-		$host='107.170.237.101'; 
-		$port='22';
-		$username='root';	
-		$password='yyqoypklcwza';
-		/*
-		$host= 		$_SERVER['CRON_HOST'];
-		$port=		$_SERVER['CRON_HOST_PORT'];
-		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];
-		*/
-		
-		$cron_setup = new cron_manager();
-		// Si no se puede conectar, enviar error a pantalla.
-		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
-		//print_r($resp_con);
-		
-		$path 	 = '/var/www/html/';
-		$handle	 = 'crontab.txt';
-		/*
-		$path 	 = $_SERVER['CRON_PATH'];
-		$handle	 = $_SERVER['CRON_HANDLE'];
-		*/
-		if ($trabajo_url_id && $trabajo_url_id != "")
-		{
-			$nueva_tarea = $cron_setup->write_to_file($path, $handle);
-		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
-			$cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
-		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
-		}
+	/**
+	 * [array_unique_multidimensional description]
+	 * @param  [type] $input [description]
+	 * @return [type]        [description]
+	 */
+	public function array_unique_multidimensional( $input ){
+		$serialized = array_map( 'serialize', $input );
+		$unique = array_unique( $serialized );
+		return array_intersect_key( $input, $unique );
 	}
 
 	/**
-	 * [job_process description]
+	 * [detectar_campos description]
 	 * @return [type] [description]
 	 */
-	public function job_process(){
-		$job['status'] 	= $this->input->post('status');
-		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
-		$process 		= $this->cms->active_job( $job );
-		if ( $process === TRUE ){
-			if ( $job['status'] == 1 ){
-				$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob']);
-				/**
-				 * Se generan los archivos de salida en outputs
-				 */
+	public function detectar_campos(){
+		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
+		$content = json_decode( file_get_contents_curl( $url ) );
+		$tree = new Tree( $content, true );
+		$arbol = array('tree' => serialize( $tree ) );
+		$nodes = array('nodes' => serialize( $tree->getNodes() ) );
+		$this->session->set_userdata( $arbol );
+		$this->session->set_userdata( $nodes );
+		$jsonStr = "[";
+		$jsonStr .= $this->treeBuild( $tree );
+		$jsonStr = substr($jsonStr, 0, -5) . "]";
+		$jsonStr =  preg_replace("/,\]\}/", "]}", $jsonStr);
 
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria );
-				}
+		$data = array(
+			'nodes' => $jsonStr
+		);
 
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical );
-				}
+		$this->load->view('cms/tree_feed', $data);
+	}
+	
+	/**
+	 * [editar_trabajo description]
+	 * @param  [type] $uid_trabajo [description]
+	 * @return [type]              [description]
+	 */
+	public function editar_trabajo( $uid_trabajo ){
+    	if( $this->session->userdata('session') !== TRUE ){
+    		redirect('login');
+    	}else {
+    	    $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
+           	$data['usuario']    	= $this->session->userdata('nombre');
+			$data['categorias'] 	= $this->cms->get_categorias();
+			$data['verticales'] 	= $this->cms->get_verticales();
+       		$data['trabajo_editar'] = $trabajo->uid_trabajo;
+       		$data['cron_date'] 		= json_decode($trabajo->cron_config, true);
+           	$this->load->view('cms/admin/editar_trabajo', $data);
+	   	}
+	}
 
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario );
-				}
-				$trabajos = json_decode( $trabajoObject->feeds_output );
-				foreach ( $trabajos as $trabajo ){
-					$open = fopen( "./" . $trabajo->url, "w" );
-					if ( $trabajo->formato == 'xml' ){
-						$array = json_decode( $trabajo->output, TRUE );
-						$final = array_to_xml( $array )->saveXML();
-					} elseif ( $trabajo->formato == 'rss' ){
-						$array = json_decode( $trabajo->output, TRUE );
-						$formatos = json_decode( $trabajoObject->formatos );
-						foreach ( $formatos as $formato ){
-							$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
-						}
-					}else {
-						$final = $trabajo->output;	
-					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-				}
-			}
-			echo TRUE;
+	/**
+	 * [eliminar_trabajo description]
+	 * @param  [type] $uid_trabajo [description]
+	 * @return [type]              [description]
+	 */
+	public function eliminar_trabajo(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
 		} else {
-			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
+			$uid_trabajo = base64_decode( $this->input->post('token') );
+			$eliminar = $this->cms->delete_trabajo($uid_trabajo);
+			if ( $eliminar !== FALSE ){
+				/** Aquí debe ir el código para borrar los archivos de salida del disco duro de la instancia, se debe consultar la base de datos **/
+				/** Aquí se debe incluir el código para borrar el cron de la instancia donde se guardan **/
+				// $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
+				// $cronjob = json_decode($trabajo->cron_config, true);
+				echo TRUE;
+			} else {
+				echo '<span class="error">No se ha podido eliminar el <b>trabajo</b>.</span>';
+			}
 		}
 	}
 
@@ -246,67 +234,135 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
-	 * [detectar_campos description]
+	 * [job_process description]
 	 * @return [type] [description]
 	 */
-	public function detectar_campos(){
-		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
-		$content = json_decode( file_get_contents_curl( $url ) );
-		$tree = new Tree( $content, true );
-		$arbol = array('tree' => serialize( $tree ) );
-		$nodes = array('nodes' => serialize( $tree->getNodes() ) );
-		$this->session->set_userdata( $arbol );
-		$this->session->set_userdata( $nodes );
-		$jsonStr = "[";
-		$jsonStr .= $this->treeBuild( $tree );
-		$jsonStr = substr($jsonStr, 0, -5) . "]";
-		$jsonStr =  preg_replace("/,\]\}/", "]}", $jsonStr);
+	public function job_process(){
+		$job['status'] 	= $this->input->post('status');
+		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
+		$process 		= $this->cms->active_job( $job );
+		if ( $process === TRUE ){
+			if ( $job['status'] == 1 ){
+				$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob']);
+				/**
+				 * Se generan los archivos de salida en outputs
+				 */
 
-		$data = array(
-			'nodes' => $jsonStr
-		);
+				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria ) ){
+					mkdir( './outputs/' . $trabajoObject->uid_categoria );
+				}
 
-		$this->load->view('cms/tree_feed', $data);
-	}
+				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical ) ){
+					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical );
+				}
 
-	/**
-	 * [editar_trabajo description]
-	 * @param  [type] $uid_trabajo [description]
-	 * @return [type]              [description]
-	 */
-	public function editar_trabajo( $uid_trabajo ){
-    	if( $this->session->userdata('session') !== TRUE ){
-    		redirect('login');
-    	}else {
-    	    $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
-           	$data['usuario']    	= $this->session->userdata('nombre');
-			$data['categorias'] 	= $this->cms->get_categorias();
-			$data['verticales'] 	= $this->cms->get_verticales();
-       		$data['trabajo_editar'] = $trabajo->uid_trabajo;
-       		$data['cron_date'] 		= json_decode($trabajo->cron_config, true);
-           	$this->load->view('cms/admin/editar_trabajo', $data);
-	   	}
-	}
-
-
-	/**
-	 * [eliminar_trabajo description]
-	 * @param  [type] $uid_trabajo [description]
-	 * @return [type]              [description]
-	 */
-	public function eliminar_trabajo(){
-		if ( $this->session->userdata('session') !== TRUE ){
-			redirect('login');
-		} else {
-			$uid_trabajo = $this->input->post('uidjob');
-			// $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
-			// $cronjob = json_decode($trabajo->cron_config, true);
-			$eliminar = $this->cms->delete_trabajo($uid_trabajo);
-			if ( $eliminar !== FALSE ){
-				echo TRUE;
-			} else {
-				echo '<span class="error">No se ha podido eliminar el <b>trabajo</b>.</span>';
+				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario ) ){
+					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario );
+				}
+				$trabajos = json_decode( $trabajoObject->feeds_output );
+				foreach ( $trabajos as $trabajo ){
+					$open = fopen( "./" . $trabajo->url, "w" );
+					if ( $trabajo->formato == 'xml' ){
+						$array = json_decode( $trabajo->output, TRUE );
+						$final = array_to_xml( $array )->saveXML();
+					} elseif ( $trabajo->formato == 'rss' ){
+						$array = json_decode( $trabajo->output, TRUE );
+						$formatos = json_decode( $trabajoObject->formatos );
+						foreach ( $formatos as $formato ){
+							$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
+						}
+					}else {
+						$final = $trabajo->output;	
+					}
+					fwrite( $open, stripslashes( $final ) );
+					fclose( $open );
+				}
 			}
+			echo TRUE;
+		} else {
+			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
+		}
+	}
+
+	/**
+	 * [mapAttributes description]
+	 * @param  [type] $feed [description]
+	 * @return [type]       [description]
+	 */
+	public function mapAttributes( $feed ){
+		$campos_orig 	= json_decode( $feed, TRUE );
+		$campos 		= [];
+		$items 			= count( $campos_orig );
+		if ( ! empty( $campos_orig[0] ) ){
+			for ($i = 0; $i < count( $campos_orig); $i++){
+				foreach ( $campos_orig[$i] as $key => $value ){
+					if ( is_array( $value ) ){
+						if ( ! empty($campos[$key] ) ){
+							$campos[$key] = $this->claves( $value, $campos[$key] );
+						}else{
+							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
+						}
+					}else{
+						if ( ! array_key_exists($key, $campos) ){
+							$campos[$key] = '';
+						}
+					}
+				}
+			}
+		}else{
+			foreach ($campos_orig as $key => $value ){
+				if ( is_array( $value ) ){
+					if ( ! empty( $campos[$key] ) ){
+						$campos[$key] = $this->claves( $value, $campos[$key] );
+					}else{
+						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
+					}
+				}else{
+					if( ! array_key_exists( $key, $campos ) ){
+						$campos[$key] = '';
+					}
+				}
+			}
+		}
+
+		return $campos;
+	}
+
+	/**
+	 * [set_cron description]
+	 */
+	public function set_cron($config_cron, $trabajo_url_id){
+		$config_cron= '*/2 * * * *';
+		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/ejecutar_trabajo?id=1';
+
+		$host='107.170.237.101'; 
+		$port='22';
+		$username='root';	
+		$password='yyqoypklcwza';
+		/*
+		$host= 		$_SERVER['CRON_HOST'];
+		$port=		$_SERVER['CRON_HOST_PORT'];
+		$username=	$_SERVER['CRON_HOST_USER'];	
+		$password=	$_SERVER['CRON_HOST_PASS'];
+		*/
+		
+		$cron_setup = new cron_manager();
+		// Si no se puede conectar, enviar error a pantalla.
+		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
+		//print_r($resp_con);
+		
+		$path 	 = '/var/www/html/';
+		$handle	 = 'crontab.txt';
+		/*
+		$path 	 = $_SERVER['CRON_PATH'];
+		$handle	 = $_SERVER['CRON_HANDLE'];
+		*/
+		if ($trabajo_url_id && $trabajo_url_id != "")
+		{
+			$nueva_tarea = $cron_setup->write_to_file($path, $handle);
+		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
+			$cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
+		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
 		}
 	}
 
@@ -411,61 +467,6 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
-	 * [mapAttributes description]
-	 * @param  [type] $feed [description]
-	 * @return [type]       [description]
-	 */
-	public function mapAttributes( $feed ){
-		$campos_orig 	= json_decode( $feed, TRUE );
-		$campos 		= [];
-		$items 			= count( $campos_orig );
-		if ( ! empty( $campos_orig[0] ) ){
-			for ($i = 0; $i < count( $campos_orig); $i++){
-				foreach ( $campos_orig[$i] as $key => $value ){
-					if ( is_array( $value ) ){
-						if ( ! empty($campos[$key] ) ){
-							$campos[$key] = $this->claves( $value, $campos[$key] );
-						}else{
-							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-						}
-					}else{
-						if ( ! array_key_exists($key, $campos) ){
-							$campos[$key] = '';
-						}
-					}
-				}
-			}
-		}else{
-			foreach ($campos_orig as $key => $value ){
-				if ( is_array( $value ) ){
-					if ( ! empty( $campos[$key] ) ){
-						$campos[$key] = $this->claves( $value, $campos[$key] );
-					}else{
-						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
-					}
-				}else{
-					if( ! array_key_exists( $key, $campos ) ){
-						$campos[$key] = '';
-					}
-				}
-			}
-		}
-
-		return $campos;
-	}
-
-	/**
-	 * [array_unique_multidimensional description]
-	 * @param  [type] $input [description]
-	 * @return [type]        [description]
-	 */
-	public function array_unique_multidimensional( $input ){
-		$serialized = array_map( 'serialize', $input );
-		$unique = array_unique( $serialized );
-		return array_intersect_key( $input, $unique );
-	}
-
-	/**
 	 * [claves description]
 	 * @param  [type] $arreglo [description]
 	 * @param  [type] $origin  [description]
@@ -504,83 +505,6 @@ class Nucleo extends CI_Controller {
 			}
 		}
 		return $origin;
-	}
-
-	/**
-	 * Construcción de cuerpo
-	 * @param  Tree $tree
-	 * @param boolean $selected Solo elementos seleccionados
-	 * @return string
-	 */
-	function treeBuild ($tree, $selected = false) {
-		if ($selected === false) {
-			return $this->wSelected($tree);
-		} else {
-			return $this->yselected($tree);
-		}
-	}
-
-	/**
-	 * [wSelected description]
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
-	 */
-	function wSelected($tree) {
-		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
-			if (!isset($str)) {
-				$str = "";
-			}
-			$str .=  '{"identifier": "' . $value . '",  "name": "' . $value->getName() . '", "type":';
-			if ($value->getType() === 'folder') {
-				$str .=  '"' . $value->getType() . '",' . '"additionalParameters": { "children":[';
-				$str .= $this->treeBuild($value);
-			} else {
-				$str .=  '"item"';
-				$str .=  '},';
-			}
-		}
-		$str .=  ']}},';
-		return $str;
-	}
-
-	/**
-	 * [yselected description]
-	 * @param  [type] $tree [description]
-	 * @return [type]       [description]
-	 */
-	function yselected( $tree ) {
-		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
-			// Si no existe lo creamos
-			if (!isset($str)) $str = "[!content!]";
-
-			// Si no esta seleccionado entonces vámos por otro elemento.
-			if ($value->getSelected() !== true && $value->getChildrensAsSelected() !== true) {
-				continue;
-			}
-
-			// si no tiene hijos pintamos directamente
-			if (!$value->getChildrensAsSelected() && !$value->getParent()) {
-				$replace =  '{"' . $value->getName() . '": "' . $value->getName() . '"},[!content!]';
-				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
-			}
-			// El elemento raíz con hijo esta siendo seleccionado
-			elseif ($value->getSelected() && !$value->getParameters()->getChildrens()) {
-				$replace =  '{"' . $value->getName() . '": "' . $value->getName() . '"},[!content!]';
-				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
-			}
-			// Si tiene hijos entonces mostramos con un diferente formato.
-			elseif ($value->getChildrensAsSelected()) {
-				$replace =  '{"' . $value->getName() . '": [[!childsContent!]},[!content!]}';
-				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
-
-				$childsStr = $this->treeBuild($value, true);
-
-				$str = preg_replace('/\[\!childsContent\!\]/i', $childsStr, $str);
-			}
-		}
-		$str = preg_replace('/,\[\!content\!\]/i', ']', $str);
-
-		return $str;
 	}
 
 	/**
@@ -623,6 +547,20 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
+	 * Construcción de cuerpo
+	 * @param  Tree $tree
+	 * @param boolean $selected Solo elementos seleccionados
+	 * @return string
+	 */
+	function treeBuild ($tree, $selected = false) {
+		if ($selected === false) {
+			return $this->wSelected($tree);
+		} else {
+			return $this->yselected($tree);
+		}
+	}
+
+	/**
 	 * Funcion extra para form_validate, para detectar si en un selector se ha elegido algo diferente de cero o la opción por defecto
 	 * @param  [type] $str valor
 	 * @return [type]      Regresa FALSE si el dato no es válido, TRUE si el dato es válido
@@ -635,5 +573,67 @@ class Nucleo extends CI_Controller {
             return TRUE;
         }
     }
-}
 
+    /**
+	 * [yselected description]
+	 * @param  [type] $tree [description]
+	 * @return [type]       [description]
+	 */
+	function yselected( $tree ) {
+		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
+			// Si no existe lo creamos
+			if (!isset($str)) $str = "[!content!]";
+
+			// Si no esta seleccionado entonces vámos por otro elemento.
+			if ($value->getSelected() !== true && $value->getChildrensAsSelected() !== true) {
+				continue;
+			}
+
+			// si no tiene hijos pintamos directamente
+			if (!$value->getChildrensAsSelected() && !$value->getParent()) {
+				$replace =  '{"' . $value->getName() . '": "' . $value->getName() . '"},[!content!]';
+				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
+			}
+			// El elemento raíz con hijo esta siendo seleccionado
+			elseif ($value->getSelected() && !$value->getParameters()->getChildrens()) {
+				$replace =  '{"' . $value->getName() . '": "' . $value->getName() . '"},[!content!]';
+				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
+			}
+			// Si tiene hijos entonces mostramos con un diferente formato.
+			elseif ($value->getChildrensAsSelected()) {
+				$replace =  '{"' . $value->getName() . '": [[!childsContent!]},[!content!]}';
+				$str = preg_replace('/\[\!content\!\]/i', $replace, $str);
+
+				$childsStr = $this->treeBuild($value, true);
+
+				$str = preg_replace('/\[\!childsContent\!\]/i', $childsStr, $str);
+			}
+		}
+		$str = preg_replace('/,\[\!content\!\]/i', ']', $str);
+
+		return $str;
+	}
+
+	/**
+	 * [wSelected description]
+	 * @param  [type] $tree [description]
+	 * @return [type]       [description]
+	 */
+	function wSelected($tree) {
+		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
+			if (!isset($str)) {
+				$str = "";
+			}
+			$str .=  '{"identifier": "' . $value . '",  "name": "' . $value->getName() . '", "type":';
+			if ($value->getType() === 'folder') {
+				$str .=  '"' . $value->getType() . '",' . '"additionalParameters": { "children":[';
+				$str .= $this->treeBuild($value);
+			} else {
+				$str .=  '"item"';
+				$str .=  '},';
+			}
+		}
+		$str .=  ']}},';
+		return $str;
+	}
+}
