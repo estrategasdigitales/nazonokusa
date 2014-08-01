@@ -27,3 +27,8 @@ http://feeds.esmas.com/tvolucion/mobile_deportes_app.js
 http://feeds.esmas.com/data-feeds-esmas/ipad/0129240101.xml
 http://feeds.esmas.com/data-feeds-esmas/samsung/programas/0129241605.js
 http://tvolucion.esmas.com/rss/lg_programas.php?id=0129241605
+
+
+
+Casos que causas errores:
+http://feeds.esmas.com/data-feeds-esmas/ipad/appdep_priority_all.js
