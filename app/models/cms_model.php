@@ -502,6 +502,7 @@ class Cms_model extends CI_Model {
         //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
         $this->db->set('formatos', $trabajo['formatos'] );
         $this->db->set('feeds_output', $trabajo['feeds_output'] );
+        $this->db->set('cron_config', $trabajo['cron_config']);
         $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
         //$this->db->cache_delete_all();
         if ( $this->db->affected_rows() > 0 ) return TRUE;

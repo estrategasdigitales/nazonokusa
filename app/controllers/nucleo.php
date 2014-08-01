@@ -491,6 +491,8 @@ class Nucleo extends CI_Controller {
 					$this->form_validation->set_rules('nom_funcion', 'Campos adicionales para JSONP', 'trim|alpha_dash|required|min_length[3]|xss_clean');
 				}
 			}
+			$cronjob_config = $this->input->post('cron_minuto').' '.$this->input->post('cron_hora').' '.$this->input->post('cron_diames').' '.$this->input->post('cron_mes').' '.$this->input->post('cron_diasemana');
+
 			if ( $this->form_validation->run() === TRUE ){
 				$trabajo['usuario'] 			= $this->session->userdata('uid');
 				$trabajo['nombre']   			= $this->input->post('nombre');
@@ -504,6 +506,7 @@ class Nucleo extends CI_Controller {
 				//print_r( $trabajo['json_output'] );die;
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
+				$trabajo['cron_config']			= $cronjob_config;
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_trabajo( $trabajo );
 				if ( $guardar !== FALSE ){

@@ -238,7 +238,7 @@
 						<div class="col-sm-4 col-md-4">	
 							<label for="cron_diames" class="form-trabajos-label0">D&iacute;a del mes: </label>
 							<select class="form-control form-trabajos-date" name="cron_diames">
-								<option value="0"> -- </option>
+								<option value="*">Todos los d&iacute;as</option>
 								<option value="1">1</option> <option value="2">2</option> <option value="3">3</option>
 								<option value="4">4</option> <option value="5">5</option> <option value="6">6</option>
 								<option value="7">7</option> <option value="8">8</option> <option value="9">9</option>
@@ -259,7 +259,8 @@
 						<div class="col-sm-4 col-md-4">
 							<label class="form-trabajos-hora">Hora:</label>
 							<select class="form-control form-trabajos-hora" name="cron_hora">
-								<option value="*">Cada hr.</option> <option value="0">00</option> 
+								<option value="*">Cada hr.</option> <option value="*/2">Cada 2hrs.</option> <option value="*/6">Cada 6hrs.</option>
+								<option value="*/12">Cada 12hrs.</option> <option value="0">00</option> 
 								<option value="1">01</option> <option value="2">02</option>
 								<option value="3">03</option> <option value="4">04</option> <option value="5">05</option>
 								<option value="6">06</option> <option value="7">07</option> <option value="8">08</option>
@@ -270,9 +271,10 @@
 								<option value="21">21</option> <option value="22">22</option> <option value="23">23</option>
 							</select>
 							<select class="form-control form-trabajos-hora" name="cron_minuto">
-								<option value="*">Cada min</option>
-								<option value="0/5">Cada 5 mins</option>
-								<option value="0/15">Cada 15 mins</option>
+								<option value="*/5">Cada 5 mins</option>
+								<option value="*/10">Cada 10 mins</option>
+								<option value="*/15">Cada 15 mins</option>
+								<option value="*/30">Cada 30 mins</option>
 								<option value="0">00</option> 
 								<option value="1">01</option> <option value="2">02</option> <option value="3">03</option>
 								<option value="4">04</option> <option value="5">05</option> <option value="6">06</option>
