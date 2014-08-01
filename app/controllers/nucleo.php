@@ -79,13 +79,15 @@ class Nucleo extends CI_Controller {
 	 * [set_cron description]
 	 */
 	public function set_cron($config_cron, $trabajo_url_id){
+		
 		$config_cron= '*/2 * * * *';
-		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/ejecutar_trabajo?id=1';
+		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/job_process?uidjob=';
 
 		$host='107.170.237.101'; 
 		$port='22';
 		$username='root';	
 		$password='yyqoypklcwza';
+		
 		/*
 		$host= 		$_SERVER['CRON_HOST'];
 		$port=		$_SERVER['CRON_HOST_PORT'];
@@ -106,12 +108,51 @@ class Nucleo extends CI_Controller {
 		*/
 		if ($trabajo_url_id && $trabajo_url_id != "")
 		{
-			$nueva_tarea = $cron_setup->write_to_file($path, $handle);
-		//* * * * * /usr/bin/curl http://www.midominio.com/archivo.php
-			$cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
-		//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
+			
+			$nueva_tarea = $cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
+			//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
 		}
 	}
+
+	
+	public function unset_cron($config_cron, $trabajo_url_id){
+		
+		$config_cron= '*/2 * * * *';
+		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/job_process?uidjob=';
+
+		$host='107.170.237.101'; 
+		$port='22';
+		$username='root';	
+		$password='yyqoypklcwza';
+		
+		/*
+		$host= 		$_SERVER['CRON_HOST'];
+		$port=		$_SERVER['CRON_HOST_PORT'];
+		$username=	$_SERVER['CRON_HOST_USER'];	
+		$password=	$_SERVER['CRON_HOST_PASS'];
+		*/
+		
+		$cron_setup = new cron_manager();
+		// Si no se puede conectar, enviar error a pantalla.
+		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
+		//print_r($resp_con);
+		
+		$path 	 = '/var/www/html/';
+		$handle	 = 'crontab.txt';
+		/*
+		$path 	 = $_SERVER['CRON_PATH'];
+		$handle	 = $_SERVER['CRON_HANDLE'];
+		*/
+		if ($trabajo_url_id && $trabajo_url_id != "")
+		{
+			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
+			
+			$quitar_tarea = $cron_setup->remove_cronjob( $config_cron. ' ' . $trabajo_url_id );
+			
+		}
+	}
+
 
 	/**
 	 * [job_process description]
@@ -121,6 +162,7 @@ class Nucleo extends CI_Controller {
 		$job['status'] 	= $this->input->post('status');
 		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
 		$process 		= $this->cms->active_job( $job );
+		
 		if ( $process === TRUE ){
 			if ( $job['status'] == 1 ){
 				$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob']);

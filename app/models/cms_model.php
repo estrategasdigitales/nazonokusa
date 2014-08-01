@@ -329,7 +329,7 @@ class Cms_model extends CI_Model {
      */
     public function get_trabajos(){
         //$this->db->cache_on();
-        $this->db->select( 'uid_trabajo, uid_usuario, uid_categoria, uid_vertical, nombre, slug_nombre_feed, feeds_output, activo' );
+        $this->db->select( 'uid_trabajo, uid_usuario, uid_categoria, uid_vertical, nombre, slug_nombre_feed, feeds_output, cron_config, activo' );
         $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
         if ($result->num_rows() > 0) return $result->result();
         else return FALSE;
