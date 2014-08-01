@@ -16,7 +16,7 @@ class Nucleo extends CI_Controller {
 	private $storage_root;
 
 	/**
-	 * Constructor de la clase, se inicializan valores e instancias
+	 * Constructor de la clase, se inicializan valores, se cargan librerías y helpers extras
 	 */
 	public function __construct(){
 		parent::__construct();
