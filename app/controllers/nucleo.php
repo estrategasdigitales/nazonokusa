@@ -93,6 +93,7 @@ class Nucleo extends CI_Controller {
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
 		$content = json_decode( file_get_contents_curl( $url ) );
+		
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
 		$nodes = array('nodes' => serialize( $tree->getNodes() ) );
@@ -328,9 +329,6 @@ class Nucleo extends CI_Controller {
 		return $campos;
 	}
 
-	/**
-	 * [set_cron description]
-	 */
 	public function set_cron($config_cron, $trabajo_url_id){
 		$config_cron= '*/2 * * * *';
 		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/job_process?uidjob=';
