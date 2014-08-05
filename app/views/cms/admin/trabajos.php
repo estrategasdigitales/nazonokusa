@@ -29,12 +29,28 @@
 							<td class="text-center">
 								<?php
 									if ( $trabajo->activo == 1 ){
-										$salidas = json_decode( $trabajo->feeds_output );
+										$salidas = json_decode( $trabajo->formatos );
 										foreach ( $salidas as $salida ){
 								?>
 								
 									<span>
-										<a href="<?php echo base_url().$salida->url; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+										<?php
+											switch ($salida->formato) {
+												case 'json': ?>
+													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+										<?php 	break;
+												case 'jsonp': ?>
+													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+										<?php 	break;
+												case 'xml': ?>
+													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+										<?php 	break;
+												case 'rss': ?>
+													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+										<?php 	break;
+											
+											}
+										?>
 											<span class="glyphicon glyphicon-link"></span>
 											<span class="glyphicon-class"><?php echo $salida->formato; ?></span>
 										</a>

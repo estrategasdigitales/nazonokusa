@@ -35,7 +35,7 @@ class Nucleo extends CI_Controller {
 				'username' 	=> $_SERVER['STORAGE_USER'],
 				'password' 	=> $_SERVER['STORAGE_PASS'],
 				'passive'	=> TRUE,
-				'debug'		=> FALSE
+				'debug'		=> TRUE
 			);
 	}
 
@@ -93,7 +93,6 @@ class Nucleo extends CI_Controller {
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
 		$content = json_decode( file_get_contents_curl( $url ) );
-		
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
 		$nodes = array('nodes' => serialize( $tree->getNodes() ) );
@@ -244,40 +243,11 @@ class Nucleo extends CI_Controller {
 		$process 		= $this->cms->active_job( $job );
 		if ( $process === TRUE ){
 			if ( $job['status'] == 1 ){
-				$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob']);
+				$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
 				/**
 				 * Se generan los archivos de salida en outputs
 				 */
-
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria );
-				}
-
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical );
-				}
-
-				if ( ! file_exists( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario ) ){
-					mkdir( './outputs/' . $trabajoObject->uid_categoria . '/' . $trabajoObject->uid_vertical . '/' . $trabajoObject->uid_usuario );
-				}
-				$trabajos = json_decode( $trabajoObject->feeds_output );
-				foreach ( $trabajos as $trabajo ){
-					$open = fopen( "./" . $trabajo->url, "w" );
-					if ( $trabajo->formato == 'xml' ){
-						$array = json_decode( $trabajo->output, TRUE );
-						$final = array_to_xml( $array )->saveXML();
-					} elseif ( $trabajo->formato == 'rss' ){
-						$array = json_decode( $trabajo->output, TRUE );
-						$formatos = json_decode( $trabajoObject->formatos );
-						foreach ( $formatos as $formato ){
-							$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
-						}
-					}else {
-						$final = $trabajo->output;	
-					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-				}
+				$this->harddisk_write( $trabajoObject );
 			}
 			echo TRUE;
 		} else {
@@ -329,77 +299,6 @@ class Nucleo extends CI_Controller {
 		return $campos;
 	}
 
-	public function set_cron($config_cron, $trabajo_url_id){
-		$config_cron= '*/2 * * * *';
-		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/job_process?uidjob=';
-
-		$host='107.170.237.101'; 
-		$port='22';
-		$username='root';	
-		$password='yyqoypklcwza';
-		
-		/*
-		$host= 		$_SERVER['CRON_HOST'];
-		$port=		$_SERVER['CRON_HOST_PORT'];
-		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];
-		*/
-		
-		$cron_setup = new cron_manager();
-		// Si no se puede conectar, enviar error a pantalla.
-		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
-		//print_r($resp_con);
-		
-		$path 	 = '/var/www/html/';
-		$handle	 = 'crontab.txt';
-		/*
-		$path 	 = $_SERVER['CRON_PATH'];
-		$handle	 = $_SERVER['CRON_HANDLE'];
-		*/
-		if ($trabajo_url_id && $trabajo_url_id != "")
-		{
-			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
-			
-			$nueva_tarea = $cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
-			//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
-		}
-	}
-
-	public function unset_cron($config_cron, $trabajo_url_id){
-		$config_cron= '*/2 * * * *';
-		$trabajo_url_id = 'curl http://middleware.estrategasdigitales.net/job_process?uidjob=';
-
-		$host='107.170.237.101'; 
-		$port='22';
-		$username='root';	
-		$password='yyqoypklcwza';
-		
-		/*
-		$host= 		$_SERVER['CRON_HOST'];
-		$port=		$_SERVER['CRON_HOST_PORT'];
-		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];
-		*/
-		
-		$cron_setup = new cron_manager();
-		// Si no se puede conectar, enviar error a pantalla.
-		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
-		//print_r($resp_con);
-		
-		$path 	 = '/var/www/html/';
-		$handle	 = 'crontab.txt';
-		/*
-		$path 	 = $_SERVER['CRON_PATH'];
-		$handle	 = $_SERVER['CRON_HANDLE'];
-		*/
-		if ( $trabajo_url_id && $trabajo_url_id != ""){
-			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
-			
-			$quitar_tarea = $cron_setup->remove_cronjob( $config_cron. ' ' . $trabajo_url_id );
-			
-		}
-	}
-
     /**
      * [validar_form_trabajo description]
      * @return [type] [description]
@@ -436,7 +335,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
 				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
 				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
-				$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
+				//$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
 				$trabajo['cron_config']			= $cronjob_config;
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_trabajo( $trabajo );
@@ -447,6 +346,80 @@ class Nucleo extends CI_Controller {
 				}
 			} else {
 				echo validation_errors('<span class="error">','</span>');
+			}
+		}
+	}
+
+	private function harddisk_write( $trabajo ){
+		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
+			mkdir( './outputs/' . $trabajo->slug_categoria );
+		}
+
+		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
+			mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical );
+		}
+
+		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
+			mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario );
+		}
+		$feed_output = 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+		$ftp_server = $_SERVER['STORAGE_URL'];
+		$ftp_user_name = $_SERVER['STORAGE_USER'];
+		$ftp_user_pass = $_SERVER['STORAGE_PASS'];
+		$ftp_conn = ftp_connect($ftp_server);
+		$login = ftp_login($ftp_conn, $ftp_user_name, $ftp_user_pass);
+		$ftpath = '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+		$this->mksubdirs( $ftp_conn, '/', $ftpath );
+		ftp_close($ftp_conn);
+		$formatos = json_decode( $trabajo->formatos );
+		$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen );
+		foreach ( $formatos as $formato ){
+			switch ( $formato->formato ) {
+				case 'xml':
+					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+					$array = json_decode( $output, TRUE );
+					$final = array_to_xml( $array )->saveXML();
+					fwrite( $open, stripslashes( $final ) );
+					fclose( $open );
+					$this->upload_netstorage($feed_output, $ftpath);
+					break;
+				case 'rss':
+					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+					$array = json_decode( $output, TRUE );
+					$formatos = json_decode( $trabajo->formatos );
+					foreach ( $formatos as $formato ){
+						$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
+					}
+					fwrite( $open, stripslashes( $final ) );
+					fclose( $open );
+					$this->upload_netstorage($feed_output, $ftpath);
+					break;
+				case 'json':
+					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+					$final = $output;
+					fwrite( $open, stripslashes( $final ) );
+					fclose( $open );
+					$this->upload_netstorage($feed_output, $ftpath);
+					break;
+				case 'jsonp':
+					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+					$final = $formato->funcion . '(' . $output . ')';
+					fwrite( $open, stripslashes( $final ) );
+					fclose( $open );
+					$this->upload_netstorage($feed_output, $ftpath);
+					break;
+			}
+		}
+	}
+
+	private function mksubdirs( $ftpcon, $ftpbasedir, $ftpath ){
+		@ftp_chdir($ftpcon, $ftpbasedir);
+		$parts = explode('/', $ftpath);
+		foreach($parts as $part){
+			if(!@ftp_chdir($ftpcon, $part)){
+				ftp_mkdir($ftpcon, $part);
+				ftp_chdir($ftpcon, $part);
+				//ftp_chmod($ftpcon, 0777, $part);
 			}
 		}
 	}
@@ -498,6 +471,75 @@ class Nucleo extends CI_Controller {
 		
 		$jsonValidate = new TreeFeed( $feed, 1, $jsontmp, 'category' );
 		return json_encode( $feed[0] );
+	}
+
+	/**
+	 * Escribe el crontab en el servidor
+	 * @param [type] $config_cron    [description]
+	 * @param [type] $trabajo_url_id [description]
+	 */
+	private function set_cron($config_cron, $trabajo_url_id){
+		$config_cron= '*/2 * * * *';
+		$trabajo_url_id = 'curl '. base_url() . 'job_process?uidjob=';
+
+		$host= 		$_SERVER['CRON_HOST'];
+		$port=		$_SERVER['CRON_HOST_PORT'];
+		$username=	$_SERVER['CRON_HOST_USER'];	
+		$password=	$_SERVER['CRON_HOST_PASS'];
+		
+		$cron_setup = new cron_manager();
+		// Si no se puede conectar, enviar error a pantalla.
+		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
+		//print_r($resp_con);
+		
+		$path 	 = $_SERVER['CRON_PATH'];
+		$handle	 = $_SERVER['CRON_HANDLE'];
+		if ( $trabajo_url_id && $trabajo_url_id != '' ){
+			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
+			
+			$nueva_tarea = $cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
+			//$conectar->append_cronjob('*/2 * * * * date >> ~/testCron.log');
+		}
+	}
+
+	/**
+	 * Elimina el crontab en el servidor
+	 * @param  [type] $config_cron    [description]
+	 * @param  [type] $trabajo_url_id [description]
+	 * @return [type]                 [description]
+	 */
+	private function unset_cron($config_cron, $trabajo_url_id){
+		// $config_cron= '*/2 * * * *';
+		// $trabajo_url_id = 'curl '. base_url() . 'job_process?uidjob='
+
+		// $host = 	$_SERVER['CRON_HOST'];
+		// $port =		$_SERVER['CRON_HOST_PORT'];
+		// $username=	$_SERVER['CRON_HOST_USER'];	
+		// $password=	$_SERVER['CRON_HOST_PASS'];
+		
+		// $cron_setup = new cron_manager();
+		// // Si no se puede conectar, enviar error a pantalla.
+		// $resp_con = $cron_setup->connect($host, $port, $username, $password); 
+		// //print_r($resp_con);
+		
+		// $path 	 = $_SERVER['CRON_PATH'];
+		// $handle	 = $_SERVER['CRON_HANDLE'];
+		// if ( $trabajo_url_id && $trabajo_url_id != '' ){
+		// 	$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
+		// 	$quitar_tarea = $cron_setup->remove_cronjob( $config_cron. ' ' . $trabajo_url_id );
+			
+		// }
+	}
+
+	/**
+	 * Sube los archivos al netstorage
+	 * @return [type] [description]
+	 */
+	private function upload_netstorage( $file, $ftpath ){
+		$this->load->library('ftp');
+		$this->ftp->connect( $this->netstorage );
+		$this->ftp->mirror( './' . $file, '/' . $ftpath, 'ascii', 0775 );
+		$this->ftp->close();
 	}
 
 	/**

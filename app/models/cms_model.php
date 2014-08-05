@@ -110,8 +110,11 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos(){
             //$this->db->cache_on();
-            $this->db->select( 'uid_trabajo, uid_usuario, uid_categoria, uid_vertical, nombre, slug_nombre_feed, feeds_output, activo, cron_config, fecha_registro' );
-            $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
+            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro' );
+            $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
+            $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
+            $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
+            $result = $this->db->get();
             if ($result->num_rows() > 0) return $result->result();
             else return FALSE;
             $result->free_result();
@@ -129,9 +132,12 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos_editor( $uid ){
             //$this->db->cache_on();
-            $this->db->select('uid_trabajo, nombre, url_origen, activo, uid_usuario, fecha_registro');
-            $this->db->where( 'uid_usuario',$uid );
-            $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
+            $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.formatos, a.fecha_registro');
+            $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
+            $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
+            $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
+            $this->db->where( 'a.uid_usuario',$uid );
+            $result = $this->db->get();
             if ( $result->num_rows() > 0 ) return $result->result();
             else return FALSE;
             $result->free_result();
@@ -139,9 +145,12 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
-            $this->db->select( 'uid_usuario, uid_categoria, uid_vertical, slug_nombre_feed, formatos, feeds_output, activo' );
+            $this->db->select( 'a.uid_usuario, b.slug_categoria, c.slug_vertical, a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, a.activo' );
+            $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
+            $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
+            $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->where( 'uid_trabajo ', $uid );
-            $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
+            $result = $this->db->get();
             if ($result->num_rows() > 0) return $result->row();
             else return FALSE;
             $result->free_result();
@@ -291,7 +300,7 @@ class Cms_model extends CI_Model {
             $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
             //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
             $this->db->set('formatos', $trabajo['formatos'] );
-            $this->db->set('feeds_output', $trabajo['feeds_output'] );
+            //$this->db->set('feeds_output', $trabajo['feeds_output'] );
             $this->db->set('cron_config', $trabajo['cron_config']);
             $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
             //$this->db->cache_delete_all();
