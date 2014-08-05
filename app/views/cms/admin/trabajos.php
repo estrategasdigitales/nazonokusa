@@ -36,16 +36,16 @@
 										<?php
 											switch ($salida->formato) {
 												case 'json': ?>
-													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
 										<?php 	break;
 												case 'jsonp': ?>
-													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
 										<?php 	break;
 												case 'xml': ?>
-													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
 										<?php 	break;
 												case 'rss': ?>
-													<a href="http://<?php echo $_SERVER['STORAGE_URL'] . '/' . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
 										<?php 	break;
 											
 											}
