@@ -233,6 +233,15 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/service_content', $data );
 	}
 
+	public function job_execute(){
+		$token = urldecode( base64_decode( $this->input->get('token') ) )
+		$trabajoObject = $this->cms->get_trabajo_ejecutar( $token );
+		/**
+		 * Se generan los archivos de salida en outputs
+		 */
+		$this->harddisk_write( $trabajoObject );
+	}
+
 	/**
 	 * [job_process description]
 	 * @return [type] [description]

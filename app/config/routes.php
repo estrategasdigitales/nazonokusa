@@ -63,6 +63,7 @@ $route['eliminar_estructura']   	= 'cms/modal_eliminar_estructura';
 $route['editar/(:any)']				= 'cms/editar_usuario/$1';
 $route['editar_trabajo/(:any)']     = 'nucleo/editar_trabajo/$1';
 $route['ejecutar_trabajo/(:any)']   = 'nucleo/ejecutar_trabajo/$1';
+$route['job_execute']     			= 'nucleo/job_execute';
 //$route['eliminar_trabajo']   		= 'nucleo/eliminar_trabajo';
 $route['nucleo'] 					= 'nucleo/';
 $route['actualizar_perfil']			= 'cms/actualizar_perfil';
