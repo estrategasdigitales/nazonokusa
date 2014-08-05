@@ -25,8 +25,8 @@ class Cms extends CI_Controller {
 	}
 
 	/**
-	 * Método por defecto del controlador.
-	 * @return [type] Si no estás logueado te redirige al método de login, si no a la pantalla principal
+	 * [index description]
+	 * @return [type] [description]
 	 */
 	public function index() {
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
@@ -37,8 +37,8 @@ class Cms extends CI_Controller {
 	}
 
 	/**
-	 * Método para mostrar el formulario de login
-	 * @return [type] Regresa la vista del formulario, en caso de estar logueado te manda a la pantalla principal
+	 * [login description]
+	 * @return [type] [description]
 	 */
 	public function login() {
 		if ( $this->session->userdata('session') !== TRUE ){
@@ -49,8 +49,8 @@ class Cms extends CI_Controller {
 	}
 
 	/**
-	 * Método para cerrar y destruir la sesión
-	 * @return [type] Redirige a a pantalla de login
+	 * [logout description]
+	 * @return [type] [description]
 	 */
 	public function logout() {
 		$this->session->sess_destroy();
@@ -58,9 +58,8 @@ class Cms extends CI_Controller {
 	}
 
 	/**
-	 * Método para validar el formulario de login, si es correcto se inicia la sesión
-	 * @return [type] Si existe error en los datos de usuario o al iniciar la sesión, regresa un error.
-	 * En caso contrario, se rellena la sesión con los datos se usuario.
+	 * [validar_usuario description]
+	 * @return [type] [description]
 	 */
 	public function validar_usuario(){
 		$this->form_validation->set_rules('usuario', 'Usuario', 'trim|required|valid_email|xss_clean');
@@ -334,6 +333,24 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	// public function agregar_campo_rss(){
+	// 	$this->form_validation->set_rules('nuevo_campo_rss', 'Nombre del Campo', 'required|trim|min_length[3]|max_lenght[180]|xss_clean');
+	// 	if ( $this->form_validation->run() === TRUE ){
+	// 		$data['nuevo_campo']	= $this->input->post('nuevo_campo_rss');
+	// 		$success = '<div class="form-group">
+	// 						<label for="channel_description" class="col-sm-3 col-md-2 control-label">' . $data['nuevo_campo'] . '</label>
+	// 						<div class="col-sm-9 col-md-10">
+	// 							<input type="hidden" name="claves_rss[]" value="' . url_title( $data['nuevo_campo'], 'dash', TRUE ) . '">
+ //        						<input type="text" class="form-control" name="valores_rss[]">
+ //    						</div>
+	// 					</div>';
+	// 		echo json_encode( array('success' => $success ) );
+	// 	} else {
+	// 		//echo validation_errors('<span class="error">','</span>');
+	// 		echo json_encode( array('errores' => validation_errors('<span class="error">','</span>') ) );
+	// 	}
+	// }
+
 	/**
 	 * [modal_eliminar_usuario description]
 	 * @return [type] [description]
@@ -374,15 +391,17 @@ class Cms extends CI_Controller {
 		$this->load->view( 'cms/admin/modal_eliminar_trabajo', $data );
 	}
 
-	/**
-	 * [modal_eliminar_estructura description]
-	 * @return [type] [description]
-	 */
 	public function modal_eliminar_estructura(){
 		$data['nombre_estructura']		= $this->input->get('name');
 		$data['uid']				= $this->input->get('token');
 		$this->load->view( 'cms/admin/modal_eliminar_estructura', $data );
 	}
+
+	// public function modal_agregar_campo_rss(){
+	// 	$data['nuevo_campo_rss'] = '';
+	// 	$this->load->view('cms/admin/modal_agregar_campo_rss', $data);
+	// }
+
 
 	/**
 	 * [nuevo_usuario description]
@@ -399,6 +418,7 @@ class Cms extends CI_Controller {
 			$this->load->view('cms/admin/nuevo_usuario',$data);
 		}
 	}
+
 
 	/**
 	 * [validar_form_usuario description]
@@ -692,10 +712,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [nueva_estructura description]
-	 * @return [type] [description]
-	 */
 	public function nueva_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -704,10 +720,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [validar_form_nueva_estructura description]
-	 * @return [type] [description]
-	 */
 	public function validar_form_nueva_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -736,10 +748,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [eliminar_estructura description]
-	 * @return [type] [description]
-	 */
 	public function eliminar_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -754,10 +762,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [reportes description]
-	 * @return [type] [description]
-	 */
 	public function reportes() {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
@@ -768,11 +772,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [nombre_valido description]
-	 * @param  [type] $str [description]
-	 * @return [type]      [description]
-	 */
 	function nombre_valido( $str ){
 		if ( ! preg_match( '/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/', $str ) ){
 			$this->form_validation->set_message( 'nombre_valido','<b class="requerido">*</b> La información introducida en <b>%s</b> no es válida.' );
@@ -782,11 +781,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	/**
-	 * [valid_phone description]
-	 * @param  [type] $str [description]
-	 * @return [type]      [description]
-	 */
 	function valid_phone( $str ) {
         if ( $str ) {
             if ( ! preg_match( '/\([0-9]\)| |[0-9]/', $str ) ){
@@ -798,12 +792,7 @@ class Cms extends CI_Controller {
         }
     }
 
-    /**
-     * [valid_option description]
-     * @param  [type] $str [description]
-     * @return [type]      [description]
-     */
-    function valid_option( $str ) {
+    function valid_option($str) {
         if ($str == 0) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
             return FALSE;
