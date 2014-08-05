@@ -56,7 +56,7 @@ class Nucleo extends CI_Controller {
 	 * [alerta description]
 	 * @return [type] [description]
 	 */
-	public function alerta($usr_cel, $usr_carrier, $usr_mail, $nombre_trabajo, $id_mensaje){
+	public function alerta($uid_trabajo, $id_mensaje){
 		// Cadena para hacer las peticiones al servicio de SMS
 		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
 		// 202 - Respuesta success
@@ -66,7 +66,13 @@ class Nucleo extends CI_Controller {
 		//$message = "Mensaje de error identificado";
 		//$usr_carrier = "iusacell";
 
-		$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
+		$url_sms_service = 	$_SERVER['URL_SMS_SERVICE'];
+		$user_sms =			$_SERVER['USER_SMS_SERVICE'];
+		$pass_sms =			$_SERVER['PASS_SMS_SERVICE'];
+
+		//$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
+		$url_sms = $url_sms_service ."?msisdn=".$phone."&carrier=".$usr_carrier."&user=".$user_sms."&password=".$pass_sms."&message=".$message;
+		
 		$sms_reponse = $this->curl->simple_get($url_sms);
 
 		if($sms_reponse == 202)
