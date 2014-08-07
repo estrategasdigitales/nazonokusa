@@ -25,12 +25,16 @@ class Alerta_model extends CI_Model {
         AND a.uid_usuario = b.uid_usuario
         AND b.compania_celular = c.id
         */
-        $this->db->where('uid_usuario !=', $uid );
-        $this->db->where('email', "AES_ENCRYPT('{$email}','{$this->key_encrypt}')", FALSE);
-        $verifica = $this->db->count_all_results($this->db->dbprefix('usuarios'));
-        if($verifica > 0) return TRUE;
+        $this->db->select("a.uid_usuario, b.nombre, b.apellidosm, AES_DECRYPT('{$b.email}','{$this->key_encrypt}') email, AES_DECRYPT('{$b.celular}','{$this->key_encrypt}') celular, b.compania_celular, c.compania");
+        $this->db->from($this->db->dbprefix('trabajos'). 'as a');
+        $this->db->join($this->db->dbprefix('usuarios'). 'as b', 'a.uid_usuario = b.uid_usuario');
+        $this->db->join($this->db->dbprefix('catalogo_compania_celular'). 'as c', 'b.compania_celular = c.id');
+        $this->db->where('a.uid_trabajo = ', $uid_job );
+        $data = $this->db->get();
+        print_r($data);
+        if ( $data->num_rows() > 0 ) return $data->result();
         else return FALSE;
-        $verifica->free_result();
+        $data->free_result();
     }
 }
 
