@@ -766,9 +766,54 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
 		} else {
-			$data['usuario']	=	$this->session->userdata('nombre');
-			$data['level']		=	$this->session->userdata('nivel');
+			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
+				$data['reportes']	= $this->cms->get_reportes();
+			}else {
+				$data['reportes']	= $this->cms->get_reportes_editor( $this->session->userdata( 'uid' ) );
+			}
 			$this->load->view( 'cms/admin/reportes', $data );
+		}
+	}
+
+	public function nuevo_reporte(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect( 'login' );
+		} else {
+			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
+				$data['trabajos']	= $this->cms->get_trabajos();
+			}else {
+				$data['trabajos']	= $this->cms->get_trabajos_editor( $this->session->userdata( 'uid' ) );
+			}
+			$this->load->view('cms/admin/nuevo_reporte', $data);
+		}
+	}
+
+	public function validar_form_nuevo_reporte(){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			$this->form_validation->set_rules('nombre_reporte', 'Nombre del Reporte', 'trim|required|min_length[3]|max_lenght[45]|xss_clean');
+			$this->form_validation->set_rules('fecha_inicio', 'Fecha Inicio', 'required|callback_valid_date|xss_clean');
+			$this->form_validation->set_rules('fecha_termino', 'Fecha Final', 'required|callback_valid_date|xss_clean');
+			$this->form_validation->set_rules('trabajos', 'Trabajos', 'required|xss_clean');
+			
+			if ( $this->form_validation->run() === TRUE ){
+				$reporte['uid_usuario'] 			= $this->session->userdata('uid');
+				$reporte['nombre_reporte'] 			= $this->input->post('nombre_reporte');
+				$reporte['slug_nombre_reporte']		= url_title( $this->input->post('nombre_reporte'), 'dash', TRUE );
+				$reporte['fecha_inicio']   			= strtotime( $this->input->post('fecha_inicio') );
+				$reporte['fecha_fin']				= strtotime( $this->input->post('fecha_termino') );
+				$reporte['trabajos']				= json_encode( $this->input->post('trabajos') );
+				$reporte 							= $this->security->xss_clean( $reporte );
+				$guardar 							= $this->cms->add_reporte( $reporte );
+				if ( $guardar !== FALSE ){
+					echo TRUE;
+				} else {
+					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Reporte</b></span>';
+				}
+			} else {
+				echo validation_errors('<span class="error">','</span>');
+			}
 		}
 	}
 
@@ -781,7 +826,7 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	function valid_phone( $str ) {
+	function valid_phone( $str ){
         if ( $str ) {
             if ( ! preg_match( '/\([0-9]\)| |[0-9]/', $str ) ){
                 $this->form_validation->set_message( 'valid_phone', '<b class="requerido">*</b> El <b>%s</b> no tiene un formato válido.' );
@@ -792,12 +837,30 @@ class Cms extends CI_Controller {
         }
     }
 
-    function valid_option($str) {
+    function valid_option( $str ){
         if ($str == 0) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
             return FALSE;
         } else {
             return TRUE;
         }
+    }
+
+    function valid_date( $str ){
+    	$arr = explode('/', $str);
+    	if ( count($arr) == 3 ){
+    		$m = $arr[0];
+    		$d = $arr[1];
+    		$y = $arr[2];
+    		if ( is_numeric( $m ) && is_numeric( $d ) && is_numeric( $y ) ){
+    			return checkdate($m, $d, $y);
+    		} else {
+    			$this->form_validation->set_message('valid_date', '<b class="requerido">*</b> El campo <b>%s</b> debe tener una fecha válida con el formato MM/DD/YYYY.');
+    			return FALSE;
+    		}
+    	} else {
+    		$this->form_validation->set_message('valid_date', '<b class="requerido">*</b> El campo <b>%s</b> debe tener una fecha válida con el formato MM/DD/YYYY.');
+    		return FALSE;
+    	}
     }
 }

@@ -9,17 +9,27 @@
 		<div class="container table-responsive">
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
-					<td>Periodo de reporte</td>
+					<td>Nombre del reporte</td>
 					<td>Fecha de creación</td>
+					<td>Rango de fechas</td>
 					<td>Descargar</td>
 					<td>Enviar</td>
 				</tr>
-				<tr>
-					<td>20/05/2014 - 03/06/2014</td>
-					<td>03/06/2014</td>
-					<td class="text-center"><a href="#" title="Descargar" class="btn"><span class="glyphicon glyphicon-download-alt"></span></a></td>
-					<td class="text-center"><a href="#" title="Enviar" class="btn"><span class="glyphicon glyphicon-envelope"></span></a></td>
-				</tr>
+				<?php if ( isset( $reportes ) && ! empty( $reportes ) ){
+					foreach ( $reportes as $reporte ){ ?>
+						<tr>
+							<td><?php echo $reporte->nombre_reporte; ?></td>
+							<td><?php echo unix_to_human( $reporte->fecha ); ?></td>
+							<td><?php echo unix_to_human( $reporte->fecha_inicio ); ?> - <?php echo unix_to_human( $reporte->fecha_fin ); ?></td>
+							<td class="text-center"><a href="#" title="Descargar" class="btn"><span class="glyphicon glyphicon-download-alt"></span></a></td>
+							<td class="text-center"><a href="#" title="Enviar" class="btn"><span class="glyphicon glyphicon-envelope"></span></a></td>
+						</tr>
+				<?php }
+				} else { ?>
+					<tr>
+						<td colspan="5">No existen reportes</td>
+					</tr>
+				<?php } ?>
 			</table>
 		</div>
 	</div>

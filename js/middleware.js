@@ -62,6 +62,14 @@ tvs(function($){
 		return false;
 	});
 
+	$('#datepicker').datepicker({
+		language: 'es',
+		autoclose: true,
+    	todayHighlight: true,
+    	startDate: "01/01/2014",
+    	endDate: "01/01/2033"
+	});
+
 	$('#form_usuario_nuevo').submit(function(){
 		$('#foo').css('display','block');
 		var spinner = new Spinner(opts).spin(target);
@@ -469,6 +477,40 @@ tvs(function($){
 				$('#messagesModal').css('display','block');
 				$('#messagesModal').addClass('alert-danger');
 				$('#messagesModal').html(data);
+			}
+		});
+		return false;
+	});
+
+	$('#form_reporte_nuevo').submit(function(){
+		$('#foo').css('display','block');
+		var spinner = new Spinner(opts).spin(target);
+		$(this).ajaxSubmit({
+			success: function(data){
+				if(data != true){
+					spinner.stop();
+					$('#foo').css('display','none');
+					$('#messages').css('display','block');
+					$('#messages').addClass('alert-danger');
+					$('#messages').html(data);
+					$('html,body').animate({
+						'scrollTop': $('#messages').offset().top
+					}, 1000);
+				}else{
+					spinner.stop();
+					$('#foo').css('display','none');
+					window.location.href = 'reportes';
+				}
+			},
+			error: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+				$('html,body').animate({
+					'scrollTop': $('#messages').offset().top
+				}, 1000);
 			}
 		});
 		return false;

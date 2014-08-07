@@ -54,6 +54,7 @@ $route['nueva_categoria']			= 'cms/nueva_categoria';
 $route['nueva_vertical']			= 'cms/nueva_vertical';
 $route['nuevo_trabajo']				= 'cms/nuevo_trabajo';
 $route['nueva_estructura']			= 'cms/nueva_estructura';
+$route['nuevo_reporte']				= 'cms/nuevo_reporte';
 $route['reportes']					= 'cms/reportes';
 $route['eliminar_usuario']			= 'cms/modal_eliminar_usuario';
 $route['eliminar_categoria']		= 'cms/modal_eliminar_categoria';

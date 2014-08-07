@@ -108,6 +108,25 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
+        public function get_reportes(){
+            $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
+            $this->db->order_by('fecha', 'ASC');
+            $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
+            if ( $result->num_rows() > 0 ) return $result->result();
+            else return FALSE;
+            $result->free_result();
+        }
+
+        public function get_reportes_editor( $uid ){
+            $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
+            $this->db->where('uid_usuario', $uid );
+            $this->db->order_by('fecha', 'ASC');
+            $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
+            if ( $result->num_rows() > 0 ) return $result->result();
+            else return FALSE;
+            $result->free_result();
+        }
+
         public function get_trabajos(){
             //$this->db->cache_on();
             $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro' );
@@ -283,6 +302,22 @@ class Cms_model extends CI_Model {
             $this->db->insert( $this->db->dbprefix( 'estructuras_salida' ) );
             if ( $this->db->affected_rows() > 0 ) return TRUE;
             else return FALSE;       
+        }
+
+        public function add_reporte( $reporte ){
+            $timestamp = time();
+            $this->db->set('uid_reporte', "UUID()", FALSE);
+            $this->db->set('uid_usuario', $reporte['uid_usuario']);
+            $this->db->set('nombre_reporte', $reporte['nombre_reporte']);
+            $this->db->set('slug_nombre_reporte', $reporte['slug_nombre_reporte']);;
+            $this->db->set('fecha', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+            $this->db->set('fecha_inicio', $reporte['fecha_inicio'] );
+            $this->db->set('fecha_fin', $reporte['fecha_fin'] );
+            $this->db->set('trabajos', $reporte['trabajos'] );
+            $this->db->insert( $this->db->dbprefix( 'reportes' ) );
+            //$this->db->cache_delete_all();
+            if ( $this->db->affected_rows() > 0 ) return TRUE;
+            else return FALSE;         
         }
 
         public function add_trabajo( $trabajo ){
