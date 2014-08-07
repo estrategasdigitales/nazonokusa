@@ -21,8 +21,14 @@
 							<td><?php echo $reporte->nombre_reporte; ?></td>
 							<td><?php echo unix_to_human( $reporte->fecha ); ?></td>
 							<td><?php echo unix_to_human( $reporte->fecha_inicio ); ?> - <?php echo unix_to_human( $reporte->fecha_fin ); ?></td>
-							<td class="text-center"><a href="#" title="Descargar" class="btn"><span class="glyphicon glyphicon-download-alt"></span></a></td>
-							<td class="text-center"><a href="#" title="Enviar" class="btn"><span class="glyphicon glyphicon-envelope"></span></a></td>
+							<td class="text-center file-export">
+								<a href="#" title="PDF" class="btn"><i class="fa fa-file-pdf-o"></i></span></a>
+								<a href="#" title="CSV" class="btn"><i class="fa fa-file-text-o"></i></span></a>
+								<a href="#" title="XLS" class="btn"><i class="fa fa-file-excel-o"></i></span></a>
+							</td>
+							<td class="text-center file-export">
+								<a href="#" title="Enviar" class="btn"><i class="fa fa-envelope-o"></i></a>
+							</td>
 						</tr>
 				<?php }
 				} else { ?>

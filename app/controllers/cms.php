@@ -807,6 +807,7 @@ class Cms extends CI_Controller {
 				$reporte 							= $this->security->xss_clean( $reporte );
 				$guardar 							= $this->cms->add_reporte( $reporte );
 				if ( $guardar !== FALSE ){
+					$resultado = $this->cms->get_reporte_resultado( $reporte );
 					echo TRUE;
 				} else {
 					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Reporte</b></span>';

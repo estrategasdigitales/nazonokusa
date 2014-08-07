@@ -263,6 +263,10 @@ header{
     color: #2E509A;
 }
 
+.file-export i{
+    font-size: 20px;
+}
+
 .fondo-naranja{
     background-color: #FA7E02;
     color: #ffffff;

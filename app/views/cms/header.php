@@ -9,6 +9,7 @@
 	<title>Televisa Interactive Media - Middleware</title>
 	<?php echo link_tag('css/bootstrap.min.css'); ?>
 	<?php echo link_tag('css/jquery-ui-1.10.4.custom.css'); ?>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<?php echo link_tag('css/bootstrap-datepicker.css'); ?>
 	<?php echo link_tag('css/ace.min.css'); ?>
 	<?php echo link_tag('css/middleware.css'); ?>

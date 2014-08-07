@@ -56,8 +56,7 @@ class Nucleo extends CI_Controller {
 	 * [alerta description]
 	 * @return [type] [description]
 	 */
-	public function alerta($uid_trabajo, $id_mensaje = "") 
-	{
+	public function alerta($uid_trabajo, $id_mensaje = ""){
 		// Cadena para hacer las peticiones al servicio de SMS
 		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
 		// 202 - Respuesta success

@@ -127,6 +127,15 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
+        public function get_reporte_resultado($reporte){
+            $this->db->select('uid_trabajo, time, status');
+            $this->db->where( 'time >= ', $reporte['fecha_inicio'] );
+            $this->db->where( 'time <= ', $reporte['fecha_fin'] );
+            $resultado = $this->db->get( $this->db->dbprefix('cron_log') );
+            return $resultado;
+            $resultado->free_result();
+        }
+
         public function get_trabajos(){
             //$this->db->cache_on();
             $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro' );
