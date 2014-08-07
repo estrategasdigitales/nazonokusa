@@ -56,7 +56,8 @@ class Nucleo extends CI_Controller {
 	 * [alerta description]
 	 * @return [type] [description]
 	 */
-	public function alerta($uid_trabajo, $id_mensaje){
+	public function alerta($uid_trabajo, $id_mensaje = "") 
+	{
 		// Cadena para hacer las peticiones al servicio de SMS
 		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
 		// 202 - Respuesta success
@@ -65,21 +66,45 @@ class Nucleo extends CI_Controller {
 		//$phone = "525585320763";
 		//$message = "Mensaje de error identificado";
 		//$usr_carrier = "iusacell";
-
+		//$uid_trabajo = '7e35bac6-18cc-11e4-bf05-7054d2e34de1';
+		//$id_mensaje = 'Error - prueba - mensaje';
+		
 		$url_sms_service = 	$_SERVER['URL_SMS_SERVICE'];
 		$user_sms =			$_SERVER['USER_SMS_SERVICE'];
 		$pass_sms =			$_SERVER['PASS_SMS_SERVICE'];
+
+		$userData = $this->cms->get_userdata($uid_trabajo);
+
+		if($id_mensaje && $id_mensaje != "") $message = $id_mensaje;
+		else $message = "Falla al identificar error especifico";
+		
+		if(is_array($userData))
+		{
+			foreach ($userData as $data ) {
+				$usr_carrier = $data->compania;
+				$phone = $data->celular;
+				$userMail = $data->email;
+			}
+			
+			$this->email->from('desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
+            $this->email->to( $userMail );
+            $this->email->subject('Error en trabajo de middleware');
+            $this->email->message( 'Ha ocurrido el siguiente error: '.$message );
+            $this->email->send();
+		}
 
 		//$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
 		$url_sms = $url_sms_service ."?msisdn=".$phone."&carrier=".$usr_carrier."&user=".$user_sms."&password=".$pass_sms."&message=".$message;
 		
 		$sms_reponse = $this->curl->simple_get($url_sms);
-
+		/*
 		if($sms_reponse == 202)
 			echo "Mensaje enviado correctamente";
 		else
 			echo $sms_reponse;
+		*/
 	}
+
 
 	/**
 	 * [array_unique_multidimensional description]
