@@ -416,12 +416,24 @@ class Nucleo extends CI_Controller {
 		ftp_close($ftp_conn);
 		$formatos = json_decode( $trabajo->formatos );
 		$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen );
+		
+		if($this->session->userdata( 'session' ) !== TRUE && (json_decode($output) === FALSE || json_decode($output) === NULL))
+		{
+			$this->alerta($trabajo->uid_trabajo, "Error al intentar obtener los items de origen - getItems");
+			die;
+		}
+		
 		foreach ( $formatos as $formato ){
 			switch ( $formato->formato ) {
 				case 'xml':
 					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
 					$array = json_decode( $output, TRUE );
 					$final = array_to_xml( $array )->saveXML();
+					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+					{
+						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a XML - array_to_xml");
+						die;
+					}
 					fwrite( $open, stripslashes( $final ) );
 					fclose( $open );
 					$this->upload_netstorage($feed_output, $ftpath);
@@ -433,6 +445,11 @@ class Nucleo extends CI_Controller {
 					foreach ( $formatos as $formato ){
 						$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
 					}
+					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+					{
+						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a RSS - array_to_rss");
+						die;
+					}
 					fwrite( $open, stripslashes( $final ) );
 					fclose( $open );
 					$this->upload_netstorage($feed_output, $ftpath);
@@ -440,6 +457,11 @@ class Nucleo extends CI_Controller {
 				case 'json':
 					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
 					$final = $output;
+					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+					{
+						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON ");
+						die;
+					}
 					fwrite( $open, stripslashes( $final ) );
 					fclose( $open );
 					$this->upload_netstorage($feed_output, $ftpath);
@@ -447,6 +469,11 @@ class Nucleo extends CI_Controller {
 				case 'jsonp':
 					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
 					$final = $formato->funcion . '(' . $output . ')';
+					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+					{
+						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON-P ");
+						die;
+					}
 					fwrite( $open, stripslashes( $final ) );
 					fclose( $open );
 					$this->upload_netstorage($feed_output, $ftpath);

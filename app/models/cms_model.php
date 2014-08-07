@@ -145,7 +145,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
-            $this->db->select( 'a.uid_usuario, b.slug_categoria, c.slug_vertical, a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, a.activo, a.cron_config' );
+            $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, a.activo, a.cron_config' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
