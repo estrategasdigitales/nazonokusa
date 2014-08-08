@@ -808,6 +808,7 @@ class Cms extends CI_Controller {
 				$guardar 							= $this->cms->add_reporte( $reporte );
 				if ( $guardar !== FALSE ){
 					$resultado = $this->cms->get_reporte_resultado( $reporte );
+					$this->export_to_excel->to_excel( $resultado, '/outputs/reportes/' . $reporte['slug_nombre_reporte'] );
 					echo TRUE;
 				} else {
 					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Reporte</b></span>';
