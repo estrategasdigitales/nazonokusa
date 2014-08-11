@@ -807,8 +807,6 @@ class Cms extends CI_Controller {
 				$reporte 							= $this->security->xss_clean( $reporte );
 				$guardar 							= $this->cms->add_reporte( $reporte );
 				if ( $guardar !== FALSE ){
-					$resultado = $this->cms->get_reporte_resultado( $reporte );
-					$this->export_to_excel->to_excel( $resultado, '/outputs/reportes/' . $reporte['slug_nombre_reporte'] );
 					echo TRUE;
 				} else {
 					echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Reporte</b></span>';
@@ -817,6 +815,47 @@ class Cms extends CI_Controller {
 				echo validation_errors('<span class="error">','</span>');
 			}
 		}
+	}
+
+	public function generar_reporte_csv(){
+		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
+		$resultado = $this->cms->get_reporte_resultado( $reporte );
+		echo query_to_csv( $resultado, TRUE, $reporte->slug_nombre_reporte . '.csv');
+	}
+
+	public function generar_reporte_excel(){
+		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
+		$resultado = $this->cms->get_reporte_resultado( $reporte );
+		echo query_to_excel( $resultado, $reporte->slug_nombre_reporte . '.xls');
+	}
+
+	public function generar_reporte_pdf(){
+		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
+		$resultado = $this->cms->get_reporte_resultado( $reporte );
+		$this->pdf = new Pdf();
+		$this->pdf->AddPage();
+		$this->pdf->AliasNbPages();
+		$this->pdf->SetTitle('Reporte de Tareas');
+		$this->pdf->SetLeftMargin(15);
+        $this->pdf->SetRightMargin(15);
+        $this->pdf->SetFillColor(200,200,200);
+        $this->pdf->SetFont('Arial', 'B', 9);
+        $this->pdf->Cell(15,3,'ID','TBL',0,'C','1');
+        $this->pdf->Cell(25,3,'FECHA','TB',0,'L','1');
+        $this->pdf->Cell(25,3,'STATUS','TB',0,'L','1');
+        $this->pdf->Ln(3);
+        $x = 1;
+        foreach ($resultado->result() as $result) {
+            // se imprime el numero actual y despues se incrementa el valor de $x en uno
+            $this->pdf->Cell(15,3,$x++,'BL',0,'C',0);
+            // Se imprimen los datos de cada trabajo
+            $this->pdf->Cell(25,3,$result->uid_trabajo,'B',0,'L',0);
+            $this->pdf->Cell(25,3,$result->time,'B',0,'L',0);
+            $this->pdf->Cell(25,3,$result->status,'B',0,'L',0);
+            //Se agrega un salto de linea
+            $this->pdf->Ln(3);
+        }
+        $this->pdf->Output( $reporte->slug_nombre_reporte . '.pdf', 'I');
 	}
 
 	function nombre_valido( $str ){

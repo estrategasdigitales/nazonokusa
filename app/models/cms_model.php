@@ -117,6 +117,15 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
+        public function get_reporte_detalle( $uid ){
+            $this->db->select('uid_reporte, slug_nombre_reporte, fecha_inicio, fecha_fin');
+            $this->db->where('uid_reporte', $uid );
+            $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
+            if ( $result->num_rows() > 0 ) return $result->row();
+            else return FALSE;
+            $result->free_result();
+        }
+
         public function get_reportes_editor( $uid ){
             $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
             $this->db->where('uid_usuario', $uid );
@@ -127,10 +136,11 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_reporte_resultado($reporte){
-            $this->db->select('uid_trabajo, time, status');
-            $this->db->where( 'time >= ', $reporte['fecha_inicio'] );
-            $this->db->where( 'time <= ', $reporte['fecha_fin'] );
+        public function get_reporte_resultado( $reporte ){
+            $this->db->select('uid_trabajo, status');
+            $this->db->select("FROM_UNIXTIME(time) AS time", FALSE);
+            $this->db->where( 'time >= ', $reporte->fecha_inicio );
+            $this->db->where( 'time <= ', $reporte->fecha_fin );
             $resultado = $this->db->get( $this->db->dbprefix('cron_log') );
             return $resultado;
             $resultado->free_result();
