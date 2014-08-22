@@ -122,7 +122,6 @@ class Nucleo extends CI_Controller {
 	 */
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
-		//print_r( $url ); die;
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
@@ -509,7 +508,6 @@ class Nucleo extends CI_Controller {
 			$this->selected( $tree, $campo->identifier, $nodesSelected );
 		}
 		$feed = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $urlFeed ) );
-		print_r( $feed );die;
 		$feed = json_decode( file_get_contents_curl( $feed ) );
 
 		if ( is_array( $feed ) ){
@@ -519,8 +517,6 @@ class Nucleo extends CI_Controller {
 
 			$feed  = $feed->$root[0];
 		}
-
-		new TreeMatch( $feed, $nodesSelected );
 
 		$jsonStr = "[";
 		$jsonStr .= $this->treeBuild($tree, true);
