@@ -122,7 +122,6 @@ class Nucleo extends CI_Controller {
 	 */
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
-		print_r( $url );die;
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
