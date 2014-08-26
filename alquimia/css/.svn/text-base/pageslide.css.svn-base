@@ -1,0 +1,92 @@
+#pageslide {
+    /* These styles MUST be included. Do not change. */
+    display: none;
+    position: absolute;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    z-index: 999999;
+    overflow-y: scroll;
+    /* Specify the width of your pageslide here */
+    width: 300px;
+    
+    /* These styles are optional, and describe how the pageslide will look */
+    background-color: #535a63;
+    border-right: 1px solid #3c4147;
+    color: white;
+}
+
+#pageslide #menu i.icon.cross{
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+#pageslide #menu ul.menu > li > p,
+#pageslide #menu ul.menu > li > a{
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-size: 13px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+
+#pageslide #menu ul.menu > li.contactanos{
+    display: block;
+}
+
+#pageslide #menu ul.menu > li.contactanos > a{
+    font-weight: bold;
+}
+
+#pageslide a:active,
+#pageslide a{
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+#pageslide #menu ul.menu > li{
+    padding: 10px 0px 0px 0px;
+    border-bottom: 1px solid #656b74;
+}
+
+#pageslide #menu ul.menu > li > ul{
+    padding: 0px 0px 0px 25px;
+    background: #656b74;
+    display: none;
+}
+
+#pageslide #menu ul.menu > li > ul > li{
+    padding: 10px 0px 10px 0px;
+    border-bottom: 1px solid gray;
+}
+
+#pageslide #menu ul.menu > li.home{
+    display: none;
+}
+
+#pageslide #menu ul.menu{
+    margin-top: 20px;
+    border-top: 5px solid #656b74;
+}
+
+#pageslide #menu .minilogo{
+    height: 38px;
+    width: 135px;
+    background: url('../img/sprite.png');
+    background-position: -88px -139px;
+    display: block;
+    margin: 10px;
+}
+
+
+#pageslide #menu ul.menu i.icon.arrow:before{
+    content: "\e011";
+    color: white;
+    margin-right: 5px;
+    float: right;
+}

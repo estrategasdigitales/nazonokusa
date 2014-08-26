@@ -1,0 +1,13 @@
+@import url("../../js/extjs/resources/ext-theme-neptune/ext-theme-neptune-all.css");
+
+@import url("./dashboard/app.css");
+
+@import url("./articulos/Imagen.css");
+@import url("./articulos/Listar.css");
+@import url("./articulos/Geo.css");
+
+@import url("./articulos/Geo.css");
+
+@import url("./form/BoxSelect.css");
+
+@import url("../flags.css");

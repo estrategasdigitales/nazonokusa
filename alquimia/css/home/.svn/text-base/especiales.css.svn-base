@@ -1,0 +1,125 @@
+div.especiales{
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+div.especiales ul{
+    overflow: hidden;
+}
+
+div.especiales ul .social{
+    position: absolute;
+    z-index: 7;
+    bottom: 0px;
+    margin-left: 25px;
+}
+
+div.especiales ul li{
+    float: left;
+    margin-right: 1px;
+    position: relative;
+    cursor: pointer;
+}
+
+div.especiales ul li:first-child{
+    margin-right: 2px;
+}
+
+div.especiales ul li:last-child{
+    margin-right: 0px;
+    margin-left: 1px;
+}
+
+div.especiales ul li img{
+    width: 156px;
+    /*height: 86px;*/
+    height: auto;
+}
+
+div.especiales ul li span{
+    background-color: #0588b8;
+    height: 18px;
+    width: 156px;
+    display: block;
+    position: absolute;
+    bottom: 3px;
+    z-index: 6;
+    opacity: 0.9;
+    text-decoration: none;
+    display: block;
+}
+
+div.especiales ul li:hover span{
+    background-color: #013f60;
+    z-index: 7;
+    height: 86px;
+    width: 156px;
+    opacity: 0.8;
+}
+
+
+
+div.especiales ul li h3{
+    position: absolute;
+    z-index: 6;
+    width: 150px;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+    text-decoration: none;
+    position: absolute;
+    bottom: 5px;
+    overflow: hidden;
+    height: 18px;
+    padding: 0px 3px 0px 3px;
+}
+
+div.especiales ul li:hover h3{
+    bottom: auto;
+    top: 15px;
+    z-index: 7;
+    height: auto;
+}
+
+
+
+
+/*TABLET*/
+
+.tablet div.especiales ul li:nth-child(n+5){
+    display: none;
+}
+
+.tablet div.especiales ul li:first-child {
+    margin-right: 1px;
+}
+
+
+/*MOBILE*/
+
+.mobile div.especiales ul li:nth-child(n+4){
+    display: none;
+}
+
+.mobile div.especiales ul li:first-child {
+    margin-right: 1px;
+}
+
+.mobile div.especiales ul li{
+    width: 33%;
+}
+
+.mobile div.especiales ul li span,
+.mobile div.especiales ul li h3,
+.mobile div.especiales ul li img{
+    width: 100%;
+}
+
+.mobile div.especiales{
+   margin-top: 46px;
+}
+
+.mobile div.especiales ul li:hover h3{
+    top: 0px;
+    font-size: 12px;
+}

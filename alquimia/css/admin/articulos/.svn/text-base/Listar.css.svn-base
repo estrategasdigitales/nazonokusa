@@ -1,0 +1,61 @@
+.admin_articulos_listar{
+    
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .imagen{
+    width:100px;
+    height: 60px;
+    background: #ccc;
+    float: left;
+    margin-right: 10px;
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .titulo .categoria{
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    background: gray;
+    width: 100px;
+    font-size: 10px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    float: left;
+    text-align: center;
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .id{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.admin_articulos_listar  .x-grid-cell .x-grid-cell-inner{
+    white-space: pre-wrap !important;
+}
+
+.admin_articulos_listar .x-grid-table .x-action-col-cell.icon img {
+  height: 32px;
+  width: 32px;
+}
+
+
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .icon{
+    margin-right: 10px;
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .resumen img{
+    margin-right: 5px;
+    float: left;
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .resumen > div{
+    clear: both;
+    margin-bottom: 4px;
+}
+
+.admin_articulos_listar .x-grid-cell .x-grid-cell-inner .resumen span{
+    display: block;
+}
+

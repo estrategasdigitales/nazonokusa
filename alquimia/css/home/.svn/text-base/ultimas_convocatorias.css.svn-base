@@ -1,0 +1,126 @@
+.ultimas_convocatorias{
+    width: 300px;
+    margin-bottom: 8px; 
+}
+
+.ultimas_convocatorias .titulo{
+    background-color: #3CA1D7;
+    width: 300px;
+    height: 32px;
+    position: relative;
+    z-index: 100;
+}
+
+.ultimas_convocatorias .titulo.morado{
+    background-color:#AC5592;
+}
+
+
+
+.ultimas_convocatorias .titulo span{
+    font-size: 14px;
+    padding: 5px 0px 0px 6px;
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-weight: bold;
+}
+
+.ultimas_convocatorias ul{
+    
+    background-color: #f0f0f0;
+    border-right: 1px solid #d4d4d4;
+    border-left: 1px solid #d4d4d4;
+    overflow: hidden;
+    border-bottom: 1px solid #d4d4d4;
+}
+
+.ultimas_convocatorias ul li{
+    overflow: hidden;
+    padding: 5px 0px 9px 5px;
+    cursor: pointer;
+}
+
+.ultimas_convocatorias ul li:last-child{
+    
+}
+
+
+.ultimas_convocatorias ul li:hover{
+    background: white;
+    cursor: pointer;
+    border-top: 1px solid #c7c7c7;
+    border-bottom: 1px solid #c7c7c7;
+}
+
+
+.ultimas_convocatorias ul li:first-child:hover{
+    border-top: none;
+}
+
+.ultimas_convocatorias ul li h3{
+    color: #535353;
+    font-size: 13px;
+    height: 36px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.ultimas_convocatorias ul li p{
+    color: gray;
+    font-weight: bold;
+}
+
+
+.ultimas_convocatorias ul li:hover h3{
+    font-weight: bold;
+    font-size: 12px;
+}
+
+
+.ultimas_convocatorias ul li span{
+    color: #0776af;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.ultimas_convocatorias ul li .contenido{
+    float: left;
+    width: 215px;
+    margin: 4px 0px 0px 8px;
+}
+
+.ultimas_convocatorias ul li img.logo{
+    float: left;
+    width: 60px;
+    height: 60px;
+}
+
+.ultimas_convocatorias ul li .marcador{
+    height: 15px;
+    background: url('../../img/sprite.png');
+    background-position: -196px -68px;
+    padding-left: 18px;
+    width: 6px;
+    margin-top: 5px;
+}
+
+.ultimas_convocatorias ul li .marcador p{
+    color: #4d4d4d;
+    padding-top: 3px;
+}
+
+
+.ultimas_convocatorias  ul li .social{
+    display: none;
+}
+
+.ultimas_convocatorias  ul li .social-stub{
+    float: left;
+    margin: 7px 40px 0px 20px;
+}
+
+.ultimas_convocatorias ul li:hover .social{
+    display: block;
+}
+
+

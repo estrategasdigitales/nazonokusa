@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/14/js/extjs/packages/ext-locale-zh_CN/.sencha/package
+END
+sencha.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/14/js/extjs/packages/ext-locale-zh_CN/.sencha/package/sencha.cfg
+END
+codegen.json
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/14/js/extjs/packages/ext-locale-zh_CN/.sencha/package/codegen.json
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/14/js/extjs/packages/ext-locale-zh_CN/.sencha/package/plugin.xml
+END
+build-impl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/14/js/extjs/packages/ext-locale-zh_CN/.sencha/package/build-impl.xml
+END

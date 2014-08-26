@@ -1,0 +1,117 @@
+.canalempleos ul.ofertas{
+    overflow: hidden;
+    width:628px;
+}
+
+.canalempleos ul.ofertas > li{
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.canalempleos ul.ofertas > li:hover{
+    cursor: pointer;
+}
+
+.canalempleos ul.ofertas li .imagen{
+    float: left;
+    width: 156px;
+    margin-right: 15px;
+}
+
+.canalempleos ul.ofertas li .imagen span{
+    z-index: 3;
+    background: #C0C0C0;
+    padding: 3px;
+    overflow: hidden;
+    position: relative;
+    float: right;
+    margin-bottom: -23px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.canalempleos ul.ofertas li .contenido{
+    float: left;
+    width: 456px;
+}
+
+.canalempleos ul.ofertas li .contenido h3{
+    color: #0776af;
+    font-size: 18px;
+}
+
+.canalempleos ul.ofertas li .contenido p{
+    color: #535353;
+    height: 17px;
+    overflow: hidden;
+}
+
+.canalempleos ul.ofertas li .contenido span{
+    color: #8F8F8F;
+    margin-bottom: 3px;
+    display: block;
+}
+
+
+.canalempleos ul.ofertas li:hover .social .num,
+.canalempleos ul.ofertas li .social .social-stub {
+    display: none;
+}
+
+.canalempleos ul.ofertas li .social .num,
+.canalempleos ul.ofertas li:hover .social .social-stub{
+    display: block;
+}
+
+.canalempleos ul.ofertas li .social .num,
+.canalempleos ul.ofertas li .social .social-stub {
+    margin: 7px 56px 0px 0px;
+    float: left;
+}
+
+
+/*MOBILE*/
+
+
+
+.mobile .canalempleos {
+    width: 100%;
+    min-width: 320px;
+}
+
+.mobile .canalempleos ul.ofertas li:nth-child(n+5),
+.mobile .canalempleos ul.ofertas li .social{
+    display: none;
+}
+
+.mobile .canalempleos ul.ofertas li {
+    height: auto;
+    padding: 10px 6px 10px 6px;
+    margin: 1px 1px 1px 1px;
+    width: 100%;
+}
+
+.mobile .canalempleos ul.ofertas li img {
+    width: 120px;
+    height: 80px;
+    float: left;
+}
+
+.mobile .canalempleos ul.ofertas li .imagen{
+    width: 120px;
+}
+
+.mobile .canalempleos ul.ofertas li .contenido{
+    position: absolute;
+    margin: 0px 0px 0px 130px;
+    width: auto;
+}
+
+.mobile .canalempleos ul.ofertas li i {
+    top: 35%;
+    display: block;
+}
+
+.mobile .canalempleos ul.ofertas li .contenido h3 {
+    font-size: 13px;
+    text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+}

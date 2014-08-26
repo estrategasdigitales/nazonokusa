@@ -1,0 +1,108 @@
+html {
+    overflow-x  : hidden;
+}
+body {
+    /*background: url("../img/fondo.png") repeat-y scroll 50% 0 #7FB3CC;*/
+    background: #F0F0F0;
+    overflow-x  : hidden;
+    font-family : 'Open Sans', Arial, sans-serif;
+    font-size   : 12px;
+    color       : white;
+}
+
+pre{
+    font-family : 'Open Sans', Arial, sans-serif;
+    font-size   : 12px;
+}
+.manifest,
+.semantic{
+    display: none;
+}
+
+a:hover,
+a:active,
+a:visited,
+a{
+    text-decoration: none;
+    border: 0px;
+}
+
+input {
+	-webkit-appearance:none;  
+	-webkit-border-radius:0px;
+}
+
+header .submenu.selected div.contenido,
+footer div.contenido,
+header > div.contenido,
+body > div.contenido{
+    margin: 0px auto 0px auto;
+    width: 944px;
+    overflow: hidden;
+    background: white;
+    padding: 10px;
+}
+
+header .submenu h3{
+    margin-bottom: 5px;
+}
+
+header .submenu p{
+    font-weight: bold;
+}
+
+body > div.contenido > div.centro,
+body > div.contenido > div.derecha{
+    float: left;
+}
+
+
+body > div.contenido > div.derecha{
+    margin-left: 15px;
+    display: block;
+}
+
+
+.gris{
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: gray;
+    -webkit-filter: grayscale(100%);
+}
+
+/*
+    MOBILE Y TABLET
+*/
+.mobile body > div.contenido > div.derecha,
+.tablet body > div.contenido > div.derecha{
+        display: none;
+}
+
+.tablet header .submenu.selected div.contenido,
+.tablet footer div.contenido,
+.tablet header > div.contenido,
+.tablet body > div.contenido
+{
+    margin: 0px auto 0px auto;
+    width: 628px;
+    overflow: hidden;
+}
+
+.mobile body > div.contenido > div.centro{
+    width: 100%;
+}
+
+.mobile header .submenu.selected div.contenido,
+.mobile footer div.contenido,
+.mobile header > div.contenido,
+.mobile body > div.contenido
+{
+    margin: 0px auto 0px auto;
+    width: 100%;
+    min-width: 320px;
+    overflow: hidden;
+    padding: 0px;
+}

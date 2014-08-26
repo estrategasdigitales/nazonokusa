@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/14/js/extjs/packages/ext-theme-classic-sandbox/.sencha/package
+END
+sencha.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/14/js/extjs/packages/ext-theme-classic-sandbox/.sencha/package/sencha.cfg
+END
+codegen.json
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/14/js/extjs/packages/ext-theme-classic-sandbox/.sencha/package/codegen.json
+END
+plugin.xml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/14/js/extjs/packages/ext-theme-classic-sandbox/.sencha/package/plugin.xml
+END
+build-impl.xml
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/14/js/extjs/packages/ext-theme-classic-sandbox/.sencha/package/build-impl.xml
+END

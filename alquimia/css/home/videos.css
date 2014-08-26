@@ -1,0 +1,250 @@
+.videos{
+    overflow: hidden;
+    margin-bottom: 8px;
+    background: #EAEAEA;
+}
+.videos .royalSlider{
+    width: 944px;
+}
+.videos .royalSlider li.tab{
+    overflow: hidden;
+}
+
+.videos .social{
+    margin-left: 10px;
+}
+
+
+.videos .royalSlider li.tab .player h3{
+    color: #0776AF;
+    font-size: 20px;
+    width: 600px;
+    margin: 10px;
+    font-family: Ubuntu;
+}
+
+.videos .royalSlider .rsNav{
+    background-color: #FF7070;
+    overflow: hidden;
+    width: 944px;
+    position: relative;
+    z-index: 100;
+}
+
+.videos .royalSlider .items ul li,
+.videos .royalSlider .items,
+.videos .royalSlider .player,
+.videos .royalSlider .rsNav .rsTab{
+    float: left;    
+}
+
+.videos .royalSlider .rsNav .rsTab{
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+
+.videos .royalSlider .items{
+    background: #EAEAEA;
+    margin-left: 16px;
+}
+
+.videos .royalSlider .items ul{
+    width: 300px;
+}
+
+
+.videos .royalSlider .items ul li{
+    width: 83px;
+    cursor: pointer;
+    padding: 10px 7px 8px 8px;
+    margin: 1px;
+}
+
+.videos .royalSlider .items ul li h3{
+    color: #626262;
+    text-align: center;
+    height: 35px;
+    overflow: hidden;
+}
+
+.videos .royalSlider li.tab .items ul li i{
+    background: url('../../img/sprite.png');
+    background-position: -12px -109px;
+    height: 25px;
+    width: 38px;
+    position: absolute;
+    margin: -40px 0px 0px 24px;
+    z-index: 2;
+    display: none;
+}
+
+.videos .royalSlider li.tab .items ul li.selected i,
+.videos .royalSlider li.tab .items ul li:hover i{
+    display: block;
+
+}
+.videos .royalSlider li.tab .items ul li:hover{
+    background-color: white;
+}
+
+.videos .royalSlider li.tab .items ul li.selected{
+    background-color: gray;
+}
+.videos .royalSlider li.tab .items ul li.selected h3{
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.videos .royalSlider li.tab .items ul li:hover img,
+.videos .royalSlider li.tab .items ul li.selected img{
+    filter:none;
+    -moz-filter: none;
+    -ms-filter: none;
+    -o-filter: none;
+    filter: none;
+    -webkit-filter: none;
+}
+
+
+.videos .royalSlider li.tab .items ul li img{
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: gray;
+    -webkit-filter: grayscale(100%);
+}
+
+.videos .royalSlider li.tab .items ul li h3{
+    color: #626262;
+}
+
+
+.videos .royalSlider .rsNav .rsTab span.rsTmb{
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 7px 8px 6px 8px;
+    display: block;
+}
+
+.videos .royalSlider .rsNav span.rsTmb:hover{
+    background: white;
+    color: #737373;
+    text-shadow: none;
+    padding: 6px 8px 5px 8px;
+    margin: 1px 0px 1px 0px;
+    cursor: pointer;
+}
+
+.videos .royalSlider .rsNav span.rsTmb.titulo{
+    font-weight: bold;
+}
+
+.videos .royalSlider .rsNav .rsNavSelected span.rsTmb:hover,
+.videos .royalSlider .rsNav .rsNavSelected span.rsTmb{
+    background-color: #BF5455;
+    color: white;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+
+.videos .royalSlider .rsNav span.rsTmb i.icon.arrow:before{
+    content: "\e011";
+    color: #bf5454;
+}
+
+.videos .royalSlider .rsNav .rsNavSelected span.rsTmb i.icon.arrow:before{
+    content: "\e037";
+    color: #b82800;
+}
+
+
+/*TABLET*/
+
+
+.tablet .videos .royalSlider .rsNav .rsTab:nth-child(n+6){
+    display: none;
+}
+
+.tablet .videos .royalSlider .rsNav
+{
+    width: 628px;
+}
+
+
+.tablet .videos .royalSlider .items ul{
+    clear: both;
+    width: 610px;
+}
+
+/*
+MOBILE
+*/
+
+.mobile .videos .royalSlider .items ul,
+.mobile .videos .royalSlider li img.rsImg,
+.mobile .videos .royalSlider .rsABlock,
+.mobile .videos,
+.mobile .videos .royalSlider{
+  min-width: 320px;
+  width: 100%;
+  height: auto;
+}
+
+.mobile .videos .royalSlider li.tab .items ul li{
+    padding: 3px;
+    width: 30%;
+    position: relative;
+    left: 0px;
+}
+
+.mobile .videos .social,
+.mobile .videos .royalSlider li.tab .items ul li:nth-child(n+4){
+    display: none;
+}
+
+.mobile .mobile .videos .royalSlider .rsNav{
+    overflow-x:auto;
+    overflow-y:hidden;
+    height: 32px;
+}
+
+.mobile .videos .royalSlider .rsNav span.rsTmb{
+    font-size: 12px;
+    padding: 7px 6px 6px 6px;
+}
+
+.mobile .videos .royalSlider li.tab .items ul li img{
+    width: 100%;
+    height: auto;
+    float: left;
+}
+
+.mobile .videos .royalSlider .items{
+    margin-left: 0px;
+}
+
+.mobile .videos .royalSlider li.tab .player h3
+{
+    font-size: 16px;
+    width: auto;
+}
+
+.mobile .videos .royalSlider li.tab .items ul li i{
+    margin: 0;
+    display: block;
+    left: 50%;
+    top: 50%;
+    margin-left: -18px;
+    margin-top: -32px;
+}
+
+.mobile .videos .royalSlider li.tab .items ul li h3{
+    font-size: 12px;
+    text-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+    text-transform: none;
+    font-weight: normal;
+    float: left;
+}

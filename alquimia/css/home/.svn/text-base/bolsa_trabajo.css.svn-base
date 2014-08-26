@@ -1,0 +1,164 @@
+.bolsa_trabajo{
+    background-color: #EAEAEA;
+    overflow: hidden;
+    width:100%;
+    margin-bottom: 8px;
+}
+
+.bolsa_trabajo ul li{
+    float: left;
+    cursor: pointer;
+}
+
+.bolsa_trabajo .titulo{
+    width: 944px;
+    position: relative;
+    z-index: 100;
+    height: 32px;
+}
+
+
+.bolsa_trabajo .menu{
+    background-color: #AEAEAE;
+    width: 100%;
+    overflow: hidden;
+}
+
+.bolsa_trabajo .menu li:hover a{
+    color: #737373;
+}
+
+
+.bolsa_trabajo .menu li a:active,
+.bolsa_trabajo .menu li a{
+    color: white;
+}
+
+.bolsa_trabajo .menu li:hover{
+    background: white;
+    color: #737373;
+    text-shadow: none;
+    padding: 6px 8px 5px 8px;
+    margin: 1px 0px 1px 0px;
+}
+
+
+.bolsa_trabajo .menu li:first-child:hover,
+.bolsa_trabajo .menu li{
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 7px 8px 6px 8px;
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.bolsa_trabajo .menu li:first-child{
+    background: #737373;
+    font-weight: bold;
+}
+
+
+
+.bolsa_trabajo .tabs{
+    overflow: hidden;
+}
+
+.bolsa_trabajo .tabs li img{
+    border: 1px solid #DFDFDF;
+}
+
+.bolsa_trabajo .tabs li{
+    width: 132px;
+    padding: 8px 11px 0px 12px;
+    margin: 1px;
+}
+.bolsa_trabajo .tabs li:last-child,
+.bolsa_trabajo .tabs li:first-child{
+    padding: 8px 12px 0px 12px;
+}
+
+.bolsa_trabajo .tabs li:hover{
+    background: white;
+}
+
+
+
+.bolsa_trabajo .tabs h3{
+    color: #434343;
+    font-weight: bold;
+    height: 36px;
+    overflow: hidden;
+}
+
+.bolsa_trabajo .tabs li:hover h3{
+    font-weight: bold; 
+}
+
+.bolsa_trabajo .tabs p{
+    color: #8F8F8F;
+    overflow: hidden;
+    height: 50px;
+}
+
+.bolsa_trabajo .tabs li .social .num,
+.bolsa_trabajo .tabs li .social .social-stub{
+    margin: 10px 0px 8px 0px;
+}
+
+.bolsa_trabajo .tabs li:hover .social .num,
+.bolsa_trabajo .tabs li .social .social-stub{
+    display: none;
+}
+
+.bolsa_trabajo .tabs li .social .num,
+.bolsa_trabajo .tabs li:hover .social .social-stub{
+    display: block;
+}
+
+
+/*TABLET*/
+
+.tablet .bolsa_trabajo .tabs li:nth-child(n+5){
+    display: none;
+}
+
+.tablet .bolsa_trabajo .menu
+{
+    width: 628px;
+}
+
+.tablet .bolsa_trabajo .tabs li:last-child,
+.tablet .bolsa_trabajo .tabs li:first-child {
+    padding: 8px 10px 0px 12px;
+}
+
+/*MOBILE*/
+
+.mobile .bolsa_trabajo .tabs li .social,
+.mobile .bolsa_trabajo .tabs li:nth-child(n+4),
+.mobile .bolsa_trabajo .menu li:nth-child(n+2){
+    display: none;
+}
+
+.mobile .bolsa_trabajo .tabs li,
+.mobile .bolsa_trabajo .tabs li:last-child,
+.mobile .bolsa_trabajo .tabs li:first-child {
+    padding: 8px 8px 5px 7px;
+}
+
+.mobile .bolsa_trabajo .menu li:first-child{
+    background: none;
+    font-size: 12px;
+}
+
+
+
+.mobile .bolsa_trabajo .tabs li img {
+    width: 100%;
+    height: auto;
+}
+
+.mobile .bolsa_trabajo .tabs li {
+    width: 28%;
+}

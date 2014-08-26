@@ -1,0 +1,76 @@
+form.anunciate{
+    display: none;
+    padding: 10px 20px 20px 20px;
+}
+
+#pageslide form.anunciate .contacto{
+    font-size: 15px;
+    padding-top: 0px;
+}
+
+#pageslide form.anunciate .respuesta{
+    color: yellow;
+    font-weight: bold;
+    padding-top: 10px;
+    font-size: 14px;
+}
+
+
+#pageslide form.anunciate{
+    display: block;
+}
+
+#pageslide form.anunciate span{
+    color: white;
+}
+
+#pageslide form.anunciate select,
+#pageslide form.anunciate input,
+#pageslide form.anunciate textarea{
+    width:100%;
+    resize:none;
+    padding-left: 5px;
+    border: none;
+    margin-top: 3px;
+}
+
+#pageslide form.anunciate select,
+#pageslide form.anunciate input{
+    height: 25px;
+}
+
+#pageslide form.anunciate ul li{
+    padding-top: 12px;
+}
+
+#pageslide form.anunciate h4{
+    font-size: 19px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+}
+
+#pageslide form.anunciate i.icon.cross{
+    display: block;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+#pageslide form.anunciate input.cancelar,
+#pageslide form.anunciate input.enviar{
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-size: 16px;
+    color: white;
+    background: #EAEAEA;
+    height: 28px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    float: left;
+    width: 49%;
+    margin-right: 2px;
+}
+
+#pageslide form.anunciate input.enviar{
+   background-color: #7AC666;
+}

@@ -1,0 +1,31 @@
+
+.paginacion{
+    clear: both;
+}
+
+
+.paginacion{
+    text-align: center;
+}
+.paginacion strong{
+    color:#00A5E1;
+    font-weight: bold;
+}
+
+
+.paginacion a:visited,
+.paginacion a,
+.paginacion{
+    color: #676767;
+    font-size: 16px;
+    font-weight: bold;
+}
+.paginacion a,
+.paginacion strong
+{
+    padding: 0px 5px 0px 5px;
+}
+
+.paginacion{
+    padding: 10px;
+}

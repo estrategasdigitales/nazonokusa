@@ -1,0 +1,24 @@
+div.wdg-twitter{
+ margin-bottom: 8px;
+ overflow: hidden;
+ background: #F0F0F0;
+}
+
+div.wdg-twitter div.titulo{
+    background-color: #E382C3;
+    width: 300px;
+    height: 32px;
+    position: relative;
+    z-index: 100;
+}
+
+div.wdg-twitter div.titulo span{
+    font-size: 14px;
+    padding: 5px 0px 0px 6px;
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+div.wdg-twitter div.contenido{
+    padding: 0px 10px 0px 10px;
+}

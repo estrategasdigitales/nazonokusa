@@ -1,0 +1,159 @@
+
+div.sticker ul{
+    background-color: #0776AF;
+    overflow: hidden;
+    width: 628px;
+    margin-bottom: 10px;
+}
+
+div.sticker.gris ul li.selected:hover,
+div.sticker.gris ul {
+    background-color: #AEAEAE;
+}
+
+div.sticker.rosa ul li.selected:hover,
+div.sticker.rosa ul {
+    background-color: #C655A2;
+}
+
+div.sticker.verde ul li.selected:hover,
+div.sticker.verde ul {
+    background-color: #7ac666;
+}
+
+div.sticker.azul ul li.selected:hover,
+div.sticker.azul ul {
+    background-color: #0079c2;
+}
+
+div.sticker.azul2 ul li.selected:hover,
+div.sticker.azul2 ul {
+    background-color: #0079c2;
+}
+
+div.sticker.rosa2 ul li.selected:hover,
+div.sticker.rosa2 ul {
+    background-color: #FF7070;
+}
+
+
+div.sticker ul.fit{
+    width: 944px;
+}
+
+
+div.sticker ul li{
+    cursor: pointer;
+    float: left;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 7px 8px 6px 8px;
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+div.sticker ul li a{
+    color: white;
+}
+
+div.sticker ul li.selected {
+    padding: 0px;
+}
+div.sticker ul li.selected span{
+    padding: 7px 8px 6px 8px;
+    background-color: #06557D;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    color: white;
+    text-transform: uppercase;
+    float: left;
+    font-weight: bold;
+}
+
+div.sticker.gris ul li.selected span{
+    background-color: #737373;
+}
+div.sticker.rosa ul li.selected span{
+    background-color: #a3397c;
+}
+div.sticker.verde ul li.selected span{
+    background-color: #6A955F;
+}
+div.sticker.azul ul li.selected span{
+    background-color: #14628C;
+}
+div.sticker.azul2 ul li.selected span{
+    background-color: #0079c2;
+}
+div.sticker.rosa2 ul li.selected span{
+    background-color: #BF5455;
+}
+
+
+div.sticker ul li:hover a,
+div.sticker ul li:hover{
+    background-color: white;
+    color: #737373;
+    text-shadow: none;
+}
+
+div.sticker ul li.selected:hover{
+    background-color: #0776AF;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    color: white;
+}
+
+div.sticker ul li .triangulo{
+    width: 0px;
+    height: 0px;
+    border-top: 16px solid transparent;
+    border-bottom: 16px solid transparent;
+    border-left: 10px solid #06557D;
+    float: left;
+}
+
+div.sticker.gris ul li .triangulo{
+    border-left: 10px solid #737373;
+}
+div.sticker.rosa ul li .triangulo{
+    border-left: 10px solid #a3397c;
+}
+div.sticker.verde ul li .triangulo{
+    border-left: 10px solid #6A955F;
+}
+div.sticker.azul ul li .triangulo{
+    border-left: 10px solid #14628C;
+}
+div.sticker.azul2 ul li .triangulo{
+    border-left: 10px solid #0079c2;
+}
+div.sticker.rosa2 ul li .triangulo{
+    border-left: 10px solid #BF5455;
+}
+
+
+/*TABLET*/
+
+.tablet div.sticker ul{
+    width: 628px;
+}
+
+
+
+/*MOBILE*/
+
+.mobile div.sticker ul{
+    width: 100%;
+    overflow: hidden;
+    min-width: 320px;
+    height: 31px;
+}
+
+.mobile div.sticker ul li{
+    font-size: 12px;
+}
+.mobile div.sticker ul li.selected span{
+    font-size: 12px;
+    padding: 8px 8px 6px 8px;
+}
+

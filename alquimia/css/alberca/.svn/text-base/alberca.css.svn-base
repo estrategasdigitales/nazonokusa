@@ -1,0 +1,10 @@
+div.alberca{
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto 8px 0px;
+}
+
+div.alberca #alberca{
+    width:100%;
+    height: 480px;
+}

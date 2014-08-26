@@ -1,0 +1,113 @@
+.cartones{
+ margin-bottom: 8px;
+ overflow: hidden;
+ width: 300px;
+}
+
+.cartones .royalSlider{
+    
+    background-color: #EAEAEA;
+    width: 300px;
+}
+
+.cartones div.titulo{
+    background-color: #C6CA27;
+    width: 300px;
+    height: 32px;
+    position: relative;
+    z-index: 100;
+}
+
+.cartones div.titulo span{
+    font-size: 14px;
+    padding: 5px 0px 0px 6px;
+    display: block;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+    font-weight: bold;
+}
+
+.cartones .royalSlider .rsTmb img{
+    filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+    filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: gray;
+    -webkit-filter: grayscale(100%);
+    height: auto;
+}
+
+
+.touch .cartones .royalSlider li img.rsImg,
+.cartones .royalSlider .rsNavSelected .rsTmb img{
+    filter:none;
+    -moz-filter: none;
+    -ms-filter: none;
+    -o-filter: none;
+    filter: none;
+    -webkit-filter: none;
+    height: auto;
+}
+
+.cartones .royalSlider .rsNavSelected .rsTmb img{
+    width: 87px;
+    height: 63px;
+    border: 3px solid #C6CA27;
+}
+
+
+/*
+FULLSCREEN
+*/
+
+
+.cartones ul.royalSlider.rsFullscreen li div.titulo h3,
+.cartones ul.royalSlider.rsFullscreen li div.titulo span
+{
+  display: none;
+}
+
+
+.cartones .royalSlider.rsFullscreen{
+    background: black;
+}
+
+.cartones .royalSlider.rsFullscreen .rsTmb img, .cartones .royalSlider.rsFullscreen li img.rsImg{
+    width:100%;
+}
+
+.cartones .royalSlider.rsFullscreen li img.rsImg.rsMainSlideImage{
+  width:100%;
+  height: 700px;
+}
+
+.cartones .royalSlider.rsFullscreen .rsNav{
+    margin: auto;
+    width: 100%;
+}
+
+.cartones .royalSlider.rsFullscreen .rsTmb,
+.cartones .royalSlider.rsFullscreen .rsThumb{
+    width: 95px;
+    height: 77px;
+}
+
+.cartones .royalSlider.rsFullscreen .rsNavSelected .rsTmb img{
+    width: 89px;
+    height: 66px;
+    border: 3px solid white;
+}
+
+
+
+div.cartones .royalSlider li div.social-icons{
+    top: 5px;
+    left: 40px;
+    position: absolute;
+    display: none;
+    z-index: 1;
+}
+
+div.cartones:hover .royalSlider li div.social-icons{
+    display: block;
+}

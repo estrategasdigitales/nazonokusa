@@ -1,0 +1,2 @@
+.fb-comments, .fb-comments iframe[style] {width: 944px !important; margin: 0 auto 4px 0px; overflow: hidden;}
+.mobile .fb-comments, .mobile .fb-comments iframe[style] {width: 100% !important;}
