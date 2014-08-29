@@ -79,73 +79,89 @@
 				</div>
 			</div>
 		</div>
-		<div class="container row hide" id="formatos_estandar">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Formatos estándar</div>
-				<div class="panel-body">
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
-							<div class="checkbox">
-								<label>
-									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
-									JSON
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
-									JSON-P
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
-							<div class="checkbox">
-								<label>
-									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
-									XML
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="rss" id="rss">
-									RSS 2.0
-								</label>
-							</div>
-						</div>
-					</div>
+		<div id="formatos_estandar" class="hide">
+			<div class="row">
+				<div class="col-sm-4 col-md-4">
+					<button onclick="cargar_campos_estandar();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button>
+				</div>
+				<div class="col-sm-8 col-md-8">
+					<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
 				</div>
 			</div>
-		</div>
-		<div class="container row hide" id="formatos_especificos">
-			<div class="panel panel-primary">
-				<div class="panel-heading">Formatos específicos</div>
-				<div class="panel-body">
-					<?php if ( isset( $estructuras ) && ! empty( $estructuras ) ): ?>
-						<div class="col-sm-12 col-md-12">
+			<br>
+			<div class="container row">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Formatos estándar</div>
+					<div class="panel-body">
+						<div class="col-sm-6 col-md-6">
 							<div class="form-group">
-								<label for="formato_especifico" class="form-trabajos-label">Salida específica: </label>
-								<select class="form-control form-trabajos-date" name="formato_especifico" id="formato_especifico">
-									<option value="0">Selecciona un formato de salida específico</option>
-									<?php foreach($estructuras as $estructura): ?>
-										<option value="<?php echo $estructura->uid_estructura; ?>"><?php echo $estructura->nombre; ?></option>
-									<?php endforeach; ?>
-								</select>
+								<div class="checkbox">
+									<label>
+										<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="json" id="json">
+										JSON
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="jsonp" id="jsonp">
+										JSON-P
+									</label>
+								</div>
 							</div>
 						</div>
-					<?php else: ?>
-						<div class="col-sm-12 col-md-12">
-							<h5 class="form-control">No existen estructuras específicas disponibles</h5>
+						<div class="col-sm-6 col-md-6">
+							<div class="form-group">
+								<div class="checkbox">
+									<label>
+										<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="xml" id="xml">
+										XML
+									</label>
+								</div>
+								<div class="checkbox">
+									<label>
+										<input onChange="datosAdicionales(this);" type="checkbox" name="formato[]" value="rss" id="rss">
+										RSS 2.0
+									</label>
+								</div>
+							</div>
 						</div>
-					<?php endif; ?>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm-4 col-md-4"><button onclick="cargar_campos();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button></div>
-			<div class="col-sm-8 col-md-8">
-				<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
+		<div id="formatos_especificos" class="hide">
+			<div class="row">
+				<div class="col-sm-4 col-md-4">
+					<button onclick="cargar_campos_especificos();" type="button" class="btn btn-primary btn-block" id="cmdRender">Detectar Campos</button>
+				</div>
+				<div class="col-sm-8 col-md-8">
+					<h4>* Debes dar clic en esta opción para que el sistema procese la informacion de origen.</h4>
+				</div>
+			</div>
+			<br>
+			<div class="container row">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Formatos específicos</div>
+					<div class="panel-body">
+						<?php if ( isset( $estructuras ) && ! empty( $estructuras ) ): ?>
+							<div class="col-sm-12 col-md-12">
+								<div class="form-group">
+									<label for="formato_especifico" class="form-trabajos-label">Salida específica: </label>
+									<select class="form-control form-trabajos-date" name="formato_especifico" id="formato_especifico">
+										<option value="0">Selecciona un formato de salida específico</option>
+										<?php foreach($estructuras as $estructura): ?>
+											<option value="<?php echo $estructura->uid_estructura; ?>"><?php echo $estructura->nombre; ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							</div>
+						<?php else: ?>
+							<div class="col-sm-12 col-md-12">
+								<h5 class="form-control">No existen estructuras específicas disponibles</h5>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
 			</div>
 		</div>
 		<br>
@@ -313,6 +329,7 @@
 			</div>
 		</div>
 		<input type="hidden" id="claves" name="claves">
+		<input type="hidden" id="relacion_especificos" name="relacion_especificos">
 	<?php echo form_close(); ?>
 	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

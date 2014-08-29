@@ -146,12 +146,21 @@ class Cms_model extends CI_Model {
             $resultado->free_result();
         }
 
+        public function get_template_feed( $salida ){
+            $this->db->select( 'json_estructura' );
+            $this->db->where('uid_estructura', $salida['id'] );
+            $template = $this->db->get( $this->db->dbprefix('estructuras_salida') );
+            return $template->row();
+            $template->free_result();
+        }
+
         public function get_trabajos(){
             //$this->db->cache_on();
-            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro' );
+            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
+            $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
             $result = $this->db->get();
             if ($result->num_rows() > 0) return $result->result();
             else return FALSE;
@@ -170,10 +179,11 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos_editor( $uid ){
             //$this->db->cache_on();
-            $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.formatos, a.fecha_registro');
+            $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.formatos, a.fecha_registro, a.tipo_salida, d.formato_salida');
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
+            $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
             $this->db->where( 'a.uid_usuario',$uid );
             $result = $this->db->get();
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -183,7 +193,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
-            $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, a.activo, a.cron_config' );
+            $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, a.activo, a.cron_config, a.tipo_salida, a.plantilla, a.relacion_especificos' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
@@ -367,12 +377,19 @@ class Cms_model extends CI_Model {
             $this->db->set('nombre', $trabajo['nombre']);
             $this->db->set('slug_nombre_feed', $trabajo['slug_nombre_feed']);
             $this->db->set('url_origen', $trabajo['url-origen']);
-            $this->db->set('campos_seleccionados', $trabajo['campos']);
-            $this->db->set('arbol_json', $trabajo['arbol_json']);
-            $this->db->set('json_output', $trabajo['json_output'] );
+            $this->db->set('tipo_salida', $trabajo['tipo_salida'] );
+            $this->db->set('plantilla', $trabajo['uid_plantilla'] );
+            if ( $trabajo['tipo_salida'] == 1 ){
+                $this->db->set('campos_seleccionados', $trabajo['campos']);
+                $this->db->set('arbol_json', $trabajo['arbol_json']);
+                $this->db->set('json_output', $trabajo['json_output'] );
+                $this->db->set('formatos', $trabajo['formatos'] );
+            } else {
+                $this->db->set('relacion_especificos', $trabajo['relacion_especificos'] );
+            }
+
             $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
             //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-            $this->db->set('formatos', $trabajo['formatos'] );
             //$this->db->set('feeds_output', $trabajo['feeds_output'] );
             $this->db->set('cron_config', $trabajo['cron_config']);
             $this->db->insert( $this->db->dbprefix( 'trabajos' ) );

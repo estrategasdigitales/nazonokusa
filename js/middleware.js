@@ -533,6 +533,18 @@ tvs(function($){
 			break;
 		}
 	});
+
+	$('#formato_especifico').change(function(){
+		var template_salida = $(this).val();
+		if ( template_salida != 0 ){
+			TVSA.resetGrid();
+			$.post( 'nucleo/cargar_template_salida',{ id_template: template_salida }, function(data){
+				TVSA.setTemplate(data);
+			});
+		} else {
+			TVSA.resetGrid();
+		}
+	});
 });
 
 function handlerProgramm(status, uidjob){
@@ -612,7 +624,7 @@ function deleteJob(uidjob){
 	});
 }
 
-function cargar_campos(){
+function cargar_campos_estandar(){
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 25, // The length of each line
@@ -651,6 +663,67 @@ function cargar_campos(){
 				$('#foo').css('display','none');
 			 	$('#campos-feed').html(data);
 			 	$('.campos-feed').slideDown();
+			},
+			error: function(){
+				spinner.stop();
+				data = '<span class="error">Ocurrió un problema al intentar detectar los campos del feed.</span>';
+				$('#foo').css('display','none');
+				$('#messages').css('display','block');
+				$('#messages').addClass('alert-danger');
+				$('#messages').html(data);
+				$('.campos-feed').slideUp();
+			}
+		});
+	}else{
+		spinner.stop();
+		data = '<span class="error">Es necesario escribir alguna <b>URL</b> de un feed para detectar los campos.</span>';
+		$('#foo').css('display','none');
+		$('#messages').css('display','block');
+		$('#messages').addClass('alert-danger');
+		$('#messages').html(data);
+	}
+}
+
+function cargar_campos_especificos(){
+	var opts = {
+		lines: 13, // The number of lines to draw
+		length: 25, // The length of each line
+		width: 10, // The line thickness
+		radius: 35, // The radius of the inner circle
+		corners: 1, // Corner roundness (0..1)
+		rotate: 0, // The rotation offset
+		direction: 1, // 1: clockwise, -1: counterclockwise
+		color: '#f48120', // #rgb or #rrggbb or array of colors
+		speed: 1, // Rounds per second
+		trail: 100, // Afterglow percentage
+		shadow: false, // Whether to render a shadow
+		hwaccel: false, // Whether to use hardware acceleration
+		className: 'spinner', // The CSS class to assign to the spinner
+		zIndex: 2e9, // The z-index (defaults to 2000000000)
+		top: '50%', // Top position relative to parent in px
+		left: '50%' // Left position relative to parent in px
+	};
+	var target = document.getElementById('foo');
+
+	$('#foo').css('display','block');
+	var spinner = new Spinner(opts).spin(target);
+	$('#claves').val('');
+	$('#tipo_archivo').html('');
+	$('#jsonLocation').html('');
+	$('#messages').css('display','none');
+	if( $('#url-origen').val() != ''){
+		$.ajax({
+			url: 'nucleo/detectar_campos_especificos',
+			type: 'POST',
+			dataType: 'html',
+			data: { url: $('#url-origen').val() },
+			success: function(data){
+				spinner.stop();
+				$('#foo').css('display','none');
+				$('.campos-feed').slideDown();
+				TVSA.show('campos-feed');
+				TVSA.setFeed(data);
+				TVSA.save('relacion_especificos');
 			},
 			error: function(){
 				spinner.stop();

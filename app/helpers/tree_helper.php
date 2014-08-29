@@ -41,5 +41,30 @@ if ( ! function_exists('campos_seleccionados') ){
 	}
 }
 
+if ( ! function_exists('create_indexes_specific') ){
+	function create_indexes_specific( $contents ){
+		foreach ( $contents as $content ){
+			$tree[] = recursive_nodes_index_specific( $content );
+		}
+		return $tree;
+	}
+}
+
+if ( ! function_exists('recursive_nodes_index_specific') ){
+	function recursive_nodes_index_specific( $matriz ){
+		$tree_node = [];
+		$object = new stdClass();
+		foreach ( $matriz as $key => $value ){
+			if( is_array( $value ) ){
+				$tree_node[] = $object->$key = null;
+				$tree_node[] = $object->$key = recursive_nodes_index_specific( $value );
+			}else{
+				$tree_node[] = $object->$key = null;
+			}
+		}
+		return $object;
+	}
+}
+
 /* End of file tree_helper.php */
 /* Location: ./app/helpers/tree_helper.php */

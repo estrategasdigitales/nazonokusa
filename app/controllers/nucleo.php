@@ -117,6 +117,20 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
+	 * [cargar_template_salida description]
+	 * @return [type] [description]
+	 */
+	public function cargar_template_salida(){
+		$template['id'] = $this->input->post('id_template');
+		$feed_salida = $this->cms->get_template_feed( $template );
+		if ( $feed_salida != FALSE ){
+			echo $feed_salida->json_estructura;
+		} else {
+			echo '<span class="error">Ocurrió un problema al intentar <b>cargar el template de salida</b>. </span>';
+		}
+	}
+
+	/**
 	 * [detectar_campos description]
 	 * @return [type] [description]
 	 */
@@ -140,8 +154,12 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/tree_feed', $data);
 	}
 
+	/**
+	 * [detectar_campos_especificos description]
+	 * @return [type] [description]
+	 */
 	public function detectar_campos_especificos(){
-		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
+		$url = base_url() . 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url') ) );
 		echo $url;
 	}
 	
@@ -233,6 +251,53 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/service', $data );
 	}
 
+
+	/**
+	 * [feed_service_specific description]
+	 * @return [type] [description]
+	 */
+	public function feed_service_specific(){
+		$output = array();
+		$url = $this->input->get('url');
+		$url = urldecode( base64_decode( $url ) );
+		$url = file_get_contents_curl( $url );
+		$url = html_entity_decode( $url );
+		if ( $feed = json_decode( $url ) ){
+			foreach ( $feed as $item ){
+				$cont[] = $this->mapAttributes( json_encode( $item ) );
+			}
+			$contents = $this->array_unique_multidimensional( $cont );
+			$indices = create_indexes_specific( $contents );
+		} else {
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$feed = substr( $url, $pos + 1, -1 );
+				$feed = json_decode( $feed );
+				foreach ( $feed as $item ){
+					$cont[] = $this->mapAttributes( json_encode( $item ) );
+				}
+				$contents = $this->array_unique_multidimensional( $cont );
+				$indices = create_indexes_specific( $contents );
+			} else {
+				$dom = new DOMDocument();
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$rss = $this->xml_2_array->createArray( $url );
+					$feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
+					$contents = $this->array_unique_multidimensional( $feed );
+					$indices = create_indexes_specific( $contents );
+				} else {
+					$xml = $this->xml_2_array->createArray( $url );
+					$feed[] = $this->mapAttributes( json_encode( $xml ) );
+					$contents = $this->array_unique_multidimensional( $feed );
+					$indices = create_indexes_specific( $contents );
+				}
+			}
+		}
+		$data = array( 'indices' => $indices[0] );
+		$this->load->view('cms/service_specific', $data );
+	}
+
 	/**
 	 * [feed_service_content description]
 	 * @return [type] [description]
@@ -268,6 +333,10 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/service_content', $data );
 	}
 
+	/**
+	 * [job_execute description]
+	 * @return [type] [description]
+	 */
 	public function job_execute(){
 		$token = urldecode( base64_decode( $this->input->get('token') ) );
 		$trabajoObject = $this->cms->get_trabajo_ejecutar( $token );
@@ -358,7 +427,12 @@ class Nucleo extends CI_Controller {
 			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
 			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
-			$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
+			if ( $this->input->post( 'tipo_salida' ) == 1 ){
+				$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
+				$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
+			} else {
+				$this->form_validation->set_rules('relacion_especificos', 'Relación de feeds', 'required|xss_clean');
+			}
 			//$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
 			if ( ! empty( $this->input->post('formato') ) ){
 				if ( in_array('rss', $this->input->post('formato' ) ) ){
@@ -379,9 +453,15 @@ class Nucleo extends CI_Controller {
 				$trabajo['categoria']   		= $this->input->post('categoria');
 				$trabajo['vertical']   			= $this->input->post('vertical');
 				$trabajo['campos']				= $this->input->post('claves');
-				$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
-				$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
-				$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
+				$trabajo['tipo_salida']			= $this->input->post('tipo_salida');
+				$trabajo['uid_plantilla']		= $this->input->post('formato_especifico');
+				if ( $this->input->post('tipo_salida') == 1 ){
+					$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
+					$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
+					$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
+				} else {
+					$trabajo['relacion_especificos'] = $this->input->post( 'relacion_especificos' );
+				}
 				//$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
 				$trabajo['cron_config']			= $cronjob_config;
 				$trabajo 						= $this->security->xss_clean( $trabajo );
@@ -397,6 +477,11 @@ class Nucleo extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [harddisk_write description]
+	 * @param  [type] $trabajo [description]
+	 * @return [type]          [description]
+	 */
 	private function harddisk_write( $trabajo ){
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
 			mkdir( './outputs/' . $trabajo->slug_categoria );
@@ -417,75 +502,93 @@ class Nucleo extends CI_Controller {
 		$login = ftp_login($ftp_conn, $ftp_user_name, $ftp_user_pass);
 		$ftpath = '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
 		$this->mksubdirs( $ftp_conn, '/', $ftpath );
-		ftp_close($ftp_conn);
-		$formatos = json_decode( $trabajo->formatos );
-		$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen );
-		
-		if($this->session->userdata( 'session' ) !== TRUE && (json_decode($output) === FALSE || json_decode($output) === NULL))
-		{
-			$this->alerta($trabajo->uid_trabajo, "Error al intentar obtener los items de origen - getItems");
-			die;
-		}
-		
-		foreach ( $formatos as $formato ){
-			switch ( $formato->formato ) {
-				case 'xml':
-					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-					$array = json_decode( $output, TRUE );
-					$final = array_to_xml( $array )->saveXML();
-					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-					{
-						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a XML - array_to_xml");
-						die;
+		ftp_close( $ftp_conn );
+		switch ( $trabajo->tipo_salida ){
+			case 1:
+				$formatos = json_decode( $trabajo->formatos );
+				$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen );
+				
+				if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
+					$this->alerta( $trabajo->uid_trabajo, "Error al intentar obtener los items de origen - getItems" );
+					die;
+				}
+				
+				foreach ( $formatos as $formato ){
+					switch ( $formato->formato ) {
+						case 'xml':
+							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+							$array = json_decode( $output, TRUE );
+							$final = array_to_xml( $array )->saveXML();
+							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+							{
+								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a XML - array_to_xml");
+								die;
+							}
+							fwrite( $open, stripslashes( $final ) );
+							fclose( $open );
+							$this->upload_netstorage($feed_output, $ftpath);
+							break;
+						case 'rss':
+							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+							$array = json_decode( $output, TRUE );
+							$formatos = json_decode( $trabajo->formatos );
+							foreach ( $formatos as $formato ){
+								$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
+							}
+							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+							{
+								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a RSS - array_to_rss");
+								die;
+							}
+							fwrite( $open, stripslashes( $final ) );
+							fclose( $open );
+							$this->upload_netstorage($feed_output, $ftpath);
+							break;
+						case 'json':
+							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+							$final = $output;
+							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+							{
+								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON ");
+								die;
+							}
+							fwrite( $open, stripslashes( $final ) );
+							fclose( $open );
+							$this->upload_netstorage($feed_output, $ftpath);
+							break;
+						case 'jsonp':
+							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+							$final = $formato->funcion . '(' . $output . ')';
+							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
+							{
+								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON-P ");
+								die;
+							}
+							fwrite( $open, stripslashes( $final ) );
+							fclose( $open );
+							$this->upload_netstorage($feed_output, $ftpath);
+							break;
 					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-					$this->upload_netstorage($feed_output, $ftpath);
-					break;
-				case 'rss':
-					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-					$array = json_decode( $output, TRUE );
-					$formatos = json_decode( $trabajo->formatos );
-					foreach ( $formatos as $formato ){
-						$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
-					}
-					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-					{
-						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a RSS - array_to_rss");
-						die;
-					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-					$this->upload_netstorage($feed_output, $ftpath);
-					break;
-				case 'json':
-					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-					$final = $output;
-					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-					{
-						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON ");
-						die;
-					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-					$this->upload_netstorage($feed_output, $ftpath);
-					break;
-				case 'jsonp':
-					$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-					$final = $formato->funcion . '(' . $output . ')';
-					if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-					{
-						$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON-P ");
-						die;
-					}
-					fwrite( $open, stripslashes( $final ) );
-					fclose( $open );
-					$this->upload_netstorage($feed_output, $ftpath);
-					break;
-			}
+				}
+				break;
+
+			case 2:
+				$feed_input = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
+				print_r( $feed_input );die;
+				// $plantilla = $this->cms->get_template_details( $trabajoObject->plantilla );
+				// $this->harddisk_write( $trabajoObject );
+				// $this->set_cron( $trabajoObject->cron_config , $job['uidjob'] );
+				break;
 		}
 	}
 
+	/**
+	 * [mksubdirs description]
+	 * @param  [type] $ftpcon     [description]
+	 * @param  [type] $ftpbasedir [description]
+	 * @param  [type] $ftpath     [description]
+	 * @return [type]             [description]
+	 */
 	private function mksubdirs( $ftpcon, $ftpbasedir, $ftpath ){
 		@ftp_chdir($ftpcon, $ftpbasedir);
 		$parts = explode('/', $ftpath);

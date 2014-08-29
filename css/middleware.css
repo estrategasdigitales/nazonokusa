@@ -21,6 +21,11 @@ header{
     margin-bottom: 10px;
 }
 
+#campos-feed{
+    height: 650px;
+    max-height: 650px !important;
+}
+
 #container {
 	display: block;
 	margin: 0 auto;

@@ -12,6 +12,7 @@
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<?php echo link_tag('css/bootstrap-datepicker.css'); ?>
 	<?php echo link_tag('css/ace.min.css'); ?>
+	<?php echo link_tag('js/extjs/resources/ext-theme-neptune/ext-theme-neptune-all.css'); ?>
 	<?php echo link_tag('css/middleware.css'); ?>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/no.conflict.js"></script>
@@ -20,6 +21,9 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/spin.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.form.min.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/extjs/ext-all.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/init-tree-alquimia.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/tree-f2.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
 </head>
 <body>

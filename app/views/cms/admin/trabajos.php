@@ -28,33 +28,75 @@
 							<td class="text-center">
 								<?php
 									if ( $trabajo->activo == 1 ){
-										$salidas = json_decode( $trabajo->formatos );
-										foreach ( $salidas as $salida ){
+										switch ( $trabajo->tipo_salida ){
+											case 1:
+												$salidas = json_decode( $trabajo->formatos );
+												foreach ( $salidas as $salida ){
 								?>
-								
-									<span>
-										<?php
-											switch ($salida->formato) {
-												case 'json': ?>
-													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-										<?php 	break;
-												case 'jsonp': ?>
-													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-										<?php 	break;
-												case 'xml': ?>
-													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-										<?php 	break;
-												case 'rss': ?>
-													<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-										<?php 	break;
-											
-											}
-										?>
-											<span class="glyphicon glyphicon-link"></span>
-											<span class="glyphicon-class"><?php echo $salida->formato; ?></span>
-										</a>
-									</span>
-								<?php } } ?>
+													<span>
+														<?php
+															switch ( $salida->formato ) {
+																case 'json': ?>
+																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+														<?php 	break;
+																case 'jsonp': ?>
+																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+														<?php 	break;
+																case 'xml': ?>
+																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+														<?php 	break;
+																case 'rss': ?>
+																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+														<?php 	break;
+															
+															}
+														?>
+															<span class="glyphicon glyphicon-link"></span>
+															<span class="glyphicon-class"><?php echo $salida->formato; ?></span>
+														</a>
+													</span>
+								<?php
+												}
+												break;
+											case 2:
+								?>
+												<span>
+													<?php
+														switch ( $trabajo->formato_salida ) {
+															case 3: ?>
+																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+																	<span class="glyphicon glyphicon-link"></span>
+																	<span class="glyphicon-class">json</span>
+																</a>
+													<?php 	break;
+															case 4: ?>
+																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+																	<span class="glyphicon glyphicon-link"></span>
+																	<span class="glyphicon-class">jsonp</span>
+																</a>
+													<?php 	break;
+															case 2: ?>
+																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+																	<span class="glyphicon glyphicon-link"></span>
+																	<span class="glyphicon-class">xml</span>
+																</a>
+													<?php 	break;
+															case 1: ?>
+																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
+																	<span class="glyphicon glyphicon-link"></span>
+																	<span class="glyphicon-class">rss</span>
+																</a>
+													<?php 	break;
+														
+														}
+													?>
+												</span>
+								<?php
+												break;
+										}
+								?>
+									
+								<?php } ?>
 							</td>
 							<!--<td class="text-center">
 								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
