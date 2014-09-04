@@ -1,14 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-Class cron_manager {
+Class Cron_manager {
 
 	private $connection;
 	private $path;
 	private $handle;
 	private $cron_file;
 
-	function __construct()
-	{		
+	function __construct(){		
 		//$path_length	 = strrpos(__FILE__, "/");
 		//$this->path 	 = substr(__FILE__, 0, $path_length) . '/';		
 		$this->path 	 = '/var/www/html/';
@@ -17,16 +16,13 @@ Class cron_manager {
 		
 	}
 
-	public function connect($host=NULL, $port=NULL, $username=NULL, $password=NULL)
-	{
-		try
-		{
-			if (is_null($host) || is_null($port) || is_null($username) || is_null($password)) throw new Exception("The host, port, username and password arguments must be specified!");
+	public function connect( $host = NULL, $port = NULL, $username = NULL, $password = NULL){
+		try{
+			if ( is_null( $host ) || is_null( $port ) || is_null( $username ) || is_null( $password ) ) throw new Exception("The host, port, username and password arguments must be specified!");
 		
-			$this->connection = @ssh2_connect($host, $port);			
+			$this->connection = @ssh2_connect( $host, $port );			
 			if ( ! $this->connection) throw new Exception("The SSH2 connection could not be established.");
 			//else echo 'Conexion establecida';
-
 			$authentication = @ssh2_auth_password($this->connection, $username, $password);
 			if ( ! $authentication) throw new Exception("Could not authenticate '{$username}' using pasword: '{$password}'.");
 			else echo 'Usuario autenticado correctamente';
@@ -39,12 +35,10 @@ Class cron_manager {
 		
 	}
 
-	public function exec()
-	{
+	public function exec(){
 		$argument_count = func_num_args();
 
-		try
-		{
+		try{
 			if ( ! $argument_count) throw new Exception("There is nothing to exececute, no arguments specified.");
 
 			$arguments = func_get_args();
@@ -56,18 +50,15 @@ Class cron_manager {
 
 			print_r($command_string);
 		}
-		catch (Exception $e)
-		{
+		catch (Exception $e){
 			$this->error_message($e->getMessage());
 		}
 
 		return $this;
 	}
 
-	public function write_to_file($path=NULL, $handle=NULL)
-	{
-		if ( ! $this->crontab_file_exists())
-		{		
+	public function write_to_file($path=NULL, $handle=NULL){
+		if ( ! $this->crontab_file_exists() ){		
 			$this->handle = (is_null($handle)) ? $this->handle : $handle;
 			$this->path   = (is_null($path))   ? $this->path   : $path;			
 			$this->cron_file = "{$this->path}{$this->handle}";
@@ -80,14 +71,12 @@ Class cron_manager {
 		return $this;	
 	}
 	
-	public function remove_file()
-	{		
+	public function remove_file(){		
 		if ($this->crontab_file_exists()) $this->exec("rm {$this->cron_file}");		
 		return $this;
 	}
 	
-	public function append_cronjob($cron_jobs=NULL)
-	{
+	public function append_cronjob($cron_jobs=NULL){
 		if (is_null($cron_jobs)) $this->error_message("Nothing to append!  Please specify a cron job or an array of cron jobs.");
 		
 		$append_cronfile = "echo '";		

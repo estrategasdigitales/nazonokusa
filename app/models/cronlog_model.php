@@ -19,7 +19,7 @@ class Cronlog_model extends CI_Model {
         $timestamp = time();
         $this->db->set( 'uid_trabajo', $uid );
         $this->db->set( 'time', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-        $this->db->set( 'status', $error );
+        $this->db->set( 'status', $status );
         $this->db->insert( $this->db->dbprefix( 'cron_log') );
         if ($this->db->affected_rows() > 0) return TRUE;
         else return FALSE; 

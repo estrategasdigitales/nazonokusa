@@ -275,7 +275,8 @@ class Nucleo extends CI_Controller {
 	 */
 	public function job_process(){
 		$this->load->model( 'netstorage_model','storage' );
-		$this->load->model( 'crontabs_model','crontabs' );
+		$CI =& get_instance();
+		$CI->load->model( 'crontabs_model','crontabs' );
 		$job['status'] 	= $this->input->post( 'status' );
 		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
 		$process 		= $this->cms->active_job( $job );
@@ -283,7 +284,7 @@ class Nucleo extends CI_Controller {
 			if ( $job['status'] == 1 ){
 				$trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
 				$this->storage->harddisk_write( $trabajo );
-				$this->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+				$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
 				echo TRUE;
 			} else {
 				//$this->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
