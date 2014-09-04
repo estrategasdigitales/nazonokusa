@@ -60,7 +60,7 @@ class Array_2_xml {
      * @param array $arr - aray to be converterd
      * @return DomDocument
      */
-    public static function &createXML($node_name, $arr=array()) {
+    public static function &createXML($node_name, $arr = array()) {
         $xml = self::getXMLRoot();
         $xml->appendChild(self::convert($node_name, $arr));
  
@@ -74,7 +74,7 @@ class Array_2_xml {
      * @param array $arr - aray to be converterd
      * @return DOMNode
      */
-    private static function &convert($node_name, $arr=array()) {
+    private static function &convert($node_name, $arr = array()) {
  
         //print_arr($node_name);
         $xml = self::getXMLRoot();

@@ -95,6 +95,14 @@ Ext.define('TVSA.Tree', {
 
     me.callParent(arguments);
 
+
+
+    me.on("beforeselect",function(_me, record, index, eOpts){
+        if(!record.raw.leaf)
+        return false;
+    });
+
+
     },
 
     loadData : function(url){
@@ -118,7 +126,7 @@ Ext.define('TVSA.Tree', {
 
             var node = me.store.getRootNode();
             var Tree = me.Tree;
-            
+
             Tree.node(me.store,json,true,"tree",node);
 
             me.fireEvent("renderTree",me.store);
@@ -127,6 +135,7 @@ Ext.define('TVSA.Tree', {
     },
 
     listeners : {
+
         'itemclick' : function(_me, record, item, index, e ){
 
             //panel.getComponent('tree1-panel').getComponent('tree1-label').setText(record.get("id"));

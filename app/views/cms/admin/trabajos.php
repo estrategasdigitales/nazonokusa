@@ -10,10 +10,9 @@
 			<table class="table table-striped table-hover table-bordered">
 				<tr class="titulo-columna">
 					<td>Nombre del Trabajo</td>
-					<!--<td width="30%">URL origen</td>-->
+					<td>URL origen</td>
 					<td >Salidas</td>
 					<td class="text-center" width="10%">Activar / Desactivar</td>
-					<!--<td class="text-center" width="10%">Ejecutar</td>-->
                     <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
 	                    <!-- <td class="text-center" width="10%">Editar</td> -->
 	                <?php } if ( $this->session->userdata( 'nivel' ) == 1 ){ ?>
@@ -24,7 +23,12 @@
 					<?php foreach( $trabajos as $trabajo ): ?>
 						<tr>
 							<td><?php echo $trabajo->nombre; ?></td>
-							<!--<td><?php echo $trabajo->url_origen; ?></td>-->
+							<td class="text-center">
+								<a href="<?php echo $trabajo->url_origen; ?>" class="petroleo" target="_blank">
+									<span class="glyphicon glyphicon-link"></span>
+									<span class="glyphicon-class">url</span>
+								</a>
+							</td>
 							<td class="text-center">
 								<?php
 									if ( $trabajo->activo == 1 ){
@@ -32,86 +36,61 @@
 											case 1:
 												$salidas = json_decode( $trabajo->formatos );
 												foreach ( $salidas as $salida ){
-								?>
-													<span>
-														<?php
+													echo '<span>';
 															switch ( $salida->formato ) {
-																case 'json': ?>
-																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-														<?php 	break;
-																case 'jsonp': ?>
-																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-														<?php 	break;
-																case 'xml': ?>
-																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-														<?php 	break;
-																case 'rss': ?>
-																	<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-														<?php 	break;
-															
+																case 'json':
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-json.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
+																break;
+																case 'jsonp':
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
+																break;
+																case 'xml':
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-xml.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
+																break;
+																case 'rss':
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-rss.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
+																break;
 															}
-														?>
-															<span class="glyphicon glyphicon-link"></span>
-															<span class="glyphicon-class"><?php echo $salida->formato; ?></span>
-														</a>
-													</span>
-								<?php
+															echo '<span class="glyphicon glyphicon-link"></span>';
+															echo '<span class="glyphicon-class">' . $salida->formato . '</span>';
+														echo '</a>';
+													echo '</span>';
 												}
-												break;
+											break;
 											case 2:
-								?>
-												<span>
-													<?php
-														switch ( $trabajo->formato_salida ) {
-															case 3: ?>
-																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-json.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-																	<span class="glyphicon glyphicon-link"></span>
-																	<span class="glyphicon-class">json</span>
-																</a>
-													<?php 	break;
-															case 4: ?>
-																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-jsonp.js'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-																	<span class="glyphicon glyphicon-link"></span>
-																	<span class="glyphicon-class">jsonp</span>
-																</a>
-													<?php 	break;
-															case 2: ?>
-																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-xml.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-																	<span class="glyphicon glyphicon-link"></span>
-																	<span class="glyphicon-class">xml</span>
-																</a>
-													<?php 	break;
-															case 1: ?>
-																<a href="<?php echo $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria .'/'.$trabajo->slug_vertical.'/'.$this->session->userdata('uid').'/'.$trabajo->slug_nombre_feed.'-rss.xml'; ?>" title="<?php echo $salida->formato; ?>" class="petroleo" target="_blank">
-																	<span class="glyphicon glyphicon-link"></span>
-																	<span class="glyphicon-class">rss</span>
-																</a>
-													<?php 	break;
-														
-														}
-													?>
-												</span>
-								<?php
-												break;
+												echo '<span>';
+													switch ( $trabajo->formato_salida ) {
+														case 1:
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-rss.xml" class="petroleo" target="_blank">';
+																echo '<span class="glyphicon glyphicon-link"></span>';
+																echo '<span class="glyphicon-class">rss</span>';
+															echo '</a>';
+														break;
+														case 2:
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-xml.xml" class="petroleo" target="_blank">';
+																echo '<span class="glyphicon glyphicon-link"></span>';
+																echo '<span class="glyphicon-class">xml</span>';
+															echo '</a>';
+														break;
+														case 3:
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-json.js" class="petroleo" target="_blank">';
+																echo '<span class="glyphicon glyphicon-link"></span>';
+																echo '<span class="glyphicon-class">json</span>';
+															echo '</a>';
+														break;
+														case 4:
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $this->session->userdata('uid') . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" class="petroleo" target="_blank">';
+																echo '<span class="glyphicon glyphicon-link"></span>';
+																echo '<span class="glyphicon-class">jsonp</span>';
+															echo '</a>';
+														break;
+													}
+												echo '</span>';
+											break;
 										}
+									}
 								?>
-									
-								<?php } ?>
 							</td>
-							<!--<td class="text-center">
-								<?php echo form_open('cms/job_process', array('class' => 'form-horizontal', 'id' => 'form_activar_cronjob', 'method' => 'POST', 'role' => 'form', 'autocomplete' => 'off' ) ); ?>
-									<div class="btn-group btn-toggle" data-toggle="buttons">
-										<label class="btn btn-sm <?php if( $trabajo->activo == 1 ) echo 'btn-success active'; else echo 'btn-default'; ?>">
-											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?> onchange="handlerProgramm( 1, '<?php //echo $trabajo->uid_trabajo; ?>')">ON-->
-											<!--<input type="radio" name="programada" value="1" <?php if( $trabajo->activo == 1 ) echo 'checked'; ?>>ON
-										</label>
-										<label class="btn btn-sm <?php if( $trabajo->activo == 0 ) echo 'btn-danger active'; else echo 'btn-default'; ?>">
-											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?> onchange="handlerProgramm( 0, '<?php //echo $trabajo->uid_trabajo; ?>')">OFF-->
-											<!--<input type="radio" name="programada" value="0" <?php if( $trabajo->activo == 0 ) echo 'checked'; ?>>OFF
-										</label>
-									</div>
-								<?php echo form_close(); ?>
-							</td>-->
 							<td class="text-center">
 								<?php if ( $trabajo->activo == 0 ){ ?>
 									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 1);" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Activar</a>
@@ -119,7 +98,6 @@
 									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 0);" type="button" class="btn btn-success btn-sm btn-block btn-padding">Desactivar</a>
 								<?php } ?>
 							</td>
-							<!--<td><a href="<?php echo base_url(); ?>ejecutar_trabajo/<?php echo $trabajo->uid_trabajo ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Ejecutar Ahora</a></td>-->
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>
                                <!--<td><a href="<?php echo base_url(); ?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>-->
                                <!-- <td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td> -->

@@ -3,40 +3,16 @@
 require_once( BASEPATH . '../app/libraries/Tree.php');
 require_once( BASEPATH . '../app/libraries/TreeMatch.php');
 require_once( BASEPATH . '../app/libraries/TreeFeed.php');
+require_once( BASEPATH . '../app/libraries/Node.php');
 
 class Nucleo extends CI_Controller {
-
-	/**
-	 * Composer data json
-	 * @var ComposerDataSet
-	 */
-	//private $_composer;
-	private $netstorage;
-	private $url_storage;
-	private $storage_root;
 
 	/**
 	 * Constructor de la clase, se inicializan valores, se cargan librerías y helpers extras
 	 */
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('cms_model', 'cms');
-		$this->load->helper( array('cron_manager', 'file' ) );
-
-		// Creamos composer para armar el arreglo de información
-		//$this->_composer = new ComposerDataSet();
-		//
-		$this->storage_root = '/';
-		//$this->url_storage = $_SERVER['STORAGE_URL'];
-		$this->url_storage = 'outputs';
-		/** Configuracion de conexión a netstorage */
-		$this->netstorage = array(
-		 		'hostname' 	=> $_SERVER['STORAGE_URL'],
-				'username' 	=> $_SERVER['STORAGE_USER'],
-				'password' 	=> $_SERVER['STORAGE_PASS'],
-				'passive'	=> TRUE,
-				'debug'		=> TRUE
-			);
+		$this->load->model( 'cms_model', 'cms' );
 	}
 
 	/**
@@ -51,59 +27,6 @@ class Nucleo extends CI_Controller {
 			$this->load->view( 'middleware/index' );
 		}
 	}
-
-	/**
-	 * [alerta description]
-	 * @return [type] [description]
-	 */
-	public function alerta($uid_trabajo, $id_mensaje = ""){
-		// Cadena para hacer las peticiones al servicio de SMS
-		// Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes	
-		// 202 - Respuesta success
-		// Catalogo de errores.
-
-		//$phone = "525585320763";
-		//$message = "Mensaje de error identificado";
-		//$usr_carrier = "iusacell";
-		//$uid_trabajo = '7e35bac6-18cc-11e4-bf05-7054d2e34de1';
-		//$id_mensaje = 'Error - prueba - mensaje';
-		
-		$url_sms_service = 	$_SERVER['URL_SMS_SERVICE'];
-		$user_sms =			$_SERVER['USER_SMS_SERVICE'];
-		$pass_sms =			$_SERVER['PASS_SMS_SERVICE'];
-
-		$userData = $this->cms->get_userdata($uid_trabajo);
-
-		if($id_mensaje && $id_mensaje != "") $message = $id_mensaje;
-		else $message = "Falla al identificar error especifico";
-		
-		if(is_array($userData))
-		{
-			foreach ($userData as $data ) {
-				$usr_carrier = $data->compania;
-				$phone = $data->celular;
-				$userMail = $data->email;
-			}
-			
-			$this->email->from('desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware');
-            $this->email->to( $userMail );
-            $this->email->subject('Error en trabajo de middleware');
-            $this->email->message( 'Ha ocurrido el siguiente error: '.$message );
-            $this->email->send();
-		}
-
-		//$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
-		$url_sms = $url_sms_service ."?msisdn=".$phone."&carrier=".$usr_carrier."&user=".$user_sms."&password=".$pass_sms."&message=".$message;
-		
-		$sms_reponse = $this->curl->simple_get($url_sms);
-		/*
-		if($sms_reponse == 202)
-			echo "Mensaje enviado correctamente";
-		else
-			echo $sms_reponse;
-		*/
-	}
-
 
 	/**
 	 * [array_unique_multidimensional description]
@@ -121,7 +44,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function cargar_template_salida(){
-		$template['id'] = $this->input->post('id_template');
+		$template['id'] = $this->input->post( 'id_template' );
 		$feed_salida = $this->cms->get_template_feed( $template );
 		if ( $feed_salida != FALSE ){
 			echo $feed_salida->json_estructura;
@@ -135,7 +58,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos(){
-		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post('url') ) );
+		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post( 'url' ) ) );
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
@@ -159,7 +82,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function detectar_campos_especificos(){
-		$url = base_url() . 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url') ) );
+		$url = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $this->input->post( 'url' ) ) );
 		echo $url;
 	}
 	
@@ -169,16 +92,16 @@ class Nucleo extends CI_Controller {
 	 * @return [type]              [description]
 	 */
 	public function editar_trabajo( $uid_trabajo ){
-    	if( $this->session->userdata('session') !== TRUE ){
+    	if( $this->session->userdata( 'session' ) !== TRUE ){
     		redirect('login');
     	}else {
     	    $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
-           	$data['usuario']    	= $this->session->userdata('nombre');
+           	$data['usuario']    	= $this->session->userdata( 'nombre' );
 			$data['categorias'] 	= $this->cms->get_categorias();
 			$data['verticales'] 	= $this->cms->get_verticales();
        		$data['trabajo_editar'] = $trabajo->uid_trabajo;
-       		$data['cron_date'] 		= json_decode($trabajo->cron_config, true);
-           	$this->load->view('cms/admin/editar_trabajo', $data);
+       		$data['cron_date'] 		= json_decode( $trabajo->cron_config, true );
+           	$this->load->view( 'cms/admin/editar_trabajo', $data );
 	   	}
 	}
 
@@ -191,8 +114,8 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$uid_trabajo = base64_decode( $this->input->post('token') );
-			$eliminar = $this->cms->delete_trabajo($uid_trabajo);
+			$uid_trabajo = base64_decode( $this->input->post( 'token' ) );
+			$eliminar = $this->cms->delete_trabajo( $uid_trabajo );
 			if ( $eliminar !== FALSE ){
 				/** Aquí debe ir el código para borrar los archivos de salida del disco duro de la instancia, se debe consultar la base de datos **/
 				/** Aquí se debe incluir el código para borrar el cron de la instancia donde se guardan **/
@@ -251,14 +174,13 @@ class Nucleo extends CI_Controller {
 		$this->load->view('cms/service', $data );
 	}
 
-
 	/**
 	 * [feed_service_specific description]
 	 * @return [type] [description]
 	 */
 	public function feed_service_specific(){
 		$output = array();
-		$url = $this->input->get('url');
+		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
 		$url = html_entity_decode( $url );
@@ -295,7 +217,7 @@ class Nucleo extends CI_Controller {
 			}
 		}
 		$data = array( 'indices' => $indices[0] );
-		$this->load->view('cms/service_specific', $data );
+		$this->load->view( 'cms/service_specific', $data );
 	}
 
 	/**
@@ -304,7 +226,7 @@ class Nucleo extends CI_Controller {
 	 */
 	public function feed_service_content(){
 		$output = array();
-		$url = $this->input->get('url');
+		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
 		$url = html_entity_decode( $url );
@@ -330,7 +252,7 @@ class Nucleo extends CI_Controller {
 			}
 		}
 		$data = array( 'contenido_feed' => $contenido_feed );
-		$this->load->view('cms/service_content', $data );
+		$this->load->view( 'cms/service_content', $data );
 	}
 
 	/**
@@ -338,12 +260,13 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function job_execute(){
+		$this->load->model( 'netstorage_model', 'storage' );
 		$token = urldecode( base64_decode( $this->input->get('token') ) );
-		$trabajoObject = $this->cms->get_trabajo_ejecutar( $token );
+		$trabajo = $this->cms->get_trabajo_ejecutar( $token );
 		/**
 		 * Se generan los archivos de salida en outputs
 		 */
-		$this->harddisk_write( $trabajoObject );
+		$this->storage->harddisk_write( $trabajo );
 	}
 
 	/**
@@ -351,21 +274,21 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function job_process(){
-		$job['status'] 	= $this->input->post('status');
+		$this->load->model( 'netstorage_model','storage' );
+		$this->load->model( 'crontabs_model','crontabs' );
+		$job['status'] 	= $this->input->post( 'status' );
 		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
 		$process 		= $this->cms->active_job( $job );
-		if ( $process === TRUE ){
-			$trabajoObject = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
+		if ( $process == TRUE ){
 			if ( $job['status'] == 1 ){
-				/**
-				 * Se generan los archivos de salida en outputs
-				 */
-				$this->harddisk_write( $trabajoObject );
-				$this->set_cron( $trabajoObject->cron_config , $job['uidjob'] );
+				$trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
+				$this->storage->harddisk_write( $trabajo );
+				$this->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+				echo TRUE;
 			} else {
-				$this->unset_cron( $trabajoObject->cron_config, $job['uidjob'] );
+				//$this->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
+				echo TRUE;
 			}
-			echo TRUE;
 		} else {
 			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
 		}
@@ -420,22 +343,22 @@ class Nucleo extends CI_Controller {
      * @return [type] [description]
      */
 	public function validar_form_trabajo(){
-		if ( $this->session->userdata('session') !== TRUE ){
-			redirect('login');
+		if ( $this->session->userdata( 'session' ) !== TRUE ){
+			redirect(' login' );
 		} else {
-			$this->form_validation->set_rules('nombre', 'Nombre del Trabajo', 'trim|required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('categoria', 'Categoría', 'required|callback_valid_option|xss_clean');
-			$this->form_validation->set_rules('vertical', 'Vertical', 'required|callback_valid_option|xss_clean');
+			$this->form_validation->set_rules( 'nombre', 'Nombre del Trabajo', 'trim|required|min_length[3]|xss_clean' );
+			$this->form_validation->set_rules( 'url-origen', 'URL Origen', 'required|min_length[3]|xss_clean' );
+			$this->form_validation->set_rules( 'categoria', 'Categoría', 'required|callback_valid_option|xss_clean' );
+			$this->form_validation->set_rules( 'vertical', 'Vertical', 'required|callback_valid_option|xss_clean' );
 			if ( $this->input->post( 'tipo_salida' ) == 1 ){
-				$this->form_validation->set_rules('formato', 'Formato', 'required|xss_clean');
-				$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
+				$this->form_validation->set_rules( 'formato', 'Formato', 'required|xss_clean' );
+				$this->form_validation->set_rules( 'claves', 'Campos seleccionados', 'required|xss_clean' );
 			} else {
-				$this->form_validation->set_rules('relacion_especificos', 'Relación de feeds', 'required|xss_clean');
+				$this->form_validation->set_rules( 'relacion_especificos', 'Relación de feeds', 'required|xss_clean' );
 			}
-			//$this->form_validation->set_rules('claves', 'Campos seleccionados', 'required|xss_clean');
-			if ( ! empty( $this->input->post('formato') ) ){
-				if ( in_array('rss', $this->input->post('formato' ) ) ){
+
+			if ( ! empty( $this->input->post( 'formato' ) ) ){
+				if ( in_array('rss', $this->input->post( 'formato' ) ) ){
 					$this->form_validation->set_rules('valores_rss[]', 'Campos adicionales para RSS', 'required|xss_clean');
 				}
 
@@ -457,7 +380,7 @@ class Nucleo extends CI_Controller {
 				$trabajo['uid_plantilla']		= $this->input->post('formato_especifico');
 				if ( $this->input->post('tipo_salida') == 1 ){
 					$trabajo['arbol_json']			= base64_decode( $this->input->post('tree_json') );
-					$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'] );
+					$trabajo['json_output']			= $this->getItems( json_decode( $trabajo['campos'] ), $trabajo['url-origen'], $this->session->userdata('tree'), $this->session->userdata('nodes'));
 					$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
 				} else {
 					$trabajo['relacion_especificos'] = $this->input->post( 'relacion_especificos' );
@@ -478,138 +401,14 @@ class Nucleo extends CI_Controller {
 	}
 
 	/**
-	 * [harddisk_write description]
-	 * @param  [type] $trabajo [description]
-	 * @return [type]          [description]
-	 */
-	private function harddisk_write( $trabajo ){
-		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
-			mkdir( './outputs/' . $trabajo->slug_categoria );
-		}
-
-		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
-			mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical );
-		}
-
-		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
-			mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario );
-		}
-		$feed_output = 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
-		$ftp_server = $_SERVER['STORAGE_URL'];
-		$ftp_user_name = $_SERVER['STORAGE_USER'];
-		$ftp_user_pass = $_SERVER['STORAGE_PASS'];
-		$ftp_conn = ftp_connect($ftp_server);
-		$login = ftp_login($ftp_conn, $ftp_user_name, $ftp_user_pass);
-		$ftpath = '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
-		$this->mksubdirs( $ftp_conn, '/', $ftpath );
-		ftp_close( $ftp_conn );
-		switch ( $trabajo->tipo_salida ){
-			case 1:
-				$formatos = json_decode( $trabajo->formatos );
-				$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen );
-				
-				if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
-					$this->alerta( $trabajo->uid_trabajo, "Error al intentar obtener los items de origen - getItems" );
-					die;
-				}
-				
-				foreach ( $formatos as $formato ){
-					switch ( $formato->formato ) {
-						case 'xml':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-							$array = json_decode( $output, TRUE );
-							$final = array_to_xml( $array )->saveXML();
-							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-							{
-								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a XML - array_to_xml");
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage($feed_output, $ftpath);
-							break;
-						case 'rss':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-							$array = json_decode( $output, TRUE );
-							$formatos = json_decode( $trabajo->formatos );
-							foreach ( $formatos as $formato ){
-								$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
-							}
-							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-							{
-								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a RSS - array_to_rss");
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage($feed_output, $ftpath);
-							break;
-						case 'json':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-							$final = $output;
-							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-							{
-								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON ");
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage($feed_output, $ftpath);
-							break;
-						case 'jsonp':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-							$final = $formato->funcion . '(' . $output . ')';
-							if($this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL))
-							{
-								$this->alerta($trabajo->uid_trabajo, "Error al intentar convertir a JSON-P ");
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage($feed_output, $ftpath);
-							break;
-					}
-				}
-				break;
-
-			case 2:
-				$feed_input = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
-				print_r( $feed_input );die;
-				// $plantilla = $this->cms->get_template_details( $trabajoObject->plantilla );
-				// $this->harddisk_write( $trabajoObject );
-				// $this->set_cron( $trabajoObject->cron_config , $job['uidjob'] );
-				break;
-		}
-	}
-
-	/**
-	 * [mksubdirs description]
-	 * @param  [type] $ftpcon     [description]
-	 * @param  [type] $ftpbasedir [description]
-	 * @param  [type] $ftpath     [description]
-	 * @return [type]             [description]
-	 */
-	private function mksubdirs( $ftpcon, $ftpbasedir, $ftpath ){
-		@ftp_chdir($ftpcon, $ftpbasedir);
-		$parts = explode('/', $ftpath);
-		foreach($parts as $part){
-			if(!@ftp_chdir($ftpcon, $part)){
-				ftp_mkdir($ftpcon, $part);
-				ftp_chdir($ftpcon, $part);
-				//ftp_chmod($ftpcon, 0777, $part);
-			}
-		}
-	}
-
-	/**
 	 * [getItems description]
 	 * @param  [type] $campos  [description]
 	 * @param  [type] $urlFeed [description]
 	 * @return [type]          [description]
 	 */
-	private function getItems( $campos, $urlFeed ){
-		$tree = $this->session->userdata('tree');
-		$nodesSelected = $this->session->userdata('nodes');
+	public function getItems( $campos, $urlFeed, $tree, $nodesSelected ){
+		// $tree = $this->session->userdata('tree');
+		// $nodesSelected = $this->session->userdata('nodes');
 		$tree = unserialize( $tree );
 		$nodesSelected = unserialize( $nodesSelected );
 		foreach ( $campos->info as $campo ){
@@ -645,70 +444,6 @@ class Nucleo extends CI_Controller {
 		
 		$jsonValidate = new TreeFeed( $feed, 1, $jsontmp, 'category' );
 		return json_encode( $feed[0] );
-	}
-
-	/**
-	 * Escribe el crontab en el servidor
-	 * @param [type] $config_cron    [description]
-	 * @param [type] $trabajo_url_id [description]
-	 */
-	private function set_cron($config_cron, $trabajo_url_id){
-		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
-
-		$host= 		$_SERVER['CRON_HOST'];
-		$port=		$_SERVER['CRON_HOST_PORT'];
-		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];
-		
-		$cron_setup = new cron_manager();
-		// Si no se puede conectar, enviar error a pantalla.
-		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
-		$path 	 = $_SERVER['CRON_PATH'];
-		$handle	 = $_SERVER['CRON_HANDLE'];
-		
-		if ( $trabajo_url_id && $trabajo_url_id != '' ){
-			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
-			$nueva_tarea = $cron_setup->append_cronjob( $config_cron. ' ' . $trabajo_url_id );
-		}
-	}
-
-	/**
-	 * Elimina el crontab en el servidor
-	 * @param  [type] $config_cron    [description]
-	 * @param  [type] $trabajo_url_id [description]
-	 * @return [type]                 [description]
-	 */
-	private function unset_cron( $config_cron, $trabajo_url_id ){
-		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
-
-		$host= 		$_SERVER['CRON_HOST'];
-		$port=		$_SERVER['CRON_HOST_PORT'];
-		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];
-		
-		$cron_setup = new cron_manager();
-		// Si no se puede conectar, enviar error a pantalla.
-		$resp_con = $cron_setup->connect($host, $port, $username, $password); 
-		//print_r($resp_con);
-		
-		$path 	 = $_SERVER['CRON_PATH'];
-		$handle	 = $_SERVER['CRON_HANDLE'];
-		
-		if ( $trabajo_url_id && $trabajo_url_id != '' ){
-			$cron_setup->write_to_file($path, $handle); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
-			$nueva_tarea = $cron_setup->remove_cronjob( $config_cron. ' ' . $trabajo_url_id );
-		}
-	}
-
-	/**
-	 * Sube los archivos al netstorage
-	 * @return [type] [description]
-	 */
-	private function upload_netstorage( $file, $ftpath ){
-		$this->load->library('ftp');
-		$this->ftp->connect( $this->netstorage );
-		$this->ftp->mirror( './' . $file, '/' . $ftpath, 'ascii', 0775 );
-		$this->ftp->close();
 	}
 
 	/**
@@ -760,12 +495,12 @@ class Nucleo extends CI_Controller {
 	 * @param  boolean $depth         [description]
 	 * @return [type]                 [description]
 	 */
-	function selected ($tree, $index, &$nodesSelected, $depth = false) {
+	function selected ($tree, $index, &$nodesSelected, $depth = false ){
 		if ($depth === false) {
 			$depth = 0;
 		}
 
-		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
+		foreach ( $tree->getParameters()->getChildrens() as $key => $value) {
 			if ((string)$value === $index) {
 				$item = array_search((string)$value, $nodesSelected[$depth+1]);
 				$value->setSelected();
@@ -797,7 +532,7 @@ class Nucleo extends CI_Controller {
 	 * @param boolean $selected Solo elementos seleccionados
 	 * @return string
 	 */
-	function treeBuild ($tree, $selected = false) {
+	function treeBuild ($tree, $selected = false ){
 		if ($selected === false) {
 			return $this->wSelected($tree);
 		} else {
@@ -810,7 +545,7 @@ class Nucleo extends CI_Controller {
 	 * @param  [type] $str valor
 	 * @return [type]      Regresa FALSE si el dato no es válido, TRUE si el dato es válido
 	 */
-	function valid_option($str) {
+	function valid_option( $str ){
         if ($str == 0) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
             return FALSE;
@@ -824,7 +559,7 @@ class Nucleo extends CI_Controller {
 	 * @param  [type] $tree [description]
 	 * @return [type]       [description]
 	 */
-	function yselected( $tree ) {
+	function yselected( $tree ){
 		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
 			// Si no existe lo creamos
 			if (!isset($str)) $str = "[!content!]";
@@ -864,7 +599,7 @@ class Nucleo extends CI_Controller {
 	 * @param  [type] $tree [description]
 	 * @return [type]       [description]
 	 */
-	function wSelected($tree) {
+	function wSelected( $tree ){
 		foreach ($tree->getParameters()->getChildrens() as $key => $value) {
 			if (!isset($str)) {
 				$str = "";
