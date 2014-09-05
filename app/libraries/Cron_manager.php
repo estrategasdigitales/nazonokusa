@@ -30,7 +30,7 @@ Class Cron_manager {
 			
 			$authentication = ssh2_auth_password($this->connection, $username, $password);
 			if ( ! $authentication) throw new Exception("Could not authenticate '{$username}' using pasword: '{$password}'.");
-			else echo 'Usuario autenticado correctamente';
+			//else echo 'Usuario autenticado correctamente';
 		}
 		catch (Exception $e)
 		{

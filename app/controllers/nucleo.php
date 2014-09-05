@@ -287,7 +287,8 @@ class Nucleo extends CI_Controller {
 				$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
 				echo TRUE;
 			} else {
-				//$this->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
+				$trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
+				$CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
 				echo TRUE;
 			}
 		} else {

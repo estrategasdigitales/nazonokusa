@@ -21,21 +21,16 @@ class Crontabs_model extends Nucleo {
 	 */
 	public function set_cron( $config_cron, $trabajo_url_id ){
 		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
-		/*$host= 		$_SERVER['CRON_HOST'];
+		$host= 		$_SERVER['CRON_HOST'];
 		$port=		$_SERVER['CRON_HOST_PORT'];
 		$username=	$_SERVER['CRON_HOST_USER'];	
-		$password=	$_SERVER['CRON_HOST_PASS'];*/
-
-		$host= 		'localhost';
-		$port=		22;
-		$username=	'ebravo';	
-		$password=	'3e7r1i2c%&r';
+		$password=	$_SERVER['CRON_HOST_PASS'];
 		
 		$cron_setup = new Cron_manager();
 		// Si no se puede conectar, enviar error a pantalla.
 		$resp_con = $cron_setup->connect( $host, $port, $username, $password );
-		$path 	 = '/home/ebravo/www/';
-		$handle	 = 'crontab.txt';
+		$path 	 = $_SERVER['CRON_PATH'];
+		$handle	 = $_SERVER['CRON_HANDLE'];
 		
 		if ( $trabajo_url_id && $trabajo_url_id != '' ){
 			$cron_setup->write_to_file( $path, $handle ); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
