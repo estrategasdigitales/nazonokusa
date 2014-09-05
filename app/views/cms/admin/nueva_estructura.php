@@ -30,9 +30,9 @@
 								<select class="form-control" name="formato_salida">
 									<option value="0">Selecciona una Formato de Salida</option>					
 									<option value="1">RSS</option>
-									<!--<option value="2">XML</option>
+									<option value="2">XML</option>
 									<option value="3">JSON</option>
-									<option value="4">JSONP</option>-->
+									<!--<option value="4">JSONP</option>-->
 								</select>
 							</div>
 						</div>

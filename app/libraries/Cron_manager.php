@@ -32,8 +32,7 @@ Class Cron_manager {
 			if ( ! $authentication) throw new Exception("Could not authenticate '{$username}' using pasword: '{$password}'.");
 			//else echo 'Usuario autenticado correctamente';
 		}
-		catch (Exception $e)
-		{
+		catch (Exception $e){
 			$this->error_message($e->getMessage());
 		}
 		return $this;

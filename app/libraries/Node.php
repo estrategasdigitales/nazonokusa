@@ -251,19 +251,49 @@ class Node{
     	return $this->_fixkeys( $this->getData() );
     }
 
-    public function toXML( $file ){
+    public function toRSS( $file = 'rss.xml'){
+    	$template = $this->_getTEMPLATE();
     	$nodes = $this->getData();
 		$writer = new XMLWriter();  
-		$writer->openURI( $file );   
-		$writer->startDocument('1.0','UTF-8');
-		$writer->setIndent(4);
-		$writer->startElement( 'rss' );
-		$writer->writeAttribute( 'version','2.0' );
-			$writer->startElement( 'channel' );
-				$this->_toXML($writer,$nodes, 'item');
+		$writer->openURI($file);   
+		$writer->startDocument('1.0','UTF-8');   
+		$writer->setIndent(4); 
+		$writer->startElement('rss'); 
+		$writer->writeAttribute('version',"2.0"); 
+    	if($this->_searchKey("media:content",$template))
+    		$writer->writeAttribute('xmlns:content',"http://purl.org/rss/1.0/modules/content/"); 
+    	if($this->_searchKey("media:",$template))
+    		$writer->writeAttribute('xmlns:media',"http://search.yahoo.com/mrss/"); 
+    	if($this->_searchKey("atom:link",$template))
+    		$writer->writeAttribute('xmlns:atom',"http://www.w3.org/2005/Atom"); 
+			$writer->startElement('channel'); 
+				$this->_toXML($writer,$nodes,"item");
 			$writer->endElement(); 
 		$writer->endElement(); 
 		$writer->endDocument(); 
 		$writer->flush();
+    }
+
+    public function toXML( $file = 'xml.xml' ){
+    	$template = $this->_getTEMPLATE();
+    	$nodes = $this->getData();
+		$writer = new XMLWriter();  
+		$writer->openURI($file);   
+		$writer->startDocument('1.0','UTF-8');   
+		$writer->setIndent(4); 
+		$writer->startElement('xml'); 
+		$this->_toXML($writer,$nodes,"item");
+		$writer->endElement(); 
+		$writer->endDocument(); 
+		$writer->flush();
+    }
+
+    public function toJSON($file = 'json.json'){
+    	$data = $this->getData();
+    	$json = json_encode($data);
+    	if ( $file != 'json.json' )
+    		file_put_contents_curls( $file, $json );
+    	else
+    		return $json;
     }
 }
