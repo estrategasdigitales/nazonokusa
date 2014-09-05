@@ -37,7 +37,6 @@ Class Cron_manager {
 			$this->error_message($e->getMessage());
 		}
 		return $this;
-		
 	}
 
 	public function exec(){
@@ -50,10 +49,9 @@ Class Cron_manager {
 			
 			$command_string = ($argument_count > 1) ? implode(" && ", $arguments) : $arguments[0];
 			
-			$stream = @ssh2_exec($this->connection, $command_string);
+			$stream = ssh2_exec($this->connection, $command_string);
 			if ( ! $stream) throw new Exception("Unable to execute the specified commands: <br />{$command_string}");
-
-			print_r($command_string);
+			//print_r($command_string);
 		}
 		catch (Exception $e){
 			$this->error_message($e->getMessage());
@@ -72,7 +70,6 @@ Class Cron_manager {
 			
 			$this->exec($init_cron);		
 		}
-
 		return $this;	
 	}
 	
