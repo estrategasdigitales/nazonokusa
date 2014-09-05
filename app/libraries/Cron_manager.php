@@ -13,26 +13,25 @@ Class Cron_manager {
 		$this->path 	 = '/var/www/html/';
 		$this->handle	 = 'crontab.txt';
 		$this->cron_file = "{$this->path}{$this->handle}";
-		
 	}
 
 	public function connect( $host = NULL, $port = NULL, $username = NULL, $password = NULL){
 		try{
-			if ( is_null( $host ) || is_null( $port ) || is_null( $username ) || is_null( $password ) ) throw new Exception("The host, port, username and password arguments must be specified!");
+			if ( is_null( $host ) || is_null( $port ) || is_null( $username ) || is_null( $password ) ) throw new Exception('The host, port, username and password arguments must be specified!');
 		
-			if ( ! function_exists( 'ssh2_connect' ) ) throw new Exception("Is necessary activate the function in php.ini");
+			if ( ! function_exists( 'ssh2_connect' ) ) throw new Exception('Is necessary activate the function in php.ini');
 			
-			$this->connection = ssh2_connect( $host, $port );			
-			if ( ! $this->connection) throw new Exception("The SSH2 connection could not be established.");
+			$this->connection = ssh2_connect( $host, $port );
+			if ( ! $this->connection) throw new Exception('The SSH2 connection could not be established.');
 			//else echo 'Conexion establecida';
 
-			if ( ! function_exists( 'ssh2_auth_password' ) ) throw new Exception("Is necessary activate ssh2_auth_password function in php.ini");
+			if ( ! function_exists( 'ssh2_auth_password' ) ) throw new Exception('Is necessary activate ssh2_auth_password function in php.ini');
 			
 			$authentication = ssh2_auth_password($this->connection, $username, $password);
-			if ( ! $authentication) throw new Exception("Could not authenticate '{$username}' using pasword: '{$password}'.");
+			if ( ! $authentication) throw new Exception( "Could not authenticate '{$username}' using pasword: '{$password}'." );
 			//else echo 'Usuario autenticado correctamente';
 		}
-		catch (Exception $e){
+		catch ( Exception $e ){
 			$this->error_message($e->getMessage());
 		}
 		return $this;
@@ -40,102 +39,80 @@ Class Cron_manager {
 
 	public function exec(){
 		$argument_count = func_num_args();
-
 		try{
-			if ( ! $argument_count) throw new Exception("There is nothing to exececute, no arguments specified.");
-
+			if ( ! $argument_count) throw new Exception( 'There is nothing to exececute, no arguments specified.' );
 			$arguments = func_get_args();
-			
 			$command_string = ($argument_count > 1) ? implode(" && ", $arguments) : $arguments[0];
-			
-			$stream = ssh2_exec($this->connection, $command_string);
-			if ( ! $stream) throw new Exception("Unable to execute the specified commands: <br />{$command_string}");
+			$stream = ssh2_exec( $this->connection, $command_string );
+			if ( ! $stream) throw new Exception( 'Unable to execute the specified commands: <br />{$command_string}' );
 			//print_r($command_string);
 		}
-		catch (Exception $e){
-			$this->error_message($e->getMessage());
+		catch ( Exception $e ){
+			$this->error_message( $e->getMessage() );
 		}
 
 		return $this;
 	}
 
-	public function write_to_file($path=NULL, $handle=NULL){
-		if ( ! $this->crontab_file_exists() ){		
-			$this->handle = (is_null($handle)) ? $this->handle : $handle;
-			$this->path   = (is_null($path))   ? $this->path   : $path;			
-			$this->cron_file = "{$this->path}{$this->handle}";
-			
-			$init_cron = "crontab -l > {$this->cron_file} && [ -f {$this->cron_file} ] || > {$this->cron_file}";
-			
-			$this->exec($init_cron);		
+	public function write_to_file( $path = NULL, $handle = NULL ){
+		if ( ! $this->crontab_file_exists() ){
+			$this->handle 		= ( is_null( $handle ) ) ? $this->handle : $handle;
+			$this->path   		= ( is_null( $path ) )   ? $this->path   : $path;			
+			$this->cron_file 	= "{$this->path}{$this->handle}";
+			$init_cron 			= "crontab -l > {$this->cron_file} && [ -f {$this->cron_file} ] || > {$this->cron_file}";
+			$this->exec( $init_cron );
 		}
 		return $this;	
 	}
 	
-	public function remove_file(){		
-		if ($this->crontab_file_exists()) $this->exec("rm {$this->cron_file}");		
+	public function remove_file(){
+		if ( $this->crontab_file_exists() ) $this->exec( "rm {$this->cron_file}" );
 		return $this;
 	}
 	
-	public function append_cronjob($cron_jobs=NULL){
-		if (is_null($cron_jobs)) $this->error_message("Nothing to append!  Please specify a cron job or an array of cron jobs.");
-		
-		$append_cronfile = "echo '";		
-		
-		$append_cronfile .= (is_array($cron_jobs)) ? implode("\n", $cron_jobs) : $cron_jobs;
-		
-		$append_cronfile .= "'  >> {$this->cron_file}";
-		
-		$install_cron = "crontab {$this->cron_file}";
-
-		$this->write_to_file()->exec($append_cronfile, $install_cron)->remove_file();
-		
+	public function append_cronjob( $cron_jobs = NULL ){
+		if ( is_null( $cron_jobs ) ) $this->error_message( 'Nothing to append!  Please specify a cron job or an array of cron jobs.' );
+		$append_cronfile 	= "echo '";
+		$append_cronfile 	.= ( is_array( $cron_jobs ) ) ? implode( "\n", $cron_jobs ) : $cron_jobs;
+		$append_cronfile 	.= "'  >> {$this->cron_file}";
+		$install_cron 		= "crontab {$this->cron_file}";
+		$this->write_to_file()->exec( $append_cronfile, $install_cron )->remove_file();
 		return $this;		
 	}
 	
-	public function remove_cronjob($cron_jobs=NULL)
-	{	
-		if (is_null($cron_jobs)) $this->error_message("Nothing to remove!  Please specify a cron job or an array of cron jobs.");
+	public function remove_cronjob( $cron_jobs = NULL ){
+		if ( is_null( $cron_jobs ) ) $this->error_message('Nothing to remove!  Please specify a cron job or an array of cron jobs.');
 		
 		$this->write_to_file();
-	
-		$cron_array = file($this->cron_file, FILE_IGNORE_NEW_LINES);
-		
-		if (empty($cron_array))
-		{
-			$this->remove_file()->error_message("Nothing to remove!  The cronTab is already empty.");			
+		$cron_array = file( $this->cron_file, FILE_IGNORE_NEW_LINES );
+		print_r( $cron_array );die;
+		if ( empty( $cron_array ) ){
+			$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
 		}
 		
 		$original_count = count($cron_array);
 		
-		if (is_array($cron_jobs))
-		{
-			foreach ($cron_jobs as $cron_regex) $cron_array = preg_grep($cron_regex, $cron_array, PREG_GREP_INVERT);
-		}
-		else
-		{
-			$cron_array = preg_grep($cron_jobs, $cron_array, PREG_GREP_INVERT);
+		if ( is_array( $cron_jobs ) ){
+			foreach ($cron_jobs as $cron_regex) $cron_array = preg_grep( $cron_regex, $cron_array, PREG_GREP_INVERT );
+		} else {
+			$cron_array = preg_grep( $cron_jobs, $cron_array, PREG_GREP_INVERT );
 		}
 		
-		return ($original_count === count($cron_array)) ? $this->remove_file() : $this->remove_crontab()->append_cronjob($cron_array);
+		return ( $original_count === count( $cron_array ) ) ? $this->remove_file() : $this->remove_crontab()->append_cronjob($cron_array);
 	}
 
-	public function remove_crontab()
-	{
+	public function remove_crontab(){
 		$this->remove_file()->exec("crontab -r");		
 		return $this;
 	}
 
-	public function crontab_file_exists()
-	{
-		return file_exists($this->cron_file);
+	public function crontab_file_exists(){
+		return file_exists( $this->cron_file );
 	}
 	
-	private function error_message($error)
-	{
+	private function error_message( $error ){
 		die("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
 	}
-	
 }
 
 ?>
