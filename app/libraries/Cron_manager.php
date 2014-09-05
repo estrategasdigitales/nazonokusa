@@ -20,10 +20,15 @@ Class Cron_manager {
 		try{
 			if ( is_null( $host ) || is_null( $port ) || is_null( $username ) || is_null( $password ) ) throw new Exception("The host, port, username and password arguments must be specified!");
 		
-			$this->connection = @ssh2_connect( $host, $port );			
+			if ( ! function_exists( 'ssh2_connect' ) ) throw new Exception("Is necessary activate the function in php.ini");
+			
+			$this->connection = ssh2_connect( $host, $port );			
 			if ( ! $this->connection) throw new Exception("The SSH2 connection could not be established.");
 			//else echo 'Conexion establecida';
-			$authentication = @ssh2_auth_password($this->connection, $username, $password);
+
+			if ( ! function_exists( 'ssh2_auth_password' ) ) throw new Exception("Is necessary activate ssh2_auth_password function in php.ini");
+			
+			$authentication = ssh2_auth_password($this->connection, $username, $password);
 			if ( ! $authentication) throw new Exception("Could not authenticate '{$username}' using pasword: '{$password}'.");
 			else echo 'Usuario autenticado correctamente';
 		}

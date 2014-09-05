@@ -35,31 +35,32 @@ class Netstorage_model extends Nucleo {
 	 */
 	public function harddisk_write( $trabajo ){
 		$this->load->model( 'alertas_model', 'alertas' );
-		$this->load->model( 'cronlog_model', 'cronlog' );
+		$CI =& get_instance();
+		$CI->load->model( 'cronlog_model', 'cronlog' );
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria ) ){
-				$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
 			}
 		}
 
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
-				$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
 			}
 		}
 
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
 			if( ! mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
-				$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
 			}
 		}
-		$feed_output = 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+		$feed_output 	= 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
 		$ftp_server 	= $_SERVER['STORAGE_URL'];
 		$ftp_user_name 	= $_SERVER['STORAGE_USER'];
 		$ftp_user_pass 	= $_SERVER['STORAGE_PASS'];
-		$ftp_conn = ftp_connect( $ftp_server );
-		$login = ftp_login( $ftp_conn, $ftp_user_name, $ftp_user_pass );
-		$ftpath = '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+		$ftp_conn 		= ftp_connect( $ftp_server );
+		$login 			= ftp_login( $ftp_conn, $ftp_user_name, $ftp_user_pass );
+		$ftpath 		= '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
 		$this->mksubdirs( $ftp_conn, '/', $ftpath );
 		ftp_close( $ftp_conn );
 		switch ( $trabajo->tipo_salida ){
@@ -77,7 +78,7 @@ class Netstorage_model extends Nucleo {
 				
 				if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
 					$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar obtener los items de origen - getItems' );
-					$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E02 - No se ha podido obtener la estructura de salida / getItems');
+					$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E02 - No se ha podido obtener la estructura de salida / getItems');
 					die;
 				}
 				
@@ -89,7 +90,7 @@ class Netstorage_model extends Nucleo {
 							$final = array_to_xml( $array )->saveXML();
 							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
 								$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a XML - array_to_xml' );
-								$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E03 - No se ha podido obtener el archivo de salida XML / array_to_xml');
+								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E03 - No se ha podido obtener el archivo de salida XML / array_to_xml');
 								die;
 							}
 							fwrite( $open, stripslashes( $final ) );
@@ -105,7 +106,7 @@ class Netstorage_model extends Nucleo {
 							}
 							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
 								$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a RSS - array_to_rss' );
-								$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E04 - No se ha podido obtener el archivo de salida RSS / array_to_rss');
+								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E04 - No se ha podido obtener el archivo de salida RSS / array_to_rss');
 								die;
 							}
 							fwrite( $open, stripslashes( $final ) );
@@ -117,7 +118,7 @@ class Netstorage_model extends Nucleo {
 							$final = $output;
 							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
 								$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON');
-								$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
+								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
 								die;
 							}
 							fwrite( $open, stripslashes( $final ) );
@@ -129,7 +130,7 @@ class Netstorage_model extends Nucleo {
 							$final = $formato->funcion . '(' . $output . ')';
 							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
 								$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON-P');
-								$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
+								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
 								die;
 							}
 							fwrite( $open, stripslashes( $final ) );
@@ -178,13 +179,14 @@ class Netstorage_model extends Nucleo {
 	 * @return [type]             [description]
 	 */
 	private function mksubdirs( $ftpcon, $ftpbasedir, $ftpath ){
-		@ftp_chdir( $ftpcon, $ftpbasedir, 0777 );
-		$parts = explode('/', $ftpath );
-		foreach( $parts as $part ){
-			if ( ! @ftp_chdir( $ftpcon, $part ) ){
-				ftp_mkdir( $ftpcon, $part );
-				ftp_chdir( $ftpcon, $part );
-				//ftp_chmod($ftpcon, 0777, $part);
+		if( ! ftp_chdir( $ftpcon, $ftpath ) ){
+			@ftp_chdir( $ftpcon, $ftpbasedir, 0777 );
+			$parts = explode('/', $ftpath );
+			foreach( $parts as $part ){
+				if ( ! @ftp_chdir( $ftpcon, $part ) ){
+					ftp_mkdir( $ftpcon, $part );
+					ftp_chdir( $ftpcon, $part );
+				}
 			}
 		}
 	}
