@@ -85,7 +85,6 @@ Class Cron_manager {
 		
 		$this->write_to_file();
 		$cron_array = file( $this->cron_file, FILE_IGNORE_NEW_LINES );
-		print_r( $cron_array );die;
 		if ( empty( $cron_array ) ){
 			$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
 		}
