@@ -147,8 +147,10 @@ class Nucleo extends CI_Controller {
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$feed = substr( $url, $pos + 1, -1 );
-				$feed = json_decode( $feed );
+				$feed = substr( $url, $pos );
+				$feed = str_replace( '(', '[', $feed );
+				$feed = str_replace( ')', ']', $feed );
+				$feed = json_decode( $feed, TRUE );
 				foreach ( $feed as $item ){
 					$cont[] = $this->mapAttributes( json_encode( $item ) );
 				}
@@ -193,8 +195,10 @@ class Nucleo extends CI_Controller {
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$feed = substr( $url, $pos + 1, -1 );
-				$feed = json_decode( $feed );
+				$feed = substr( $url, $pos );
+				$feed = str_replace( '(', '[', $feed );
+				$feed = str_replace( ')', ']', $feed );
+				$feed = json_decode( $feed, TRUE );
 				foreach ( $feed as $item ){
 					$cont[] = $this->mapAttributes( json_encode( $item ) );
 				}
