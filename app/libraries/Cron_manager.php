@@ -9,9 +9,8 @@ Class Cron_manager {
 
 	function __construct(){		
 		//$path_length	 = strrpos(__FILE__, "/");
-		//$this->path 	 = substr(__FILE__, 0, $path_length) . '/';		
-		$this->path 	 = '/var/www/html/';
-		$this->handle	 = 'crontab.txt';
+		$this->path 	 = $_SERVER['CRON_PATH'];
+		$this->handle	 = $_SERVER['CRON_HANDLE'];
 		$this->cron_file = "{$this->path}{$this->handle}";
 	}
 
@@ -84,9 +83,11 @@ Class Cron_manager {
 		if ( is_null( $cron_jobs ) ) $this->error_message('Nothing to remove!  Please specify a cron job or an array of cron jobs.');
 		
 		$this->write_to_file();
+		
 		$cron_array = file( $this->cron_file, FILE_IGNORE_NEW_LINES );
+		
 		if ( empty( $cron_array ) ){
-			$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
+			//$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
 		}
 		
 		$original_count = count($cron_array);
@@ -110,7 +111,8 @@ Class Cron_manager {
 	}
 	
 	private function error_message( $error ){
-		die("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
+		//die("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
+		//echo("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
 	}
 }
 

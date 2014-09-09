@@ -15,6 +15,14 @@ class Nucleo extends CI_Controller {
 		$this->load->model( 'cms_model', 'cms' );
 	}
 
+	public function test_cron()
+	{
+		$this->load->model( 'netstorage_model','storage' );
+		$CI =& get_instance();
+		$CI->load->model( 'crontabs_model','crontabs' );
+		$CI->crontabs->unset_cron( );
+	}
+
 	/**
 	 * [index description]
 	 * @return [type] [description]
@@ -268,6 +276,7 @@ class Nucleo extends CI_Controller {
 		 */
 		$this->storage->harddisk_write( $trabajo );
 	}
+
 
 	/**
 	 * [job_process description]
