@@ -522,14 +522,20 @@ tvs(function($){
 			case '1':
 				$('#formatos_especificos').addClass('hide');
 				$('#formatos_estandar').removeClass('hide');
+				$('.campos-feed').css('display','none');
+				$('#campos-feed').html('');
 			break;
 			case '2':
 				$('#formatos_estandar').addClass('hide');
 				$('#formatos_especificos').removeClass('hide');
+				$('.campos-feed').css('display','none');
+				$('#campos-feed').html('');
 			break;
 			default:
 				$('#formatos_estandar').addClass('hide');
 				$('#formatos_especificos').addClass('hide');
+				$('.campos-feed').css('display','none');
+				$('#campos-feed').html('');
 			break;
 		}
 	});
