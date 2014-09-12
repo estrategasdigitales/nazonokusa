@@ -39,138 +39,144 @@ class Netstorage_model extends Nucleo {
 		$CI->load->model( 'cronlog_model', 'cronlog' );
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria ) ){
-				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio de la categoría');
 			}
 		}
 
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical ) ){
-				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio de la vertical');
 			}
 		}
 
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
 			if( ! mkdir( './outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario ) ){
-				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio');
+				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio del usuario');
 			}
 		}
 		$feed_output 	= 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
 		$ftp_server 	= $_SERVER['STORAGE_URL'];
 		$ftp_user_name 	= $_SERVER['STORAGE_USER'];
 		$ftp_user_pass 	= $_SERVER['STORAGE_PASS'];
-		$ftp_conn 		= ftp_connect( $ftp_server );
+		$ftp_conn 		= ftp_connect( $ftp_server, 21, 90 );
 		$login 			= ftp_login( $ftp_conn, $ftp_user_name, $ftp_user_pass );
-		$ftpath 		= '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
-		$this->mksubdirs( $ftp_conn, '/', $ftpath );
-		ftp_close( $ftp_conn );
-		switch ( $trabajo->tipo_salida ){
-			case 1:
-				$formatos = json_decode( $trabajo->formatos );
-				/**
-				 * Aquí se pudiera iniciar la sesión para que el cron trabaje con el tree
-				 */
-				$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
-				$content = json_decode( file_get_contents_curl( $url ) );
-				$tree = new Tree( $content, true );
-				$arbol = serialize( $tree );
-				$nodes = serialize( $trabajo->campos_seleccionados );
-				$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen, $arbol, $nodes );
-				
-				if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
-					$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar obtener los items de origen - getItems' );
-					$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E02 - No se ha podido obtener la estructura de salida / getItems');
-					die;
-				}
-				
-				foreach ( $formatos as $formato ){
-					switch ( $formato->formato ) {
-						case 'xml':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-							$array = json_decode( $output, TRUE );
-							$final = array_to_xml( $array )->saveXML();
-							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
-								$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a XML - array_to_xml' );
-								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E03 - No se ha podido obtener el archivo de salida XML / array_to_xml');
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
+		if ( $login ){
+			$ftpath 		= '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+			$this->mksubdirs( $ftp_conn, '/', $ftpath );
+			ftp_close( $ftp_conn );
+			switch ( $trabajo->tipo_salida ){
+				case 1:
+					$formatos = json_decode( $trabajo->formatos );
+					/**
+					 * Aquí se pudiera iniciar la sesión para que el cron trabaje con el tree
+					 */
+					$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
+					$content = json_decode( file_get_contents_curl( $url ) );
+					$tree = new Tree( $content, true );
+					$arbol = serialize( $tree );
+					$nodes = serialize( $trabajo->campos_seleccionados );
+					$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen, $arbol, $nodes );
+					
+					if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
+						$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar obtener los items de origen - getItems' );
+						$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E02 - No se ha podido obtener la estructura de salida / getItems');
+						return FALSE;
+					}
+					
+					foreach ( $formatos as $formato ){
+						switch ( $formato->formato ) {
+							case 'xml':
+								$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+								$array = json_decode( $output, TRUE );
+								$final = array_to_xml( $array )->saveXML();
+								if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
+									$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a XML - array_to_xml' );
+									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E03 - No se ha podido obtener el archivo de salida XML / array_to_xml');
+									return FALSE;
+								}
+								fwrite( $open, stripslashes( $final ) );
+								fclose( $open );
+								$this->upload_netstorage( $feed_output, $ftpath );
+								break;
+							case 'rss':
+								$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
+								$array = json_decode( $output, TRUE );
+								$formatos = json_decode( $trabajo->formatos );
+								foreach ( $formatos as $formato ){
+									$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
+								}
+								if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
+									$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a RSS - array_to_rss' );
+									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E04 - No se ha podido obtener el archivo de salida RSS / array_to_rss');
+									return FALSE;
+								}
+								fwrite( $open, stripslashes( $final ) );
+								fclose( $open );
+								$this->upload_netstorage( $feed_output, $ftpath );
+								break;
+							case 'json':
+								$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+								$final = $output;
+								if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
+									$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON');
+									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
+									return FALSE;
+								}
+								fwrite( $open, stripslashes( $final ) );
+								fclose( $open );
+								$this->upload_netstorage( $feed_output, $ftpath );
+								break;
+							case 'jsonp':
+								$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
+								$final = $formato->funcion . '(' . $output . ')';
+								if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
+									$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON-P');
+									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
+									return FALSE;
+								}
+								fwrite( $open, stripslashes( $final ) );
+								fclose( $open );
+								$this->upload_netstorage( $feed_output, $ftpath );
+								break;
+						}
+					}
+					break;
+				case 2:
+					$node = new Node(
+							[
+								'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
+								'template' 	=> $trabajo->json_estructura,
+								'paths' 	=> base64_decode( $trabajo->relacion_especificos ),
+							]
+						);
+					switch ( $trabajo->formato_salida ) {
+						case 1:
+							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
+							$final = $node->toRSS( $file );
+							//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
-						case 'rss':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
-							$array = json_decode( $output, TRUE );
-							$formatos = json_decode( $trabajo->formatos );
-							foreach ( $formatos as $formato ){
-								$final = array_to_rss( $formato->valores_rss, $array )->saveXML();
-							}
-							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
-								$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar convertir a RSS - array_to_rss' );
-								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E04 - No se ha podido obtener el archivo de salida RSS / array_to_rss');
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
+						case 2:
+							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
+							$final = $node->toXML( $file );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
-						case 'json':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-							$final = $output;
-							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
-								$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON');
-								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage( $feed_output, $ftpath );
+						case 3:
+							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
+							$final = $node->toJSON( $file );
+							print_r( $final );die;
+							//$this->upload_netstorage( $feed_output, $ftpath );
 							break;
-						case 'jsonp':
-							$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.js', "w" );
-							$final = $formato->funcion . '(' . $output . ')';
-							if ( $this->session->userdata( 'session' ) !== TRUE && ( $final === FALSE || $final === NULL ) ){
-								$this->alertas->alerta($trabajo->uid_trabajo, 'Error al intentar convertir a JSON-P');
-								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E05 - No se ha podido obtener el archivo de salida JSON');
-								die;
-							}
-							fwrite( $open, stripslashes( $final ) );
-							fclose( $open );
-							$this->upload_netstorage( $feed_output, $ftpath );
+						case 4:
+							# json-p
 							break;
 					}
-				}
-				break;
-			case 2:
-				$node = new Node(
-						[
-							'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
-							'template' 	=> $trabajo->json_estructura,
-							'paths' 	=> base64_decode( $trabajo->relacion_especificos ),
-						]
-					);
-				switch ( $trabajo->formato_salida ) {
-					case 1:
-						$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
-						$final = $node->toRSS( $file );
-						//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
-						$this->upload_netstorage( $feed_output, $ftpath );
-						break;
-					case 2:
-						$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
-						$final = $node->toXML( $file );
-						$this->upload_netstorage( $feed_output, $ftpath );
-						break;
-					case 3:
-						$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
-						$final = $node->toJSON( $file );
-						print_r( $final );die;
-						//$this->upload_netstorage( $feed_output, $ftpath );
-						break;
-					case 4:
-						# json-p
-						break;
-				}
-				break;
+					break;
+			}
+		} else {
+			$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'No se ha podido establecer una conexion con el netstorage');
+			$this->alertas->alerta($trabajo->uid_trabajo, 'No se ha podido establecer una conexion con el netstorage');
+			return FALSE;
 		}
 	}
 

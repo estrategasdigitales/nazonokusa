@@ -30,6 +30,8 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
 			redirect( 'login' );
 		} else {
+			$this->load->model('alertas_model', 'alertas');
+			$this->alertas->alerta('003101e8-3394-11e4-b1fe-e385f026ed30','E303 - Error desconocido aún');die;
 			$data['usuario'] = $this->session->userdata( 'nombre' );
 			$this->load->view( 'middleware/index' );
 		}

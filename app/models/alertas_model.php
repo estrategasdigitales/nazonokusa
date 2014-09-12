@@ -9,6 +9,7 @@ class Alertas_model extends Nucleo {
      */
     function __construct() {
         parent::__construct();
+        $this->load->model( 'cronlog_model', 'cronlog' );
     }
 
     /**
@@ -33,25 +34,23 @@ class Alertas_model extends Nucleo {
 
         $user = $this->cms->get_usuario_alertas( $uid_trabajo );
 
-        if ( isset( $id_mensaje ) && ! empty( $id_mensaje ) ) $message = $id_mensaje;
-        else $message = "Falla al identificar error especifico";
-        
-        $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
-        $this->email->to( $user->email );
-        $this->email->subject( 'Error en trabajo de Middleware' );
-        $this->email->message( 'Ha ocurrido el siguiente error: ' . $message );
-        $this->email->send();
+        if ( $user != FALSE ){
+            if ( isset( $id_mensaje ) && ! empty( $id_mensaje ) ) $message = $id_mensaje;
+            else $message = "Falla al identificar error especifico";
+            
+            $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
+            $this->email->to( $user->email );
+            $this->email->subject( 'Error en trabajo de Middleware' );
+            $this->email->message( 'Ha ocurrido el siguiente error: ' . $message );
+            $this->email->send();
 
-        //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
-        $url_sms = $url_sms_service . '?msisdn=52' . $user->celular . '&carrier=' . $user->carrier . '&user=' . $user_sms . '&password=' . $pass_sms . '&message=' . $message;
-        
-        $sms_reponse = $this->curl->simple_get( $url_sms );
-        /*
-        if($sms_reponse == 202)
-            echo "Mensaje enviado correctamente";
-        else
-            echo $sms_reponse;
-        */
+            //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
+            $url_sms = $url_sms_service . '?msisdn=52' . $user->celular . '&carrier=' . $user->carrier . '&user=' . $user_sms . '&password=' . $pass_sms . '&message=' . rawurlencode( $message );
+            
+            $sms_reponse = $this->curl->simple_get( $url_sms );
+            if ( $sms_reponse != 202 )
+                $this->cronlog->set_cronlog( $uid_trabajo, 'E404 - Falló el envío de alerta SMS');
+        }
     }
 }
 
