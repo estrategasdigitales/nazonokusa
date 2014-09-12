@@ -235,6 +235,21 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
+        public function get_usuario_alertas( $uid_job ){
+            $this->db->select( 'a.uid_trabajo, b.nombre, b.apellidos, b.compania_celular, c.slug_compania as carrier' );
+            $this->db->select( "AES_DECRYPT( b.email,'{$this->key_encrypt}') email", FALSE );
+            $this->db->select( "AES_DECRYPT( b.celular,'{$this->key_encrypt}') celular", FALSE );
+            $this->db->from( $this->db->dbprefix('trabajos').' AS a');
+            $this->db->join( $this->db->dbprefix('usuarios').' AS b', 'a.uid_usuario = b.uid_usuario');
+            $this->db->join( $this->db->dbprefix('catalogo_compania_celular'). ' AS c', 'b.compania_celular = c.id');
+            $this->db->where( 'a.uid_trabajo = ', $uid_job );
+            $this->db->where( 'a.activo = ', 1 );
+            $data = $this->db->get();
+            if ( $data && $data->num_rows() > 0 ) return $data->row();
+            else return FALSE;
+            $data->free_result();
+        }
+
         public function get_usuario_editar( $uid ){
             //$this->db->cache_off();
             $this->db->select('uid_usuario, nombre, apellidos, extension, compania_celular, nivel ');
@@ -305,24 +320,6 @@ class Cms_model extends CI_Model {
             $verifica = $this->db->count_all_results( $this->db->dbprefix( 'verticales' ) );
             if( $verifica > 0 ) return TRUE;
             else return FALSE;
-        }
-
-        public function get_userdata ($uid_job)
-        {
-            $this->db->select("a.uid_usuario, b.nombre, b.apellidos, b.compania_celular, c.compania");
-            $this->db->select("AES_DECRYPT(b.email,'{$this->key_encrypt}') email",FALSE);
-            $this->db->select("AES_DECRYPT(b.celular,'{$this->key_encrypt}') celular",FALSE);
-            $this->db->from( $this->db->dbprefix('trabajos').' AS a');
-            $this->db->join( $this->db->dbprefix('usuarios').' AS b', 'a.uid_usuario = b.uid_usuario');
-            $this->db->join( $this->db->dbprefix('catalogo_compania_celular'). ' AS c', 'b.compania_celular = c.id');
-            $this->db->where( 'a.uid_trabajo = ', $uid_job );
-            $this->db->limit('1');
-           
-            $data = $this->db->get();    
-
-            if ( $data && $data->num_rows() > 0 ) return $data->result();
-            else return FALSE;
-            $data->free_result();
         }
 
     /** TERMINAN CONSULTAS **/

@@ -15,8 +15,7 @@ class Nucleo extends CI_Controller {
 		$this->load->model( 'cms_model', 'cms' );
 	}
 
-	public function test_cron()
-	{
+	public function test_cron(){
 		$this->load->model( 'netstorage_model','storage' );
 		$CI =& get_instance();
 		$CI->load->model( 'crontabs_model','crontabs' );
@@ -166,6 +165,7 @@ class Nucleo extends CI_Controller {
 				$indices = create_indexes( $contents );
 			} else {
 				$dom = new DOMDocument();
+				$dom->preserveWhiteSpace = FALSE;
 				$dom->loadXML( $url );
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$rss = $this->xml_2_array->createArray( $url );
@@ -561,7 +561,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type]      Regresa FALSE si el dato no es válido, TRUE si el dato es válido
 	 */
 	function valid_option( $str ){
-        if ($str == 0) {
+        if ( $str == '0' ) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
             return FALSE;
         } else {
