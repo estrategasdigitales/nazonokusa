@@ -87,7 +87,7 @@ Class Cron_manager {
 		$cron_array = file( $this->cron_file, FILE_IGNORE_NEW_LINES );
 		
 		if ( empty( $cron_array ) ){
-			//$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
+			$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
 		}
 		
 		$original_count = count($cron_array);
@@ -112,7 +112,7 @@ Class Cron_manager {
 	
 	private function error_message( $error ){
 		//die("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
-		//echo("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
+		echo("<pre style='color:#EE2711'>ERROR: {$error}</pre>");
 	}
 }
 

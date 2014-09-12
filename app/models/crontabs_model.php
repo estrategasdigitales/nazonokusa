@@ -19,9 +19,8 @@ class Crontabs_model extends Nucleo {
 	 * @param [type] $config_cron    [description]
 	 * @param [type] $trabajo_url_id [description]
 	 */
-	public function set_cron( $config_cron = '', $trabajo_url_id = '123456789' ){
-		//$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
-		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( '123456789' ) );
+	public function set_cron( $config_cron = '', $trabajo_url_id = '' ){
+		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
 		$host= 		$_SERVER['CRON_HOST'];
 		$port=		$_SERVER['CRON_HOST_PORT'];
 		$username=	$_SERVER['CRON_HOST_USER'];	
@@ -32,8 +31,6 @@ class Crontabs_model extends Nucleo {
 		$resp_con = $cron_setup->connect( $host, $port, $username, $password );
 		$path 	 = $_SERVER['CRON_PATH'];
 		$handle	 = $_SERVER['CRON_HANDLE'];
-		
-		print_r($resp_con);
 
 		if ( $trabajo_url_id && $trabajo_url_id != '' ){
 			$cron_setup->write_to_file( $path, $handle ); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
@@ -47,9 +44,8 @@ class Crontabs_model extends Nucleo {
 	 * @param  [type] $trabajo_url_id [description]
 	 * @return [type]                 [description]
 	 */
-	public function unset_cron( $config_cron = '', $trabajo_url_id = '123456789' ){
-		//$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
-		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( '123456789' ) );
+	public function unset_cron( $config_cron = '', $trabajo_url_id = '' ){
+		$trabajo_url_id = 'curl '. base_url() . 'job_execute?token='.urlencode( base64_encode( $trabajo_url_id ) );
 		$host= 		$_SERVER['CRON_HOST'];
 		$port=		$_SERVER['CRON_HOST_PORT'];
 		$username=	$_SERVER['CRON_HOST_USER'];	
