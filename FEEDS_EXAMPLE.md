@@ -10,6 +10,12 @@ http://static-televisadeportes.esmas.com/sportsdata/futbol/data/356/24954/match_
 http://static-televisadeportes.esmas.com/sportsdata/futbol/data/356/24954/match_mxm.js
 http://static-televisadeportes.esmas.com/sportsdata/futbol/data/tickers/TickerFutbol_12.js
 
+Inputs 05Sep2014:
+http://static-televisadeportes.esmas.com/sportsdata/futbol/data/356/penales.js
+
+GSA
+http://googleak.esmas.com/search?q=site:http://www.televisa.com/canal5&btnG=Google+Search&access=p&client=televisa_com&site=televisa_com&sort=date%3AD%3AS%3Ad1&output=xml_no_dtd&entqrm=0&oe=UTF-8&ie=UTF-8&ud=1&exclude_apps=1&getfields=*&num=40&entqr=3&start=0&filter=0&partialfields=tags:nota
+
 ​Outputs:
 
 http://feeds.esmas.com/data-feeds-esmas/ipad/0129240101.xml
