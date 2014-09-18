@@ -15,13 +15,6 @@ class Nucleo extends CI_Controller {
 		$this->load->model( 'cms_model', 'cms' );
 	}
 
-	public function test_cron(){
-		$this->load->model( 'netstorage_model','storage' );
-		$CI =& get_instance();
-		$CI->load->model( 'crontabs_model','crontabs' );
-		$CI->crontabs->unset_cron( );
-	}
-
 	/**
 	 * [index description]
 	 * @return [type] [description]
@@ -30,8 +23,8 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
 			redirect( 'login' );
 		} else {
-			$this->load->model('alertas_model', 'alertas');
-			$this->alertas->alerta('003101e8-3394-11e4-b1fe-e385f026ed30','E303 - Error desconocido aún');die;
+			// $this->load->model('alertas_model', 'alertas');
+			// $this->alertas->alerta('003101e8-3394-11e4-b1fe-e385f026ed30','E303 - Error desconocido aún');die;
 			$data['usuario'] = $this->session->userdata( 'nombre' );
 			$this->load->view( 'middleware/index' );
 		}
@@ -68,6 +61,7 @@ class Nucleo extends CI_Controller {
 	 */
 	public function detectar_campos(){
 		$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $this->input->post( 'url' ) ) );
+		//print_r( $url );die;
 		$content = json_decode( file_get_contents_curl( $url ) );
 		$tree = new Tree( $content, true );
 		$arbol = array('tree' => serialize( $tree ) );
@@ -146,7 +140,9 @@ class Nucleo extends CI_Controller {
 		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
-		$url = html_entity_decode( $url );
+		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+			$url = html_entity_decode( $url );
+		}
 		if ( $feed = json_decode( $url ) ){
 			foreach ( $feed as $item ){
 				$cont[] = $this->mapAttributes( json_encode( $item ) );
@@ -195,7 +191,9 @@ class Nucleo extends CI_Controller {
 		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
-		$url = html_entity_decode( $url );
+		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+			$url = html_entity_decode( $url );
+		}
 		if ( $feed = json_decode( $url ) ){
 			foreach ( $feed as $item ){
 				$cont[] = $this->mapAttributes( json_encode( $item ) );
@@ -243,7 +241,9 @@ class Nucleo extends CI_Controller {
 		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
-		$url = html_entity_decode( $url );
+		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+			$url = html_entity_decode( $url );
+		}
 		if ( $feed = json_decode( $url ) ){
 			$contenido_feed = json_decode( $url );
 		} else {
