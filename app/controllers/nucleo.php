@@ -257,7 +257,7 @@ class Nucleo extends CI_Controller {
 				if ( $dom->documentElement->nodeName == 'rss' ){
 					$rss = $this->xml_2_array->createArray( $url );
 					$feed[] = $rss['rss']['channel']['item'];
-					$contenido_feed = $feed;
+					$contenido_feed = $feed[0];
 				} else {
 					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $xml;
