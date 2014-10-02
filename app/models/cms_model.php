@@ -29,7 +29,8 @@ class Cms_model extends CI_Model {
 
         public function get_all_estructuras( $limit = '', $start = '' ){
             $this->db->select('uid_estructura, nombre, formato_salida, fecha_registro, activo');
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $this->db->order_by('nombre', 'ASC');
             $result = $this->db->get($this->db->dbprefix( 'estructuras_salida' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -40,7 +41,7 @@ class Cms_model extends CI_Model {
         public function get_categorias( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
-            if ( $limit != '' )
+            if ( ! empty( $limit ) )
                 $this->db->limit( $limit, $start );
             $this->db->order_by( $order, 'DESC' );
             $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
@@ -113,7 +114,8 @@ class Cms_model extends CI_Model {
 
         public function get_reportes( $limit = '', $start = '' ){
             $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $this->db->order_by('fecha', 'ASC');
             $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -133,7 +135,8 @@ class Cms_model extends CI_Model {
         public function get_reportes_editor( $uid, $limit = '', $start = '' ){
             $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
             $this->db->where('uid_usuario', $uid );
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $this->db->order_by('fecha', 'ASC');
             $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -213,7 +216,8 @@ class Cms_model extends CI_Model {
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $result = $this->db->get();
             if ($result->num_rows() > 0) return $result->result();
             else return FALSE;
@@ -238,7 +242,8 @@ class Cms_model extends CI_Model {
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
             $this->db->where( 'a.uid_usuario',$uid );
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $result = $this->db->get();
             if ( $result->num_rows() > 0 ) return $result->result();
             else return FALSE;
@@ -283,7 +288,8 @@ class Cms_model extends CI_Model {
             else
                 $this->db->where( 'nivel >=', 2 );
             $this->db->where( 'uid_usuario !=', $uid );
-            $this->db->limit( $limit, $start );
+            if ( ! empty( $limit ) )
+                $this->db->limit( $limit, $start );
             $result = $this->db->get( $this->db->dbprefix( 'usuarios' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
             else return FALSE;
@@ -331,7 +337,7 @@ class Cms_model extends CI_Model {
         public function get_verticales( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
-            if ( $limit != '' )
+            if ( ! empty( $limit ) )
                 $this->db->limit( $limit, $start );
             $this->db->order_by($order, 'DESC');
             $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
@@ -395,7 +401,7 @@ class Cms_model extends CI_Model {
             else return FALSE; 
         }
 
-        public function add_estructura($trabajo){
+        public function add_estructura( $trabajo ){
             $timestamp = time();
             $this->db->set('uid_estructura', "UUID()", FALSE);
             $this->db->set('uid_usuario', $trabajo['usuario']);
