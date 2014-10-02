@@ -37,10 +37,11 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_categorias($order){
+        public function get_categorias( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
-            $this->db->order_by($order, 'DESC');
+            $this->db->limit( $limit, $start );
+            $this->db->order_by( $order, 'DESC' );
             $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
             if ($result->num_rows() > 0) return $result->result();
             else return FALSE;
@@ -109,8 +110,9 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_reportes(){
+        public function get_reportes( $limit = '', $start = '' ){
             $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
+            $this->db->limit( $limit, $start );
             $this->db->order_by('fecha', 'ASC');
             $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -127,9 +129,10 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_reportes_editor( $uid ){
+        public function get_reportes_editor( $uid, $limit = '', $start = '' ){
             $this->db->select('uid_reporte, nombre_reporte, fecha, fecha_inicio, fecha_fin');
             $this->db->where('uid_usuario', $uid );
+            $this->db->limit( $limit, $start );
             $this->db->order_by('fecha', 'ASC');
             $result = $this->db->get( $this->db->dbprefix( 'reportes' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -153,6 +156,11 @@ class Cms_model extends CI_Model {
             $template = $this->db->get( $this->db->dbprefix('estructuras_salida') );
             return $template->row();
             $template->free_result();
+        }
+
+        public function get_total_categorias(){
+            $total_categorias = $this->db->count_all( $this->db->dbprefix( 'categorias' ) );
+            return $total_categorias;
         }
 
         public function get_total_estructuras(){
@@ -179,6 +187,22 @@ class Cms_model extends CI_Model {
             $this->db->where( 'uid_usuario !=', $uid );
             $total_usuarios = $this->db->count_all( $this->db->dbprefix( 'usuarios' ) );
             return $total_usuarios;
+        }
+
+        public function get_total_verticales(){
+            $total_verticales = $this->db->count_all( $this->db->dbprefix( 'verticales' ) );
+            return $total_verticales;
+        }
+
+        public function get_total_reportes(){
+            $total_reportes = $this->db->count_all( $this->db->dbprefix( 'reportes' ) );
+            return $total_reportes;
+        }
+
+        public function get_total_reportes_editor( $uid ){
+            $this->db->where( 'uid_usuario', $uid );
+            $total_reportes = $this->db->count_all( $this->db->dbprefix( 'reportes' ) );
+            return $total_reportes;
         }
 
         public function get_trabajos( $limit = '', $start = '' ){
@@ -303,9 +327,10 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_verticales($order){
+        public function get_verticales( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
+            $this->db->limit( $limit, $start );
             $this->db->order_by($order, 'DESC');
             $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
             if ( $result->num_rows() > 0 ) return $result->result();

@@ -2,26 +2,12 @@
 
 class Cms extends CI_Controller {
 
-	private $storage_root;
-	private $netstorage;
-
 	/**
 	 * [__construct description]
 	 */
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('cms_model', 'cms');
-
-		$this->storage_root = '/';
-
-		/** Configuracion de conexión a netstorage */
-		$this->netstorage = array(
-				'hostname' 	=> 'storagemas.upload.akamai.com',
-				'username' 	=> 'marcoplata',
-				'password' 	=> 'y4mi.99yS',
-				'passive'	=> TRUE,
-				'debug'		=> FALSE
-			);
 	}
 
 	/**
@@ -124,9 +110,9 @@ class Cms extends CI_Controller {
 	            $config['cur_tag_close'] 		= '</a></li>';
 	            $config['total_rows'] 			= $this->cms->get_total_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
 	            $this->pagination->initialize( $config );
-	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
-	            $data['links'] 				= $this->pagination->create_links();
-				$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ), $config['per_page'], $page );
+	            $page 							= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 					= $this->pagination->create_links();
+				$data['usuarios']				= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ), $config['per_page'], $page );
 				$this->load->view( 'cms/admin/usuarios', $data );
 			} else {
 				redirect('inicio');
@@ -190,7 +176,33 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['categorias']	= $this->cms->get_categorias('fecha_registro');
+				$config['base_url'] 			= base_url() . 'categorias/page/';
+	            $config['per_page'] 			= 10;
+	            $config['num_links'] 			= 4;
+	            $config['uri_segment'] 			= 3;
+	            $config['full_tag_open'] 		= '<ul class="pagination">';
+	            $config['full_tag_close'] 		= '</ul>';
+	            $config['first_tag_open'] 		= '<li>';
+	            $config['first_tag_close'] 		= '</li>';
+	            $config['first_link'] 			= 'Primero';
+	            $config['last_tag_open'] 		= '<li>';
+	            $config['last_tag_close'] 		= '</li>';
+	            $config['last_link'] 			= 'Último';
+	            $config['next_tag_open'] 		= '<li>';
+	            $config['next_tag_close'] 		= '</li>';
+	            $config['next_link'] 			= '&raquo;';
+	            $config['prev_tag_open'] 		= '<li>';
+				$config['prev_tag_close'] 		= '</li>';
+	            $config['prev_link'] 			= '&laquo;';
+	            $config['num_tag_open'] 		= '<li>';
+	            $config['num_tag_close'] 		= '</li>';
+	            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+	            $config['cur_tag_close'] 		= '</a></li>';
+	            $config['total_rows'] 			= $this->cms->get_total_categorias();
+	            $this->pagination->initialize( $config );
+	            $page 							= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 					= $this->pagination->create_links();
+				$data['categorias']				= $this->cms->get_categorias( 'fecha_registro', $config['per_page'], $page );
 				$this->load->view( 'cms/admin/categorias', $data );
 			} else {
 				redirect('inicio');
@@ -207,7 +219,33 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['verticales']	= $this->cms->get_verticales('fecha_registro');
+				$config['base_url'] 			= base_url() . 'verticales/page/';
+	            $config['per_page'] 			= 10;
+	            $config['num_links'] 			= 4;
+	            $config['uri_segment'] 			= 3;
+	            $config['full_tag_open'] 		= '<ul class="pagination">';
+	            $config['full_tag_close'] 		= '</ul>';
+	            $config['first_tag_open'] 		= '<li>';
+	            $config['first_tag_close'] 		= '</li>';
+	            $config['first_link'] 			= 'Primero';
+	            $config['last_tag_open'] 		= '<li>';
+	            $config['last_tag_close'] 		= '</li>';
+	            $config['last_link'] 			= 'Último';
+	            $config['next_tag_open'] 		= '<li>';
+	            $config['next_tag_close'] 		= '</li>';
+	            $config['next_link'] 			= '&raquo;';
+	            $config['prev_tag_open'] 		= '<li>';
+				$config['prev_tag_close'] 		= '</li>';
+	            $config['prev_link'] 			= '&laquo;';
+	            $config['num_tag_open'] 		= '<li>';
+	            $config['num_tag_close'] 		= '</li>';
+	            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+	            $config['cur_tag_close'] 		= '</a></li>';
+	            $config['total_rows'] 			= $this->cms->get_total_verticales();
+	            $this->pagination->initialize( $config );
+	            $page 							= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 					= $this->pagination->create_links();
+				$data['verticales']				= $this->cms->get_verticales( 'fecha_registro', $config['per_page'], $page );
 				$this->load->view('cms/admin/verticales', $data);
 			} else {
 				redirect('inicio');
@@ -248,10 +286,10 @@ class Cms extends CI_Controller {
 	            $config['cur_tag_close'] 		= '</a></li>';
 	            $config['total_rows'] 			= $this->cms->get_total_estructuras();
 	            $this->pagination->initialize( $config );
-	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
-	            $data['links'] 				= $this->pagination->create_links();
+	            $page 							= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 					= $this->pagination->create_links();
 	            //$data['total']				= $config['total_rows'];
-				$data['estructuras'] = $this->cms->get_all_estructuras( $config['per_page'], $page );
+				$data['estructuras'] 			= $this->cms->get_all_estructuras( $config['per_page'], $page );
 				$this->load->view( 'cms/admin/estructuras', $data );
 			}
 		}
@@ -793,6 +831,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [nueva_estructura description]
+	 * @return [type] [description]
+	 */
 	public function nueva_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -801,6 +843,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [validar_form_nueva_estructura description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_nueva_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -829,6 +875,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [eliminar_estructura description]
+	 * @return [type] [description]
+	 */
 	public function eliminar_estructura(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -843,19 +893,57 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [reportes description]
+	 * @return [type] [description]
+	 */
 	public function reportes() {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
 		} else {
+			$config['base_url'] 			= base_url() . 'reportes/page/';
+            $config['per_page'] 			= 10;
+            $config['num_links'] 			= 4;
+            $config['uri_segment'] 			= 3;
+            $config['full_tag_open'] 		= '<ul class="pagination">';
+            $config['full_tag_close'] 		= '</ul>';
+            $config['first_tag_open'] 		= '<li>';
+            $config['first_tag_close'] 		= '</li>';
+            $config['first_link'] 			= 'Primero';
+            $config['last_tag_open'] 		= '<li>';
+            $config['last_tag_close'] 		= '</li>';
+            $config['last_link'] 			= 'Último';
+            $config['next_tag_open'] 		= '<li>';
+            $config['next_tag_close'] 		= '</li>';
+            $config['next_link'] 			= '&raquo;';
+            $config['prev_tag_open'] 		= '<li>';
+			$config['prev_tag_close'] 		= '</li>';
+            $config['prev_link'] 			= '&laquo;';
+            $config['num_tag_open'] 		= '<li>';
+            $config['num_tag_close'] 		= '</li>';
+            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+            $config['cur_tag_close'] 		= '</a></li>';
 			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
-				$data['reportes']	= $this->cms->get_reportes();
+				$config['total_rows'] 		= $this->cms->get_total_reportes();
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+				$data['reportes']			= $this->cms->get_reportes( $config['per_page'], $page );
 			}else {
-				$data['reportes']	= $this->cms->get_reportes_editor( $this->session->userdata( 'uid' ) );
+				$config['total_rows'] 		= $this->cms->get_total_reportes_editor( $this->session->userdata( 'uid' ) );
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+				$data['reportes']			= $this->cms->get_reportes_editor( $this->session->userdata( 'uid' ), $config['per_page'], $page );
 			}
 			$this->load->view( 'cms/admin/reportes', $data );
 		}
 	}
 
+	/**
+	 * [nuevo_reporte description]
+	 * @return [type] [description]
+	 */
 	public function nuevo_reporte(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect( 'login' );
@@ -869,6 +957,10 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [validar_form_nuevo_reporte description]
+	 * @return [type] [description]
+	 */
 	public function validar_form_nuevo_reporte(){
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
@@ -898,18 +990,30 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [generar_reporte_csv description]
+	 * @return [type] [description]
+	 */
 	public function generar_reporte_csv(){
 		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
 		$resultado = $this->cms->get_reporte_resultado( $reporte );
 		echo query_to_csv( $resultado, TRUE, $reporte->slug_nombre_reporte . '.csv');
 	}
 
+	/**
+	 * [generar_reporte_excel description]
+	 * @return [type] [description]
+	 */
 	public function generar_reporte_excel(){
 		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
 		$resultado = $this->cms->get_reporte_resultado( $reporte );
 		echo query_to_excel( $resultado, $reporte->slug_nombre_reporte . '.xls');
 	}
 
+	/**
+	 * [generar_reporte_pdf description]
+	 * @return [type] [description]
+	 */
 	public function generar_reporte_pdf(){
 		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
 		$resultado = $this->cms->get_reporte_resultado( $reporte );
@@ -939,6 +1043,11 @@ class Cms extends CI_Controller {
         $this->pdf->Output( $reporte->slug_nombre_reporte . '.pdf', 'I');
 	}
 
+	/**
+	 * [nombre_valido description]
+	 * @param  [type] $str [description]
+	 * @return [type]      [description]
+	 */
 	function nombre_valido( $str ){
 		if ( ! preg_match( '/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]/', $str ) ){
 			$this->form_validation->set_message( 'nombre_valido','<b class="requerido">*</b> La información introducida en <b>%s</b> no es válida.' );
@@ -948,6 +1057,11 @@ class Cms extends CI_Controller {
 		}
 	}
 
+	/**
+	 * [valid_phone description]
+	 * @param  [type] $str [description]
+	 * @return [type]      [description]
+	 */
 	function valid_phone( $str ){
         if ( $str ) {
             if ( ! preg_match( '/\([0-9]\)| |[0-9]/', $str ) ){
@@ -959,6 +1073,11 @@ class Cms extends CI_Controller {
         }
     }
 
+    /**
+     * [valid_option description]
+     * @param  [type] $str [description]
+     * @return [type]      [description]
+     */
     function valid_option( $str ){
         if ($str == 0) {
             $this->form_validation->set_message('valid_option', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
@@ -968,6 +1087,11 @@ class Cms extends CI_Controller {
         }
     }
 
+    /**
+     * [valid_date description]
+     * @param  [type] $str [description]
+     * @return [type]      [description]
+     */
     function valid_date( $str ){
     	$arr = explode('/', $str);
     	if ( count($arr) == 3 ){
