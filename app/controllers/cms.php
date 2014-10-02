@@ -143,7 +143,7 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			$config['base_url'] 			= base_url() . 'trabajos/page/';
-            $config['per_page'] 			= 5;
+            $config['per_page'] 			= 10;
             $config['num_links'] 			= 4;
             $config['uri_segment'] 			= 3;
             $config['full_tag_open'] 		= '<ul class="pagination">';
