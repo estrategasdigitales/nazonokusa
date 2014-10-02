@@ -40,7 +40,8 @@ class Cms_model extends CI_Model {
         public function get_categorias( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select( 'uid_categoria, nombre, slug_categoria, fecha_registro' );
-            $this->db->limit( $limit, $start );
+            if ( $limit != '' )
+                $this->db->limit( $limit, $start );
             $this->db->order_by( $order, 'DESC' );
             $result = $this->db->get($this->db->dbprefix( 'categorias' ) );
             if ($result->num_rows() > 0) return $result->result();
@@ -330,7 +331,8 @@ class Cms_model extends CI_Model {
         public function get_verticales( $order, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select('uid_vertical, nombre, slug_vertical, fecha_registro');
-            $this->db->limit( $limit, $start );
+            if ( $limit != '' )
+                $this->db->limit( $limit, $start );
             $this->db->order_by($order, 'DESC');
             $result = $this->db->get($this->db->dbprefix( 'verticales' ) );
             if ( $result->num_rows() > 0 ) return $result->result();

@@ -531,8 +531,8 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
-			$data['categorias'] = $this->cms->get_categorias('nombre', '', '' );
-			$data['verticales'] = $this->cms->get_verticales('nombre', '', '' );
+			$data['categorias'] = $this->cms->get_categorias( 'nombre' );
+			$data['verticales'] = $this->cms->get_verticales( 'nombre' );
 			$data['companias']	= $this->cms->get_companias_celular();
 			$data['roles']		= $this->cms->get_catalogo_roles();
 			$this->load->view('cms/admin/nuevo_usuario',$data);
