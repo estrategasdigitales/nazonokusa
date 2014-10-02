@@ -27,8 +27,9 @@ class Cms_model extends CI_Model {
             $verifica->free_result();
         }
 
-        public function get_all_estructuras(){
+        public function get_all_estructuras( $limit = '', $start = '' ){
             $this->db->select('uid_estructura, nombre, formato_salida, fecha_registro, activo');
+            $this->db->limit( $limit, $start );
             $this->db->order_by('nombre', 'ASC');
             $result = $this->db->get($this->db->dbprefix( 'estructuras_salida' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
@@ -154,6 +155,21 @@ class Cms_model extends CI_Model {
             $template->free_result();
         }
 
+        public function get_total_estructuras(){
+            $total_estructuras = $this->db->count_all( $this->db->dbprefix( 'estructuras_salida' ) );
+            return $total_estructuras;
+        }
+
+        public function get_total_usuarios( $nivel, $uid ){
+            if ($nivel == 1)
+                $this->db->where( 'nivel >=', 1 );
+            else
+                $this->db->where( 'nivel >=', 2 );
+            $this->db->where( 'uid_usuario !=', $uid );
+            $total_usuarios = $this->db->count_all( $this->db->dbprefix( 'usuarios' ) );
+            return $total_usuarios;
+        }
+
         public function get_trabajos(){
             //$this->db->cache_on();
             $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
@@ -221,7 +237,7 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_usuarios( $nivel, $uid ){
+        public function get_usuarios( $nivel, $uid, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select('uid_usuario, nombre, apellidos, nivel');
             if ($nivel == 1)
@@ -229,9 +245,10 @@ class Cms_model extends CI_Model {
             else
                 $this->db->where( 'nivel >=', 2 );
             $this->db->where( 'uid_usuario !=', $uid );
+            $this->db->limit( $limit, $start );
             $result = $this->db->get( $this->db->dbprefix( 'usuarios' ) );
             if ( $result->num_rows() > 0 ) return $result->result();
-            else return False;
+            else return FALSE;
             $result->free_result();
         }
 

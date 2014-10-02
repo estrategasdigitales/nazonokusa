@@ -12,7 +12,6 @@
 					<td>Nombre de la Estructura</td>
 					<td>Tipo</td>
 					<td class="text-center" width="10%">Activar / Desactivar</td>
-	                <!--<td class="text-center" width="10%">Editar</td>-->
 					<td class="text-center" width="10%">Eliminar</td>
 				</tr>
  				<?php if ( $estructuras ): ?>
@@ -28,6 +27,9 @@
 										case '2':
 											echo 'XML';
 											break;
+										case '3':
+											echo 'JSON';
+											break;
 									}
 								?>
 							</td>
@@ -38,8 +40,9 @@
 									Activada
 								<?php } ?>
 							</td>
-                            <!--<td><a href="#" type="button" class="btn btn-warning btn-sm btn-block btn-padding">Editar</a></td>-->
-							<td><a href="<?php echo base_url(); ?>eliminar_estructura?name=<?php echo base64_encode( $estructura->nombre ); ?>&token=<?php echo base64_encode( $estructura->uid_estructura ); ?>" type="button" class="btn btn-danger btn-sm btn-block btn-padding" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
+							<td>
+								<a href="<?php echo base_url(); ?>eliminar_estructura?name=<?php echo base64_encode( $estructura->nombre ); ?>&token=<?php echo base64_encode( $estructura->uid_estructura ); ?>" type="button" class="btn btn-danger btn-sm btn-block btn-padding" data-toggle="modal" data-target="#modalMessage">Eliminar</a>
+							</td>
 						</tr>
 					<?php endforeach; ?>
 				<?php else : ?>
@@ -51,6 +54,14 @@
 		</div>
 	</div>
 	<br>
+	<div class="row">
+        <div class="col-xs-12">
+            <div id="paginacion">
+            	<?php echo $links; ?>
+            </div>
+        </div>
+    </div>
+    <br>
 	<div class="row">
 		<div class="col-sm-8 col-md-8"></div>
 		<div class="col-sm-4 col-md-4">

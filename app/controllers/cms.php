@@ -100,8 +100,33 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
-				//print_r( count($data['usuarios']) );die;
+				$config['base_url'] 			= base_url() . 'usuarios/page/';
+	            $config['per_page'] 			= 10;
+	            $config['num_links'] 			= 4;
+	            $config['uri_segment'] 			= 3;
+	            $config['full_tag_open'] 		= '<ul class="pagination">';
+	            $config['full_tag_close'] 		= '</ul>';
+	            $config['first_tag_open'] 		= '<li>';
+	            $config['first_tag_close'] 		= '</li>';
+	            $config['first_link'] 			= 'Primero';
+	            $config['last_tag_open'] 		= '<li>';
+	            $config['last_tag_close'] 		= '</li>';
+	            $config['last_link'] 			= 'Último';
+	            $config['next_tag_open'] 		= '<li>';
+	            $config['next_tag_close'] 		= '</li>';
+	            $config['next_link'] 			= '&raquo;';
+	            $config['prev_tag_open'] 		= '<li>';
+				$config['prev_tag_close'] 		= '</li>';
+	            $config['prev_link'] 			= '&laquo;';
+	            $config['num_tag_open'] 		= '<li>';
+	            $config['num_tag_close'] 		= '</li>';
+	            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+	            $config['cur_tag_close'] 		= '</a></li>';
+	            $config['total_rows'] 			= $this->cms->get_total_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ) );
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+				$data['usuarios']	= $this->cms->get_usuarios( $this->session->userdata( 'nivel' ), $this->session->userdata( 'uid' ), $config['per_page'], $page );
 				$this->load->view( 'cms/admin/usuarios', $data );
 			} else {
 				redirect('inicio');
@@ -169,7 +194,34 @@ class Cms extends CI_Controller {
 			redirect('login');
 		} else {
 			if ( $this->session->userdata('nivel') <= 2 ){
-				$data['estructuras'] = $this->cms->get_all_estructuras();
+				$config['base_url'] 			= base_url() . 'estructuras/page/';
+	            $config['per_page'] 			= 10;
+	            $config['num_links'] 			= 4;
+	            $config['uri_segment'] 			= 3;
+	            $config['full_tag_open'] 		= '<ul class="pagination">';
+	            $config['full_tag_close'] 		= '</ul>';
+	            $config['first_tag_open'] 		= '<li>';
+	            $config['first_tag_close'] 		= '</li>';
+	            $config['first_link'] 			= 'Primero';
+	            $config['last_tag_open'] 		= '<li>';
+	            $config['last_tag_close'] 		= '</li>';
+	            $config['last_link'] 			= 'Último';
+	            $config['next_tag_open'] 		= '<li>';
+	            $config['next_tag_close'] 		= '</li>';
+	            $config['next_link'] 			= '&raquo;';
+	            $config['prev_tag_open'] 		= '<li>';
+				$config['prev_tag_close'] 		= '</li>';
+	            $config['prev_link'] 			= '&laquo;';
+	            $config['num_tag_open'] 		= '<li>';
+	            $config['num_tag_close'] 		= '</li>';
+	            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+	            $config['cur_tag_close'] 		= '</a></li>';
+	            $config['total_rows'] 			= $this->cms->get_total_estructuras();
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+	            //$data['total']				= $config['total_rows'];
+				$data['estructuras'] = $this->cms->get_all_estructuras( $config['per_page'], $page );
 				$this->load->view( 'cms/admin/estructuras', $data );
 			}
 		}
