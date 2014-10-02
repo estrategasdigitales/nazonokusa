@@ -37,7 +37,7 @@
 						<div class="form-group">
 							<label for="celular" class="col-sm-3 col-md-2 control-label">Número Celular</label>
 							<div class="col-sm-9 col-md-10">
-								<input type="text" class="form-control" id="celular" name="celular" placeholder="525555555555">
+								<input type="text" class="form-control" id="celular" name="celular" placeholder="Número Celular">
 							</div>
 						</div>
 						<div class="form-group">

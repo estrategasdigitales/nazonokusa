@@ -40,9 +40,5 @@
 			<a href="<?php echo base_url(); ?>inicio" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
-	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-	        <div class="modal-content"></div>
-	    </div>
-	</div>
+	<?php $this->load->view('cms/modals'); ?>
 <?php $this->load->view( 'cms/footer' ); ?>

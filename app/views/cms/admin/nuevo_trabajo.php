@@ -331,9 +331,5 @@
 		<input type="hidden" id="claves" name="claves">
 		<input type="hidden" id="relacion_especificos" name="relacion_especificos">
 	<?php echo form_close(); ?>
-	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-	        <div class="modal-content"></div>
-	    </div>
-	</div>
+	<?php //$this->load->view('cms/modals'); ?>
 <?php $this->load->view('cms/footer'); ?>

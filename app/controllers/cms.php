@@ -333,24 +333,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-	// public function agregar_campo_rss(){
-	// 	$this->form_validation->set_rules('nuevo_campo_rss', 'Nombre del Campo', 'required|trim|min_length[3]|max_lenght[180]|xss_clean');
-	// 	if ( $this->form_validation->run() === TRUE ){
-	// 		$data['nuevo_campo']	= $this->input->post('nuevo_campo_rss');
-	// 		$success = '<div class="form-group">
-	// 						<label for="channel_description" class="col-sm-3 col-md-2 control-label">' . $data['nuevo_campo'] . '</label>
-	// 						<div class="col-sm-9 col-md-10">
-	// 							<input type="hidden" name="claves_rss[]" value="' . url_title( $data['nuevo_campo'], 'dash', TRUE ) . '">
- //        						<input type="text" class="form-control" name="valores_rss[]">
- //    						</div>
-	// 					</div>';
-	// 		echo json_encode( array('success' => $success ) );
-	// 	} else {
-	// 		//echo validation_errors('<span class="error">','</span>');
-	// 		echo json_encode( array('errores' => validation_errors('<span class="error">','</span>') ) );
-	// 	}
-	// }
-
 	/**
 	 * [modal_eliminar_usuario description]
 	 * @return [type] [description]
@@ -391,17 +373,35 @@ class Cms extends CI_Controller {
 		$this->load->view( 'cms/admin/modal_eliminar_trabajo', $data );
 	}
 
+	/**
+	 * [modal_eliminar_estructura description]
+	 * @return [type] [description]
+	 */
 	public function modal_eliminar_estructura(){
 		$data['nombre_estructura']		= $this->input->get('name');
 		$data['uid']				= $this->input->get('token');
 		$this->load->view( 'cms/admin/modal_eliminar_estructura', $data );
 	}
 
-	// public function modal_agregar_campo_rss(){
-	// 	$data['nuevo_campo_rss'] = '';
-	// 	$this->load->view('cms/admin/modal_agregar_campo_rss', $data);
-	// }
+	/**
+	 * [modal_listar_categorias_asignadas description]
+	 * @return [type] [description]
+	 */
+	public function modal_listar_categorias_asignadas(){
+		$data['uid']		= $this->input->get( base64_decode( 'token' ) );
+		$data['categorias']	= $this->cms->get_categorias_usuario( $data['uid'] );
+		$this->load->view( 'cms/admin/modal_listar_categorias_asignadas', $data );
+	}
 
+	/**
+	 * [modal_listar_verticales_asignadas description]
+	 * @return [type] [description]
+	 */
+	public function modal_listar_verticales_asignadas(){
+		$data['uid']		= $this->input->get( base64_decode( 'token' ) );
+		$data['verticales']	= $this->cms->get_verticales_usuario( $data['uid'] );
+		$this->load->view( 'cms/admin/modal_listar_verticales_asignadas', $data );
+	}
 
 	/**
 	 * [nuevo_usuario description]
@@ -418,7 +418,6 @@ class Cms extends CI_Controller {
 			$this->load->view('cms/admin/nuevo_usuario',$data);
 		}
 	}
-
 
 	/**
 	 * [validar_form_usuario description]

@@ -73,6 +73,8 @@ $route['nucleo'] 					= 'nucleo/index';
 $route['actualizar_perfil']			= 'cms/actualizar_perfil';
 $route['forgot']					= 'cms/recuperar_contrasena';
 $route['forgot_validate']			= 'cms/recuperar_contrasena_validar';
+$route['categorias_asignadas']		= 'cms/modal_listar_categorias_asignadas';
+$route['verticales_asignadas']		= 'cms/modal_listar_verticales_asignadas';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

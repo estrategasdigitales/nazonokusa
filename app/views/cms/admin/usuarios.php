@@ -35,8 +35,8 @@
 									}
 								?>
 							</td>
-							<td class="text-center"><a href="#" class="petroleo glyphicon glyphicon-list-alt"></a></td>
-							<td class="text-center"><a href="#" class="petroleo glyphicon glyphicon-list-alt"></a></td>
+							<td class="text-center"><a href="<?php echo base_url(); ?>categorias_asignadas?token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="petroleo glyphicon glyphicon-list-alt" data-toggle="modal" data-target="#modalMessageCategoria"></a></td>
+							<td class="text-center"><a href="<?php echo base_url(); ?>verticales_asignadas?token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="petroleo glyphicon glyphicon-list-alt" data-toggle="modal" data-target="#modalMessageVertical"></a></td>
 							<td><a href="<?php echo base_url(); ?>editar/<?php echo base64_encode( $usuario->uid_usuario ); ?>" type="button" class="btn btn-warning btn-sm btn-block">Editar</a></td>
 							<td><a href="<?php echo base_url(); ?>eliminar_usuario?name=<?php echo base64_encode( $usuario->nombre. ' ' . $usuario->apellidos ); ?>&token=<?php echo base64_encode( $usuario->uid_usuario ); ?>" class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">Eliminar</a></td>
 						</tr>
@@ -56,9 +56,5 @@
 			<a href="<?php echo base_url(); ?>inicio" type="button" class="btn btn-success btn-block">Volver al Menú Principal</a>
 		</div>
 	</div>
-	<div class="modal fade bs-example-modal-lg" id="modalMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-	        <div class="modal-content"></div>
-	    </div>
-	</div>
+	<?php $this->load->view('cms/modals'); ?>
 <?php $this->load->view( 'cms/footer' ); ?>
