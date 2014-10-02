@@ -142,10 +142,40 @@ class Cms extends CI_Controller {
 		if ( $this->session->userdata('session') !== TRUE ){
 			redirect('login');
 		} else {
+			$config['base_url'] 			= base_url() . 'trabajos/page/';
+            $config['per_page'] 			= 10;
+            $config['num_links'] 			= 4;
+            $config['uri_segment'] 			= 3;
+            $config['full_tag_open'] 		= '<ul class="pagination">';
+            $config['full_tag_close'] 		= '</ul>';
+            $config['first_tag_open'] 		= '<li>';
+            $config['first_tag_close'] 		= '</li>';
+            $config['first_link'] 			= 'Primero';
+            $config['last_tag_open'] 		= '<li>';
+            $config['last_tag_close'] 		= '</li>';
+            $config['last_link'] 			= 'Último';
+            $config['next_tag_open'] 		= '<li>';
+            $config['next_tag_close'] 		= '</li>';
+            $config['next_link'] 			= '&raquo;';
+            $config['prev_tag_open'] 		= '<li>';
+			$config['prev_tag_close'] 		= '</li>';
+            $config['prev_link'] 			= '&laquo;';
+            $config['num_tag_open'] 		= '<li>';
+            $config['num_tag_close'] 		= '</li>';
+            $config['cur_tag_open'] 		= '<li class="active"><a href="#">';
+            $config['cur_tag_close'] 		= '</a></li>';
 			if ( $this->session->userdata('nivel') >= 1 && $this->session->userdata('nivel') <= 2 ){
-				$data['trabajos']	= $this->cms->get_trabajos();
+				$config['total_rows'] 		= $this->cms->get_total_trabajos();
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+				$data['trabajos']			= $this->cms->get_trabajos( $config['per_page'], $page );
 			}else {
-				$data['trabajos']	= $this->cms->get_trabajos_editor( $this->session->userdata( 'uid' ) );
+				$config['total_rows'] 		= $this->cms->get_total_trabajos( $this->session->userdata( 'uid' ) );
+	            $this->pagination->initialize( $config );
+	            $page 						= ( $this->uri->segment(3) ) ? $this->uri->segment(3) : 0;
+	            $data['links'] 				= $this->pagination->create_links();
+				$data['trabajos']			= $this->cms->get_trabajos_editor( $this->session->userdata( 'uid' ), $config['per_page'], $page );
 			}
 			$this->load->view( 'cms/admin/trabajos', $data );
 		}

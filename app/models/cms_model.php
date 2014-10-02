@@ -160,6 +160,17 @@ class Cms_model extends CI_Model {
             return $total_estructuras;
         }
 
+        public function get_total_trabajos(){
+            $total_trabajos = $this->db->count_all( $this->db->dbprefix( 'trabajos' ) );
+            return $total_trabajos;
+        }
+
+        public function get_total_trabajos_editor( $uid ){
+            $this->db->where( 'uid_usuario', $uid );
+            $total_trabajos = $this->db->count_all( $this->db->dbprefix( 'trabajos' ) );
+            return $total_trabajos;
+        }
+
         public function get_total_usuarios( $nivel, $uid ){
             if ($nivel == 1)
                 $this->db->where( 'nivel >=', 1 );
@@ -170,13 +181,14 @@ class Cms_model extends CI_Model {
             return $total_usuarios;
         }
 
-        public function get_trabajos(){
+        public function get_trabajos( $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
+            $this->db->limit( $limit, $start );
             $result = $this->db->get();
             if ($result->num_rows() > 0) return $result->result();
             else return FALSE;
@@ -193,7 +205,7 @@ class Cms_model extends CI_Model {
             $result->free_result();
         }
 
-        public function get_trabajos_editor( $uid ){
+        public function get_trabajos_editor( $uid, $limit = '', $start = '' ){
             //$this->db->cache_on();
             $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.formatos, a.fecha_registro, a.tipo_salida, d.formato_salida');
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
@@ -201,6 +213,7 @@ class Cms_model extends CI_Model {
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
             $this->db->where( 'a.uid_usuario',$uid );
+            $this->db->limit( $limit, $start );
             $result = $this->db->get();
             if ( $result->num_rows() > 0 ) return $result->result();
             else return FALSE;

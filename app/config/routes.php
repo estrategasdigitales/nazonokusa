@@ -47,6 +47,7 @@ $route['salir']						= 'cms/logout';
 $route['usuarios']					= 'cms/admin_usuarios';
 $route['usuarios/(:any)']			= 'cms/admin_usuarios/$1';
 $route['trabajos']					= 'cms/admin_trabajos';
+$route['trabajos/(:any)']			= 'cms/admin_trabajos/$1';
 $route['categorias']				= 'cms/admin_categorias';
 $route['verticales']				= 'cms/admin_verticales';
 $route['estructuras']				= 'cms/admin_estructuras';
