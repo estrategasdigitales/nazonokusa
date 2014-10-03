@@ -145,10 +145,15 @@ class Nucleo extends CI_Controller {
 		}
 		if ( $feed = json_decode( $url ) ){
 			foreach ( $feed as $item ){
-				$cont[] = $this->mapAttributes( json_encode( $item ) );
+				if ( is_array( $item ) && count( $item ) == 1 )
+					$item = (array)$item[0];
+				else
+					$item = json_encode( $item );
+
+				$cont[] = $this->mapAttributes( $item  );
 			}
 			$contents = $this->array_unique_multidimensional( $cont );
-			$indices = create_indexes( $contents );
+			$indices = create_indexes_specific( $contents );
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
@@ -157,10 +162,15 @@ class Nucleo extends CI_Controller {
 				$feed = str_replace( ')', ']', $feed );
 				$feed = json_decode( $feed, TRUE );
 				foreach ( $feed as $item ){
-					$cont[] = $this->mapAttributes( json_encode( $item ) );
+					if ( is_array( $item ) && count( $item ) == 1 )
+						$item = (array)$item[0];
+					else
+						$item = json_encode( $item );
+
+					$cont[] = $this->mapAttributes( $item  );
 				}
 				$contents = $this->array_unique_multidimensional( $cont );
-				$indices = create_indexes( $contents );
+				$indices = create_indexes_specific( $contents );
 			} else {
 				$dom = new DOMDocument();
 				$dom->preserveWhiteSpace = FALSE;
@@ -169,12 +179,12 @@ class Nucleo extends CI_Controller {
 					$rss = $this->xml_2_array->createArray( $url );
 					$feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
 					$contents = $this->array_unique_multidimensional( $feed );
-					$indices = create_indexes( $contents );
+					$indices = create_indexes_specific( $contents );
 				} else {
 					$xml = $this->xml_2_array->createArray( $url );
 					$feed[] = $this->mapAttributes( json_encode( $xml ) );
 					$contents = $this->array_unique_multidimensional( $feed );
-					$indices = create_indexes( $contents );
+					$indices = create_indexes_specific( $contents );
 				}
 			}
 		}
@@ -196,8 +206,14 @@ class Nucleo extends CI_Controller {
 		}
 		if ( $feed = json_decode( $url ) ){
 			foreach ( $feed as $item ){
-				$cont[] = $this->mapAttributes( json_encode( $item ) );
+				if ( is_array( $item ) && count( $item ) == 1 )
+					$item = (array)$item[0];
+				else
+					$item = json_encode( $item );
+
+				$cont[] = $this->mapAttributes( $item  );
 			}
+			
 			$contents = $this->array_unique_multidimensional( $cont );
 			$indices = create_indexes_specific( $contents );
 		} else {
@@ -208,7 +224,12 @@ class Nucleo extends CI_Controller {
 				$feed = str_replace( ')', ']', $feed );
 				$feed = json_decode( $feed, TRUE );
 				foreach ( $feed as $item ){
-					$cont[] = $this->mapAttributes( json_encode( $item ) );
+					if ( is_array( $item ) && count( $item ) == 1 )
+						$item = (array)$item[0];
+					else
+						$item = json_encode( $item );
+
+					$cont[] = $this->mapAttributes( $item  );
 				}
 				$contents = $this->array_unique_multidimensional( $cont );
 				$indices = create_indexes_specific( $contents );
@@ -317,7 +338,7 @@ class Nucleo extends CI_Controller {
 	 * @return [type]       [description]
 	 */
 	public function mapAttributes( $feed ){
-		$campos_orig 	= json_decode( $feed, TRUE );
+		$campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
 		$campos 		= [];
 		$items 			= count( $campos_orig );
 		if ( ! empty( $campos_orig[0] ) ){
@@ -337,7 +358,7 @@ class Nucleo extends CI_Controller {
 				}
 			}
 		}else{
-			foreach ($campos_orig as $key => $value ){
+			foreach ( $campos_orig as $key => $value ){
 				if ( is_array( $value ) ){
 					if ( ! empty( $campos[$key] ) ){
 						$campos[$key] = $this->claves( $value, $campos[$key] );
