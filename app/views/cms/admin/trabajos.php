@@ -31,7 +31,7 @@
 							</td>
 							<td class="text-center">
 								<?php
-									if ( $trabajo->activo == 1 ){
+								/*	if ( $trabajo->activo == 1 ){
 										switch ( $trabajo->tipo_salida ){
 											case 1:
 												$salidas = json_decode( $trabajo->formatos );
@@ -96,7 +96,7 @@
 												echo '</span>';
 											break;
 										}
-									}
+									} */
 								?>
 							</td>
 							<td class="text-center">

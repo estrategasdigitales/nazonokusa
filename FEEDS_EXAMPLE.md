@@ -21,7 +21,7 @@ http://googleak.esmas.com/search?q=site:http://www.televisa.com/canal5&btnG=Goog
 http://feeds.esmas.com/data-feeds-esmas/ipad/0129240101.xml
 http://feeds.esmas.com/data-feeds-esmas/applicaster/0129240101.xml
 https://sf.esmas.com/xbox/129240101.xml
-http://tvolucion.esmas.com/rss/sony_deportes.php
+http://tvolucion.esmas.com/rss/sony_deportes.php ***
 http://feeds.esmas.com/data-feeds-esmas/tvs/panasonic/0129240101.json​
 
 http://feeds.esmas.com/data-feeds-esmas/xml/tdhome_carh.xml
@@ -33,3 +33,13 @@ http://feeds.esmas.com/tvolucion/mobile_deportes_app.js
 http://feeds.esmas.com/data-feeds-esmas/ipad/0129240101.xml
 http://feeds.esmas.com/data-feeds-esmas/samsung/programas/0129241605.js
 http://tvolucion.esmas.com/rss/lg_programas.php?id=0129241605
+
+
+UPDATE: 20141003
+
+
+
+Outputs:
+
+https://sf.esmas.com/xbox/129240101.xml ** No cargó la plantilla en el árbol
+http://static-feeds.esmas.com/awsfeeds/sports/video/program_aplicaster/futbolinternacional.xml    ** Creo bien la estructura, pero la salida no fué bien estructurada

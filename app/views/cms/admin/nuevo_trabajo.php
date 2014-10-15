@@ -328,8 +328,9 @@
 				<input style="padding:8px;" type="submit" class="btn btn-success btn-block" value="Guardar"/>
 			</div>
 		</div>
-		<input type="hidden" id="claves" name="claves">
-		<input type="hidden" id="relacion_especificos" name="relacion_especificos">
+		<!--<input type="hidden" id="claves" name="claves">-->
+		<input type="hidden" id="campos_seleccionados" name="campos_seleccionados">
+		<!--<input type="hidden" name="tree_json" id="tree_json">-->
 	<?php echo form_close(); ?>
 	<?php //$this->load->view('cms/modals'); ?>
 <?php $this->load->view('cms/footer'); ?>

@@ -57,7 +57,7 @@ if ( ! function_exists('recursive_nodes_index_specific') ){
 		foreach ( $matriz as $key => $value ){
 			if( is_array( $value ) ){
 				$tree_node[] = $object->$key = null;
-				$tree_node[] = $object->$key = recursive_nodes_index_specific( $value );
+				$tree_node[] = $object->$key = array( recursive_nodes_index_specific( $value ) );
 			}else{
 				$tree_node[] = $object->$key = null;
 			}

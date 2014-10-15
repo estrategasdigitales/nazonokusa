@@ -211,7 +211,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos( $limit = '', $start = '' ){
             //$this->db->cache_on();
-            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.formatos, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
+            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
@@ -226,7 +226,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_editar( $uid_trabajo ){
             //$this->db->cache_on();
-            $this->db->select('uid_trabajo, id_trabajo, nombre, url_origen, fecha_registro, fecha_ejecucion, formato_salida, uid_usuario, cron_config');
+            $this->db->select('uid_trabajo, id_trabajo, nombre, url_origen, fecha_registro, uid_usuario, cron_config');
             $this->db->where('uid_trabajo',$uid_trabajo);
             $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
             if ( $result->num_rows() > 0 ) return $result->row();
@@ -236,7 +236,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos_editor( $uid, $limit = '', $start = '' ){
             //$this->db->cache_on();
-            $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.formatos, a.fecha_registro, a.tipo_salida, d.formato_salida');
+            $this->db->select('a.uid_trabajo, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.url_origen, a.activo, a.uid_usuario, a.fecha_registro, a.tipo_salida, d.formato_salida');
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
@@ -253,9 +253,8 @@ class Cms_model extends CI_Model {
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
             $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, 
-                a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.feeds_output, 
-                a.activo, a.cron_config, a.tipo_salida, a.plantilla, a.relacion_especificos, 
-                d.json_estructura, d.formato_salida' );
+                a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.activo, 
+                a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
@@ -384,7 +383,6 @@ class Cms_model extends CI_Model {
             if( $verifica > 0 ) return TRUE;
             else return FALSE;
         }
-
     /** TERMINAN CONSULTAS **/
 
     /** INSERCIONES **/
@@ -434,41 +432,48 @@ class Cms_model extends CI_Model {
 
         public function add_trabajo( $trabajo ){
             $timestamp = time();
-            $this->db->set('uid_trabajo', "UUID()", FALSE);
-            $this->db->set('uid_usuario', $trabajo['usuario']);
-            $this->db->set('uid_categoria', $trabajo['categoria']);
-            $this->db->set('uid_vertical', $trabajo['vertical']);
-            $this->db->set('nombre', $trabajo['nombre']);
-            $this->db->set('slug_nombre_feed', $trabajo['slug_nombre_feed']);
-            $this->db->set('url_origen', $trabajo['url-origen']);
-            $this->db->set('tipo_salida', $trabajo['tipo_salida'] );
-            $this->db->set('plantilla', $trabajo['uid_plantilla'] );
-            if ( $trabajo['tipo_salida'] == 1 ){
-                $this->db->set('campos_seleccionados', $trabajo['campos']);
-                $this->db->set('arbol_json', $trabajo['arbol_json']);
-                $this->db->set('json_output', $trabajo['json_output'] );
-                $this->db->set('formatos', $trabajo['formatos'] );
-            } else {
-                $this->db->set('relacion_especificos', $trabajo['relacion_especificos'] );
-            }
-
-            $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-            //$this->db->set('fecha_ejecucion', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
-            //$this->db->set('feeds_output', $trabajo['feeds_output'] );
-            $this->db->set('cron_config', $trabajo['cron_config']);
+            $this->db->set( 'uid_trabajo', "UUID()", FALSE );
+            $this->db->set( 'uid_usuario', $trabajo['usuario'] );
+            $this->db->set( 'uid_categoria', $trabajo['categoria'] );
+            $this->db->set( 'uid_vertical', $trabajo['vertical'] );
+            $this->db->set( 'nombre', $trabajo['nombre'] );
+            $this->db->set( 'slug_nombre_feed', $trabajo['slug_nombre_feed'] );
+            $this->db->set( 'url_origen', $trabajo['url-origen'] );
+            if ( $trabajo['tipo_salida'] == 2 )
+                $this->db->set( 'plantilla', $trabajo['uid_plantilla'] );
+            $this->db->set( 'campos_seleccionados', $trabajo['campos'] );
+            $this->db->set( 'fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+            $this->db->set( 'cron_config', $trabajo['cron_config'] );
             $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
             //$this->db->cache_delete_all();
-            if ( $this->db->affected_rows() > 0 ) return TRUE;
-            else return FALSE;         
+            if ( $this->db->affected_rows() > 0 ){
+                if ( $trabajo['tipo_salida'] == 1 ){
+                    $this->db->select( 'uid_trabajo' );
+                    $this->db->where( 'id_trabajo', $this->db->insert_id() );
+                    $result = $this->db->get( $this->db->dbprefix( 'trabajos' ) );
+                    if ( $result->num_rows() > 0 ){
+                        $row = $result->row();
+                        $formatos = $this->trabajos_formatos( $trabajo['formatos'], $row->uid_trabajo );
+                        if ( $formatos == TRUE ) return TRUE;
+                        else return FALSE;
+                    } else {
+                        return FALSE;
+                    }
+                    $result->free_result();
+                }
+                return TRUE;
+            } else {
+                return FALSE;
+            }
         }
 
         public function add_usuario( $usuario ){
             $timestamp = time();
-            $this->db->set( 'uid_usuario', "UUID()", FALSE);
+            $this->db->set( 'uid_usuario', "UUID()", FALSE );
             $this->db->set( 'nombre', $usuario['nombre'] );
             $this->db->set( 'apellidos', $usuario['apellidos'] );
             $this->db->set( 'email', "AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE );
-            $this->db->set( 'extension', $usuario['extension']);
+            $this->db->set( 'extension', $usuario['extension'] );
             $this->db->set( 'celular', "AES_ENCRYPT('{$usuario['celular']}','{$this->key_encrypt}')", FALSE );
             $this->db->set( 'compania_celular', $usuario['compania_celular'] );
             $this->db->set( 'nivel', $usuario['rol_usuario'] );
@@ -476,12 +481,12 @@ class Cms_model extends CI_Model {
             $this->db->set( 'fecha_registro',  gmt_to_local( $timestamp, $this->timezone, TRUE) );
             $this->db->insert($this->db->dbprefix( 'usuarios' ) );
             //$this->db->cache_delete_all();
-            if ($this->db->affected_rows() > 0){
+            if ( $this->db->affected_rows() > 0 ){
                 //$this->db->cache_off();
-                $this->db->select('uid_usuario');
-                $this->db->where('email',"AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')",FALSE);
-                $result = $this->db->get($this->db->dbprefix( 'usuarios' ) );
-                if ($result->num_rows() > 0){
+                $this->db->select( 'uid_usuario' );
+                $this->db->where( 'email',"AES_ENCRYPT('{$usuario['email']}','{$this->key_encrypt}')", FALSE );
+                $result = $this->db->get( $this->db->dbprefix( 'usuarios' ) );
+                if ( $result->num_rows() > 0 ){
                     $row = $result->row();
                     $c_asign = $this->categorias_asignadas( $usuario['categorias'], $row->uid_usuario );
                     $v_asign = $this->verticales_asigandas( $usuario['verticales'], $row->uid_usuario );
@@ -532,7 +537,19 @@ class Cms_model extends CI_Model {
             //$this->db->cache_delete_all();
             if ( $this->db->affected_rows() > 0 ) return TRUE;
             else return FALSE;
-        }        
+        }
+
+        private function trabajos_formatos( $formatos = array(), $uid = '' ){
+            $this->db->delete( $this->db->dbprefix( 'trabajos_formatos' ), array( 'uid_trabajo' => $uid ) );
+            $formatos = json_decode( $formatos );
+            foreach ( $formatos as $formato ){
+                $this->db->set( 'uid_trabajo', $uid );
+                $this->db->set( 'formato', json_encode( $formato ) );
+                $this->db->insert( $this->db->dbprefix( 'trabajos_formatos' ) );
+            }
+            if ( $this->db->affected_rows() > 0 ) return TRUE;
+            else return FALSE;
+        }
     /** TERMINAN INSERCIONES **/
 
     /** ACTUALIZACIONES **/

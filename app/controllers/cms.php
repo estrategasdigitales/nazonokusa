@@ -861,6 +861,14 @@ class Cms extends CI_Controller {
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
 				$trabajo['formato_salida']		= $this->input->post('formato_salida');
+				switch ( $trabajo['formato_salida'] ){
+					case 1:
+						$trabajo['encoding']	= $this->detect_encoding( $this->input->post( 'url-origen' ) );
+						break;
+					case 2:
+						$trabajo['encoding']	= $this->detect_encoding( $this->input->post( 'url-origen' ) );
+						break;
+				}
 				$trabajo['json_estructura']		= base_url() . 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_estructura( $trabajo );
@@ -1041,6 +1049,14 @@ class Cms extends CI_Controller {
             $this->pdf->Ln(3);
         }
         $this->pdf->Output( $reporte->slug_nombre_reporte . '.pdf', 'I');
+	}
+
+	private function detect_encoding( $url ){
+		$url = file_get_contents_curl( $url );
+		$dom = new DOMDocument();
+		$dom->preserveWhiteSpace = FALSE;
+		$dom->loadXML( $url );
+		return $dom->xmlEncoding;
 	}
 
 	/**

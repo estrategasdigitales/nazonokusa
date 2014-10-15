@@ -11,11 +11,10 @@
 	<?php echo link_tag('css/jquery-ui-1.10.4.custom.css'); ?>
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 	<?php echo link_tag('css/bootstrap-datepicker.css'); ?>
-	<?php echo link_tag('css/ace.min.css'); ?>
 	<?php echo link_tag('js/extjs/resources/ext-theme-neptune/ext-theme-neptune-all.css'); ?>
 	<?php echo link_tag('css/middleware.css'); ?>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>js/no.conflict.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<!--<script type="text/javascript" src="<?php echo base_url(); ?>js/no.conflict.js"></script>-->
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.custom.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap-datepicker.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>

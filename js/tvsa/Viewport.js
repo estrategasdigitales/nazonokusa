@@ -4,9 +4,7 @@ Ext.define('TVSA.Viewport', {
     height : 600,
     border : false,
     initComponent: function (){
-        
         var me = this;
-
         var tree1 = Ext.create("TVSA.Tree",{
             region      : 'west',
             id          : 'tvsafeed',
@@ -17,13 +15,11 @@ Ext.define('TVSA.Viewport', {
             width       : 350,
             listeners : {
                 'itemclick' : function(_me, record, item, index, e ){
-                    if(record.raw.leaf)
+                    if(record.data.leaf)
                         label_tree1.setText(record.get("id"));
                 }
             }
         });
-
-
 
         var tree2 = Ext.create("TVSA.Tree",{
             region      : 'east',
@@ -36,12 +32,11 @@ Ext.define('TVSA.Viewport', {
             listeners : {
                 'itemclick' : function(_me, record, item, index, e ){
 
-                    if(record.raw.leaf)
+                    if(record.data.leaf)
                         label_tree2.setText(record.get("id"));
                 }
             }
         });
-
 
         var grid = Ext.create('TVSA.Grid',{
             title  : 'RELACIÓNES',
@@ -69,48 +64,33 @@ Ext.define('TVSA.Viewport', {
             text : 'AGREGAR RELACIÓN',
             margin: '20 50 40 50',
             handler : function(){
-
-
                 var node_tree1 = tree1.getSelectionModel().getSelection();
                 var node_tree2 = tree2.getSelectionModel().getSelection();
 
-                
-
-
-                if(node_tree1.length == 0 || node_tree2.length == 0)
-                {
+                if( node_tree1.length == 0 || node_tree2.length == 0 ){
                     Ext.Msg.alert('Advertencia', 'Seleciona un nodo del FEED.');
-                }else
-                {
-                    var feed1 = node_tree1[0].raw;
-                    var feed2 = node_tree2[0].raw;
+                } else {
+                    var feed1 = node_tree1[0].data;
+                    var feed2 = node_tree2[0].data;
                     var id = feed1.id+"="+feed2.id;
 
 
-                    if(!feed1.leaf || !feed2.leaf)
-                    {
+                    if(!feed1.leaf || !feed2.leaf){
                         Ext.Msg.alert('Advertencia', 'No puede hacer una relación con un directorio.<br> Selecione un nodo en ambos arboles.');
 
-                    }else if(!grid.store.findRecord("id",id) && !grid.store.findRecord("feed1",feed1.id) && !grid.store.findRecord("feed2",feed2.id))
-                    {
+                    } else if( ! grid.store.findRecord( "id", id ) && ! grid.store.findRecord( "feed1", feed1.id ) && ! grid.store.findRecord( "feed2", feed2.id ) ){
                         grid.store.insert(0,{
                             id    : id,
                             feed1 : feed1.id,
                             feed2 : feed2.id
                         });
 
-                        if(Ext.isDefined(TVSA._inputHidden))
+                        if( Ext.isDefined( TVSA._inputHidden ) )
                             Ext.get(TVSA._inputHidden).dom.value = TVSA.getData();
                     }
-
                 }
-                
-
-
-       
             }
         });
-
 
         var center = Ext.create('Ext.panel.Panel',{
             region : 'center',
@@ -121,7 +101,6 @@ Ext.define('TVSA.Viewport', {
             title  : 'RELACIÓNES',
             items  : [
                         {
-
                             xtype   : 'panel',
                             layout  : {
                                 type    : 'hbox',       // Arrange child items vertically
@@ -144,13 +123,9 @@ Ext.define('TVSA.Viewport', {
 
                         },
                         add,
-
                         grid
-                         
                     ]
         });
-
-
 
         me.items =  [
         {
@@ -165,9 +140,6 @@ Ext.define('TVSA.Viewport', {
             center
         ];
 
-
-
         me.callParent(arguments);
     }
-
 });

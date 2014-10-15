@@ -164,7 +164,6 @@ class Netstorage_model extends Nucleo {
 						case 3:
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
 							$final = $node->toJSON( $file );
-							print_r( $final );die;
 							//$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 4:
