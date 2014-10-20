@@ -109,7 +109,6 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function feed_service(){
-		$output = array();
 		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
@@ -127,8 +126,6 @@ class Nucleo extends CI_Controller {
 			}
 			$contents = $this->array_unique_multidimensional( $cont );
 			$indices = create_indexes_specific( $contents );
-
-
 		} else {
 			$pos = strpos( $url, '(' );
 			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
@@ -172,7 +169,6 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function feed_service_specific(){
-		$output = array();
 		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );
@@ -187,8 +183,7 @@ class Nucleo extends CI_Controller {
 					$item = json_encode( $item );
 
 				$cont[] = $this->mapAttributes( $item  );
-			}
-			
+			}	
 			$contents = $this->array_unique_multidimensional( $cont );
 			$indices = create_indexes_specific( $contents );
 		} else {
@@ -233,7 +228,6 @@ class Nucleo extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function feed_service_content(){
-		$output = array();
 		$url = $this->input->get( 'url' );
 		$url = urldecode( base64_decode( $url ) );
 		$url = file_get_contents_curl( $url );

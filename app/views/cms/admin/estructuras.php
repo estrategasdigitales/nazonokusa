@@ -19,19 +19,7 @@
 						<tr>
 							<td><?php echo $estructura->nombre; ?></td>
 							<td class="text-center">
-								<?php
-									switch ( $estructura->formato_salida ) {
-										case '1':
-											echo 'RSS';
-											break;
-										case '2':
-											echo 'XML';
-											break;
-										case '3':
-											echo 'JSON';
-											break;
-									}
-								?>
+								<?php echo $estructura->formato_salida; ?>
 							</td>
 							<td class="text-center">
 								<?php if ( $estructura->activo == 0 ){ ?>
