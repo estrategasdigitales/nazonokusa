@@ -401,14 +401,16 @@ class Cms_model extends CI_Model {
 
         public function add_estructura( $trabajo ){
             $timestamp = time();
-            $this->db->set('uid_estructura', "UUID()", FALSE);
-            $this->db->set('uid_usuario', $trabajo['usuario']);
-            $this->db->set('nombre', $trabajo['nombre']);
-            $this->db->set('slug_nombre_feed', $trabajo['slug_nombre_feed']);
-            $this->db->set('url_origen', $trabajo['url-origen']);
-            $this->db->set('formato_salida', $trabajo['formato_salida']);
-            $this->db->set('json_estructura', $trabajo['json_estructura'] );
-            $this->db->set('fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
+            $this->db->set( 'uid_estructura', "UUID()", FALSE );
+            $this->db->set( 'uid_usuario', $trabajo['usuario'] );
+            $this->db->set( 'nombre', $trabajo['nombre'] );
+            $this->db->set( 'slug_nombre_feed', $trabajo['slug_nombre_feed'] );
+            $this->db->set( 'url_origen', $trabajo['url-origen'] );
+            $this->db->set( 'formato_salida', $trabajo['formato_salida'] );
+            $this->db->set( 'json_estructura', $trabajo['json_estructura'] );
+            $this->db->set( 'encoding', base64_encode( $trabajo['encoding'] ) );
+            $this->db->set( 'cabeceras', $trabajo['headers'] );
+            $this->db->set( 'fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
             $this->db->insert( $this->db->dbprefix( 'estructuras_salida' ) );
             if ( $this->db->affected_rows() > 0 ) return TRUE;
             else return FALSE;       

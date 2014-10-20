@@ -853,20 +853,25 @@ class Cms extends CI_Controller {
 		} else {
 			$this->form_validation->set_rules('nombre', 'Nombre de la estructura', 'trim|required|min_length[3]|xss_clean');
 			$this->form_validation->set_rules('url-origen', 'URL Origen', 'required|min_length[3]|xss_clean');
-			$this->form_validation->set_rules('formato_salida', 'Formato', 'required|callback_valid_option|xss_clean');
 			
 			if ( $this->form_validation->run() === TRUE ){
 				$trabajo['usuario'] 			= $this->session->userdata('uid');
 				$trabajo['nombre']   			= $this->input->post('nombre');
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
-				$trabajo['formato_salida']		= $this->input->post('formato_salida');
+				$trabajo['formato_salida']		= $this->detect_format( $this->input->post('url-origen') );
 				switch ( $trabajo['formato_salida'] ){
-					case 1:
+					case 'XML':
 						$trabajo['encoding']	= $this->detect_encoding( $this->input->post( 'url-origen' ) );
+						$trabajo['headers']		= '';
 						break;
-					case 2:
+					case 'RSS':
 						$trabajo['encoding']	= $this->detect_encoding( $this->input->post( 'url-origen' ) );
+						$trabajo['headers']		= base64_encode( $this->detect_headers( $this->input->post( 'url-origen' ) ) );
+						break;
+					default:
+						$trabajo['encoding']	= '';
+						$trabajo['headers']		= '';
 						break;
 				}
 				$trabajo['json_estructura']		= base_url() . 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
@@ -1057,6 +1062,39 @@ class Cms extends CI_Controller {
 		$dom->preserveWhiteSpace = FALSE;
 		$dom->loadXML( $url );
 		return $dom->xmlEncoding;
+	}
+
+	private function detect_format( $url ){
+		$format = '';
+		$url = file_get_contents_curl( $url );
+		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+			$url = html_entity_decode( $url );
+		}
+		if ( $feed = json_decode( $url ) ){
+			$format = 'JSON';
+		} else {
+			$pos = strpos( $url, '(' );
+			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+				$format = 'JSONP';
+			} else {
+				$dom = new DOMDocument();
+				$dom->preserveWhiteSpace = FALSE;
+				$dom->loadXML( $url );
+				if ( $dom->documentElement->nodeName == 'rss' ){
+					$format = 'RSS';
+				} else {
+					$format = 'XML';
+				}
+			}
+		}
+		return $format;
+	}
+
+	private function detect_headers( $url ){
+		$headers = '';
+		$url = file_get_contents_curl( $url );	
+		preg_match_all('/<rss[^>]+>/i', $url, $headers );
+		return htmlentities( $headers[0][0] );
 	}
 
 	/**

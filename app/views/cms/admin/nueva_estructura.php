@@ -16,24 +16,12 @@
 								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre de la estructura">
 							</div>
 						</div>
+					</div>
+					<div class="col-sm-6 col-md-6">
 						<div class="form-group">
 							<label for="url-origen" class="col-sm-3 col-md-2 control-label">URL de origen</label>
 							<div class="col-sm-9 col-md-10">
 								<input type="url" class="form-control" id="url-origen" name="url-origen">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6 col-md-6">
-						<div class="form-group">
-							<label for="url-origen" class="col-sm-3 col-md-2 control-label">Formato</label>
-							<div class="col-sm-9 col-md-10">
-								<select class="form-control" name="formato_salida">
-									<option value="0">Selecciona una Formato de Salida</option>					
-									<option value="1">RSS</option>
-									<option value="2">XML</option>
-									<option value="3">JSON</option>
-									<!--<option value="4">JSONP</option>-->
-								</select>
 							</div>
 						</div>
 					</div>
