@@ -337,12 +337,12 @@ class Node{
 		$writer->flush();
     }
 
-    public function toXML( $file = 'xml.xml' ){
+    public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
     	$template = $this->_getTEMPLATE();
     	$nodes = $this->getData();
 		$writer = new XMLWriter();  
 		$writer->openURI( $file );
-		$writer->startDocument( '1.0','UTF-8' );
+		$writer->startDocument( '1.0', $encoding );
 		$writer->setIndent( 4 );
 		$writer->startElement( 'xml' ); 
 		$this->_toXML( $writer, $nodes, 'item' );

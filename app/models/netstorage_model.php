@@ -131,26 +131,28 @@ class Netstorage_model extends Nucleo {
 					}
 					break;
 				case 2:
+				//print_r( $trabajo );die;
 					$node = new Node(
 							[
 								'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
 								'template' 	=> $trabajo->json_estructura,
-								'paths' 	=> base64_decode( $trabajo->relacion_especificos ),
+								'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
 							]
 						);
+					$encoding = base64_decode( $trabajo->encoding );
 					switch ( $trabajo->formato_salida ) {
-						case 1:
+						case 'RSS':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
 							$final = $node->toRSS( $file );
 							//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
-						case 2:
+						case 'XML':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
-							$final = $node->toXML( $file );
+							$final = $node->toXML( $file, $encoding );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
-						case 3:
+						case 'JSON':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
 							$final = $node->toJSON( $file );
 							//$this->upload_netstorage( $feed_output, $ftpath );
