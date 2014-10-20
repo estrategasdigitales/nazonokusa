@@ -66,25 +66,14 @@ class Netstorage_model extends Nucleo {
 			ftp_close( $ftp_conn );
 			switch ( $trabajo->tipo_salida ){
 				case 1:
-					$formatos = json_decode( $trabajo->formatos );
 					/**
 					 * Aquí se pudiera iniciar la sesión para que el cron trabaje con el tree
 					 */
-					$url = base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
-					$content = json_decode( file_get_contents_curl( $url ) );
-					$tree = new Tree( $content, true );
-					$arbol = serialize( $tree );
-					$nodes = serialize( $trabajo->campos_seleccionados );
-					$output = $this->getItems( json_decode( $trabajo->campos_seleccionados ), $trabajo->url_origen, $arbol, $nodes );
-					
-					if ( $this->session->userdata( 'session' ) !== TRUE && ( json_decode( $output ) === FALSE || json_decode( $output ) === NULL ) ){
-						$this->alertas->alerta( $trabajo->uid_trabajo, 'Error al intentar obtener los items de origen - getItems' );
-						$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E02 - No se ha podido obtener la estructura de salida / getItems');
-						return FALSE;
-					}
-					
+					$content = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
+					$formatos = $this->cms->get_trabajos_formatos( $trabajo->uid_trabajo );
 					foreach ( $formatos as $formato ){
-						switch ( $formato->formato ) {
+						$formato = json_decode( $formato->formato );
+						switch ( $formato->format ) {
 							case 'xml':
 								$open = fopen( "./" . $feed_output . $trabajo->slug_nombre_feed . '-' . $formato->formato.'.xml', "w" );
 								$array = json_decode( $output, TRUE );

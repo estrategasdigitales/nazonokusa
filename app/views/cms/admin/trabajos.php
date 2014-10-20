@@ -31,33 +31,34 @@
 							</td>
 							<td class="text-center">
 								<?php
-								/*	if ( $trabajo->activo == 1 ){
+									if ( $trabajo->activo == 1 ){
 										switch ( $trabajo->tipo_salida ){
 											case 1:
-												$salidas = json_decode( $trabajo->formatos );
-												foreach ( $salidas as $salida ){
+												$formatos = $this->cms->get_trabajos_formatos( $trabajo->uid_trabajo );
+												foreach ( $formatos as $salida ){
+													$salida = json_decode( $salida->formato );
 													echo '<span>';
-															switch ( $salida->formato ) {
+															switch ( $salida->format ) {
 																case 'json':
 																	//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
-																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
+																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" title="' . $salida->format .'" class="petroleo" target="_blank">';
 																break;
 																case 'jsonp':
 																	//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
-																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" title="' . $salida->formato .'" class="petroleo" target="_blank">';
+																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" title="' . $salida->format .'" class="petroleo" target="_blank">';
 																break;
 																case 'xml':
 																	//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
-																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
+																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" title="' . $salida->format . '" class="petroleo" target="_blank">';
 																break;
 																case 'rss':
 																	//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
-																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" title="' . $salida->formato . '" class="petroleo" target="_blank">';
+																	echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" title="' . $salida->format . '" class="petroleo" target="_blank">';
 																break;
 															}
 															echo '<span class="glyphicon glyphicon-link"></span>';
-															echo '<span class="glyphicon-class">' . $salida->formato . '</span>';
-														echo '</a>';
+															echo '<span class="glyphicon-class">' . $salida->format . '</span>';
+														echo '</a> ';
 													echo '</span>';
 												}
 											break;
@@ -96,7 +97,7 @@
 												echo '</span>';
 											break;
 										}
-									} */
+									}
 								?>
 							</td>
 							<td class="text-center">

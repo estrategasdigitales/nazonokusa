@@ -253,7 +253,7 @@ class Cms_model extends CI_Model {
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
             $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, 
-                a.slug_nombre_feed, a.url_origen, a.formatos, a.campos_seleccionados, a.activo, 
+                a.slug_nombre_feed, a.url_origen, a.campos_seleccionados, a.activo, 
                 a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
@@ -264,6 +264,15 @@ class Cms_model extends CI_Model {
             if ($result->num_rows() > 0) return $result->row();
             else return FALSE;
             $result->free_result();
+        }
+
+        public function get_trabajos_formatos( $uid ){
+            $this->db->select( 'formato' );
+            $this->db->where( 'uid_trabajo', $uid );
+            $formatos = $this->db->get( $this->db->dbprefix( 'trabajos_formatos' ) );
+            if ( $formatos->num_rows() > 0 ) return $formatos->result();
+            else return NULL;
+            $formatos->free_result();
         }
 
         public function get_usuario( $usuario ){
@@ -441,9 +450,10 @@ class Cms_model extends CI_Model {
             $this->db->set( 'nombre', $trabajo['nombre'] );
             $this->db->set( 'slug_nombre_feed', $trabajo['slug_nombre_feed'] );
             $this->db->set( 'url_origen', $trabajo['url-origen'] );
+            $this->db->set( 'tipo_salida', $trabajo['tipo_salida'] );
             if ( $trabajo['tipo_salida'] == 2 )
                 $this->db->set( 'plantilla', $trabajo['uid_plantilla'] );
-            $this->db->set( 'campos_seleccionados', $trabajo['campos'] );
+            $this->db->set( 'campos_seleccionados', $trabajo['campos_seleccionados'] );
             $this->db->set( 'fecha_registro', gmt_to_local( $timestamp, $this->timezone, TRUE ) );
             $this->db->set( 'cron_config', $trabajo['cron_config'] );
             $this->db->insert( $this->db->dbprefix( 'trabajos' ) );

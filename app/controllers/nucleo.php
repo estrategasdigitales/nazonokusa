@@ -380,7 +380,8 @@ class Nucleo extends CI_Controller {
 				$trabajo['vertical']   			= $this->input->post( 'vertical' );
 				$trabajo['campos']				= $this->input->post( 'claves' );
 				$trabajo['tipo_salida']			= $this->input->post( 'tipo_salida' );
-				$trabajo['uid_plantilla']		= $this->input->post( 'formato_especifico' );
+				if ( $this->input->post( 'tipo_salida' ) == 2 )
+					$trabajo['uid_plantilla']		= $this->input->post( 'formato_especifico' );
 				$trabajo['campos_seleccionados'] = $this->input->post( 'campos_seleccionados' );
 				if ( $this->input->post('tipo_salida') == 1 ){
 					$trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
