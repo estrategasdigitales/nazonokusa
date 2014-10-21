@@ -23,7 +23,7 @@ class Node{
 	
 	function __construct( $arguments = [] ){
 		$this->URL_INPUT 	 	= $arguments['input'];
-		$this->URL_TEMPLATE 	= $arguments['template'];
+		$this->URL_TEMPLATE 	= isset( $arguments['template'] ) ? $arguments['template'] : '';
 		$this->ORIGIN_PATHS 	= $arguments['paths'];
 		$this->PATHS 		 	= $this->_setChildPath();
 
@@ -176,14 +176,12 @@ class Node{
 			 	$output[$i] = $template;
 
 			foreach ( $node['child'] as $child ){
-				$akey = explode(".",$child["key"]);
+				$akey = explode( ".", $child["key"] );
 				$key  = '["' . implode( '"]["', $akey ) . '"]';
 				$return = $this->_extractData( $record, $akey );
 				$avalue = explode( '.', $child['value'] );
 				$value  = '["' . implode('"]["', $avalue ) . '"][]';
 				if ( ! empty( $return ) ){	
-
-
 					if ( $j == 0 )
 						eval("\$output[$i]$value = \"$return\";");
 					else
@@ -202,7 +200,7 @@ class Node{
     private function _do( $paths, $id, $j, $input, $_input, $template, $output, $pathParent = null ){
 		$node = $paths[$id];
 		$path = $node["path"];
-		if ($path == "[*]")
+		if ( $path == "[*]" )
 			$path = current( array_keys( $input ) );
 		else
 			$path = preg_replace( '/(\[\*\])$/', '', $path );
@@ -229,16 +227,16 @@ class Node{
 							eval("\$output[$j]$value = \"$return\";");
 						}
 					}
-					$output = $this->_do($paths,$id,$i,$record,$inputs,$template,$output,$pathParent);
+					$output = $this->_do( $paths, $id, $i, $record, $inputs, $template, $output, $pathParent );
 			 	} else {
 			 		foreach ( $record as $ii => $rrecord ){
 						foreach ( $node["child"] as $child ){
-							$akey 	= explode(".",$child["key"]);
-							$key  	= '["'.implode('"]["', $akey).'"]';					
+							$akey 	= explode( ".", $child["key"] );
+							$key  	= '["'. implode( '"]["', $akey ) . '"]';					
 							$return = $this->_extractData( $rrecord, $akey );
-							$avalue = explode(".",$child["value"]);
-							$avalue = str_replace("[*]", "", $avalue);
-							$value  = '["'.implode('"]["',$avalue).'"][]';
+							$avalue = explode( ".", $child["value"] );
+							$avalue = str_replace( "[*]", "", $avalue );
+							$value  = '["' . implode( '"]["' , $avalue ) . '"][]';
 							if ( ! empty( $return ) ){	
 								eval("\$output[$ii]$value = \"$return\";");	
 							}
@@ -247,6 +245,8 @@ class Node{
 			 		}
 				}
 			}
+
+			return $output;
 		}
 	}
 
@@ -312,12 +312,12 @@ class Node{
     	return $this->_fixkeys( $this->getData() );
     }
 
-    public function toRSS( $file = 'rss.xml' ){
+    public function toRSS( $file = 'rss.xml', $encoding = 'UTF-8' ){
     	$template = $this->_getTEMPLATE();
     	$nodes = $this->getData();
 		$writer = new XMLWriter();
 		$writer->openURI($file);
-		$writer->startDocument( '1.0','UTF-8' );
+		$writer->startDocument( '1.0', $encoding );
 		$writer->setIndent( 4 );
 		$writer->startElement( 'rss' );
 		$writer->writeAttribute( 'version', '2.0' );

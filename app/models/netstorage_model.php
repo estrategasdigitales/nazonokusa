@@ -155,7 +155,7 @@ class Netstorage_model extends Nucleo {
 						case 'JSON':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
 							$final = $node->toJSON( $file );
-							//$this->upload_netstorage( $feed_output, $ftpath );
+							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 4:
 							# json-p
