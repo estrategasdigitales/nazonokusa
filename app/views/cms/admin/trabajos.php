@@ -65,34 +65,34 @@
 											case 2:
 												echo '<span>';
 													switch ( $trabajo->formato_salida ) {
-														case 1:
+														case 'RSS':
 															//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" class="petroleo" target="_blank">';
 															echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">rss</span>';
 															echo '</a>';
 														break;
-														case 2:
+														case 'XML':
 															//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" class="petroleo" target="_blank">';
 															echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">xml</span>';
 															echo '</a>';
 														break;
-														case 3:
+														case 'JSON':
 															//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" class="petroleo" target="_blank">';
 															echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">json</span>';
 															echo '</a>';
 														break;
-														case 4:
+														/*case 4:
 															//echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" class="petroleo" target="_blank">';
 															echo '<a href="' . base_url() . 'outputs/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">jsonp</span>';
 															echo '</a>';
-														break;
+														break;*/
 													}
 												echo '</span>';
 											break;
