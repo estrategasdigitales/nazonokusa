@@ -43,3 +43,23 @@ Outputs:
 
 https://sf.esmas.com/xbox/129240101.xml ** No cargó la plantilla en el árbol
 http://static-feeds.esmas.com/awsfeeds/sports/video/program_aplicaster/futbolinternacional.xml    ** Creo bien la estructura, pero la salida no fué bien estructurada
+
+
+UPDATE: 20141024
+
+Inputs:
+http://deportes.televisa.com/content/televisa/deportes.video.js
+http://feeds.esmas.com/data-feeds-esmas/ipad/telenovelas.js
+http://feeds.esmas.com/data-feeds-esmas/ipad/entretenimiento.js
+http://feeds.esmas.com/data-feeds-esmas/ipad/especiales.js
+http://deportes.televisa.com/content/televisa/deportes.mix.js
+http://deportes.televisa.com/content/televisa/deportes.photo.js
+http://deportes.televisa.com/content/televisa/deportes.video.js
+http://deportes.televisa.com/content/televisa/deportes/video/futbol-mexicano.video.js
+http://deportes.televisa.com/content/televisa/deportes/fotogalerias/super-clic.photo.js
+https://sf.esmas.com/xbox/129240101.xml
+http://feeds.esmas.com/data-feeds-esmas/canal5/141003.js
+http://feeds.esmas.com/data-feeds-esmas/tvs/lg/01292404.js
+http://static-feeds.esmas.com/awsfeeds/sports/video/program_aplicaster/futbolinternacional.xml
+http://deportes.televisa.com/content/televisa/deportes.video.js
+http://noticieros.televisa.com/content/televisa/noticieros.videostage.xml
