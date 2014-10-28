@@ -310,37 +310,45 @@ class Nucleo extends CI_Controller {
 		$campos 		= [];
 		$items 			= count( $campos_orig );
 		if ( ! empty( $campos_orig[0] ) ){
-			for ($i = 0; $i < count( $campos_orig); $i++){
+			for ( $i = 0; $i < count( $campos_orig ); $i++ ){
 				foreach ( $campos_orig[$i] as $key => $value ){
+					if ( is_object( $value ) ){
+						$value = get_object_vars( $value );
+					}
+
 					if ( is_array( $value ) ){
-						if ( ! empty($campos[$key] ) ){
+						if ( ! empty( $campos[$key] ) ){
 							$campos[$key] = $this->claves( $value, $campos[$key] );
-						}else{
+						} else {
 							$campos[$key] = $this->claves( $value, $campos[$key] = [] );
 						}
-					}else{
+					} else {
 						if ( ! array_key_exists($key, $campos) ){
 							$campos[$key] = '';
 						}
 					}
 				}
 			}
-		}else{
+		} else {
 			foreach ( $campos_orig as $key => $value ){
+				if ( is_object( $value ) ){
+					$value = get_object_vars( $value );
+				}
+
 				if ( is_array( $value ) ){
 					if ( ! empty( $campos[$key] ) ){
 						$campos[$key] = $this->claves( $value, $campos[$key] );
-					}else{
+					} else {
 						$campos[$key] = $this->claves( $value, $campos[$key] = [] );
+						
 					}
-				}else{
+				} else {
 					if( ! array_key_exists( $key, $campos ) ){
 						$campos[$key] = '';
 					}
 				}
 			}
 		}
-
 		return $campos;
 	}
 
@@ -411,6 +419,10 @@ class Nucleo extends CI_Controller {
 		if ( ! empty( $arreglo[0] ) ){
 			for ($i = 0; $i < count( $arreglo ); $i++ ){
 				foreach ( $arreglo[$i] as $key => $value ){
+					if ( is_object( $value ) ){
+						$value = get_object_vars( $value );
+					}
+
 					if ( is_array( $value ) ){
 						if ( ! empty( $origin[$key] ) ){
 							$origin[$key] = $this->claves( $value, $origin[$key] );
@@ -427,6 +439,10 @@ class Nucleo extends CI_Controller {
 		} else {
 			foreach ( $arreglo as $key => $value ){
 				if ( is_array( $value ) ){
+					if ( is_object( $value ) ){
+						$value = get_object_vars( $value );
+					}
+
 					if ( ! empty( $origin[$key] ) ){
 						$origin[$key] = $this->claves( $value, $origin[$key] );
 					} else {
