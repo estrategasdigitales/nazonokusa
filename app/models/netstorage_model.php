@@ -80,7 +80,7 @@ class Netstorage_model extends Nucleo {
 										'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
 									]
 								);
-						switch ( $formato->format ) {
+						switch ( $formato->format ){
 							case 'xml':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
 								$final = $node->toXML( $file );
@@ -90,7 +90,7 @@ class Netstorage_model extends Nucleo {
 								break;
 							case 'rss':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
-								$final = $node->toRSS( $file, 'UTF-8', '', json_decode( $formato->attributes, TRUE ) );
+								$final = $node->toRSS( $file, 'UTF-8', '' );
 								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath );
 								break;
