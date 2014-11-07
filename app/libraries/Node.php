@@ -1,12 +1,15 @@
 <?php if ( ! defined('BASEPATH' ) ) exit( 'No direct script access allowed' );
+
 require_once( __DIR__ . '/jsonpath/JsonStore.php' );
 /**
 *  Miguel Martinez <natacion@gmail.com>
 *  v 1.5
 */
-class Node
-{
+
+class Node{
 	private $curl;
+
+
 	var $URL_INPUT 		= null;
 	var $INPUT 		    = null;
 
@@ -23,6 +26,7 @@ class Node
 		 $this->URL_INPUT 	 = $arguments["input"];
 		 $this->URL_TEMPLATE = isset($arguments["template"]) ? $arguments["template"] : "";
 		 $this->ORIGIN_PATHS = $arguments["paths"];
+
 
 		 $this->PATHS 		 = $this->_setChildPath();
 		 
@@ -127,8 +131,13 @@ class Node
 
 		//$this->_sortBycolumn($this->ORIGIN_PATHS,"feed1");
 
-		//print_r($this->ORIGIN_PATHS);
+		
+
 		foreach ($this->ORIGIN_PATHS as $path) {
+			
+			if($path==null)
+				continue;
+
 			$pathFeed = $this->_generatePath($path["feed1"]);
 
 			$value = $this->_removeRoot($path["feed2"]);
@@ -164,7 +173,7 @@ class Node
 	    foreach ($string as $name) {
 
 	            if (key_exists($name, $current_data)) {
-	                    $current_data = $current_data[$name];
+	                    return $current_data[$name];
 	            } else {
 	                    return null;
 	            }
@@ -176,7 +185,6 @@ class Node
 
 	private function _fixkeys($array) {
 
-
 	    $numberCheck = false;
 	    foreach ($array as $k => $val) {
 
@@ -184,6 +192,8 @@ class Node
 	    	// print_r($val); 
 	    	// echo "key =".$k."\n";
 	    	// echo "\n\n\n\n";
+
+	    	
 
 	    		// echo count($val);
 	    		// print_r($val);
@@ -215,7 +225,7 @@ class Node
 
     private function __do($paths,$id,$j,$input,$_input,$template,$output,$pathParent = null)
     {
-      // foreach ($paths as $path) {
+        // foreach ($paths as $path) {
 
 		$node = $paths[$id];
 
@@ -279,16 +289,19 @@ class Node
 						if(!empty($return))
 						{	
 
-							if($j == 0)
-								eval("\$output[$i]$value = \"$return\";");	
+							if($i == 0)
+								eval("\$output[$j]$value = \"$return\";");	
 							else
 								eval("\$output[$j]$value = \"$return\";");
 
 						}
 					}
+
+
 					$output = $this->__do($paths,$id,$i,$record,$inputs,$template,$output,$pathParent);
 				
 				}
+
 
          return $output;
 
@@ -303,7 +316,6 @@ class Node
     private function _do($paths,$id,$j,$input,$_input,$template,$output,$pathParent = null)
     {
       // foreach ($paths as $path) {
-
 		$node = $paths[$id];
 
 
@@ -313,7 +325,6 @@ class Node
 				$path = current(array_keys($input));
 			else
 				$path = preg_replace('/(\[\*\])$/', '', $path);
-
 
 
 			$pathParent = $path;
@@ -327,8 +338,6 @@ class Node
 
 			if($id < $tpath)
 				$id++;
-
-
 
 			
 			if(is_array($inputs) and count($inputs) > 0)
@@ -345,10 +354,10 @@ class Node
 
 							$akey = explode(".",$child["key"]);
 							$key  = '["'.implode('"]["',$akey).'"]';
-
 							
 							$return = $this->_extractData($record,$akey);
-							
+							print_r($akey);
+							print_r($record);
 							$avalue = explode(".",$child["value"]);
 							// $value  = '["'.implode('"]["',$avalue).'"]';
 							//   if($id > 0)
@@ -364,11 +373,11 @@ class Node
 
 							}
 						}
-
+						
 						$output = $this->_do($paths,$id,$i,$record,$inputs,$template,$output,$pathParent);
+						
 				 	}else
 				 	{
-
 				 		foreach ($record as $ii => $rrecord) {
 
 
@@ -409,6 +418,8 @@ class Node
 				
 				}
 
+
+
          return $output;
 
 
@@ -417,7 +428,6 @@ class Node
 
 	private function _toXML($writer,$nodes,$parentKey,&$i = 0)
 	{
-
 		foreach ($nodes as $nKey => $nValue) {
 			 
 			 $key = $parentKey;
@@ -471,12 +481,8 @@ class Node
 			 	}else
 			 	{
 
-
-
 			 		if(!is_numeric($key) and $i > 0)
 				 		$writer->startElement($key); 
-
-
 				 	
 				 	// echo "\n----\n\n";
 				 	// print_r($nValue);
@@ -522,11 +528,17 @@ class Node
     	$input    = $this->_getINPUT();
     	$template = $this->_getTEMPLATE();
 
+    	$return = array();
 
     	if($paths[0]["path"] == "[*]")
-    		return $this->_do($paths,0,0,$input,$input,$template,$output=[]);
+    		$return = $this->_do($paths,0,0,$input,$input,$template,$output=[]);
     	else
-    		return $this->__do($paths,0,0,$input,$input,$template,$output=[]);
+    		$return = $this->__do($paths,0,0,$input,$input,$template,$output=[]);
+
+
+    	//print_r($return);
+
+    	return $return;
     }
 
     public function getDataFixed()
@@ -536,8 +548,13 @@ class Node
 
 
 	public function toRSS( $file = 'rss.xml', $encoding = 'UTF-8', $header = '', $attributes = [] ){
+
     	$template = $this->_getTEMPLATE();
     	$nodes = $this->getDataFixed();
+
+    	//print_r($nodes);
+    	echo json_encode($nodes);
+
 		$writer = new XMLWriter();
 		$writer->openURI($file);
 		$writer->startDocument( '1.0', $encoding );
@@ -552,17 +569,24 @@ class Node
 
     	if ( $this->_searchKey( 'atom:link', $template ) )
     		$writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
-			$writer->startElement( 'channel');
-				$this->_toXML( $writer, $nodes, 'item');
-			$writer->endElement(); 
+		
+		$writer->startElement( 'channel');
+		$this->_toXML( $writer, $nodes, 'item');
+		
 		$writer->endElement(); 
+		$writer->endElement(); 
+		
 		$writer->endDocument(); 
 		$writer->flush();
     }
 
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
+
     	$template = $this->_getTEMPLATE();
     	$nodes = $this->getDataFixed();
+
+
+
 		$writer = new XMLWriter();  
 		$writer->openURI( $file );
 		$writer->startDocument( '1.0', $encoding );
@@ -575,9 +599,10 @@ class Node
     }
 
 
-    public function toJSON( $file = 'json.json', $function = '' )
-    {
+    public function toJSON( $file = 'json.json', $function = '' ){
+
     	$data = $this->getDataFixed();
+    	
     	if ( ! empty ( $function ) )
     		$json = $function . '('. json_encode( $data ) .')';
     	else
@@ -588,23 +613,7 @@ class Node
     	else
     		return $json;
     }
-
-
 }
 
 /* End of file Node.php */
 /* Location: ./app/libraries/Node.php */
-
-
-
- 
-  
-
-
-
-
-  
- 
-
-
-
