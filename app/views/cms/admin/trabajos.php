@@ -88,9 +88,9 @@
 							</td>
 							<td class="text-center">
 								<?php if ( $trabajo->activo == 0 ){ ?>
-									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 1);" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Activar</a>
+									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 1, '<?php echo base_url(); ?>nucleo/job_process');" type="button" class="btn btn-danger btn-sm btn-block btn-padding">Activar</a>
 								<?php } else { ?>
-									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 0);" type="button" class="btn btn-success btn-sm btn-block btn-padding">Desactivar</a>
+									<a href="javascript:activarTrabajo('<?php echo base64_encode( $trabajo->uid_trabajo ); ?>', 0, '<?php echo base_url(); ?>nucleo/job_process');" type="button" class="btn btn-success btn-sm btn-block btn-padding">Desactivar</a>
 								<?php } ?>
 							</td>
                             <?php  if ( $this->session->userdata( 'nivel' ) >= 1 && $this->session->userdata( 'nivel' ) <= 2 ){ ?>

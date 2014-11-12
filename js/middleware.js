@@ -784,7 +784,7 @@ function cargar_campos_especificos(){
 	}
 }
 
-function activarTrabajo(uid, flag){
+function activarTrabajo(uid, flag, url){
 	var opts = {
 		lines: 13, // The number of lines to draw
 		length: 25, // The length of each line
@@ -808,7 +808,7 @@ function activarTrabajo(uid, flag){
 
 	$('#foo').css('display','block');
 	var spinner = new Spinner(opts).spin(target);
-	$.post('nucleo/job_process', {status: flag, uidjob: uid}, function(data){
+	$.post( url, {status: flag, uidjob: uid}, function(data){
 		if(data != true){
 			spinner.stop();
 			$('#foo').css('display','none');
