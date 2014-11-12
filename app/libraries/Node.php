@@ -356,8 +356,8 @@ class Node{
 							$key  = '["'.implode('"]["',$akey).'"]';
 							
 							$return = $this->_extractData($record,$akey);
-							print_r($akey);
-							print_r($record);
+							//print_r($akey);
+							//print_r($record);
 							$avalue = explode(".",$child["value"]);
 							// $value  = '["'.implode('"]["',$avalue).'"]';
 							//   if($id > 0)
@@ -553,7 +553,7 @@ class Node{
     	$nodes = $this->getDataFixed();
 
     	//print_r($nodes);
-    	echo json_encode($nodes);
+    	//echo json_encode($nodes);
 
 		$writer = new XMLWriter();
 		$writer->openURI($file);
