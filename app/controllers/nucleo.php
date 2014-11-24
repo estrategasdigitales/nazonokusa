@@ -115,15 +115,20 @@ class Nucleo extends CI_Controller {
 		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
 			$url = html_entity_decode( $url );
 		}
-		if ( $feed = json_decode( $url ) ){
-			foreach ( $feed as $item ){
-				if ( is_array( $item ) && count( $item ) == 1 )
-					$item = (array)$item[0];
-				else
-					$item = json_encode( $item );
 
-				$cont[] = $this->mapAttributes( $item  );
-			}
+		if ( $feed = json_decode( $url,true ) ){
+
+			//$cont = $this->mapAttributes( $feed  );
+
+			// foreach ( $feed as $item ){
+			// 	if ( is_array( $item ) && count( $item ) == 1 )
+			// 		$item = (array)$item[0];
+			// 	else
+			// 		$item = json_encode( $item );
+
+			// 	$cont[] = $this->mapAttributes( $item  );
+			// }
+			$cont[] = $this->mapAttributes( $feed  );
 			$contents = $this->array_unique_multidimensional( $cont );
 			$indices = create_indexes_specific( $contents );
 		} else {
@@ -277,28 +282,28 @@ class Nucleo extends CI_Controller {
 	 * [job_process description]
 	 * @return [type] [description]
 	 */
-	public function job_process(){
-		$this->load->model( 'netstorage_model','storage' );
-		$CI =& get_instance();
-		$CI->load->model( 'crontabs_model','crontabs' );
-		$job['status'] 	= $this->input->post( 'status' );
-		$job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
-		$process 		= $this->cms->active_job( $job );
-		if ( $process == TRUE ){
-			if ( $job['status'] == 1 ){
-				$trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-				$this->storage->harddisk_write( $trabajo );
-				$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
-				echo TRUE;
-			} else {
-				$trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-				$CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
-				echo TRUE;
-			}
-		} else {
-			echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
-		}
-	}
+    public function job_process(){
+        $this->load->model( 'netstorage_model','storage' );
+        $CI =& get_instance();
+        $CI->load->model( 'crontabs_model','crontabs' );
+        $job['status'] 	= $this->input->post( 'status' );
+        $job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
+        $process 		= $this->cms->active_job( $job );
+        if ( $process == TRUE ){
+            if ( $job['status'] == 1 ){
+                $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
+                $this->storage->harddisk_write( $trabajo );
+                $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+                echo TRUE;
+            } else {
+                $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
+                $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
+                echo TRUE;
+            }
+        } else {
+            echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
+        }
+    }
 
 	/**
 	 * [mapAttributes description]
@@ -308,6 +313,7 @@ class Nucleo extends CI_Controller {
 	public function mapAttributes( $feed ){
 		$campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
 		$campos 		= [];
+		//print_r($campos_orig);
 		$items 			= count( $campos_orig );
 		if ( ! empty( $campos_orig[0] ) ){
 			for ( $i = 0; $i < count( $campos_orig ); $i++ ){

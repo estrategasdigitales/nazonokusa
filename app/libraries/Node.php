@@ -70,8 +70,8 @@ class Node{
 	private function _decodeDataURLS()
 	{
 		$this->INPUT 	= $this->_decodeDataURL($this->URL_INPUT);
-
 		$this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
+        $this->TEMPLATE = $this->mapAttributes($this->TEMPLATE);
 	}
 
 
@@ -85,8 +85,14 @@ class Node{
 
 	private function _setChild($array) {
 	    $return = array();
-	    foreach($array as $val) 
-	    	$return[] = [ "path"=>$val[0]["path"],"order"=>strlen($val[0]["path"]), "child" => $val ];
+	    foreach($array as $i => $val)
+        {
+            if(count($val) > 0)
+                $return[] = [ "path"=>$val[0]["path"],"order"=>strlen($val[0]["path"]), "child" => $val ];
+            else
+                $return[] = [ "path"=>$i,"order"=>strlen($i), "child" => [] ];
+        }
+
 	    
 	    return $return;
 	}
@@ -110,12 +116,12 @@ class Node{
 	private function _generatePath($path)
 	{
 		$path = $this->_removeRoot($path);
-		$afeed = explode("[*].",$path);
+		$afeed = explode(".",$path);
 
 		$keyFeed = $afeed[count($afeed)-1];
 		$_afeed = $afeed;
 		array_pop($_afeed);
-		$pathFeed = implode("[*].",$_afeed)."[*]";
+		$pathFeed = implode(".",$_afeed);
 
 		return ["path" => $pathFeed, "key" => $keyFeed];
 	}
@@ -146,16 +152,87 @@ class Node{
 		}
 		return $result;
 	}
-	
+
+    private function setNewPaths($paths)
+    {
+        $return = [];
+        $onlyPaths = [];
+
+        foreach($paths as $value => $path)
+            $onlyPaths[] = $value;
+
+        foreach($onlyPaths as $path)
+        {
+            $subpath = "";
+            $validate = [];
+            $apath = explode(".",$path);
+
+            $return[$path] = $paths[$path];
+
+            foreach($apath as $rapath)
+            {
+                $subpath[]= $rapath;
+
+                $validate = implode(".",$subpath);
+
+                if(!in_array($validate,$onlyPaths))
+                    $return[$validate] = [];
+            }
+
+        }
+
+        return $return;
+    }
+
+    private  function toTree($paths)
+    {
+        $this->_sortBycolumn($paths,"order",SORT_DESC);
+        $tree = $paths;
+
+        foreach($paths as $i => $path)
+        {
+
+
+            $parent_path = explode(".",$path["path"]);
+            $parent_path = str_replace(".".$parent_path[count($parent_path)-1],'',$path["path"]);
+
+
+            if($path["path"] == $parent_path)
+                $parent_path = "";
+
+            foreach($tree as $j => $path_child)
+            {
+                if($parent_path == $path_child["path"]  )
+                {
+                    $tree[$j]["child"][count($tree[$j]["child"])] = $tree[$i];
+
+                }
+
+            }
+
+
+        }
+
+        $this->_sortBycolumn($tree,"order");
+
+        return $tree;
+    }
+
+
 	private function _setChildPath()
 	{
 
 		$paths = $this->_parsePATHS();	
 		$paths = $this->_groupBy($paths,"path");
-		$paths = $this->_setChild($paths);
-		$this->_sortBycolumn($paths,"order");
 
-		return $paths;
+
+        $paths = $this->setNewPaths($paths);
+
+		$paths = $this->_setChild($paths);
+        $paths = $this->toTree($paths);
+
+
+		return $paths[0];
 	}
 
 
@@ -223,82 +300,87 @@ class Node{
 	    return $array;
 	}
 
-    private function __do($paths,$id,$j,$input,$_input,$template,$output,$pathParent = null)
+    private function getArrayByString($keys,$array)
     {
-        // foreach ($paths as $path) {
+        $value = $array;
 
-		$node = $paths[$id];
+        foreach($keys as $key)
+            $value = $value[$key];
+
+        return $value;
+    }
 
 
-		if($id > 0)
+
+
+    private function __do($paths,$input,$template = [],$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="")
+    {
+
+		$node = $paths;
+
+		if($id_path > 0)
 		{
 
-			
-			//$apath = explode(".",$node["path"]);
-			$apath = explode($pathParent.".",$node["path"]);
+			$apath = explode($path_parent.".",$node["path"]);
 			$path  = $apath[count($apath)-1];
 
-			//$pathParent = $path;
-			// echo $pathParent."\n";
-			// echo $node["path"]."\n";
-			// echo $path."\n";
-			// echo "\n\n";
-			//$pathParent = $path;
+            //$path_parent = $path;
 
 		}else
 		{
+            $original_input = $input;
 			$path = $node["path"];
-			$pathParent = $path;
+            $path_parent = $path;
 		}
-
 
 			$store = $this->STORE;
 			$inputs = $store->get($input, "$.".$path);
 
+            $first  = $inputs[0];
+
+            if(!is_array($first))
+            {
+                $path = preg_replace("/\[\*\]$/","",$path);
+                $inputs = $store->get($input, "$.".$path);
+            }
+
 			$tpath = count($paths)-1;
 
 
-			if($id < $tpath)
-				$id++;
+			if($id_path < $tpath)
+                $id_path++;
 
 
+            $property_eval = "['".str_replace("[*]","",$path)."']";
 
 			foreach ($inputs as $i => $record) {
 
-
-				if (!@array_key_exists($i, $output) and $j == 0)
-				 	$output[$i] = $template;
-				    
+                $eval = $last_eval.$property_eval."[".$i."]";
 
 					foreach ($node["child"] as $child) {
 
 
-						$akey = explode(".",$child["key"]);
-						$key  = '["'.implode('"]["',$akey).'"]';
+                        if(isset($child["child"]))
+                        {
+                            if(substr_count($path_parent, $path) == 0)
+                                $path_parent = $path_parent.".".$path;
 
-						
-						$return = $this->_extractData($record,$akey);
-						
+                            $output = $this->__do($child,$record,$template,$original_input,$id_path,$output,$path_parent,$eval,$last_eval);
+                        }else
+                        {
 
-						$avalue = explode(".",$child["value"]);
-						// $value  = '["'.implode('"]["',$avalue).'"]';
-						//   if($id > 0)
-						 	$value  = '["'.implode('"]["',$avalue).'"][]';
+                            $akey = explode(".",$child["key"]);
+                            $key  = '["'.implode('"]["',$akey).'"]';
 
 
-						if(!empty($return))
-						{	
+                            $return = $this->_extractData($record,$akey);
 
-							if($i == 0)
-								eval("\$output[$j]$value = \"$return\";");	
-							else
-								eval("\$output[$j]$value = \"$return\";");
+                            eval("\$output$eval$key = \"$return\";");
+                        }
 
-						}
 					}
 
-
-					$output = $this->__do($paths,$id,$i,$record,$inputs,$template,$output,$pathParent);
+					    //$output = $this->__do($paths,$record,$template,$original_input,$id_path,$output,$path_parent,$eval,$last_eval);
 				
 				}
 
@@ -516,6 +598,104 @@ class Node{
 		}
 	}
 
+    /**
+     * [claves description]
+     * @param  [type] $arreglo [description]
+     * @param  [type] $origin  [description]
+     * @return [type]          [description]
+     */
+    function claves( $arreglo, $origin ){
+        if ( ! empty( $arreglo[0] ) ){
+            for ($i = 0; $i < count( $arreglo ); $i++ ){
+                foreach ( $arreglo[$i] as $key => $value ){
+                    if ( is_object( $value ) ){
+                        $value = get_object_vars( $value );
+                    }
+
+                    if ( is_array( $value ) ){
+                        if ( ! empty( $origin[$key] ) ){
+                            $origin[$key] = $this->claves( $value, $origin[$key] );
+                        } else {
+                            $origin[$key] = $this->claves( $value, $origin[$key] = [] );
+                        }
+                    } else {
+                        if ( ! array_key_exists( $key, $origin ) ){
+                            $origin[$key] = '';
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ( $arreglo as $key => $value ){
+                if ( is_array( $value ) ){
+                    if ( is_object( $value ) ){
+                        $value = get_object_vars( $value );
+                    }
+
+                    if ( ! empty( $origin[$key] ) ){
+                        $origin[$key] = $this->claves( $value, $origin[$key] );
+                    } else {
+                        $origin[$key] = $this->claves( $value, $origin[$key] = [] );
+                    }
+                } else {
+                    if ( ! array_key_exists( $key, $origin ) ){
+                        $origin[$key] = '';
+                    }
+                }
+            }
+        }
+        return $origin;
+    }
+
+
+    public function mapAttributes( $feed ){
+        $campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
+        $campos 		= [];
+
+        $items 			= count( $campos_orig );
+        if ( ! empty( $campos_orig[0] ) ){
+            for ( $i = 0; $i < count( $campos_orig ); $i++ ){
+                foreach ( $campos_orig[$i] as $key => $value ){
+                    if ( is_object( $value ) ){
+                        $value = get_object_vars( $value );
+                    }
+
+                    if ( is_array( $value ) ){
+                        if ( ! empty( $campos[$key] ) ){
+                            $campos[$key] = $this->claves( $value, $campos[$key] );
+                        } else {
+                            $campos[$key] = $this->claves( $value, $campos[$key] = [] );
+                        }
+                    } else {
+                        if ( ! array_key_exists($key, $campos) ){
+                            $campos[$key] = '';
+                        }
+                    }
+                }
+            }
+        } else {
+            foreach ( $campos_orig as $key => $value ){
+                if ( is_object( $value ) ){
+                    $value = get_object_vars( $value );
+                }
+
+                if ( is_array( $value ) ){
+                    if ( ! empty( $campos[$key] ) ){
+                        $campos[$key] = $this->claves( $value, $campos[$key] );
+                    } else {
+                        $campos[$key] = $this->claves( $value, $campos[$key] = [] );
+
+                    }
+                } else {
+                    if( ! array_key_exists( $key, $campos ) ){
+                        $campos[$key] = '';
+                    }
+                }
+            }
+        }
+        return $campos;
+    }
+
     public function getData()
     {
     	$paths = $this->_getPaths();
@@ -528,15 +708,23 @@ class Node{
     	$input    = $this->_getINPUT();
     	$template = $this->_getTEMPLATE();
 
+
     	$return = array();
 
+    	// print_r($paths);
+    	// print_r($input);
+    	// print_r($template);
+    	// die;
+
+
+
+
+/*
     	if($paths[0]["path"] == "[*]")
     		$return = $this->_do($paths,0,0,$input,$input,$template,$output=[]);
-    	else
-    		$return = $this->__do($paths,0,0,$input,$input,$template,$output=[]);
+    	else*/
+    		$return = $this->__do($paths,$input,$template);
 
-
-    	//print_r($return);
 
     	return $return;
     }
@@ -581,7 +769,8 @@ class Node{
     }
 
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
-
+    	echo 1;
+    	die;
     	$template = $this->_getTEMPLATE();
     	$nodes = $this->getDataFixed();
 

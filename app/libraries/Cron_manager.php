@@ -42,6 +42,7 @@ Class Cron_manager {
 			if ( ! $argument_count) throw new Exception( 'There is nothing to exececute, no arguments specified.' );
 			$arguments = func_get_args();
 			$command_string = ($argument_count > 1) ? implode(" && ", $arguments) : $arguments[0];
+			//echo $command_string;
 			$stream = ssh2_exec( $this->connection, $command_string );
 			if ( ! $stream) throw new Exception( 'Unable to execute the specified commands: <br />{$command_string}' );
 			//print_r($command_string);

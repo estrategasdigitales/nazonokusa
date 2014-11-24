@@ -15,6 +15,7 @@ class Cms extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function index() {
+
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
 			redirect('login');
 		} else {
