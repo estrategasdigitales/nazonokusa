@@ -1,7 +1,6 @@
 <?php if ( ! defined('BASEPATH' ) ) exit( 'No direct script access allowed' );
 
 require_once( __DIR__ . '/jsonpath/JsonStore.php' );
-require_once( __DIR__ . '/ArrayToXML.php' );
 /**
  *  Miguel Martinez <natacion@gmail.com>
  *  v 1.5
@@ -329,7 +328,7 @@ class Node{
 
 
 
-    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
+    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$count=0)
     {
 
         $node = $paths;
@@ -369,21 +368,12 @@ class Node{
 
         $property_eval = "['".str_replace("[*]","",$path)."']";
 
-
         foreach ($inputs as $i => $record) {
 
-
-            if(substr_count($last_eval,$property_eval) > 0)// extra
-                $eval2 = $property_eval."[".$i."]";// extra
-            else
-                $eval2 = $last_eval.$property_eval."[".$i."]";// extra
-
-                $eval = $last_eval.$property_eval."[".$i."]";
+            $eval = $last_eval.$property_eval."[".$i."]";
 
             foreach ($node["child"] as $child_value => $child) {
 
-                if(count($node["child"]) == 1)// extra
-                    $eval = $eval2;// extra
 
                 if(isset($child["child"]))
                 {
@@ -391,21 +381,16 @@ class Node{
                     if(substr_count($path_parent, $path) == 0)
                         $path_parent = $path_parent.".".$path;
 
-                    if(count($node["child"]) == 1) // extra
-                        $eval = $last_eval; // extra
-
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
                 }else
                 {
-                    if(count($node["child"]) == 1) // extra
-                        $last_eval = $eval; // extra
 
                     $akey = explode(".",$child["key"]);
                     $key  = '["'.implode('"]["',$akey).'"]';
                     $return = $this->_extractData($record,$akey);
 
                     // when set template!!!
-                    if($child["path"].".".$child["key"] != $child["value"])
+                    if($child["path"].$child["key"] != $child["value"])
                     {
                         //resources[*].resource[*].attributes[*].pubDate
 
@@ -464,7 +449,6 @@ class Node{
                         }
 
                         //resource[0].attributes[0].pubDate
-
                         $eval_template = implode("",$eval_template);
 
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
@@ -496,7 +480,7 @@ class Node{
 
 
 
-    private function _toXML($writer,$nodes,$parentKey,$kind = "xml")
+    private function _toXML($writer,$nodes,$parentKey,&$i = 0)
     {
         foreach ($nodes as $nKey => $nValue) {
 
@@ -507,57 +491,8 @@ class Node{
             if(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($kind == "xml")
-                {
-                    /*
-                    if(!is_numeric($nKey) and array_key_exists(0,$nValue))
-                        $writer->startElement($nKey);
 
-                    $this->_toXML($writer,$nValue,$nKey,$kind);
-
-                    if(!is_numeric($nKey) and array_key_exists(0,$nValue))
-                        $writer->endElement();
-                    */
-
-
-                    if(is_numeric($nKey))
-                        $writer->startElement("resourse");
-                    else
-                        $writer->startElement("resourses");
-
-                    $this->_toXML($writer,$nValue,$nKey,$kind);
-
-
-                    $writer->endElement();
-
-                }else
-                {
-
-                    if($parentKey == "channels")
-                        $writer->startElement("channels");
-                    elseif(is_numeric($nKey))
-                        $writer->startElement("channel");
-                    else
-                        $writer->startElement($nKey);
-
-                    $this->_toXML($writer,$nValue,$nKey,$kind);
-
-
-                    $writer->endElement();
-                }
-
-
-
-
-            }else
-            {
-                if(!is_array($nValue))
-                {
-                    $writer->startElement($nKey);
-                    $writer->writeCData($nValue);
-                    $writer->endElement();
-
-                }elseif(array_key_exists("@cdata", $nValue))
+                if(array_key_exists("@cdata", $nValue))
                 {
 
                     $writer->startElement($nKey);
@@ -597,12 +532,38 @@ class Node{
                         }
                     }
 
+                }else
+                {
+
+                    if(!is_numeric($key) and $i > 0)
+                        $writer->startElement($key);
+
+                    // echo "\n----\n\n";
+                    // print_r($nValue);
+                    // print_r($nKey);
+                    // echo "\n----\n\n";
+                    $this->_toXML($writer,$nValue,$nKey);
+
+                    if(!is_numeric($key) and $i > 0)
+                        $writer->endElement();
+
+                    $i++;
                 }
 
             }
 
+            if(!is_array($nValue) and !is_array($key) and !empty($nValue))
+            {
+
+                // if(!array_key_exists("@cdata", $nValue))
+                // {
+                $writer->startElement($key);
+                $writer->text($nValue);
+                $writer->endElement();
+                // }
 
 
+            }
 
 
 
@@ -716,9 +677,6 @@ class Node{
         return $this->__do($paths,$input);
     }
 
-
-
-
     public function getDataFixed()
     {
         return $this->_fixkeys($this->getData());
@@ -748,10 +706,10 @@ class Node{
         if ( $this->_searchKey( 'atom:link', $template ) )
             $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
 
-        //$writer->startElement( 'channels');
-        $this->_toXML( $writer, $nodes, 'channels','rss');
+        $writer->startElement( 'channel');
+        $this->_toXML( $writer, $nodes, 'item');
 
-        //$writer->endElement();
+        $writer->endElement();
         $writer->endElement();
 
         $writer->endDocument();
@@ -767,14 +725,11 @@ class Node{
 
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
-        $nodes = $this->getDataFixed();
-/*
-        $xml = new ArrayToXML();
-        $output =  $xml->buildXML($input);
+        $input = $this->getDataFixed();
+        $template_paths = $this->_getTemplatePaths();
 
-        file_put_contents($file, $output);
         die;
-*/
+
 
         $writer = new XMLWriter();
         $writer->openURI( $file );

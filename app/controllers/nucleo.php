@@ -111,7 +111,16 @@ class Nucleo extends CI_Controller {
 	public function feed_service(){
 		$url = $this->input->get('url');
 		$url = urldecode( base64_decode( $url ) );
-		$url = file_get_contents_curl( $url );
+        $url = file_get_contents_curl( $url );
+        /*
+		echo file_get_contents_curl( $url );
+
+
+
+
+        die;
+        */
+
 		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
 			$url = html_entity_decode( $url );
 		}
@@ -289,20 +298,29 @@ class Nucleo extends CI_Controller {
         $job['status'] 	= $this->input->post( 'status' );
         $job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
         $process 		= $this->cms->active_job( $job );
+        $response = TRUE;
+
+
+
         if ( $process == TRUE ){
+
+
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
                 $this->storage->harddisk_write( $trabajo );
-                $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
-                echo TRUE;
+                //$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
-                echo TRUE;
+                //$CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
+
             }
+
         } else {
-            echo '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
+            $response = '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
         }
+
+        echo $response;
     }
 
 	/**

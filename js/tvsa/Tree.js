@@ -24,12 +24,14 @@ Ext.define('TVSA.Tree', {
         me.store = Ext.create('Ext.data.TreeStore',data);  
 
         me.Tree = {
+            ids : [],
             data : [],
             node : function (store,json,isRoot,idNode,newNode){
                 var _me = this;
 
                 Ext.iterate(json, function(key, value) {
                     var id = idNode;
+
 
                     if(Ext.isObject(value))
                         id+="."+key;
@@ -46,11 +48,22 @@ Ext.define('TVSA.Tree', {
                         _me.node(store,key,false,id,newNode);
 
                     else{
-                        var child = newNode.appendChild(Ext.apply(me.node,{
-                            leaf: Ext.isObject(value) ? false : !Ext.isArray(value),
-                            id   : id,
-                            text : key
-                        }),true);
+
+
+                        if(!Ext.Array.contains(_me.ids,id))
+                        {
+                            console.log(id)
+                            var child = newNode.appendChild(Ext.apply(me.node,{
+                                leaf: Ext.isObject(value) ? false : !Ext.isArray(value),
+                                id   : id,
+                                text : key
+                            }),true);
+
+                            _me.ids.push(id);
+                        }
+
+
+
                     }
 
                     if(Ext.isObject(value))
