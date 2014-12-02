@@ -378,7 +378,7 @@ class Node{
             else
                 $eval2 = $last_eval.$property_eval."[".$i."]";// extra
 
-                $eval = $last_eval.$property_eval."[".$i."]";
+            $eval = $last_eval.$property_eval."[".$i."]";
 
             foreach ($node["child"] as $child_value => $child) {
 
@@ -518,25 +518,41 @@ class Node{
                     if(!is_numeric($nKey) and array_key_exists(0,$nValue))
                         $writer->endElement();
                     */
-
-
-                    if(is_numeric($nKey))
-                        $writer->startElement("resourse");
-                    else
+                    if(is_numeric($parentKey))
+                        $writer->startElement($nKey);
+                    elseif($parentKey == "resourses")
+                    {
                         $writer->startElement("resourses");
+                        $nKey = "resourse";
+
+                    }else if($parentKey == "resourse")
+                        $writer->startElement("resourse");
+                    elseif(is_numeric($nKey))
+                        $writer->startElement($parentKey);
+                    else
+                        $writer->startElement($nKey);
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
 
-                    $writer->endElement();
+                        $writer->endElement();
 
                 }else
                 {
 
-                    if($parentKey == "channels")
+
+
+                    if(is_numeric($parentKey))
+                        $writer->startElement($nKey);
+                    elseif($parentKey == "channels")
+                    {
                         $writer->startElement("channels");
-                    elseif(is_numeric($nKey))
+                        $nKey = "channel";
+
+                    }else if($parentKey == "channel")
                         $writer->startElement("channel");
+                    elseif(is_numeric($nKey))
+                        $writer->startElement($parentKey);
                     else
                         $writer->startElement($nKey);
 
@@ -544,6 +560,8 @@ class Node{
 
 
                     $writer->endElement();
+
+
                 }
 
 
@@ -553,6 +571,14 @@ class Node{
             {
                 if(!is_array($nValue))
                 {
+                    $is_numeric = explode("x",$nKey);
+
+                    if(count($is_numeric) > 1 )
+                    {
+                        if(is_numeric($is_numeric[0]) and is_numeric($is_numeric[1]))
+                            $nKey ="_".$nKey;
+                    }
+
                     $writer->startElement($nKey);
                     $writer->writeCData($nValue);
                     $writer->endElement();
@@ -768,20 +794,20 @@ class Node{
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
         $nodes = $this->getDataFixed();
-/*
-        $xml = new ArrayToXML();
-        $output =  $xml->buildXML($input);
+        /*
+                $xml = new ArrayToXML();
+                $output =  $xml->buildXML($input);
 
-        file_put_contents($file, $output);
-        die;
-*/
+                file_put_contents($file, $output);
+                die;
+        */
 
         $writer = new XMLWriter();
         $writer->openURI( $file );
         $writer->startDocument( '1.0', $encoding );
         $writer->setIndent( 4 );
         $writer->startElement( 'xml' );
-        $this->_toXML( $writer, $nodes, 'item' );
+        $this->_toXML( $writer, $nodes, 'resourses' );
         $writer->endElement();
         $writer->endDocument();
         $writer->flush();

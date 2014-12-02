@@ -384,6 +384,8 @@ class Nucleo extends CI_Controller {
 		if ( $this->session->userdata( 'session' ) !== TRUE ){
 			redirect(' login' );
 		} else {
+
+
 			$this->form_validation->set_rules( 'nombre', 'Nombre del Trabajo', 'trim|required|min_length[3]|xss_clean' );
 			$this->form_validation->set_rules( 'url-origen', 'URL Origen', 'required|min_length[3]|xss_clean' );
 			$this->form_validation->set_rules( 'categoria', 'Categoría', 'required|callback_valid_option|xss_clean' );
@@ -404,6 +406,8 @@ class Nucleo extends CI_Controller {
 			$cronjob_config = $this->input->post('cron_minuto').' '.$this->input->post('cron_hora').' '.$this->input->post('cron_diames').' '.$this->input->post('cron_mes').' '.$this->input->post('cron_diasemana');
 
 			if ( $this->form_validation->run() === TRUE ){
+
+
 				$trabajo['usuario'] 			= $this->session->userdata( 'uid' );
 				$trabajo['nombre']   			= $this->input->post( 'nombre' );
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post( 'nombre' ), 'dash', TRUE );
