@@ -24,6 +24,8 @@ class Node{
 
     var $STORE 			= null;
 
+    var $isTemplate     = false;
+
     function __construct($arguments = [])
     {
         $this->URL_INPUT 	 = $arguments["input"];
@@ -277,30 +279,23 @@ class Node{
 
 
     private function _fixkeys($array) {
-
         $numberCheck = false;
         foreach ($array as $k => $val) {
-
             // echo count($val)."\n";
             // print_r($val);
             // echo "key =".$k."\n";
             // echo "\n\n\n\n";
-
-
-
             // echo count($val);
             // print_r($val);
             // echo "-------\n\n";
             if (is_array($val) and count($val) >= 1)
             {
-
                 $array[$k] = $this->_fixkeys($val); //recurse
             }
 
             if(is_array($val) and array_key_exists(0, $val))
             {
                 //$numberCheck = array("k" => $k,"v"=>$val);
-
                 if(count($val) > 1)
                     $array[$k] = $val;
                 else
@@ -308,11 +303,7 @@ class Node{
                 //return $array;
             }
 
-
-
         }
-
-
         return $array;
     }
 
@@ -407,6 +398,7 @@ class Node{
                     // when set template!!!
                     if($child["path"].".".$child["key"] != $child["value"])
                     {
+                        $this->isTemplate = true;
                         //resources[*].resource[*].attributes[*].pubDate
 
                         preg_match_all('/\[(.*?)\]/', $eval, $matches);
@@ -496,7 +488,7 @@ class Node{
 
 
 
-    private function _toXML($writer,$nodes,$parentKey,$kind = "xml")
+    private function _toXML($writer,$nodes,$parentKey,$kind = "")
     {
         foreach ($nodes as $nKey => $nValue) {
 
@@ -507,7 +499,28 @@ class Node{
             if(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($kind == "xml")
+                if($this->isTemplate)
+                {
+                    if(is_numeric($parentKey))
+                        $writer->startElement($nKey);
+                    elseif($parentKey == "resourses")
+                    {
+                        $writer->startElement("resourses");
+                        $nKey = "resourse";
+
+                    }else if($parentKey == "resourse")
+                        $writer->startElement("resourse");
+                    elseif(is_numeric($nKey))
+                        $writer->startElement($parentKey);
+                    else
+                        $writer->startElement($nKey);
+
+                    $this->_toXML($writer,$nValue,$nKey,$kind);
+
+
+                    $writer->endElement();
+
+                }elseif($kind == "xml")
                 {
                     /*
                     if(!is_numeric($nKey) and array_key_exists(0,$nValue))
@@ -537,7 +550,7 @@ class Node{
 
                         $writer->endElement();
 
-                }else
+                }else if($kind == "rss")
                 {
 
 
@@ -794,23 +807,30 @@ class Node{
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
         $nodes = $this->getDataFixed();
-        /*
-                $xml = new ArrayToXML();
-                $output =  $xml->buildXML($input);
 
-                file_put_contents($file, $output);
-                die;
-        */
+        if($this->isTemplate)
+        {
+            $template = $this->_getTEMPLATE();
 
-        $writer = new XMLWriter();
-        $writer->openURI( $file );
-        $writer->startDocument( '1.0', $encoding );
-        $writer->setIndent( 4 );
-        $writer->startElement( 'xml' );
-        $this->_toXML( $writer, $nodes, 'resourses' );
-        $writer->endElement();
-        $writer->endDocument();
-        $writer->flush();
+            $xml = new ArrayToXML();
+            $output =  $xml->buildXML($nodes,key($template));
+
+            file_put_contents($file, $output);
+        }else
+        {
+            $writer = new XMLWriter();
+            $writer->openURI( $file );
+            $writer->startDocument( '1.0', $encoding );
+            $writer->setIndent( 4 );
+            $writer->startElement( 'xml' );
+            $this->_toXML( $writer, $nodes, 'resourses', 'xml' );
+            $writer->endElement();
+            $writer->endDocument();
+            $writer->flush();
+        }
+
+
+
     }
 
 
