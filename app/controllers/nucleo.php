@@ -405,10 +405,19 @@ class Nucleo extends CI_Controller {
 			}
 			$cronjob_config = $this->input->post('cron_minuto').' '.$this->input->post('cron_hora').' '.$this->input->post('cron_diames').' '.$this->input->post('cron_mes').' '.$this->input->post('cron_diasemana');
 
+
+            $trabajo['campos_seleccionados'] = $this->input->post( 'campos_seleccionados' );
+
+
+            if(empty($trabajo['campos_seleccionados']))
+                echo '<span class="error">Debe seleccionar por lo menos 1 nodo.</b></span>';
+
+
 			if ( $this->form_validation->run() === TRUE ){
 
 
-				$trabajo['usuario'] 			= $this->session->userdata( 'uid' );
+
+                $trabajo['usuario'] 			= $this->session->userdata( 'uid' );
 				$trabajo['nombre']   			= $this->input->post( 'nombre' );
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post( 'nombre' ), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post( 'url-origen' );
