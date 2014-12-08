@@ -403,6 +403,7 @@ class Node{
                     $akey = explode(".",$child["key"]);
                     $key  = '["'.implode('"]["',$akey).'"]';
                     $return = $this->_extractData($record,$akey);
+                    $return = str_replace('"','\"',$return);
 
                     // when set template!!!
                     if($child["path"].".".$child["key"] != $child["value"] and $child["path"] != "")
