@@ -1,4 +1,7 @@
+
 function base64_encode(data) {
+
+
   //  discuss at: http://phpjs.org/functions/base64_encode/
   // original by: Tyler Akins (http://rumkin.com)
   // improved by: Bayron Guevara

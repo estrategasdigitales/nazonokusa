@@ -165,7 +165,10 @@ Ext.application({
                         records[i]= { "id": data.id, "feed1":data.id, "feed2":data.id };
                 });
 
-                return base64_encode( Ext.encode( records ) );
+                records = Ext.encode( records );
+                records = base64_encode(records);
+
+                return records;
 
             },
             show    : function(id){

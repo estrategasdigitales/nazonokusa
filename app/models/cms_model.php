@@ -442,6 +442,7 @@ class Cms_model extends CI_Model {
         }
 
         public function add_trabajo( $trabajo ){
+
             $timestamp = time();
             $this->db->set( 'uid_trabajo', "UUID()", FALSE );
             $this->db->set( 'uid_usuario', $trabajo['usuario'] );
@@ -458,6 +459,7 @@ class Cms_model extends CI_Model {
             $this->db->set( 'cron_config', $trabajo['cron_config'] );
             $this->db->insert( $this->db->dbprefix( 'trabajos' ) );
             //$this->db->cache_delete_all();
+
             if ( $this->db->affected_rows() > 0 ){
                 if ( $trabajo['tipo_salida'] == 1 ){
                     $this->db->select( 'uid_trabajo' );
