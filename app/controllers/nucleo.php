@@ -309,7 +309,7 @@ class Nucleo extends CI_Controller {
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
                 $this->storage->harddisk_write( $trabajo );
-                $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+                //$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
 
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
@@ -415,8 +415,6 @@ class Nucleo extends CI_Controller {
 
 
             if ( $this->form_validation->run() === TRUE ){
-
-
 
                 $trabajo['usuario'] 			= $this->session->userdata( 'uid' );
                 $trabajo['nombre']   			= $this->input->post( 'nombre' );

@@ -52,7 +52,7 @@ Ext.define('TVSA.Tree', {
 
                         if(!Ext.Array.contains(_me.ids,id))
                         {
-                            console.log(id)
+
                             var child = newNode.appendChild(Ext.apply(me.node,{
                                 leaf: Ext.isObject(value) ? false : !Ext.isArray(value),
                                 id   : id,

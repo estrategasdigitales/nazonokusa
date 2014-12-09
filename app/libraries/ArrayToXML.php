@@ -55,6 +55,7 @@ class ArrayToXML {
         if(is_array($data)) {
             $nonAttributes = array();
             foreach($data as $key => $val) {
+
                 //handle an attribute with elements
                 if($key[0] == '#') {  // if($key[0] == '@') {
                     $xml->writeAttribute(substr($key, 1), $val);

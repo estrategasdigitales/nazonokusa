@@ -318,12 +318,16 @@ class Node{
     }
 
 
+    private function startsWith($needle, $haystack) {
+        return preg_match('/^' . preg_quote($needle, '/') . '/', $haystack);
+    }
 
 
     private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
     {
 
         $node = $paths;
+        $xml = false;
 
         if($id_path > 0)
         {
@@ -344,8 +348,30 @@ class Node{
 
         if($path == "")
             $inputs = $input;
-        else
-            $inputs = $store->get($input, "$.".$path);
+        else{
+
+            if($this->startsWith("media",$path))
+            {
+                $xml = true;
+                $path = preg_replace("/\[\*\]$/","",$path);
+                $inputs = $store->get($input, "$.".$path);
+
+                if(array_key_exists(0,$inputs) and count($inputs) == 1)
+                    $inputs = $inputs[0];
+
+            }else
+                $inputs = $store->get($input, "$.".$path);
+
+
+        }
+
+
+        if(count($inputs) == 0)
+        {
+            $inputs = $input;
+            $path = $path_parent;
+        }
+
 
         if(array_key_exists(0,$inputs))
             $first  = $inputs[0];
@@ -357,6 +383,9 @@ class Node{
             $path = preg_replace("/\[\*\]$/","",$path);
             $inputs = $store->get($input, "$.".$path);
         }
+
+
+
 
         $tpath = count($paths)-1;
 
@@ -373,17 +402,32 @@ class Node{
         foreach ($inputs as $i => $record) {
 
 
-            if($property_eval and substr_count($last_eval,$property_eval) > 0)// extra
-                $eval2 = $property_eval."['".$i."']";// extra
-            else
-                $eval2 = $last_eval.$property_eval."['".$i."']";// extra
+            if($property_eval and substr_count($last_eval,$property_eval) > 0)
+            {
+                if(!is_numeric($i))
+                    $eval2 = $property_eval."['0']['".$i."']";
+                else
+                    $eval2 = $property_eval."['".$i."']";// extra
+            }else
+            {
+                if(!is_numeric($i))
+                    $eval2 = $last_eval.$property_eval."['0']['".$i."']";
+                else
+                    $eval2 = $last_eval.$property_eval."['".$i."']";// extra
+            }
+
+
 
             $eval = $last_eval.$property_eval."['".$i."']";
+
+
 
             foreach ($node["child"] as $child_value => $child) {
 
                 if(count($node["child"]) == 1)// extra
                     $eval = $eval2;// extra
+
+
 
                 if(isset($child["child"]))
                 {
@@ -391,7 +435,7 @@ class Node{
                     if($path_parent and substr_count($path_parent, $path) == 0)
                         $path_parent = $path_parent.".".$path;
 
-                    if(count($node["child"]) == 1) // extra
+                    if(count($node["child"]) == 1 and !$xml) // extra
                         $eval = $last_eval; // extra
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
@@ -527,10 +571,13 @@ class Node{
 
             }elseif(array_key_exists("@cdata", $nValue))
             {
+                if(!is_numeric($nKey))
+                    $writer->startElement($nKey);
 
-                $writer->startElement($nKey);
-                $writer->writeCData($nValue["@cdata"][0]);
-                $writer->endElement();
+                $writer->writeCData($nValue["@cdata"]);
+
+                if(!is_numeric($nKey))
+                    $writer->endElement();
 
 
             }elseif(array_key_exists("@attributes", $nValue)){
@@ -539,7 +586,7 @@ class Node{
 
                 if(!array_key_exists(0, $nValue["@attributes"]))
                 {
-                    $writer->startElement($nKey);
+                    $writer->startElement($key);
                     foreach ($nValue["@attributes"] as $katt => $vatt)
                     {
                         if(is_array($vatt) and count($vatt) == 1)
@@ -552,13 +599,13 @@ class Node{
                 {
                     foreach ($nValue["@attributes"] as $katt => $vatt) {
 
-                        $writer->startElement("media:group");
+                        $writer->startElement($key);
 
                         foreach ($vatt as $kvatt => $vvatt) {
 
-                            $writer->startElement($nKey);
-                            $writer->writeAttribute($katt, $vvatt);
-                            $writer->endElement();
+                            //$writer->startElement($nKey);
+                            $writer->writeAttribute($kvatt, $vvatt);
+                            //$writer->endElement();
                         }
 
                         $writer->endElement();
@@ -574,20 +621,20 @@ class Node{
 
                 }elseif($kind == "xml")
                 {
-                    /*
-                    if(!is_numeric($nKey) and array_key_exists(0,$nValue))
-                        $writer->startElement($nKey);
 
-                    $this->_toXML($writer,$nValue,$nKey,$kind);
+                    if($this->startsWith("media:",$nKey))
+                    {
+                        if($nKey=="media:group")
+                            $writer->startElement($nKey);
 
-                    if(!is_numeric($nKey) and array_key_exists(0,$nValue))
-                        $writer->endElement();
-                    */
-
-                    if(is_numeric($parentKey))
+                    }else if(is_numeric($parentKey))
                         $writer->startElement($nKey);
                     elseif($parentKey == "resources")
                     {
+
+                        $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+                        $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+
                         $writer->startElement("resources");
                         $nKey = "resource";
 
@@ -603,7 +650,12 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if(!is_numeric($nKey))
+                    if($this->startsWith("media:",$nKey))
+                    {
+                        if($nKey=="media:group")
+                            $writer->endElement();
+
+                    }elseif(!is_numeric($nKey))
                         $writer->endElement();
                     elseif(count($nodes) > 1)
                         $writer->endElement();
@@ -614,12 +666,17 @@ class Node{
                 {
 
 
+                    if($this->startsWith("media:",$nKey))
+                    {
+                        if($nKey=="media:group")
+                            $writer->startElement($nKey);
 
-                    if(is_numeric($parentKey))
+                    }elseif(is_numeric($parentKey))
                         $writer->startElement($nKey);
                     elseif($parentKey == "channel")
                     {
                         $writer->startElement("channel");
+
                         $nKey = "item";
 
                         foreach($attributes as $k_att => $v_att )
@@ -642,7 +699,12 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if(!is_numeric($nKey))
+                    if($this->startsWith("media:",$nKey))
+                    {
+                        if($nKey=="media:group")
+                            $writer->endElement();
+
+                    }elseif(!is_numeric($nKey))
                         $writer->endElement();
                     elseif(count($nodes) > 1)
                         $writer->endElement();
@@ -794,10 +856,10 @@ class Node{
         $writer->setIndent( 4 );
         $writer->startElement( 'rss' );
         $writer->writeAttribute( 'version', '2.0' );
-        if ( $this->_searchKey( 'media:content', $template ) )
+        //if ( $this->_searchKey( 'media:content', $template ) )
             $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
 
-        if ( $this->_searchKey('media:', $template ) )
+        //if ( $this->_searchKey('media:', $template ) )
             $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
         if ( $this->_searchKey( 'atom:link', $template ) )
@@ -846,8 +908,7 @@ class Node{
 
     public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
-        $nodes = $this->getDataFixed();
-
+        $nodes = $this->getData();
 
         if($this->isTemplate)
         {
@@ -869,6 +930,10 @@ class Node{
             if(!$paths["path"])
             {
                 $writer->startElement("resources");
+
+                $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+                $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
             }else
                 $this->_toXML( $writer, $nodes, 'resources', 'xml' );
