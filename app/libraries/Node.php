@@ -377,6 +377,15 @@ class Node{
                     $inputs = $store->get($input, "$.".$path);
 
 
+                if(array_key_exists(0,$inputs) and count($inputs) == 1)
+                {
+                    $input_key = key($inputs[0]);
+
+                    if(count($inputs[0][$input_key]) > 1 and is_array($inputs[0][$input_key]) )
+                        $inputs = $inputs[0];
+                }
+
+
             }else
                 $inputs = $store->get($input, "$.".$path);
 
