@@ -363,7 +363,12 @@ class Node{
         $store = $this->STORE;
 
         if($path == "")
-            $inputs = $input;
+        {
+            if(array_key_exists(0,$input))
+                $inputs = $input;
+            else
+                $inputs[0] = $input;
+        }
         else{
 
             if($this->startsWith("media",$path))
@@ -392,27 +397,31 @@ class Node{
 
         }
 
-
-        if(count($inputs) == 0 and array_key_exists(0,$input))
+        if($inputs)
         {
-            $inputs = $input;
-            $path = $path_parent;
-        }
-
-
-        if(count($inputs) > 0)
-        {
-            if(array_key_exists(0,$inputs) and is_array($inputs))
-                $first  = $inputs[0];
-            else
-                $first = [];
-
-            if(!is_array($first))
+            if(count($inputs) == 0 and array_key_exists(0,$input))
             {
-                $path = preg_replace("/\[\*\]$/","",$path);
-                $inputs = $store->get($input, "$.".$path);
+                $inputs = $input;
+                $path = $path_parent;
+            }
+
+
+            if(count($inputs) > 0)
+            {
+                if(array_key_exists(0,$inputs) and is_array($inputs))
+                    $first  = $inputs[0];
+                else
+                    $first = [];
+
+                if(!is_array($first))
+                {
+                    $path = preg_replace("/\[\*\]$/","",$path);
+                    $inputs = $store->get($input, "$.".$path);
+                }
             }
         }
+
+
 
 
 
@@ -654,7 +663,11 @@ class Node{
                 {
                     foreach ($nValue["@attributes"] as $katt => $vatt) {
 
-                        $writer->startElement($key);
+
+                        if(is_numeric($key))
+                            $writer->startElement($nKey);
+                        else
+                            $writer->startElement($key);
 
                         foreach ($vatt as $kvatt => $vvatt) {
 
@@ -896,7 +909,11 @@ class Node{
     }
 
 
-    public function toRSS( $file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+    public function toRSS( $array = [], $file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+        return $this->__toRSS($file,$encoding,$attributes);
+    }
+
+    public function __toRSS( $file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
 
         $template = $this->_getTEMPLATE();
@@ -959,9 +976,11 @@ class Node{
 
 
 
+    public function toXML( $array = [],$file = 'xml.xml', $encoding = 'UTF-8' ){
+        return $this->__toXML($file,$encoding);
+    }
 
-
-    public function toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
+    public function __toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
         $nodes = $this->getData();
 
@@ -1005,8 +1024,11 @@ class Node{
 
     }
 
+    public function toJSON( $array = [],$file = 'json.json', $function = '' ){
+        return $this->__toJSON($file,$function);
+    }
 
-    public function toJSON( $file = 'json.json', $function = '' ){
+    public function __toJSON( $file = 'json.json', $function = '' ){
 
         $data = $this->getDataFixed();
 

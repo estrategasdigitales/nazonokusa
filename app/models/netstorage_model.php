@@ -71,42 +71,45 @@ class Netstorage_model extends Nucleo {
 					 */
 					$content = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
 					$formatos = $this->cms->get_trabajos_formatos( $trabajo->uid_trabajo );
+
+                    $node = new Node(
+                        [
+                            'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
+                            'template' 	=> base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
+                            'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
+                        ]
+                    );
+                    $data = $node->getData();
+
 					foreach ( $formatos as $formato ){
 						$formato = json_decode( $formato->formato );
-						$node = new Node(
-									[
-										'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
-										'template' 	=> base_url() . 'nucleo/feed_service?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
-										'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
-									]
-								);
 
 
 
 						switch ( $formato->format ){
 							case 'xml':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
-								$final = $node->toXML( $file );
+								$final = $node->toXML( $data,$file );
 								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath );
 								break;
 								break;
 							case 'rss':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
-								$final = $node->toRSS( $file, 'UTF-8', $formato->attributes );
+								$final = $node->toRSS( $data,$file, 'UTF-8', $formato->attributes );
 								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath );
 								break;
 							case 'json':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
-								$final = $node->toJSON( $file );
+								$final = $node->toJSON( $data,$file );
 								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath );
 								break;
 								break;
 							case 'jsonp':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-jsonp.js';
-								$final = $node->toJSON( $file, $formato->function );
+								$final = $node->toJSON( $data,$file, $formato->function );
 								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath );
 								break;
@@ -123,24 +126,27 @@ class Netstorage_model extends Nucleo {
 								'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
 							]
 						);
+
+                    $data = $node->getData();
+
 					$encoding = base64_decode( $trabajo->encoding );
 					$header = base64_decode( $trabajo->cabeceras );
 					switch ( $trabajo->formato_salida ) {
 						case 'RSS':
 
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
-							$final = $node->toRSS( $file, $encoding, $header );
+							$final = $node->toRSS( $data,$file, $encoding, $header );
 							//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 'XML':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
-							$final = $node->toXML( $file, $encoding );
+							$final = $node->toXML( $data,$file, $encoding );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 'JSON':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
-							$final = $node->toJSON( $file );
+							$final = $node->toJSON( $data,$file );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 4:
