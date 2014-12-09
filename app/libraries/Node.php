@@ -26,6 +26,8 @@ class Node{
 
     var $isTemplate     = false;
 
+    var $cdata          = false;
+
     function __construct($arguments = [])
     {
         $this->URL_INPUT 	 = $arguments["input"];
@@ -126,9 +128,13 @@ class Node{
         $afeed = explode(".",$path);
 
         $keyFeed = $afeed[count($afeed)-1];
+
         $_afeed = $afeed;
         array_pop($_afeed);
         $pathFeed = implode(".",$_afeed);
+
+        if($keyFeed == "@cdata")
+            $this->cdata = true;
 
         return ["path" => $pathFeed, "key" => $keyFeed];
     }
@@ -163,6 +169,9 @@ class Node{
 
             $result[] = ["path"=>$pathFeed["path"],"key"=>$pathFeed["key"], "value" =>$value];
         }
+
+
+
         return $result;
     }
 
@@ -174,13 +183,19 @@ class Node{
         foreach($paths as $value => $path)
             $onlyPaths[] = $value;
 
+        if($this->cdata)
+            $onlyPaths[] = "";
+
         foreach($onlyPaths as $path)
         {
             $subpath = "";
             $validate = [];
             $apath = explode(".",$path);
 
-            $return[$path] = $paths[$path];
+            if(!in_array("",$paths) and $path == "")
+                $return[$path] = [];
+            else
+                $return[$path] = $paths[$path];
 
             foreach($apath as $rapath)
             {
@@ -264,13 +279,14 @@ class Node{
     private function _extractData($record,$string) {
 
         $current_data = $record;
+        $key = key($current_data);
 
         foreach ($string as $name) {
 
             if (key_exists($name, $current_data)) {
                 return $current_data[$name];
-            } else {
-                return null;
+            } else if(!is_numeric($key)){
+                return $current_data[$key][$name];
             }
         }
 
@@ -354,10 +370,12 @@ class Node{
             {
                 $xml = true;
                 $path = preg_replace("/\[\*\]$/","",$path);
-                $inputs = $store->get($input, "$.".$path);
 
-                if(array_key_exists(0,$inputs) and count($inputs) == 1)
-                    $inputs = $inputs[0];
+                if($path == "")
+                    $inputs[0] =$input ;
+                else
+                    $inputs = $store->get($input, "$.".$path);
+
 
             }else
                 $inputs = $store->get($input, "$.".$path);
@@ -366,23 +384,27 @@ class Node{
         }
 
 
-        if(count($inputs) == 0)
+        if(count($inputs) == 0 and array_key_exists(0,$input))
         {
             $inputs = $input;
             $path = $path_parent;
         }
 
 
-        if(array_key_exists(0,$inputs))
-            $first  = $inputs[0];
-        else
-            $first = [];
-
-        if(!is_array($first))
+        if(count($inputs) > 0)
         {
-            $path = preg_replace("/\[\*\]$/","",$path);
-            $inputs = $store->get($input, "$.".$path);
+            if(array_key_exists(0,$inputs) and is_array($inputs))
+                $first  = $inputs[0];
+            else
+                $first = [];
+
+            if(!is_array($first))
+            {
+                $path = preg_replace("/\[\*\]$/","",$path);
+                $inputs = $store->get($input, "$.".$path);
+            }
         }
+
 
 
 
@@ -404,14 +426,22 @@ class Node{
 
             if($property_eval and substr_count($last_eval,$property_eval) > 0)
             {
-                if(!is_numeric($i))
-                    $eval2 = $property_eval."['0']['".$i."']";
-                else
+                if(!is_numeric($i)){
+                    if($property_eval == "")
+                        $eval2 = $property_eval."['".$i."']";
+                    else
+                        $eval2 = $property_eval."['0']['".$i."']";
+                }else
                     $eval2 = $property_eval."['".$i."']";// extra
             }else
             {
                 if(!is_numeric($i))
-                    $eval2 = $last_eval.$property_eval."['0']['".$i."']";
+                {
+                    if($property_eval == "")
+                        $eval2 = $last_eval.$property_eval."['".$i."']";
+                    else
+                        $eval2 = $last_eval.$property_eval."['0']['".$i."']";
+                }
                 else
                     $eval2 = $last_eval.$property_eval."['".$i."']";// extra
             }
@@ -441,12 +471,28 @@ class Node{
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
                 }else
                 {
-                    if(count($node["child"]) == 1) // extra
+                    if(count($node["child"]) == 1)
+                    {
                         $last_eval = $eval; // extra
+
+                        preg_match_all('^\[\'(.*?)\'\]^', $last_eval, $out);
+                        $is_number = $out[1][count($out[1])-2];
+
+                        if(is_numeric($is_number))
+                        {
+                            array_pop($out[1]);
+                            $last_eval = preg_replace('/\[\'[(0-9a-z:. )]\'\]$/',"",$last_eval);
+                        }
+
+                    }// extra
+
 
                     $akey = explode(".",$child["key"]);
                     $key  = '["'.implode('"]["',$akey).'"]';
-                    $return = $this->_extractData($record,$akey);
+                    if(is_array($record))
+                        $return = $this->_extractData($record,$akey);
+                    else
+                        $return = $record;
                     $return = str_replace('"','\"',$return);
 
                     // when set template!!!
