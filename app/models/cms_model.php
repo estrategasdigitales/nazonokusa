@@ -216,6 +216,9 @@ class Cms_model extends CI_Model {
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
             $this->db->join( $this->db->dbprefix('estructuras_salida'). ' AS d', 'a.plantilla = d.uid_estructura','LEFT' );
+
+            $this->db->order_by("trabajos.id_trabajo", "desc");
+
             if ( ! empty( $limit ) )
                 $this->db->limit( $limit, $start );
             $result = $this->db->get();

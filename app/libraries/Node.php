@@ -364,7 +364,7 @@ class Node{
 
         if($path == "")
         {
-            if($input and is_array($input) and array_key_exists(0,$input)) 
+            if($input and is_array($input) and array_key_exists(0,$input))
                 $inputs = $input;
             else
                 $inputs[0] = $input;
