@@ -847,6 +847,9 @@ class Node{
         $campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
         $campos 		= [];
 
+        if(!is_array($campos_orig))
+            return [];
+
         $items 			= count( $campos_orig );
         if ( ! empty( $campos_orig[0] ) ){
             for ( $i = 0; $i < count( $campos_orig ); $i++ ){
