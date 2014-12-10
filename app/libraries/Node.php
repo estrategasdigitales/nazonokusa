@@ -909,15 +909,10 @@ class Node{
     }
 
 
-    public function toRSS( $array = [], $file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
-        return $this->__toRSS($file,$encoding,$attributes);
-    }
-
-    public function __toRSS( $file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
 
-        $template = $this->_getTEMPLATE();
-        $nodes = $this->getDataFixed();
+    public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+
 
         //print_r($nodes);
         //echo json_encode($nodes);
@@ -928,13 +923,13 @@ class Node{
         $writer->setIndent( 4 );
         $writer->startElement( 'rss' );
         $writer->writeAttribute( 'version', '2.0' );
-        //if ( $this->_searchKey( 'media:content', $template ) )
+
             $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
 
-        //if ( $this->_searchKey('media:', $template ) )
+
             $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
-        if ( $this->_searchKey( 'atom:link', $template ) )
+
             $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
 
 
@@ -976,13 +971,10 @@ class Node{
 
 
 
-    public function toXML( $array = [],$file = 'xml.xml', $encoding = 'UTF-8' ){
-        return $this->__toXML($file,$encoding);
-    }
 
-    public function __toXML( $file = 'xml.xml', $encoding = 'UTF-8' ){
 
-        $nodes = $this->getData();
+    public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
+
 
         if($this->isTemplate)
         {
@@ -1024,13 +1016,11 @@ class Node{
 
     }
 
-    public function toJSON( $array = [],$file = 'json.json', $function = '' ){
-        return $this->__toJSON($file,$function);
-    }
 
-    public function __toJSON( $file = 'json.json', $function = '' ){
 
-        $data = $this->getDataFixed();
+    public function toJSON( $data = [], $file = 'json.json', $function = '' ){
+
+        //$data = $this->getDataFixed();
 
         if ( ! empty ( $function ) )
             $json = $function . '('. json_encode( $data ) .')';
