@@ -211,7 +211,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajos( $limit = '', $start = '' ){
             //$this->db->cache_on();
-            $this->db->select( 'a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
+            $this->db->select( 'a.id_trabajo,a.uid_trabajo, a.uid_usuario, a.uid_categoria, a.uid_vertical, a.url_origen, b.slug_categoria, c.slug_vertical, a.nombre, a.slug_nombre_feed, a.activo, a.cron_config, a.fecha_registro, a.tipo_salida, d.formato_salida' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
