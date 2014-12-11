@@ -162,6 +162,7 @@ class Nucleo extends CI_Controller {
                 $dom->preserveWhiteSpace = FALSE;
                 $dom->loadXML( $url );
                 if ( $dom->documentElement->nodeName == 'rss' ){
+
                     $rss = $this->xml_2_array->createArray( $url );
                     $feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
                     $contents = $this->array_unique_multidimensional( $feed );
@@ -220,9 +221,10 @@ class Nucleo extends CI_Controller {
             } else {
                 $dom = new DOMDocument();
                 $dom->loadXML( $url );
+                $dom->preserveWhiteSpace = TRUE;
                 if ( $dom->documentElement->nodeName == 'rss' ){
                     $rss = $this->xml_2_array->createArray( $url );
-                    $feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
+                    $feed[] = $this->mapAttributes( json_encode( $rss['rss'] ) );
                     $contents = $this->array_unique_multidimensional( $feed );
                     $indices = create_indexes_specific( $contents );
                 } else {
@@ -331,6 +333,11 @@ class Nucleo extends CI_Controller {
      */
     public function mapAttributes( $feed ){
         $campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
+
+        if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
+            unset($campos_orig["@attributes"]);
+
+
         $campos 		= [];
         //print_r($campos_orig);
         $items 			= count( $campos_orig );

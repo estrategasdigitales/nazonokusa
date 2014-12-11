@@ -483,6 +483,7 @@ class Node{
                     if($path_parent and substr_count($path_parent, $path) == 0)
                         $path_parent = $path_parent.".".$path;
 
+
                     if(count($node["child"]) == 1 and !$xml) // extra
                         $eval = $last_eval; // extra
 
@@ -522,11 +523,13 @@ class Node{
                         preg_match_all('/\[(.*?)\]/', $eval, $matches);
 
                         $last_iteration = $matches[1][count($matches[1])-1];
-                        $last_iteration = intval($last_iteration);
+                        //$last_iteration = intval($last_iteration);
 
                         //resource[*].attributes[*].pubDate
                         $eval_template = explode(".",$child["value"]);
-                        array_shift($eval_template);
+
+                        if(count($eval_template) > 1)
+                            array_shift($eval_template);
 
                         //resource[0].attributes[*].pubDate
 
@@ -535,18 +538,18 @@ class Node{
                         $first_node_iteration = $first_node_iteration[0];
 
                         if(isset($output[$first_node_iteration]))
-                            $total_childs  = count($output[$first_node_iteration]) -1;
+                            $total_childs  = count($output[$first_node_iteration]);
                         else
                             $total_childs = 0;
 
 
                         $current_iteration = $last_iteration;
 
-
+                        /*
                         if($last_iteration!=$total_childs)
                             $current_iteration = $total_childs + $last_iteration;
 
-
+                        */
 
                         foreach($eval_template as $eval_template_value => $eval_template_record)
                         {
@@ -683,11 +686,7 @@ class Node{
             }elseif(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($this->isTemplate)
-                {
-
-
-                }elseif($kind == "xml")
+                if($kind == "xml")
                 {
 
                     if($this->startsWith("media:",$nKey))
