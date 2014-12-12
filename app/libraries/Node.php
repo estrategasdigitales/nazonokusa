@@ -616,6 +616,11 @@ class Node{
 
         $paths = $this->_getPaths();
 
+        if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+        {
+            $writer->startElement($parentKey);
+        }
+
 
         foreach ($nodes as $nKey => $nValue) {
 
@@ -654,7 +659,11 @@ class Node{
 
                 if(!array_key_exists(0, $nValue["@attributes"]))
                 {
-                    $writer->startElement($key);
+                    if(is_numeric($key))
+                        $writer->startElement($nKey);
+                    else
+                        $writer->startElement($key);
+                    
                     foreach ($nValue["@attributes"] as $katt => $vatt)
                     {
                         if(is_array($vatt) and count($vatt) == 1)
@@ -743,19 +752,25 @@ class Node{
                         $writer->startElement($nKey);
                     elseif($parentKey == "channel")
                     {
-                        $writer->startElement("channel");
-
                         $nKey = "item";
 
-                        if($attributes and is_array($attributes))
+                        if(count($nodes) == 1)
                         {
-                            foreach($attributes as $k_att => $v_att )
+                            $writer->startElement("channel");
+
+                            if($attributes and is_array($attributes))
                             {
-                                $writer->startElement($k_att);
-                                $writer->writeCData($v_att);
-                                $writer->endElement();
+                                foreach($attributes as $k_att => $v_att )
+                                {
+                                    $writer->startElement($k_att);
+                                    $writer->writeCData($v_att);
+                                    $writer->endElement();
+                                }
                             }
                         }
+
+
+
 
 
 
@@ -771,7 +786,11 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if($this->startsWith("media:",$nKey))
+                    if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+                    {
+
+                    }
+                    elseif($this->startsWith("media:",$nKey))
                     {
                         if($nKey=="media:group")
                             $writer->endElement();
@@ -781,20 +800,19 @@ class Node{
                     elseif(count($nodes) > 1)
                         $writer->endElement();
 
-
                 }
-
-
 
 
             }
 
-
-
-
-
-
         }
+
+
+        if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+        {
+            $writer->endElement();
+        }
+
     }
 
     /**
@@ -911,47 +929,77 @@ class Node{
             $template = $this->_getTemplate();
             $key = key($template);
 
-            $childs = $template[$key];
-
-            $this->createEmptyChildren($data,$childs);
+            $this->createEmptyChildren($data,$template[$key]);
         }
 
         return $data;
     }
 
+    public function move_to_bottom(&$array, $key) {
+        $value = $array[$key];
+        unset($array[$key]);
+        $array[$key] = $value;
+    }
 
-    public function createEmptyChildren(&$data = [],$childs =[])
+
+    public function createEmptyChildren(&$data = [],$childs =[],$i = 0)
     {
+        $i++;
 
-        foreach($data as $index_record => &$record)
+        if($data)
         {
-            if(is_array($record) and array_key_exists(0,$record))
-                $this->createEmptyChildren($record,$childs[key($childs)]);
-            else{
+            foreach($data as $index_record => &$record)
+            {
 
                 if(is_array($childs) and $childs)
                 {
                     foreach($childs as $index_child => $child)
                     {
 
-                        if(!isset($record[$index_child]))
+                        if($i == 1)
+                            $record_exits = isset($data[$index_child]) ? true : false;
+                        else
+                            $record_exits = isset($record[$index_child]) ? true : false;
+
+                        if(!$record_exits)
                         {
                             if(!is_array($child))
-                                $record[$index_child] = "";
+                            {
+                                if($i == 1)
+                                    $data[$index_child] = "";
+                                else
+                                    $record[$index_child] = "";
+                            }
                             else
-                                $record[$index_child] = $child;
+                            {
+                                if($i == 1)
+                                    $data[$index_child] = $child;
+                                else
+                                    $record[$index_child] = $child;
+                            }
 
-                        }elseif(is_array($record[$index_child])){
-                            $this->createEmptyChildren($record[$index_child],$childs[$index_child]);
+
+                        }else
+                        {
+
+                            if($i == 1)
+                            {
+                                if(is_array($data[$index_child]))
+                                    $this->createEmptyChildren($data[$index_child],$childs[$index_child],$i);
+                            }else
+                            {
+                                if(is_array($record[$index_child]))
+                                    $this->createEmptyChildren($record[$index_child],$childs[$index_child],$i);
+                            }
+
                         }
 
                     }
                 }
 
-
             }
-
         }
+
 
     }
 
@@ -966,69 +1014,57 @@ class Node{
 
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
+        $writer = new XMLWriter();
+        $writer->openURI($file);
+        $writer->startDocument( '1.0', $encoding );
+        $writer->setIndent( 4 );
+        $writer->startElement( 'rss' );
 
-        if($this->isTemplate)
+
+        $this->move_to_bottom($nodes,"item");
+
+        $writer->writeAttribute( 'version', '2.0' );
+
+            $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+
+
+            $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+
+
+            $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
+
+
+
+        $paths = $this->_getPaths();
+
+        if(!$paths["path"])
         {
-            $template = $this->_getTEMPLATE();
+            $writer->startElement("channel");
 
-            $xml = new ArrayToXML();
-            $output =  $xml->buildXML($nodes,key($template));
+            foreach($attributes as $k_att => $v_att )
+            {
+                $writer->startElement($k_att);
+                $writer->writeCData($v_att);
+                $writer->endElement();
+            }
 
-            file_put_contents($file, $output);
+            $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
         }else
         {
 
-            $writer = new XMLWriter();
-            $writer->openURI($file);
-            $writer->startDocument( '1.0', $encoding );
-            $writer->setIndent( 4 );
-            $writer->startElement( 'rss' );
-            $writer->writeAttribute( 'version', '2.0' );
-
-                $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
-
-
-                $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
-
-
-                $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
-
-
-
-            $paths = $this->_getPaths();
-
-            if(!$paths["path"])
-            {
-                $writer->startElement("channel");
-
-                foreach($attributes as $k_att => $v_att )
-                {
-                    $writer->startElement($k_att);
-                    $writer->writeCData($v_att);
-                    $writer->endElement();
-                }
-
-                $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
-            }else
-            {
-
-                $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
-            }
-
-
-
-            if(!$paths["path"])
-                $writer->endElement();
-
-
-            $writer->endElement();
-
-            $writer->endDocument();
-            $writer->flush();
-
+            $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
         }
 
-        
+
+
+        if(!$paths["path"])
+            $writer->endElement();
+
+
+        $writer->endElement();
+
+        $writer->endDocument();
+        $writer->flush();
     }
 
 
