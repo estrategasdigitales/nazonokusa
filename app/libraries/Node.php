@@ -747,12 +747,16 @@ class Node{
 
                         $nKey = "item";
 
-                        foreach($attributes as $k_att => $v_att )
+                        if($attributes and is_array($attributes))
                         {
-                            $writer->startElement($k_att);
-                            $writer->writeCData($v_att);
-                            $writer->endElement();
+                            foreach($attributes as $k_att => $v_att )
+                            {
+                                $writer->startElement($k_att);
+                                $writer->writeCData($v_att);
+                                $writer->endElement();
+                            }
                         }
+
 
 
                     }else if($parentKey == "item")
