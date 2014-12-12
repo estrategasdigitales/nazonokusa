@@ -967,56 +967,68 @@ class Node{
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
 
-        //print_r($nodes);
-        //echo json_encode($nodes);
-
-        $writer = new XMLWriter();
-        $writer->openURI($file);
-        $writer->startDocument( '1.0', $encoding );
-        $writer->setIndent( 4 );
-        $writer->startElement( 'rss' );
-        $writer->writeAttribute( 'version', '2.0' );
-
-            $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
-
-
-            $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
-
-
-            $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
-
-
-
-        $paths = $this->_getPaths();
-
-        if(!$paths["path"])
+        if($this->isTemplate)
         {
-            $writer->startElement("channel");
+            $template = $this->_getTEMPLATE();
 
-            foreach($attributes as $k_att => $v_att )
-            {
-                $writer->startElement($k_att);
-                $writer->writeCData($v_att);
-                $writer->endElement();
-            }
+            $xml = new ArrayToXML();
+            $output =  $xml->buildXML($nodes,key($template));
 
-            $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
+            file_put_contents($file, $output);
         }else
         {
 
-            $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
-        }
+            $writer = new XMLWriter();
+            $writer->openURI($file);
+            $writer->startDocument( '1.0', $encoding );
+            $writer->setIndent( 4 );
+            $writer->startElement( 'rss' );
+            $writer->writeAttribute( 'version', '2.0' );
+
+                $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+
+
+                $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+
+
+                $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
 
 
 
-        if(!$paths["path"])
+            $paths = $this->_getPaths();
+
+            if(!$paths["path"])
+            {
+                $writer->startElement("channel");
+
+                foreach($attributes as $k_att => $v_att )
+                {
+                    $writer->startElement($k_att);
+                    $writer->writeCData($v_att);
+                    $writer->endElement();
+                }
+
+                $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
+            }else
+            {
+
+                $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
+            }
+
+
+
+            if(!$paths["path"])
+                $writer->endElement();
+
+
             $writer->endElement();
 
+            $writer->endDocument();
+            $writer->flush();
 
-        $writer->endElement();
+        }
 
-        $writer->endDocument();
-        $writer->flush();
+        
     }
 
 
