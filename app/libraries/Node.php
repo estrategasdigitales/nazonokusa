@@ -372,7 +372,7 @@ class Node{
         }
         else{
 
-            if($this->startsWith("media",$path))
+            if($this->startsWith("media:",$path))
             {
                 $xml = true;
                 $path = preg_replace("/\[\*\]$/","",$path);
@@ -398,7 +398,7 @@ class Node{
 
         }
 
-        if($inputs)
+        if($input)
         {
             if(count($inputs) == 0 and array_key_exists(0,$input))
             {
@@ -687,13 +687,7 @@ class Node{
             }elseif(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($this->isTemplate)
-                {
-                    $writer->startElement($nKey);
-                        $this->_toXML($writer,$nValue,$nKey,$kind);
-                    $writer->endElement();
-
-                }elseif($kind == "xml")
+               if($kind == "xml")
                 {
 
                     if($this->startsWith("media:",$nKey))
@@ -908,12 +902,15 @@ class Node{
 
         $data = $this->__do($paths,$input);
 
-        $template = $this->_getTemplate();
-        $key = key($template);
+        if($this->isTemplate)
+        {
+            $template = $this->_getTemplate();
+            $key = key($template);
 
-        $childs = $template[$key];
+            $childs = $template[$key];
 
-        $this->createEmptyChildren($data,$childs);
+            $this->createEmptyChildren($data,$childs);
+        }
 
         return $data;
     }
@@ -925,12 +922,13 @@ class Node{
         foreach($data as $index_record => &$record)
         {
             if(is_array($record) and array_key_exists(0,$record))
-                $output = $this->createEmptyChildren($record,$childs[key($childs)]);
+                $this->createEmptyChildren($record,$childs[key($childs)]);
             else{
 
 
                 foreach($childs as $index_child => $child)
                 {
+
                     if(!isset($record[$index_child]))
                     {
                         if(!is_array($child))
@@ -938,6 +936,8 @@ class Node{
                         else
                             $record[$index_child] = $child;
 
+                    }elseif(is_array($record[$index_child])){
+                        $this->createEmptyChildren($record[$index_child],$childs[$index_child]);
                     }
 
                 }
@@ -1039,14 +1039,24 @@ class Node{
 
             $paths = $this->_getPaths();
 
-            if(!$paths["path"])
+
+            if($this->isTemplate)
+            {
+                $template = $this->_getTEMPLATE();
+                $key = key($template);
+
+                $this->_toXML( $writer, $nodes, $key, 'xml' );
+
+            }elseif(!$paths["path"])
             {
                 $writer->startElement("resources");
 
                 $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                 $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
-                $this->_toXML( $writer, $nodes, 'resource', 'xml' );
+
+                    $this->_toXML( $writer, $nodes, 'resource', 'xml' );
+
             }else
                 $this->_toXML( $writer, $nodes, 'resources', 'xml' );
 
