@@ -65,10 +65,15 @@ class ArrayToXML {
                 } elseif($key[0] == '@') {  // if($key[0] == '#') {
                     if(is_array($val)) $nonAttributes = $val;
                     else {
-                        //$xml->startElement(substr($key, 1));
+                        $xml->startElement(substr($key, 1));
                         $xml->writeCData($val);
-                        //$xml->endElement();
+                        $xml->endElement();
                     }
+                }elseif($val == "")
+                {
+                    $xml->startElement($key);
+                    $xml->writeCData($val); // SIN CDATA
+                    $xml->endElement();
                 }
 
                 //ignore normal elements

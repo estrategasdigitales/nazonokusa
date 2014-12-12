@@ -270,6 +270,7 @@ class Node{
     }
 
 
+
     private function _getTemplatePaths()
     {
         return $this->TEMPLATE_PATHS;
@@ -686,7 +687,13 @@ class Node{
             }elseif(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($kind == "xml")
+                if($this->isTemplate)
+                {
+                    $writer->startElement($nKey);
+                        $this->_toXML($writer,$nValue,$nKey,$kind);
+                    $writer->endElement();
+
+                }elseif($kind == "xml")
                 {
 
                     if($this->startsWith("media:",$nKey))
@@ -899,10 +906,46 @@ class Node{
 
         $input    = $this->_getINPUT();
 
-        return $this->__do($paths,$input);
+        $data = $this->__do($paths,$input);
+
+        $template = $this->_getTemplate();
+        $key = key($template);
+
+        $childs = $template[$key];
+
+        $this->createEmptyChildren($data,$childs);
+
+        return $data;
     }
 
 
+    public function createEmptyChildren(&$data = [],$childs =[])
+    {
+
+        foreach($data as $index_record => &$record)
+        {
+            if(is_array($record) and array_key_exists(0,$record))
+                $output = $this->createEmptyChildren($record,$childs[key($childs)]);
+            else{
+
+
+                foreach($childs as $index_child => $child)
+                {
+                    if(!isset($record[$index_child]))
+                    {
+                        if(!is_array($child))
+                            $record[$index_child] = "";
+                        else
+                            $record[$index_child] = $child;
+
+                    }
+
+                }
+            }
+
+        }
+
+    }
 
 
     public function getDataFixed()
@@ -988,9 +1031,10 @@ class Node{
             file_put_contents($file, $output);
         }else
         {
+
             $writer = new XMLWriter();
             $writer->openURI( $file );
-            $writer->startDocument( '1.0', $encoding );
+            $writer->startDocument( '1.0', "UTF-8" );
             $writer->setIndent( 4 );
 
             $paths = $this->_getPaths();
