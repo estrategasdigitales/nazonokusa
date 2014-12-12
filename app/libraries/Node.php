@@ -925,22 +925,26 @@ class Node{
                 $this->createEmptyChildren($record,$childs[key($childs)]);
             else{
 
-
-                foreach($childs as $index_child => $child)
+                if(is_array($childs) and $childs)
                 {
-
-                    if(!isset($record[$index_child]))
+                    foreach($childs as $index_child => $child)
                     {
-                        if(!is_array($child))
-                            $record[$index_child] = "";
-                        else
-                            $record[$index_child] = $child;
 
-                    }elseif(is_array($record[$index_child])){
-                        $this->createEmptyChildren($record[$index_child],$childs[$index_child]);
+                        if(!isset($record[$index_child]))
+                        {
+                            if(!is_array($child))
+                                $record[$index_child] = "";
+                            else
+                                $record[$index_child] = $child;
+
+                        }elseif(is_array($record[$index_child])){
+                            $this->createEmptyChildren($record[$index_child],$childs[$index_child]);
+                        }
+
                     }
-
                 }
+
+
             }
 
         }
