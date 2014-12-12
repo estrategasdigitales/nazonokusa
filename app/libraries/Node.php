@@ -627,7 +627,6 @@ class Node{
             $key = $parentKey;
             $value = $nValue;
 
-
             if(!is_array($nValue))
             {
                 $is_numeric = explode("x",$nKey);
@@ -663,7 +662,7 @@ class Node{
                         $writer->startElement($nKey);
                     else
                         $writer->startElement($key);
-                    
+
                     foreach ($nValue["@attributes"] as $katt => $vatt)
                     {
                         if(is_array($vatt) and count($vatt) == 1)
