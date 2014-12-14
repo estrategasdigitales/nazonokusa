@@ -46,7 +46,7 @@ class Crontabs_model extends Nucleo {
 	 * @return [type]                 [description]
 	 */
 	public function unset_cron( $config_cron = '', $trabajo_url_id = '' ){
-		$trabajo_url_id = urlencode( base64_encode( $trabajo_url_id ) );
+		$trabajo_url_id = 'wget -O - '. base_url() . 'job_execute?token='.( base64_encode( $trabajo_url_id ) )." > /dev/null 2>&1";
 
 		$host 		= $_SERVER['CRON_HOST'];
 		$port 		= $_SERVER['CRON_HOST_PORT'];
@@ -62,7 +62,7 @@ class Crontabs_model extends Nucleo {
 
 		if ( $trabajo_url_id && $trabajo_url_id != '' ){
 			$cron_setup->write_to_file( $path, $handle ); // Verifica que el archivo exista y este activo, si no, lo crea y lo activa
-			$resp_remove = $cron_setup->remove_cronjob( $trabajo_url_id );
+			$resp_remove = $cron_setup->remove_cronjob( $config_cron. ' ' . $trabajo_url_id );
 			//print_r($resp_con . "--------------------" . $resp_remove);
 		}
 	}

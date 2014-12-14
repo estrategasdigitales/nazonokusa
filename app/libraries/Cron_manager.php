@@ -66,11 +66,13 @@ Class Cron_manager {
 	}
 	
 	public function remove_file(){
+		//print_r( 'se procede a borrar el archivo' );die;
 		if ( $this->crontab_file_exists() ) $this->exec( "rm {$this->cron_file}" );
 		return $this;
 	}
 	
 	public function append_cronjob( $cron_jobs = NULL ){
+		//print_r( 'se procede a agregar linea al archivo' );die;
 		if ( is_null( $cron_jobs ) ) $this->error_message( 'Nothing to append!  Please specify a cron job or an array of cron jobs.' );
 		$append_cronfile 	= "echo '";
 		$append_cronfile 	.= ( is_array( $cron_jobs ) ) ? implode( "\n", $cron_jobs ) : $cron_jobs;
@@ -97,7 +99,9 @@ Class Cron_manager {
 				$cron_array = preg_grep( $cron_regex, $cron_array, PREG_GREP_INVERT );
 			}
 		} else {
-		 	$cron_array = preg_grep( $cron_jobs, $cron_array, PREG_GREP_INVERT );
+			$index = array_search( $cron_jobs, $cron_array );
+			unset( $cron_array[$index] );
+		 	//$cron_array = preg_grep( $cron_jobs, $cron_array, PREG_GREP_INVERT );
 		}
 		return ( $original_count === count( $cron_array ) ) ? $this->remove_file() : $this->remove_crontab()->append_cronjob( $cron_array );
 	}
