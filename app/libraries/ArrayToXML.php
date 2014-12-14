@@ -57,25 +57,24 @@ class ArrayToXML {
             foreach($data as $key => $val) {
 
                 //handle an attribute with elements
-                if($key[0] == '#') {  // if($key[0] == '@') {
+                if($key[0] == '@attributes') {  // if($key[0] == '@') {
                     $xml->writeAttribute(substr($key, 1), $val);
                 } else if($key[0] == '%') {
                     if(is_array($val)) $nonAttributes = $val;
                     else $xml->text($val);
-                } elseif($key[0] == '@') {  // if($key[0] == '#') {
+                } elseif($key == '@cdata') {  // if($key[0] == '#') {
                     if(is_array($val)) $nonAttributes = $val;
                     else {
-                        $xml->startElement(substr($key, 1));
+                        //$xml->startElement(substr($key, 1));
                         $xml->writeCData($val);
-                        $xml->endElement();
+                        //$xml->endElement();
                     }
                 }elseif($val == "")
                 {
                     $xml->startElement($key);
-                    $xml->writeCData($val); // SIN CDATA
+                    $xml->writeCData($val);
                     $xml->endElement();
                 }
-
                 //ignore normal elements
                 else $nonAttributes[$key] = $val;
             }
