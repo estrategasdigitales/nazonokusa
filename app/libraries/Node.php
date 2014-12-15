@@ -1015,7 +1015,7 @@ class Node{
 
         $writer = new XMLWriter();
         $writer->openURI($file);
-        $writer->startDocument( '1.0', $encoding );
+        $writer->startDocument( '1.0', 'UTF-8' );
         $writer->setIndent( 4 );
         $writer->startElement( 'rss' );
 
