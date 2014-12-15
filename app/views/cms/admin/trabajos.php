@@ -60,6 +60,7 @@
 											break;
 											case 2:
 												echo '<span>';
+
 													switch ( $trabajo->formato_salida ) {
 														case 'RSS':
 															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" class="petroleo" target="_blank">';
@@ -73,7 +74,7 @@
 																echo '<span class="glyphicon-class">xml</span>';
 															echo '</a>';
 														break;
-														case 'JSON':
+														case 'JSON': case 'JSON_VARIABLE':
 															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">json</span>';

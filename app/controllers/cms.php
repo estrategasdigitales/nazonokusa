@@ -862,6 +862,10 @@ class Cms extends CI_Controller {
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
 				$trabajo['formato_salida']		= $this->detect_format( $this->input->post('url-origen') );
 				switch ( $trabajo['formato_salida'] ){
+                    case 'JSON':
+                        $trabajo['encoding']	= '';
+                        $trabajo['headers']		= '';
+                        break;
 					case 'XML':
 						$trabajo['encoding']	= $this->detect_encoding( $this->input->post( 'url-origen' ) );
 						$trabajo['headers']		= '';
@@ -873,9 +877,16 @@ class Cms extends CI_Controller {
 					default:
 						$trabajo['encoding']	= '';
 						$trabajo['headers']		= '';
+
+                        $trabajo['variable']       = $trabajo['formato_salida'];
+                        $trabajo['formato_salida'] = 'JSON_VARIABLE';
+
+
 						break;
 				}
-				$trabajo['json_estructura']		= base_url() . 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
+
+
+				$trabajo['json_estructura']		= 'nucleo/feed_service_specific?url=' . urlencode( base64_encode( $this->input->post('url-origen') ) );
 				$trabajo 						= $this->security->xss_clean( $trabajo );
 				$guardar 						= $this->cms->add_estructura( $trabajo );
 				if ( $guardar !== FALSE ){
@@ -953,6 +964,16 @@ class Cms extends CI_Controller {
 			$this->load->view( 'cms/admin/reportes', $data );
 		}
 	}
+
+    public function startWithVariable($string = '')
+    {
+        preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
+
+        if(isset($matches[1][0]))
+            return $matches[1][0];
+        else
+            return false;
+    }
 
 	/**
 	 * [nuevo_reporte description]
@@ -1071,6 +1092,12 @@ class Cms extends CI_Controller {
 		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
 			$url = html_entity_decode( $url );
 		}
+
+        $isVariable = $this->startWithVariable($url);
+
+        if($isVariable)
+            return $isVariable;
+
 		if ( $feed = json_decode( $url ) ){
 			$format = 'JSON';
 		} else {

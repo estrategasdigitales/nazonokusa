@@ -122,12 +122,13 @@ class Netstorage_model extends Nucleo {
 					$node = new Node(
 							[
 								'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
-								'template' 	=> $trabajo->json_estructura,
+								'template' 	=> base_url() . $trabajo->json_estructura,
 								'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
 							]
 						);
+                    $node->isStandardOutPut = true;
 
-                    $data = $node->getData();
+
 
 					$encoding = base64_decode( $trabajo->encoding );
 					$header = base64_decode( $trabajo->cabeceras );
@@ -135,20 +136,31 @@ class Netstorage_model extends Nucleo {
 						case 'RSS':
 
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
+                            $data = $node->getData();
 							$final = $node->toRSS( $data,$file, $encoding, $header );
 							//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 'XML':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
+                            $data = $node->getData();
 							$final = $node->toXML( $data,$file, $encoding );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
 						case 'JSON':
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
+                            $data = $node->getData();
 							$final = $node->toJSON( $data,$file );
 							$this->upload_netstorage( $feed_output, $ftpath );
 							break;
+                        case 'JSON_VARIABLE':
+
+                            $node->isJsonVariable = $trabajo->variable;
+                            $file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
+                            $data = $node->getData();
+                            $final = $node->toJSON( $data,$file );
+                            $this->upload_netstorage( $feed_output, $ftpath );
+                            break;
 						case 4:
 							# json-p
 							break;

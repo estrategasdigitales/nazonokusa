@@ -28,6 +28,9 @@ class Node{
 
     var $cdata          = false;
 
+    var $isStandardOutPut = true;
+    var $isJsonVariable   = false;
+
     function __construct($arguments = [])
     {
         $this->URL_INPUT 	 = $arguments["input"];
@@ -193,7 +196,7 @@ class Node{
             $apath = explode(".",$path);
 
             if(!in_array("",$paths) and $path == "")
-                $return[$path] = [];
+                $return[$path] = isset($paths[$path]) ? $paths[$path] : [];
             else
                 $return[$path] = $paths[$path];
 
@@ -337,6 +340,17 @@ class Node{
 
     private function startsWith($needle, $haystack) {
         return preg_match('/^' . preg_quote($needle, '/') . '/', $haystack);
+    }
+
+
+    public function startWithVariable($string = '')
+    {
+        preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
+
+        if(isset($matches[1][0]))
+            return $matches[1][0];
+        else
+            return false;
     }
 
 
@@ -509,6 +523,13 @@ class Node{
 
                     $akey = explode(".",$child["key"]);
                     $key  = '["'.implode('"]["',$akey).'"]';
+
+                    if(count($akey) == 1)
+                    {
+                        $akey = explode("[*]",$child["key"]);
+                        $akey = [$akey[0]];
+                    }
+
                     if(is_array($record))
                         $return = $this->_extractData($record,$akey);
                     else
@@ -555,7 +576,16 @@ class Node{
                         foreach($eval_template as $eval_template_value => $eval_template_record)
                         {
 
-                            if(substr_count($eval_template_record,"[*]") > 0)
+                            if($this->isJsonVariable)
+                            {
+                                $eval_template_record = explode("[*]",$eval_template_record);
+
+                                $n_eval_template_record[0] = "[*]";
+                                $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
+
+                                $eval_template_record = implode("",$n_eval_template_record);
+
+                            }elseif(substr_count($eval_template_record,"[*]") > 0 or $this->isJsonVariable)
                             {
                                 $eval_template_record = explode("[*]",$eval_template_record);
 
@@ -581,10 +611,17 @@ class Node{
 
                         $eval_template = implode("",$eval_template);
 
+                        $eval_template = explode("[*]",$eval_template);
+                        $eval_template = implode("",$eval_template);
+
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
 
                     }else
                     {
+
+                        $key = explode("[*]",$key);
+                        $key = implode("",$key);
+
 
                         eval("\$output$eval$key = \"$return\";"); // without template
                     }
@@ -928,7 +965,9 @@ class Node{
             $template = $this->_getTemplate();
             $key = key($template);
 
-            $this->createEmptyChildren($data,$template[$key]);
+            $template = count($template) > 1 ? $template : $template[$key];
+
+            $this->createEmptyChildren($data,$template);
         }
 
         return $data;
@@ -955,7 +994,7 @@ class Node{
                     foreach($childs as $index_child => $child)
                     {
 
-                        if($i == 1)
+                        if($i == 1 and !array_key_exists(0,$data) )
                             $record_exits = isset($data[$index_child]) ? true : false;
                         else
                             $record_exits = isset($record[$index_child]) ? true : false;
@@ -964,14 +1003,14 @@ class Node{
                         {
                             if(!is_array($child))
                             {
-                                if($i == 1)
+                                if($i == 1 and !array_key_exists(0,$data) )
                                     $data[$index_child] = "";
                                 else
                                     $record[$index_child] = "";
                             }
                             else
                             {
-                                if($i == 1)
+                                if($i == 1 and !array_key_exists(0,$data) )
                                     $data[$index_child] = $child;
                                 else
                                     $record[$index_child] = $child;
@@ -981,7 +1020,7 @@ class Node{
                         }else
                         {
 
-                            if($i == 1)
+                            if($i == 1 and !array_key_exists(0,$data) )
                             {
                                 if(is_array($data[$index_child]))
                                     $this->createEmptyChildren($data[$index_child],$childs[$index_child],$i);
@@ -1137,6 +1176,9 @@ class Node{
             $json = $function . '('. json_encode( $data ) .')';
         else
             $json = json_encode( $data );
+
+        if($this->isJsonVariable)
+            $json = $this->isJsonVariable."=[" . json_encode( $data ) . "]";
 
         if ( $file != 'json.json' )
             file_put_contents($file, $json);

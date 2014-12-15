@@ -46,7 +46,8 @@ class Nucleo extends CI_Controller {
         $template['id'] = $this->input->post( 'id_template' );
         $feed_salida = $this->cms->get_template_feed( $template );
         if ( $feed_salida != FALSE ){
-            echo $feed_salida->json_estructura;
+
+            echo base_url() . $feed_salida->json_estructura;
         } else {
             echo '<span class="error">Ocurrió un problema al intentar <b>cargar el template de salida</b>. </span>';
         }
@@ -112,6 +113,12 @@ class Nucleo extends CI_Controller {
         $url = $this->input->get('url');
         $url = urldecode( base64_decode( $url ) );
         $url = file_get_contents_curl( $url );
+
+        $isVariable = $this->startWithVariable($url);
+
+        if($isVariable)
+            $url  = str_replace($isVariable."=","",$url);
+
         /*
 		echo file_get_contents_curl( $url );
 
@@ -137,6 +144,10 @@ class Nucleo extends CI_Controller {
 
             // 	$cont[] = $this->mapAttributes( $item  );
             // }
+
+            if($isVariable)
+                $feed = $feed[0];
+
             $cont[] = $this->mapAttributes( $feed  );
             $contents = $this->array_unique_multidimensional( $cont );
             $indices = create_indexes_specific( $contents );
@@ -179,18 +190,42 @@ class Nucleo extends CI_Controller {
         $this->load->view('cms/service', $data );
     }
 
+    public function startWithVariable($string = '')
+    {
+        preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
+
+        if(isset($matches[1][0]))
+            return $matches[1][0];
+        else
+            return false;
+    }
+
     /**
      * [feed_service_specific description]
      * @return [type] [description]
      */
     public function feed_service_specific(){
+
+
         $url = $this->input->get( 'url' );
         $url = urldecode( base64_decode( $url ) );
         $url = file_get_contents_curl( $url );
+
+        $isVariable = $this->startWithVariable($url);
+
+
+        if($isVariable)
+            $url  = str_replace($isVariable."=","",$url);
+
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
         if ( $feed = json_decode( $url ) ){
+
+            if($isVariable)
+                $feed = $feed[0];
+
+
             foreach ( $feed as $item ){
                 if ( is_array( $item ) && count( $item ) == 1 )
                     $item = (array)$item[0];
@@ -247,11 +282,21 @@ class Nucleo extends CI_Controller {
         $url = $this->input->get( 'url' );
         $url = urldecode( base64_decode( $url ) );
         $url = file_get_contents_curl( $url );
+
+        $isVariable = $this->startWithVariable($url);
+
+        if($isVariable)
+            $url  = str_replace($isVariable."=","",$url);
+
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
         if ( $feed = json_decode( $url ) ){
             $contenido_feed = json_decode( $url );
+
+            if($isVariable)
+                $contenido_feed = $contenido_feed[0];
+
         } else {
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
