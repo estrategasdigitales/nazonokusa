@@ -1083,7 +1083,7 @@ class Node{
         {
             $writer->startElement("channel");
 
-            if($attributes)
+            if($attributes and is_array($attributes) and count($attributes) > 0)
             {
                 foreach($attributes as $k_att => $v_att )
                 {
