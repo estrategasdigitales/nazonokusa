@@ -40,6 +40,7 @@ class Netstorage_model extends Nucleo {
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria ) ){
 				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E01 - No se ha podido crear el directorio de la categoría');
+				$this->alertas->alerta( $trabajo->uid_trabajo, 'E01' );
 			}
 		}
 
@@ -83,9 +84,6 @@ class Netstorage_model extends Nucleo {
 
 					foreach ( $formatos as $formato ){
 						$formato = json_decode( $formato->formato );
-
-
-
 						switch ( $formato->format ){
 							case 'xml':
 								$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-xml.xml';
@@ -118,7 +116,6 @@ class Netstorage_model extends Nucleo {
 					}
 					break;
 				case 2:
-				//print_r( $trabajo );die;
 					$node = new Node(
 							[
 								'input' 	=> base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) ),
@@ -131,7 +128,7 @@ class Netstorage_model extends Nucleo {
 
 					$encoding = base64_decode( $trabajo->encoding );
 					$header = base64_decode( $trabajo->cabeceras );
-					switch ( $trabajo->formato_salida ) {
+					switch ( $trabajo->formato_salida ){
 						case 'RSS':
 
 							$file = './' . $feed_output . $trabajo->slug_nombre_feed . '-rss.xml';
