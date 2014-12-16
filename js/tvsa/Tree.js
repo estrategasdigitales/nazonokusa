@@ -47,14 +47,19 @@ Ext.define('TVSA.Tree', {
                     if(Ext.isObject(key))
                         _me.node(store,key,false,id,newNode);
 
-                    else{
+                    else if(id.indexOf("@cdata") == -1){
 
-
-                        if(!Ext.Array.contains(_me.ids,id))
+                        if(!Ext.Array.contains(_me.ids,id) )
                         {
+                            var leaf = Ext.isObject(value) ? false : !Ext.isArray(value);
+                            if(!leaf)
+                            {
+                                if(Ext.isDefined(value[0]["@cdata"]))
+                                    leaf = true;
+                            }
 
                             var child = newNode.appendChild(Ext.apply(me.node,{
-                                leaf: Ext.isObject(value) ? false : !Ext.isArray(value),
+                                leaf: leaf,
                                 id   : id,
                                 text : key
                             }),true);

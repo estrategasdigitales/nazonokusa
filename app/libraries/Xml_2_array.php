@@ -76,8 +76,8 @@ class Xml_2_array {
  
 		switch ( $node->nodeType ){
 			case XML_CDATA_SECTION_NODE:
-				$output['@cdata'] = trim( $node->textContent );
-				//$output = trim( $node->textContent );
+				//$output['@cdata'] = trim( $node->textContent );
+				$output = trim( $node->textContent );
 				break;
  
 			case XML_TEXT_NODE:

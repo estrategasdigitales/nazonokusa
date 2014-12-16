@@ -257,7 +257,7 @@ class Cms_model extends CI_Model {
             //$this->db->cache_off();
             $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, 
                 a.slug_nombre_feed, a.url_origen, a.campos_seleccionados, a.activo, 
-                a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras' );
+                a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras,d.variable' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
@@ -416,6 +416,7 @@ class Cms_model extends CI_Model {
             $this->db->set( 'uid_estructura', "UUID()", FALSE );
             $this->db->set( 'uid_usuario', $trabajo['usuario'] );
             $this->db->set( 'nombre', $trabajo['nombre'] );
+            $this->db->set( 'variable', isset($trabajo['variable']) ? $trabajo['variable'] : "" );
             $this->db->set( 'slug_nombre_feed', $trabajo['slug_nombre_feed'] );
             $this->db->set( 'url_origen', $trabajo['url-origen'] );
             $this->db->set( 'formato_salida', $trabajo['formato_salida'] );
