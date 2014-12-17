@@ -1169,9 +1169,6 @@ class Node{
             $writer->endDocument();
             $writer->flush();
         }
-
-
-
     }
 
 

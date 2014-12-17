@@ -126,31 +126,11 @@ class Nucleo extends CI_Controller {
         if($isVariable)
             $url  = str_replace($isVariable."=","",$url);
 
-        /*
-		echo file_get_contents_curl( $url );
-
-
-
-
-        die;
-        */
-
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
 
         if ( $feed = $this->jsonp_decode( $url,true ) ){
-
-            //$cont = $this->mapAttributes( $feed  );
-
-            // foreach ( $feed as $item ){
-            // 	if ( is_array( $item ) && count( $item ) == 1 )
-            // 		$item = (array)$item[0];
-            // 	else
-            // 		$item = json_encode( $item );
-
-            // 	$cont[] = $this->mapAttributes( $item  );
-            // }
 
             if($isVariable)
                 $feed = $feed[0];
@@ -355,8 +335,6 @@ class Nucleo extends CI_Controller {
         $process 		= $this->cms->active_job( $job );
         $response = TRUE;
 
-
-
         if ( $process == TRUE ){
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
@@ -370,7 +348,6 @@ class Nucleo extends CI_Controller {
         } else {
             $response = '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
         }
-
         echo $response;
     }
 
@@ -384,10 +361,7 @@ class Nucleo extends CI_Controller {
 
         if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
             unset($campos_orig["@attributes"]);
-
-
         $campos 		= [];
-        //print_r($campos_orig);
         $items 			= count( $campos_orig );
         if ( ! empty( $campos_orig[0] ) ){
             for ( $i = 0; $i < count( $campos_orig ); $i++ ){
