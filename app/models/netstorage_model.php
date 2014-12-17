@@ -214,7 +214,9 @@ class Netstorage_model extends Nucleo {
 	 * Sube los archivos al netstorage
 	 * @return [type] [description]
 	 */
-	public function upload_netstorage( $file, $ftpath, $trabajo, $tipo_salida, $formato_salida ){
+	private function upload_netstorage( $file, $ftpath, $trabajo, $tipo_salida, $formato_salida ){
+		$CI =& get_instance();
+		$CI->load->model( 'cronlog_model', 'cronlog' );
 		$this->load->library( 'ftp' );
 		if ( $tipo_salida == 1 ) $tipo_salida = 'Estándar';
 		else $tipo_salida = 'Específica';
