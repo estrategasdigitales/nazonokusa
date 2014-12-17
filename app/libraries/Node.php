@@ -646,7 +646,7 @@ class Node{
 
     private function getDate()
     {
-        return date('D, d M Y H:i:s GMT');
+        return date('D, d M Y H:i:s')." GMT";
     }
 
 
