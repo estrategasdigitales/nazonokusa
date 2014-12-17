@@ -115,8 +115,8 @@ class Nucleo extends CI_Controller {
     public function feed_service(){
         $url = $this->input->get('url');
         $url = urldecode( base64_decode( $url ) );
-        echo $url = file_get_contents_curl( $url );
-        die;
+        $url = file_get_contents_curl( $url );
+        
 
         $isVariable = $this->startWithVariable($url);
 
