@@ -27,8 +27,6 @@ class Nucleo extends CI_Controller {
         if ( $this->session->userdata( 'session' ) !== TRUE ){
             redirect( 'login' );
         } else {
-            // $this->load->model('alertas_model', 'alertas');
-            // $this->alertas->alerta('003101e8-3394-11e4-b1fe-e385f026ed30','E303 - Error desconocido aún');die;
             $data['usuario'] = $this->session->userdata( 'nombre' );
             $this->load->view( 'middleware/index' );
         }
@@ -103,8 +101,6 @@ class Nucleo extends CI_Controller {
             if ( $eliminar !== FALSE ){
                 /** Aquí debe ir el código para borrar los archivos de salida del disco duro de la instancia, se debe consultar la base de datos **/
                 /** Aquí se debe incluir el código para borrar el cron de la instancia donde se guardan **/
-                // $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
-                // $cronjob = json_decode($trabajo->cron_config, true);
                 echo TRUE;
             } else {
                 echo '<span class="error">No se ha podido eliminar el <b>trabajo</b>.</span>';
@@ -338,8 +334,8 @@ class Nucleo extends CI_Controller {
         if ( $process == TRUE ){
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $this->storage->harddisk_write( $trabajo );
                 $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+                $this->storage->harddisk_write( $trabajo );
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
                 $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
@@ -416,7 +412,6 @@ class Nucleo extends CI_Controller {
         if ( $this->session->userdata( 'session' ) !== TRUE ){
             redirect(' login' );
         } else {
-
 
             $this->form_validation->set_rules( 'nombre', 'Nombre del Trabajo', 'trim|required|min_length[3]|xss_clean' );
             $this->form_validation->set_rules( 'url-origen', 'URL Origen', 'required|min_length[3]|xss_clean' );
