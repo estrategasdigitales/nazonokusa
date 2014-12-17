@@ -12,6 +12,13 @@ class Nucleo extends CI_Controller {
         $this->load->model( 'cms_model', 'cms' );
     }
 
+    public function jsonp_decode($jsonp, $assoc = false) { // PHP 5.3 adds depth as third parameter to json_decode
+        if($jsonp[0] !== '[' && $jsonp[0] !== '{') { // we have JSONP
+            $jsonp = substr($jsonp, strpos($jsonp, '('));
+        }
+        return json_decode(trim($jsonp,'();'), $assoc);
+    }
+
     /**
      * [index description]
      * @return [type] [description]
@@ -77,7 +84,7 @@ class Nucleo extends CI_Controller {
             $data['categorias'] 	= $this->cms->get_categorias();
             $data['verticales'] 	= $this->cms->get_verticales();
             $data['trabajo_editar'] = $trabajo->uid_trabajo;
-            $data['cron_date'] 		= json_decode( $trabajo->cron_config, true );
+            $data['cron_date'] 		= $this->jsonp_decode( $trabajo->cron_config, true );
             $this->load->view( 'cms/admin/editar_trabajo', $data );
         }
     }
@@ -132,7 +139,7 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
 
-        if ( $feed = json_decode( $url,true ) ){
+        if ( $feed = $this->jsonp_decode( $url,true ) ){
 
             //$cont = $this->mapAttributes( $feed  );
 
@@ -157,7 +164,7 @@ class Nucleo extends CI_Controller {
                 $feed = substr( $url, $pos );
                 $feed = str_replace( '(', '[', $feed );
                 $feed = str_replace( ')', ']', $feed );
-                $feed = json_decode( $feed, TRUE );
+                $feed = $this->jsonp_decode( $feed, TRUE );
                 foreach ( $feed as $item ){
                     if ( is_array( $item ) && count( $item ) == 1 )
                         $item = (array)$item[0];
@@ -220,7 +227,7 @@ class Nucleo extends CI_Controller {
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
-        if ( $feed = json_decode( $url ) ){
+        if ( $feed = $this->jsonp_decode( $url ) ){
 
             if($isVariable)
                 $feed = $feed[0];
@@ -242,7 +249,7 @@ class Nucleo extends CI_Controller {
                 $feed = substr( $url, $pos );
                 $feed = str_replace( '(', '[', $feed );
                 $feed = str_replace( ')', ']', $feed );
-                $feed = json_decode( $feed, TRUE );
+                $feed = $this->jsonp_decode( $feed, TRUE );
                 foreach ( $feed as $item ){
                     if ( is_array( $item ) && count( $item ) == 1 )
                         $item = (array)$item[0];
@@ -291,8 +298,8 @@ class Nucleo extends CI_Controller {
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
-        if ( $feed = json_decode( $url ) ){
-            $contenido_feed = json_decode( $url );
+        if ( $feed = $this->jsonp_decode( $url ) ){
+            $contenido_feed = $this->jsonp_decode( $url );
 
             if($isVariable)
                 $contenido_feed = $contenido_feed[0];
@@ -301,7 +308,7 @@ class Nucleo extends CI_Controller {
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
                 $feed = substr( $url, $pos + 1, -1 );
-                $contenido_feed = json_decode( $feed );
+                $contenido_feed = $this->jsonp_decode( $feed );
             } else {
                 $dom = new DOMDocument();
                 $dom->loadXML( $url );
@@ -373,7 +380,7 @@ class Nucleo extends CI_Controller {
      * @return [type]       [description]
      */
     public function mapAttributes( $feed ){
-        $campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
+        $campos_orig 	= is_array($feed) ? $feed : $this->jsonp_decode( $feed, TRUE );
 
         if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
             unset($campos_orig["@attributes"]);
