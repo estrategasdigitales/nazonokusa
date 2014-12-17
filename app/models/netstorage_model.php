@@ -64,9 +64,9 @@ class Netstorage_model extends Nucleo {
 		$ftp_user_pass 	= $_SERVER['STORAGE_PASS'];
 		$ftp_conn 		= ftp_connect( $ftp_server, 21, 90 );
 		$login 			= ftp_login( $ftp_conn, $ftp_user_name, $ftp_user_pass );
-
 		if ( $login ){
 			$ftpath 		= '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
+			$this->mksubdirs( $ftp_conn, '/', $ftpath );
 			ftp_close( $ftp_conn );
 			switch ( $trabajo->tipo_salida ){
 				case 1:
@@ -91,7 +91,6 @@ class Netstorage_model extends Nucleo {
 									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E03 - Ocurrió un problema al intentar crear la salida estándar para XML');
 									$this->alertas->alerta( $trabajo->uid_trabajo, 'E03' );
 								}
-								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $formato->format );
 								break;
 							case 'rss':
@@ -101,7 +100,6 @@ class Netstorage_model extends Nucleo {
 									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E04 - Ocurrió un problema al intentar crear la salida estándar para RSS');
 									$this->alertas->alerta( $trabajo->uid_trabajo, 'E04' );
 								}
-								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $formato->format );
 								break;
 							case 'json':
@@ -111,7 +109,6 @@ class Netstorage_model extends Nucleo {
 									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E05 - Ocurrió un problema al intentar crear la salida estándar para JSON');
 									$this->alertas->alerta( $trabajo->uid_trabajo, 'E05' );
 								}
-								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $formato->format );
 								break;
 							case 'jsonp':
@@ -121,7 +118,6 @@ class Netstorage_model extends Nucleo {
 									$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E06 - Ocurrió un problema al intentar crear la salida estándar para JSONP');
 									$this->alertas->alerta( $trabajo->uid_trabajo, 'E06' );
 								}
-								//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 								$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $formato->format );
 								break;
 						}
@@ -147,7 +143,6 @@ class Netstorage_model extends Nucleo {
 								$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E07 - Ocurrió un problema al intentar crear la salida específica para RSS');
 								$this->alertas->alerta( $trabajo->uid_trabajo, 'E07' );
 							}
-							//$this->cronlog->set_cronlog( $trabajo->uid_trabajo, 'E06 - No se ha podido obtener el archivo de salida específica RSS / toXML');
 							$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $trabajo->formato_salida );
 							break;
 						case 'XML':
@@ -195,6 +190,27 @@ class Netstorage_model extends Nucleo {
 	}
 
 	/**
+	 * [mksubdirs description]
+	 * @param  [type] $ftpcon     [description]
+	 * @param  [type] $ftpbasedir [description]
+	 * @param  [type] $ftpath     [description]
+	 * @return [type]             [description]
+	 */
+	private function mksubdirs( $ftpcon, $ftpbasedir, $ftpath ){
+		if( ! ftp_chdir( $ftpcon, $ftpath ) ){
+			@ftp_chdir( $ftpcon, $ftpbasedir, 0777 );
+			$parts = explode('/', $ftpath );
+			foreach( $parts as $part ){
+				if ( ! @ftp_chdir( $ftpcon, $part ) ){
+					ftp_mkdir( $ftpcon, $part );
+					ftp_chdir( $ftpcon, $part );
+				}
+			}
+		}
+	}
+
+
+	/**
 	 * Sube los archivos al netstorage
 	 * @return [type] [description]
 	 */
@@ -204,9 +220,9 @@ class Netstorage_model extends Nucleo {
 		else $tipo_salida = 'Específica';
 		$this->ftp->connect( $this->netstorage );
 		if ( $this->ftp->mirror( './' . $file, '/' . $ftpath, 'ascii', 0775 ) ){
-			$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'success', 'Operación exitosa para la conversión ' . $tipo_salida . ' del formato: ' . $formato_salida );
+			$CI->cronlog->set_cronlog( $trabajo, 'success', 'Operación exitosa para la conversión ' . $tipo_salida . ' del formato: ' . $formato_salida );
 		} else {
-			$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E10 - Ocurrió un problema al intentar subir el archivo de salida en formato:' . $formato_salida . ' al netstorage de la conversión ' . $tipo_salida );
+			$CI->cronlog->set_cronlog( $trabajo, 'error', 'E10 - Ocurrió un problema al intentar subir el archivo de salida en formato:' . $formato_salida . ' al netstorage de la conversión ' . $tipo_salida );
 			$this->alertas->alerta( $trabajo, 'E10' );
 		}
 		$this->ftp->close();
