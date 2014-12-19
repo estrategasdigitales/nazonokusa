@@ -677,7 +677,10 @@ class Node{
                         $nKey ="_".$nKey;
                 }
 
-                $writer->startElement($nKey);
+                if(is_numeric($nKey))
+                    $writer->startElement($key);
+                else
+                    $writer->startElement($nKey);
 
 
                     $writer->writeCData($nValue);
