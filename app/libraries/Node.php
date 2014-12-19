@@ -522,7 +522,7 @@ class Node{
 
 
                     $akey = explode(".",$child["key"]);
-                    $key  = '["'.implode('"]["',$akey).'"]';
+                    $key  = "['".implode("']['",$akey)."']";
 
                     if(count($akey) == 1)
                     {
