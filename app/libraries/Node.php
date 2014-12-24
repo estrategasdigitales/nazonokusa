@@ -644,10 +644,7 @@ class Node{
     }
 
 
-    private function getDate()
-    {
-        return date('D, d M Y H:i:s GMT');
-    }
+
 
 
 
@@ -678,18 +675,7 @@ class Node{
                 }
 
                 $writer->startElement($nKey);
-
-
-                if($parentKey == "channel")
-                {
-                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
-                        $writer->writeCData($this->getDate());
-                    else
-                        $writer->writeCData($nValue);
-                }else
-                    $writer->writeCData($nValue);
-
-
+                $writer->writeCData($nValue);
                 $writer->endElement();
 
             }elseif(array_key_exists("@cdata", $nValue))
@@ -697,16 +683,7 @@ class Node{
                 if(!is_numeric($nKey))
                     $writer->startElement($nKey);
 
-
-                if($parentKey == "channel")
-                {
-                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
-                        $writer->writeCData($this->getDate());
-                    else
-                        $writer->writeCData($nValue["@cdata"]);
-                }else
-                    $writer->writeCData($nValue["@cdata"]);
-
+                $writer->writeCData($nValue["@cdata"]);
 
                 if(!is_numeric($nKey))
                     $writer->endElement();
@@ -725,11 +702,9 @@ class Node{
 
                     foreach ($nValue["@attributes"] as $katt => $vatt)
                     {
-                        if(is_array($vatt) and count($vatt) == 1 and array_key_exists(0,$vatt))
+                        if(is_array($vatt) and count($vatt) == 1)
                             $vatt = $vatt[0];
-
-                        if(!is_array($vatt) and !is_array($katt) and $katt!=="@attributes" and $katt!=="@value" )
-                            $writer->writeAttribute($katt, $vatt); // no attributes
+                        $writer->writeAttribute($katt, $vatt);
                     }
 
                     $writer->endElement();
@@ -824,12 +799,7 @@ class Node{
                                 foreach($attributes as $k_att => $v_att )
                                 {
                                     $writer->startElement($k_att);
-
-                                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
-                                        $writer->writeCData($this->getDate());
-                                    else
-                                        $writer->writeCData($v_att);
-
+                                    $writer->writeCData($v_att);
                                     $writer->endElement();
                                 }
                             }
@@ -1199,6 +1169,9 @@ class Node{
             $writer->endDocument();
             $writer->flush();
         }
+
+
+
     }
 
 
