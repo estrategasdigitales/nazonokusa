@@ -82,7 +82,7 @@ class Node{
     private function _decodeDataURLS()
     {
         $this->INPUT 	= $this->_decodeDataURL($this->URL_INPUT);
-        $this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
+	$this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
         $this->TEMPLATE = $this->mapAttributes($this->TEMPLATE);
     }
 
@@ -356,7 +356,6 @@ class Node{
 
     private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
     {
-
         $node = $paths;
         $xml = false;
 
