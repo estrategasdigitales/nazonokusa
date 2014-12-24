@@ -82,7 +82,7 @@ class Node{
     private function _decodeDataURLS()
     {
         $this->INPUT 	= $this->_decodeDataURL($this->URL_INPUT);
-	$this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
+        $this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
         $this->TEMPLATE = $this->mapAttributes($this->TEMPLATE);
     }
 
@@ -356,6 +356,7 @@ class Node{
 
     private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
     {
+
         $node = $paths;
         $xml = false;
 
@@ -521,7 +522,7 @@ class Node{
 
 
                     $akey = explode(".",$child["key"]);
-                    $key  = "['".implode("']['",$akey)."']";
+                    $key  = '["'.implode('"]["',$akey).'"]';
 
                     if(count($akey) == 1)
                     {
@@ -575,10 +576,10 @@ class Node{
                         foreach($eval_template as $eval_template_value => $eval_template_record)
                         {
 
-                            $eval_template_record = explode("[*]",$eval_template_record);
-
-                            if($this->isJsonVariable or count($eval_template_record) == 1)
+                            if($this->isJsonVariable)
                             {
+                                $eval_template_record = explode("[*]",$eval_template_record);
+
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
 
@@ -586,7 +587,7 @@ class Node{
 
                             }elseif(substr_count($eval_template_record,"[*]") > 0 or $this->isJsonVariable)
                             {
-
+                                $eval_template_record = explode("[*]",$eval_template_record);
 
                                 $eval_template_record[0] = "['".$eval_template_record[0]."']";
                                 $eval_template_record[1] = "[*]";
@@ -645,7 +646,7 @@ class Node{
 
     private function getDate()
     {
-        return date('D, d M Y H:i:s')." GMT";
+        return date('D, d M Y H:i:s GMT');
     }
 
 
@@ -655,7 +656,7 @@ class Node{
 
         $paths = $this->_getPaths();
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+        if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
         {
             $writer->startElement($parentKey);
         }
@@ -676,12 +677,16 @@ class Node{
                         $nKey ="_".$nKey;
                 }
 
-                if(is_numeric($nKey))
-                    $writer->startElement($key);
-                else
-                    $writer->startElement($nKey);
+                $writer->startElement($nKey);
 
 
+                if($parentKey == "channel")
+                {
+                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
+                        $writer->writeCData($this->getDate());
+                    else
+                        $writer->writeCData($nValue);
+                }else
                     $writer->writeCData($nValue);
 
 
@@ -693,6 +698,13 @@ class Node{
                     $writer->startElement($nKey);
 
 
+                if($parentKey == "channel")
+                {
+                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
+                        $writer->writeCData($this->getDate());
+                    else
+                        $writer->writeCData($nValue["@cdata"]);
+                }else
                     $writer->writeCData($nValue["@cdata"]);
 
 
@@ -745,7 +757,7 @@ class Node{
             }elseif(is_array($nValue) and count($nValue) > 0)
             {
 
-                if($kind == "xml")
+               if($kind == "xml")
                 {
 
                     if($this->startsWith("media:",$nKey))
@@ -813,6 +825,9 @@ class Node{
                                 {
                                     $writer->startElement($k_att);
 
+                                    if($nKey == "pubDate" or $nKey == "lastBuildDate")
+                                        $writer->writeCData($this->getDate());
+                                    else
                                         $writer->writeCData($v_att);
 
                                     $writer->endElement();
@@ -837,7 +852,7 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+                    if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
                     {
 
                     }
@@ -859,7 +874,7 @@ class Node{
         }
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+        if(($parentKey == "channel" or $parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
         {
             $writer->endElement();
         }
@@ -1069,8 +1084,6 @@ class Node{
 
 
 
-
-
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
         $writer = new XMLWriter();
@@ -1084,103 +1097,51 @@ class Node{
 
         $writer->writeAttribute( 'version', '2.0' );
 
-        $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+            $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
 
 
-        $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+            $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
 
-        $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
+            $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
 
 
 
         $paths = $this->_getPaths();
 
+        if(!$paths["path"])
+        {
+            $writer->startElement("channel");
 
-        $writer->startElement("channel");
+            if($attributes and is_array($attributes) and count($attributes) > 0)
+            {
+                foreach($attributes as $k_att => $v_att )
+                {
+                    $writer->startElement($k_att);
+                    $writer->writeCData($v_att);
+                    $writer->endElement();
+                }
+            }
 
-        $writer->startElement("title");
-            $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
-        $writer->endElement();
 
-        $writer->startElement("link");
-            $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
-        $writer->endElement();
+            $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
+        }else
+        {
 
-        $writer->startElement("description");
-            $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
-        $writer->endElement();
+            $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
+        }
 
-        $writer->startElement("image");
-            $writer->startElement("title");
-                $writer->text("televisa.com");
+
+
+        if(!$paths["path"])
             $writer->endElement();
 
-            $writer->startElement("link");
-                $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
-            $writer->endElement();
 
-            $writer->startElement("link");
-                $writer->text("http://www.televisa.com");
-            $writer->endElement();
         $writer->endElement();
-
-        $writer->startElement("language");
-            $writer->text("es-mx");
-        $writer->endElement();
-
-        $writer->startElement("copyright");
-            $writer->text("2005 Comercio Mas S.A. de C.V");
-        $writer->endElement();
-
-        $writer->startElement("managingEditor");
-            $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
-        $writer->endElement();
-
-        $writer->startElement("webMaster");
-            $writer->text("feeds@esmas.com (feeds Esmas.com)");
-        $writer->endElement();
-
-        $writer->startElement("pubDate");
-            $writer->text($this->getDate());
-        $writer->endElement();
-
-        $writer->startElement("lastBuildDate");
-            $writer->text($this->getDate());
-        $writer->endElement();
-
-        $writer->startElement("category");
-            $writer->text("Home Principal esmas");
-        $writer->endElement();
-
-        $writer->startElement("generator");
-            $writer->text("GALAXY 1.0");
-        $writer->endElement();
-
-        $writer->startElement("atom:link");
-            $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
-            $writer->writeAttribute( 'rel', 'self' );
-            $writer->writeAttribute( 'type', 'application/rss+xml' );
-        $writer->endElement();
-
-        $writer->startElement("ttl");
-            $writer->text("60");
-        $writer->endElement();
-
-
-        $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
-
-        $writer->endElement(); // channel
-
-
-
-
-        $writer->endElement(); // rss
 
         $writer->endDocument();
         $writer->flush();
     }
-
 
 
 
@@ -1226,7 +1187,7 @@ class Node{
                 $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
 
-                $this->_toXML( $writer, $nodes, 'resource', 'xml' );
+                    $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
             }else
                 $this->_toXML( $writer, $nodes, 'resources', 'xml' );
