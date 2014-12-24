@@ -87,7 +87,7 @@ Class Cron_manager {
 		if ( is_null( $cron_jobs ) ) $this->error_message('Nothing to remove!  Please specify a cron job or an array of cron jobs.');
 		
 		$cron_array = file( $this->cron_file, FILE_IGNORE_NEW_LINES );
-		
+
 		if ( empty( $cron_array ) ){
 			//$this->remove_file()->error_message('Nothing to remove!  The cronTab is already empty.');
 		}
