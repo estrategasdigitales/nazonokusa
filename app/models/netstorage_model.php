@@ -38,6 +38,8 @@ class Netstorage_model extends Nucleo {
 	 * @return [type]          [description]
 	 */
 	public function harddisk_write( $trabajo ){
+		$CI =& get_instance();
+		$CI->load->model( 'cronlog_model', 'cronlog' );
 		if ( ! file_exists( './outputs/' . $trabajo->slug_categoria ) ){
 			if ( ! mkdir( './outputs/' . $trabajo->slug_categoria ) ){
 				$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E01 - No se ha podido crear el directorio de la categoría');
