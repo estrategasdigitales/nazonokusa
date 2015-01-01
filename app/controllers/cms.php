@@ -860,7 +860,7 @@ class Cms extends CI_Controller {
 				$trabajo['nombre']   			= $this->input->post('nombre');
 				$trabajo['slug_nombre_feed']	= url_title( $this->input->post('nombre'), 'dash', TRUE );
 				$trabajo['url-origen']   		= $this->input->post('url-origen');
-				$trabajo['formato_salida']		= $this->detect_format( $this->input->post('url-origen') );
+				$trabajo['formato_salida']		= $this->cms->detect_format( $this->input->post('url-origen') );
 				switch ( $trabajo['formato_salida'] ){
                     case 'JSON':
                         $trabajo['encoding']	= '';
@@ -879,7 +879,7 @@ class Cms extends CI_Controller {
 						$trabajo['headers']		= '';
 
                         $trabajo['variable']       = $trabajo['formato_salida'];
-                        $trabajo['formato_salida'] = 'JSON_VARIABLE';
+                        $trabajo['formato_salida'] = 'JSONP';
 
 
 						break;
@@ -965,15 +965,6 @@ class Cms extends CI_Controller {
 		}
 	}
 
-    public function startWithVariable($string = '')
-    {
-        preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
-
-        if(isset($matches[1][0]))
-            return $matches[1][0];
-        else
-            return false;
-    }
 
 	/**
 	 * [nuevo_reporte description]
@@ -1086,37 +1077,7 @@ class Cms extends CI_Controller {
 		return $dom->xmlEncoding;
 	}
 
-	private function detect_format( $url ){
-		$format = '';
-		$url = file_get_contents_curl( $url );
-		if ( mb_detect_encoding( $url ) != 'UTF-8' ){
-			$url = html_entity_decode( $url );
-		}
 
-        $isVariable = $this->startWithVariable($url);
-
-        if($isVariable)
-            return $isVariable;
-
-		if ( $feed = json_decode( $url ) ){
-			$format = 'JSON';
-		} else {
-			$pos = strpos( $url, '(' );
-			if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
-				$format = 'JSONP';
-			} else {
-				$dom = new DOMDocument();
-				$dom->preserveWhiteSpace = FALSE;
-				$dom->loadXML( $url );
-				if ( $dom->documentElement->nodeName == 'rss' ){
-					$format = 'RSS';
-				} else {
-					$format = 'XML';
-				}
-			}
-		}
-		return $format;
-	}
 
 	private function detect_headers( $url ){
 		$headers = '';

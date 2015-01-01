@@ -31,6 +31,8 @@ class Node{
     var $isStandardOutPut = true;
     var $isJsonVariable   = false;
 
+    var $originFormat   = "JSON";
+
     function __construct($arguments = [])
     {
         $this->URL_INPUT 	 = $arguments["input"];
@@ -357,7 +359,6 @@ class Node{
     private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
     {
         $node = $paths;
-        $xml = false;
 
         if($id_path > 0)
         {
@@ -387,7 +388,6 @@ class Node{
 
             if($this->startsWith("media:",$path))
             {
-                $xml = true;
                 $path = preg_replace("/\[\*\]$/","",$path);
 
                 if($path == "")
@@ -406,7 +406,14 @@ class Node{
 
 
             }else
-                $inputs = $store->get($input, "$.".$path);
+            {
+                $new_path = preg_replace("/\[\*\]$/","",$path);
+                $inputs = $store->get($input, "$.".$new_path);
+
+                if(count($inputs) == 0)
+                    $inputs = $store->get($input, "$.".$path);
+            }
+
 
 
         }
@@ -433,6 +440,10 @@ class Node{
                     $inputs = $store->get($input, "$.".$path);
                 }
             }
+
+            $key = key($inputs);
+            if(is_array($inputs[$key]) and array_key_exists(0,$inputs[$key]))
+                $inputs = $inputs[0];
         }
 
 
@@ -498,7 +509,7 @@ class Node{
                         $path_parent = $path_parent.".".$path;
 
 
-                    if(count($node["child"]) == 1 and !$xml) // extra
+                    if(count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
@@ -678,14 +689,15 @@ class Node{
 
                 if(is_numeric($nKey))
                     $writer->startElement($key);
-                else
+                elseif(substr_count($nKey,"@") == 0)
                     $writer->startElement($nKey);
 
 
                     $writer->writeCData($nValue);
 
 
-                $writer->endElement();
+                if(substr_count($nKey,"@") == 0)
+                    $writer->endElement();
 
             }elseif(array_key_exists("@cdata", $nValue))
             {
@@ -765,7 +777,10 @@ class Node{
                         $nKey = "resource";
 
                     }else if($parentKey == "resource")
-                        $writer->startElement("resource");
+                    {
+                        if($key != "resource")
+                            $writer->startElement("resource");
+                    }
                     elseif(is_numeric($nKey))
                     {
                         if(count($nodes) > 1)
@@ -776,7 +791,11 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if($this->startsWith("media:",$nKey))
+                    if($key == "resource")
+                    {
+
+                    }
+                    elseif($this->startsWith("media:",$nKey))
                     {
                         if($nKey=="media:group")
                             $writer->endElement();
@@ -1192,12 +1211,17 @@ class Node{
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
 
 
-        if($this->isTemplate)
+        if($this->isTemplate or $this->originFormat == "XML")
         {
             $template = $this->_getTEMPLATE();
 
             $xml = new ArrayToXML();
-            $output =  $xml->buildXML($nodes,key($template));
+            $key = key($template);
+
+            if($this->originFormat == "XML")
+                $nodes = $nodes["resources"][0];
+
+            $output =  $xml->buildXML($nodes,$key);
 
             file_put_contents($file, $output);
         }else

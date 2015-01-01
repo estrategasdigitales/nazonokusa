@@ -82,7 +82,7 @@ class Nucleo extends CI_Controller {
             $data['categorias'] 	= $this->cms->get_categorias();
             $data['verticales'] 	= $this->cms->get_verticales();
             $data['trabajo_editar'] = $trabajo->uid_trabajo;
-            $data['cron_date'] 		= $this->jsonp_decode( $trabajo->cron_config, true );
+            $data['cron_date'] 		= jsonp_decode( $trabajo->cron_config, true );
             $this->load->view( 'cms/admin/editar_trabajo', $data );
         }
     }
@@ -127,7 +127,7 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
 
-        if ( $feed = $this->jsonp_decode( $url,true ) ){
+        if ( $feed = jsonp_decode( $url,true ) ){
 
             if($isVariable)
                 $feed = $feed[0];
@@ -141,7 +141,7 @@ class Nucleo extends CI_Controller {
                 $feed = substr( $url, $pos );
                 $feed = str_replace( '(', '[', $feed );
                 $feed = str_replace( ')', ']', $feed );
-                $feed = $this->jsonp_decode( $feed, TRUE );
+                $feed = jsonp_decode( $feed, TRUE );
                 foreach ( $feed as $item ){
                     if ( is_array( $item ) && count( $item ) == 1 )
                         $item = (array)$item[0];
@@ -204,7 +204,7 @@ class Nucleo extends CI_Controller {
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
-        if ( $feed = $this->jsonp_decode( $url ) ){
+        if ( $feed = jsonp_decode( $url ) ){
 
             if($isVariable)
                 $feed = $feed[0];
@@ -226,7 +226,7 @@ class Nucleo extends CI_Controller {
                 $feed = substr( $url, $pos );
                 $feed = str_replace( '(', '[', $feed );
                 $feed = str_replace( ')', ']', $feed );
-                $feed = $this->jsonp_decode( $feed, TRUE );
+                $feed = jsonp_decode( $feed, TRUE );
                 foreach ( $feed as $item ){
                     if ( is_array( $item ) && count( $item ) == 1 )
                         $item = (array)$item[0];
@@ -275,8 +275,8 @@ class Nucleo extends CI_Controller {
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
             $url = html_entity_decode( $url );
         }
-        if ( $feed = $this->jsonp_decode( $url ) ){
-            $contenido_feed = $this->jsonp_decode( $url );
+        if ( $feed = jsonp_decode( $url ) ){
+            $contenido_feed = jsonp_decode( $url );
 
             if($isVariable)
                 $contenido_feed = $contenido_feed[0];
@@ -285,7 +285,7 @@ class Nucleo extends CI_Controller {
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
                 $feed = substr( $url, $pos + 1, -1 );
-                $contenido_feed = $this->jsonp_decode( $feed );
+                $contenido_feed = jsonp_decode( $feed );
             } else {
                 $dom = new DOMDocument();
                 $dom->loadXML( $url );
@@ -335,11 +335,11 @@ class Nucleo extends CI_Controller {
         if ( $process == TRUE ){
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+                //$CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
                 $this->storage->harddisk_write( $trabajo );
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
+                //$CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
             }
 
         } else {
@@ -354,7 +354,7 @@ class Nucleo extends CI_Controller {
      * @return [type]       [description]
      */
     public function mapAttributes( $feed ){
-        $campos_orig 	= is_array($feed) ? $feed : $this->jsonp_decode( $feed, TRUE );
+        $campos_orig 	= is_array($feed) ? $feed : jsonp_decode( $feed, TRUE );
 
         if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
             unset($campos_orig["@attributes"]);

@@ -61,15 +61,19 @@ class Netstorage_model extends Nucleo {
 			}
 		}
 		$feed_output 	= 'outputs/'. $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
-		$ftp_server 	= $_SERVER['STORAGE_URL'];
+		/*
+        $ftp_server 	= $_SERVER['STORAGE_URL'];
 		$ftp_user_name 	= $_SERVER['STORAGE_USER'];
 		$ftp_user_pass 	= $_SERVER['STORAGE_PASS'];
 		$ftp_conn 		= ftp_connect( $ftp_server, 21, 90 );
 		$login 			= ftp_login( $ftp_conn, $ftp_user_name, $ftp_user_pass );
+		*/
+        $login = true;
+
 		if ( $login ){
 			$ftpath 		= '/' . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario. '/';
-			$this->mksubdirs( $ftp_conn, '/', $ftpath );
-			ftp_close( $ftp_conn );
+			//$this->mksubdirs( $ftp_conn, '/', $ftpath );
+			//ftp_close( $ftp_conn );
 			switch ( $trabajo->tipo_salida ){
 				case 1:
 					$content = base_url() . 'nucleo/feed_service_content?url=' . urlencode( base64_encode( $trabajo->url_origen ) );
@@ -81,6 +85,8 @@ class Netstorage_model extends Nucleo {
                             'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
                         ]
                     );
+
+                    $node->originFormat = $trabajo->formato_origen;
                     $data = $node->getData();
 
 					foreach ( $formatos as $formato ){
@@ -133,7 +139,9 @@ class Netstorage_model extends Nucleo {
 								'paths' 	=> base64_decode( $trabajo->campos_seleccionados ),
 							]
 						);
+                    $node->originFormat = $trabajo->formato_origen;
                     $node->isStandardOutPut = TRUE;
+
 					$encoding = base64_decode( $trabajo->encoding );
 					$header = base64_decode( $trabajo->cabeceras );
 					switch ( $trabajo->formato_salida ){
@@ -167,7 +175,7 @@ class Netstorage_model extends Nucleo {
 							}
 							$this->upload_netstorage( $feed_output, $ftpath, $trabajo->uid_trabajo, $trabajo->tipo_salida, $trabajo->formato_salida );
 							break;
-                        case 'JSON_VARIABLE':
+                        case 'JSONP':
                             $node->isJsonVariable = $trabajo->variable;
                             $file = './' . $feed_output . $trabajo->slug_nombre_feed . '-json.js';
                             $data = $node->getData();
@@ -217,6 +225,7 @@ class Netstorage_model extends Nucleo {
 	 * @return [type] [description]
 	 */
 	private function upload_netstorage( $file, $ftpath, $trabajo, $tipo_salida, $formato_salida ){
+        /*
 		$CI =& get_instance();
 		$CI->load->model( 'cronlog_model', 'cronlog' );
 		$this->load->library( 'ftp' );
@@ -230,5 +239,7 @@ class Netstorage_model extends Nucleo {
 			$this->alertas->alerta( $trabajo, 'E10' );
 		}
 		$this->ftp->close();
+        */
 	}
+
 }

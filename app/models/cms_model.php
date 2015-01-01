@@ -15,6 +15,58 @@ class Cms_model extends CI_Model {
         $this->timezone     = 'UM6';
     }
 
+
+
+
+    private function detect_format( $url ){
+        $format = '';
+        $url = file_get_contents_curl( $url );
+        if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+            $url = html_entity_decode( $url );
+        }
+
+
+        $isVariable = $this->startWithVariable($url);
+
+        if($isVariable)
+            return $isVariable;
+
+        if ( $feed = json_decode( $url ) ){
+            $format = 'JSON';
+
+        } else {
+            $pos = strpos( $url, '(' );
+            if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
+                $format = 'JSONP';
+            } else {
+                $dom = new DOMDocument();
+                $dom->preserveWhiteSpace = FALSE;
+                $dom->loadXML( $url );
+                if ( $dom->documentElement->nodeName == 'rss' ){
+                    $format = 'RSS';
+                } else {
+                    $format = 'XML';
+                }
+            }
+        }
+        return $format;
+    }
+
+
+
+
+
+
+    public function startWithVariable($string = '')
+    {
+        preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
+
+        if(isset($matches[1][0]))
+            return $matches[1][0];
+        else
+            return false;
+    }
+
     /** CONSULTAS **/
 
         public function check_user( $email, $uid = '' ){
@@ -255,7 +307,7 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_ejecutar( $uid ){
             //$this->db->cache_off();
-            $this->db->select( 'a.uid_usuario, a.uid_trabajo, b.slug_categoria, c.slug_vertical, 
+            $this->db->select( 'a.uid_usuario, a.uid_trabajo, a.formato_origen, b.slug_categoria, c.slug_vertical,
                 a.slug_nombre_feed, a.url_origen, a.campos_seleccionados, a.activo, 
                 a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras,d.variable' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
@@ -448,6 +500,7 @@ class Cms_model extends CI_Model {
         public function add_trabajo( $trabajo ){
 
             $timestamp = time();
+
             $this->db->set( 'uid_trabajo', "UUID()", FALSE );
             $this->db->set( 'uid_usuario', $trabajo['usuario'] );
             $this->db->set( 'uid_categoria', $trabajo['categoria'] );
@@ -455,6 +508,8 @@ class Cms_model extends CI_Model {
             $this->db->set( 'nombre', $trabajo['nombre'] );
             $this->db->set( 'slug_nombre_feed', $trabajo['slug_nombre_feed'] );
             $this->db->set( 'url_origen', $trabajo['url-origen'] );
+            $this->db->set( 'formato_origen', $this->detect_format($trabajo['url-origen']) );
+
             $this->db->set( 'tipo_salida', $trabajo['tipo_salida'] );
             if ( $trabajo['tipo_salida'] == 2 )
                 $this->db->set( 'plantilla', $trabajo['uid_plantilla'] );
