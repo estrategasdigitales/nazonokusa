@@ -1211,12 +1211,12 @@ class Node{
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
 
 
-        if($this->isTemplate or $this->originFormat == "XML")
-        {
-            $template = $this->_getTEMPLATE();
+        $template = $this->_getTEMPLATE();
+        $key = key($template);
 
+        if( (($key == "resources" or $key == "resource") and  $this->isTemplate ) or $this->originFormat == "XML")
+        {
             $xml = new ArrayToXML();
-            $key = key($template);
 
             if($this->originFormat == "XML")
                 $nodes = $nodes["resources"][0];
@@ -1235,10 +1235,8 @@ class Node{
             $paths = $this->_getPaths();
 
 
-            if($this->isTemplate)
+            if(($key == "resources" or $key == "resource") and  $this->isTemplate )
             {
-                $template = $this->_getTEMPLATE();
-                $key = key($template);
 
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
 
