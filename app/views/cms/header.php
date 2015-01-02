@@ -14,10 +14,10 @@
 	<?php echo link_tag('js/extjs/resources/ext-theme-neptune/ext-theme-neptune-all.css'); ?>
 	<?php echo link_tag('css/middleware.css'); ?>
 
-    <!--
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    -->
-    <?
+    
+    <?php
         $jquery = base_url()."js/jquery.min.js";
     ?>
     <script>window.jQuery || document.write('<script src="<?=$jquery?> "><\/script>')</script>
