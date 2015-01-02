@@ -40,6 +40,11 @@ class ArrayToXML {
             $xml->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
             $xml->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
 
+            $xml->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
+            $xml->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
+            $xml->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
+
+
         $this->writeEl($xml, $data);
 
         $xml->endElement();//write end element
