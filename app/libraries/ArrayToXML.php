@@ -36,6 +36,10 @@ class ArrayToXML {
         $xml->startDocument($this->version, $this->encoding);
         $xml->startElement($startElement);
 
+        $xml->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+        $xml->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+        $xml->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
+
         $this->writeEl($xml, $data);
 
         $xml->endElement();//write end element
