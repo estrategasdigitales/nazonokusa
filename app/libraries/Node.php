@@ -442,7 +442,7 @@ class Node{
             }
 
             $key = key($inputs);
-            if(is_array($inputs[$key]) and array_key_exists(0,$inputs[$key]))
+            if(isset($inputs[$key]) and is_array($inputs[$key]) and array_key_exists(0,$inputs[$key]))
                 $inputs = $inputs[0];
         }
 
