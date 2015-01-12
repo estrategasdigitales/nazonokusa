@@ -15,10 +15,7 @@ class Cms_model extends CI_Model {
         $this->timezone     = 'UM6';
     }
 
-
-
-
-    private function detect_format( $url ){
+    public function detect_format( $url ){
         $format = '';
         $url = file_get_contents_curl( $url );
         if ( mb_detect_encoding( $url ) != 'UTF-8' ){
@@ -52,16 +49,9 @@ class Cms_model extends CI_Model {
         return $format;
     }
 
-
-
-
-
-
-    public function startWithVariable($string = '')
-    {
+    public function startWithVariable($string = ''){
         preg_match_all('/^(\S+?)(?:[=;]|\s+)\[/', $string, $matches); //credits for mr. @booobs for this regex
-
-        if(isset($matches[1][0]))
+        if ( isset( $matches[1][0] ) )
             return $matches[1][0];
         else
             return false;
