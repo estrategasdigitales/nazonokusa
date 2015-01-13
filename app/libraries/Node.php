@@ -740,8 +740,7 @@ class Node{
 
                         if(is_numeric($key))
                             $writer->startElement($nKey);
-                        else
-                            $writer->startElement($key);
+
 
                         foreach ($vatt as $kvatt => $vvatt) {
 
@@ -750,8 +749,22 @@ class Node{
                             //$writer->endElement();
                         }
 
-                        $writer->endElement();
+                        if(is_numeric($key))
+                            $writer->endElement();
                     }
+
+                    if(isset($nValue["@value"]))
+                    {
+                        if(is_numeric($key) and isset($nValue["@attributes"]))
+                            $writer->startElement($nKey);
+
+
+                        $writer->writeCData($nValue["@value"]);
+
+                        if(is_numeric($key) and isset($nValue["@attributes"]))
+                            $writer->endElement();
+                    }
+
                 }
 
             }elseif(is_array($nValue) and count($nValue) > 0)
@@ -1262,11 +1275,55 @@ class Node{
         }
     }
 
+    public function _toJSON(&$nodes)
+    {
+        foreach ($nodes as $nKey => &$nValue) {
 
+
+            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@attributes"]) or  isset($nValue[0]["@value"])))
+            {
+                if(isset($nValue[0]["@attributes"]))
+                $nValue["@attributes"] = $nValue[0]["@attributes"];
+
+                if(isset($nValue[0]["@value"]))
+                    $nValue["@value"] = $nValue[0]["@value"];
+
+                if(isset($nValue["@attributes"]) and isset($nValue["@value"]))
+                {
+                    $attributes = $nValue["@attributes"];
+                    $value = $nValue["@value"];
+
+
+                    foreach ($attributes as $katt => $vatt) {
+
+                        foreach ($vatt as $kvatt => $vvatt)
+                            $nValue[$kvatt] = $vvatt;
+                    }
+                    $nValue[$value] = $value;
+
+                    unset($nValue["@attributes"]);
+                    unset($nValue["@value"]);
+                    unset($nValue[0]);
+
+                }else if(isset($nValue["@value"]))
+                {
+                    $nValue = $nValue["@value"];
+
+                }
+
+
+
+            }elseif(is_array($nValue) and count($nValue) > 0)
+            {
+                $this->_toJSON($nValue);
+            }
+
+        }
+    }
 
     public function toJSON( $data = [], $file = 'json.json', $function = '' ){
 
-        //$data = $this->getDataFixed();
+        $this->_toJSON($data);
 
         if ( ! empty ( $function ) )
             $json = $function . '('. json_encode( $data ) .')';
@@ -1281,6 +1338,8 @@ class Node{
         else
             return $json;
     }
+
+
 }
 
 /* End of file Node.php */
