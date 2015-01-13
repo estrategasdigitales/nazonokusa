@@ -1280,7 +1280,7 @@ class Node{
         foreach ($nodes as $nKey => &$nValue) {
 
 
-            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@attributes"]) or  isset($nValue[0]["@value"])))
+            if(is_array($nValue) and array_key_exists(0,$nValue) and ( isset($nValue[0]["@attributes"]) or  isset($nValue[0]["@value"])))
             {
                 if(isset($nValue[0]["@attributes"]))
                 $nValue["@attributes"] = $nValue[0]["@attributes"];
