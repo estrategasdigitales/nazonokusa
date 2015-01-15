@@ -1106,8 +1106,9 @@ class Node{
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
         $writer = new XMLWriter();
-        $writer->openURI($file);
-        $writer->startDocument( '1.0', 'UTF-8' );
+        $writer->openURI( $file );
+        //$writer->startDocument( '1.0', $encoding );
+        $writer->startDocument( '1.0', $encoding );
         $writer->setIndent( 4 );
         $writer->startElement( 'rss' );
 
@@ -1211,22 +1212,10 @@ class Node{
         $writer->flush();
     }
 
-
-
-
-
-
-
-
-
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
-
-
         $template = $this->_getTEMPLATE();
         $key = key($template);
-
-        if( (($key == "resources" or $key == "resource") and  $this->isTemplate ) or $this->originFormat == "XML")
-        {
+        if ( ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ) or $this->originFormat == "XML" ){
             $xml = new ArrayToXML();
 
             if($this->originFormat == "XML")
@@ -1235,24 +1224,20 @@ class Node{
             $output =  $xml->buildXML($nodes,$key);
 
             file_put_contents($file, $output);
-        }else
-        {
+        } else {
 
             $writer = new XMLWriter();
             $writer->openURI( $file );
-            $writer->startDocument( '1.0', "UTF-8" );
+            //$writer->startDocument( '1.0', "UTF-8" );
+            $writer->startDocument( '1.0', $encoding );
             $writer->setIndent( 4 );
 
             $paths = $this->_getPaths();
 
 
-            if(($key == "resources" or $key == "resource") and  $this->isTemplate )
-            {
-
+            if ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ){
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
-
-            }elseif(!$paths["path"])
-            {
+            } elseif(!$paths["path"]) {
                 $writer->startElement("resources");
 
                 $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
@@ -1275,28 +1260,21 @@ class Node{
         }
     }
 
-    public function _toJSON(&$nodes)
-    {
+    public function _toJSON( &$nodes ){
         foreach ($nodes as $nKey => &$nValue) {
-
-
-            if(is_array($nValue) and array_key_exists(0,$nValue) and ( isset($nValue[0]["@attributes"]) or  isset($nValue[0]["@value"])))
-            {
+            if ( is_array( $nValue ) and array_key_exists( 0, $nValue ) and ( isset( $nValue[0]["@attributes"] ) or  isset( $nValue[0]["@value"] ) ) ){
                 if(isset($nValue[0]["@attributes"]))
                 $nValue["@attributes"] = $nValue[0]["@attributes"];
 
                 if(isset($nValue[0]["@value"]))
                     $nValue["@value"] = $nValue[0]["@value"];
 
-                if(isset($nValue["@attributes"]) and isset($nValue["@value"]))
-                {
+                if ( isset( $nValue["@attributes"] ) and isset( $nValue["@value"] ) ){
                     $attributes = $nValue["@attributes"];
                     $value = $nValue["@value"];
 
-
-                    foreach ($attributes as $katt => $vatt) {
-
-                        foreach ($vatt as $kvatt => $vvatt)
+                    foreach ( $attributes as $katt => $vatt ) {
+                        foreach ( $vatt as $kvatt => $vvatt )
                             $nValue[$kvatt] = $vvatt;
                     }
                     $nValue[$value] = $value;
@@ -1305,26 +1283,17 @@ class Node{
                     unset($nValue["@value"]);
                     unset($nValue[0]);
 
-                }else if(isset($nValue["@value"]))
-                {
+                } else if( isset( $nValue["@value"] ) ){
                     $nValue = $nValue["@value"];
-
                 }
-
-
-
-            }elseif(is_array($nValue) and count($nValue) > 0)
-            {
-                $this->_toJSON($nValue);
+            } elseif ( is_array( $nValue ) and count( $nValue ) > 0 ){
+                $this->_toJSON( $nValue );
             }
-
         }
     }
 
     public function toJSON( $data = [], $file = 'json.json', $function = '' ){
-
         $this->_toJSON($data);
-
         if ( ! empty ( $function ) )
             $json = $function . '('. json_encode( $data ) .')';
         else
@@ -1338,8 +1307,6 @@ class Node{
         else
             return $json;
     }
-
-
 }
 
 /* End of file Node.php */
