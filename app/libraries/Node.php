@@ -1239,12 +1239,11 @@ class Node{
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
             } elseif(!$paths["path"]) {
                 $writer->startElement("resources");
-
-                $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+                /*$writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                 $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
                 $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
                 $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
-                $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
+                $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );*/
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 

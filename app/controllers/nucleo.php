@@ -309,6 +309,8 @@ class Nucleo extends CI_Controller {
      * @return [type] [description]
      */
     public function job_execute(){
+        $CI =& get_instance();
+        $CI->load->model( 'alertas_model', 'alertas' );
         $this->load->model( 'netstorage_model', 'storage' );
         $token = urldecode( base64_decode( $this->input->get('token') ) );
         $trabajo = $this->cms->get_trabajo_ejecutar( $token );
@@ -316,7 +318,14 @@ class Nucleo extends CI_Controller {
         /**
          * Se generan los archivos de salida en outputs
          */
-        $this->storage->harddisk_write( $trabajo );
+        if ( file_get_contents_curl( $trabajo->url_origen ) ) {
+            $this->storage->harddisk_write($trabajo);
+        } else {
+            $CI->alertas->alerta( $trabajo->uid_trabajo, 'E12-Feed Content Unavailable');
+            $CL =& get_instance();
+            $CL->load->model( 'cronlog_model', 'cronlog' );
+            $CL->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'El contenido del feed de origen no esta disponible' );
+        }
     }
 
     /**
@@ -335,13 +344,22 @@ class Nucleo extends CI_Controller {
         if ( $process == TRUE ){
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
-                $this->storage->harddisk_write( $trabajo );
+                if ( file_get_contents_curl( $trabajo->url_origen ) ) {
+                    $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
+                    $this->storage->harddisk_write($trabajo);
+                } else {
+                    $job['status'] = 0;
+                    $job['uidjob'] = $trabajo->uid_trabajo;
+                    $process = $this->cms->active_job( $job );
+                    $CI->crontabs->unset_cron( $trabajo->cron_config, $trabajo->uid_trabajo );
+                    $response = '<span class="error">El contenido del servicio no se encuentra <b>disponible</b> en este momento. </span>';
+                    echo $response;
+                    exit;
+                }
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
                 $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
             }
-
         } else {
             $response = '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
         }
