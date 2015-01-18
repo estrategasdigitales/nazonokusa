@@ -588,14 +588,15 @@ class Node{
 
                             $eval_template_record = explode("[*]",$eval_template_record);
 
-                            if($this->isJsonVariable or count($eval_template_record) == 1)
+
+                            if($this->isJsonVariable)
                             {
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
 
                                 $eval_template_record = implode("",$n_eval_template_record);
 
-                            }elseif(substr_count($eval_template_record,"[*]") > 0 or $this->isJsonVariable)
+                            }elseif( $eval_template_record > 1  or $this->isJsonVariable)
                             {
 
 
@@ -604,7 +605,7 @@ class Node{
                                 $eval_template_record = implode("",$eval_template_record);
                             }else
                             {
-                                $eval_template_record = "['".$eval_template_record."']";
+                                $eval_template_record = "['".$eval_template_record[0]."']";
                             }
 
 
@@ -791,7 +792,7 @@ class Node{
 
                     }else if($parentKey == "resource")
                     {
-                        if($key != "resource")
+                        if($key != "resource" or $key == "resource")
                             $writer->startElement("resource");
                     }
                     elseif(is_numeric($nKey))
@@ -804,11 +805,8 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if($key == "resource")
-                    {
 
-                    }
-                    elseif($this->startsWith("media:",$nKey))
+                    if($this->startsWith("media:",$nKey))
                     {
                         if($nKey=="media:group")
                             $writer->endElement();
@@ -833,32 +831,17 @@ class Node{
                         $writer->startElement($nKey);
                     elseif($parentKey == "channel")
                     {
+
+                        $writer->startElement("channel");
+                        $this->_headerRSS($writer,$attributes);
+
                         $nKey = "item";
 
-                        if(count($nodes) == 1)
-                        {
-                            $writer->startElement("channel");
-
-                            if($attributes and is_array($attributes))
-                            {
-                                foreach($attributes as $k_att => $v_att )
-                                {
-                                    $writer->startElement($k_att);
-
-                                        $writer->writeCData($v_att);
-
-                                    $writer->endElement();
-                                }
-                            }
-                        }
-
-
-
-
-
-
                     }else if($parentKey == "item")
-                        $writer->startElement("item");
+                    {
+                        if($key != "item" or $key == "item")
+                            $writer->startElement("item");
+                    }
                     elseif(is_numeric($nKey))
                     {
                         if(count($nodes) > 1)
@@ -869,11 +852,7 @@ class Node{
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
-                    if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
-                    {
-
-                    }
-                    elseif($this->startsWith("media:",$nKey))
+                   if($this->startsWith("media:",$nKey))
                     {
                         if($nKey=="media:group")
                             $writer->endElement();
@@ -1099,11 +1078,85 @@ class Node{
     }
 
 
+    public function _headerRSS($writer, $attributes = [])
+    {
+        $writer->startElement("title");
+        $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
+        $writer->endElement();
+
+        $writer->startElement("link");
+        $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
+        $writer->endElement();
+
+        $writer->startElement("description");
+        $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
+        $writer->endElement();
+
+        $writer->startElement("image");
+        $writer->startElement("title");
+        $writer->text("televisa.com");
+        $writer->endElement();
+
+        $writer->startElement("link");
+        $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
+        $writer->endElement();
+
+        $writer->startElement("link");
+        $writer->text("http://www.televisa.com");
+        $writer->endElement();
+        $writer->endElement();
+
+        $writer->startElement("language");
+        $writer->text("es-mx");
+        $writer->endElement();
+
+        $writer->startElement("copyright");
+        $writer->text("2005 Comercio Mas S.A. de C.V");
+        $writer->endElement();
+
+        $writer->startElement("managingEditor");
+        $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
+        $writer->endElement();
+
+        $writer->startElement("webMaster");
+        $writer->text("feeds@esmas.com (feeds Esmas.com)");
+        $writer->endElement();
+
+        $writer->startElement("pubDate");
+        $writer->text($this->getDate());
+        $writer->endElement();
+
+        $writer->startElement("lastBuildDate");
+        $writer->text($this->getDate());
+        $writer->endElement();
+
+        $writer->startElement("category");
+        $writer->text("Home Principal esmas");
+        $writer->endElement();
+
+        $writer->startElement("generator");
+        $writer->text("GALAXY 1.0");
+        $writer->endElement();
+
+        $writer->startElement("atom:link");
+        $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
+        $writer->writeAttribute( 'rel', 'self' );
+        $writer->writeAttribute( 'type', 'application/rss+xml' );
+        $writer->endElement();
+
+        $writer->startElement("ttl");
+        $writer->text("60");
+        $writer->endElement();
+    }
 
 
 
 
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+
+
+        $template = $this->_getTEMPLATE();
+        $key = key($template);
 
         $writer = new XMLWriter();
         $writer->openURI( $file );
@@ -1128,82 +1181,22 @@ class Node{
         $paths = $this->_getPaths();
 
 
-        $writer->startElement("channel");
 
-        $writer->startElement("title");
-            $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
-        $writer->endElement();
+        if ( ( $key == "channel" or $key == "item" ) and  $this->isTemplate ){
+            $this->_toXML( $writer, $nodes, "channel", 'rss' );
+        } elseif(!$paths["path"]) {
+            $writer->startElement("channel");
 
-        $writer->startElement("link");
-            $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
-        $writer->endElement();
+            $this->_headerRSS($writer,$attributes);
+            $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
 
-        $writer->startElement("description");
-            $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
-        $writer->endElement();
+        }else
+            $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
 
-        $writer->startElement("image");
-            $writer->startElement("title");
-                $writer->text("televisa.com");
+
+
+        if(!$paths["path"])
             $writer->endElement();
-
-            $writer->startElement("link");
-                $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
-            $writer->endElement();
-
-            $writer->startElement("link");
-                $writer->text("http://www.televisa.com");
-            $writer->endElement();
-        $writer->endElement();
-
-        $writer->startElement("language");
-            $writer->text("es-mx");
-        $writer->endElement();
-
-        $writer->startElement("copyright");
-            $writer->text("2005 Comercio Mas S.A. de C.V");
-        $writer->endElement();
-
-        $writer->startElement("managingEditor");
-            $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
-        $writer->endElement();
-
-        $writer->startElement("webMaster");
-            $writer->text("feeds@esmas.com (feeds Esmas.com)");
-        $writer->endElement();
-
-        $writer->startElement("pubDate");
-            $writer->text($this->getDate());
-        $writer->endElement();
-
-        $writer->startElement("lastBuildDate");
-            $writer->text($this->getDate());
-        $writer->endElement();
-
-        $writer->startElement("category");
-            $writer->text("Home Principal esmas");
-        $writer->endElement();
-
-        $writer->startElement("generator");
-            $writer->text("GALAXY 1.0");
-        $writer->endElement();
-
-        $writer->startElement("atom:link");
-            $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
-            $writer->writeAttribute( 'rel', 'self' );
-            $writer->writeAttribute( 'type', 'application/rss+xml' );
-        $writer->endElement();
-
-        $writer->startElement("ttl");
-            $writer->text("60");
-        $writer->endElement();
-
-
-        $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
-
-        $writer->endElement(); // channel
-
-
 
 
         $writer->endElement(); // rss
@@ -1239,11 +1232,7 @@ class Node{
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
             } elseif(!$paths["path"]) {
                 $writer->startElement("resources");
-                /*$writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
-                $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
-                $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
-                $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
-                $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );*/
+
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
