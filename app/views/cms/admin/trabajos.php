@@ -40,16 +40,16 @@
 													echo '<span>';
 															switch ( $salida->format ) {
 																case 'json':
-																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" title="' . $salida->format .'" class="petroleo" target="_blank">';
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js?v='.random_string('alnum', 16).'" title="' . $salida->format .'" class="petroleo" target="_blank">';
 																break;
 																case 'jsonp':
-																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js" title="' . $salida->format .'" class="petroleo" target="_blank">';
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-jsonp.js?v='.random_string('alnum', 16).'" title="' . $salida->format .'" class="petroleo" target="_blank">';
 																break;
 																case 'xml':
-																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" title="' . $salida->format . '" class="petroleo" target="_blank">';
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml?v='.random_string('alnum', 16).'" title="' . $salida->format . '" class="petroleo" target="_blank">';
 																break;
 																case 'rss':
-																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" title="' . $salida->format . '" class="petroleo" target="_blank">';
+																	echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml?v='.random_string('alnum', 16).'" title="' . $salida->format . '" class="petroleo" target="_blank">';
 																break;
 															}
 															echo '<span class="glyphicon glyphicon-link"></span>';
@@ -63,19 +63,19 @@
 
 													switch ( $trabajo->formato_salida ) {
 														case 'RSS':
-															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml" class="petroleo" target="_blank">';
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-rss.xml?v='.random_string('alnum', 16).'" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">rss</span>';
 															echo '</a>';
 														break;
 														case 'XML':
-															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml" class="petroleo" target="_blank">';
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-xml.xml?v='.random_string('alnum', 16).'" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">xml</span>';
 															echo '</a>';
 														break;
 														case 'JSON': case 'JSONP':
-															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js" class="petroleo" target="_blank">';
+															echo '<a href="' . $_SERVER['AWS_FEEDS_URL'] . $trabajo->slug_categoria . '/' . $trabajo->slug_vertical . '/' . $trabajo->uid_usuario . '/' . $trabajo->slug_nombre_feed . '-json.js?v='.random_string('alnum', 16).'" class="petroleo" target="_blank">';
 																echo '<span class="glyphicon glyphicon-link"></span>';
 																echo '<span class="glyphicon-class">json</span>';
 															echo '</a>';

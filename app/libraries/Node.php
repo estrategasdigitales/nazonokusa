@@ -31,6 +31,8 @@ class Node{
     var $isStandardOutPut = true;
     var $isJsonVariable   = false;
 
+    var $isJson         = false;
+
     var $originFormat   = "JSON";
 
     function __construct($arguments = [])
@@ -258,14 +260,26 @@ class Node{
         $paths = $this->_parsePATHS($kind);
         $paths = $this->_groupBy($paths,"path");
 
-
         $paths = $this->setNewPaths($paths);
 
         $paths = $this->_setChild($paths);
         $paths = $this->toTree($paths);
 
+        $tree = [];
+        $new_childs[0] = $paths[0];
 
-        return $paths[0];
+        foreach($paths as $path)
+        {
+           if(substr_count($path["path"],$paths[0]["path"]) == 0 )
+               $new_childs[] = $path;
+
+        }
+
+        if(count($new_childs) > 1)
+            return  ["path" => "", "child" => $new_childs ];
+        else
+            return $new_childs[0];
+
     }
 
 
@@ -370,8 +384,15 @@ class Node{
 
         }else
         {
+            if(array_key_exists(0,$input))
+            {
+                $this->isJson = true;
+                $path = "";
+                $node = ["path" => "", "child" =>[ $node ] ] ;
+            }else
+                $path = $node["path"];
+
             $original_input = $input;
-            $path = $node["path"];
             $path_parent = $path;
         }
 
@@ -443,7 +464,14 @@ class Node{
 
             $key = key($inputs);
             if(isset($inputs[$key]) and is_array($inputs[$key]) and array_key_exists(0,$inputs[$key]))
+            {
+
                 $inputs = $inputs[0];
+
+                if(is_array($inputs) and array_key_exists(0,$inputs))
+                    $this->isJson = true;
+            }
+
         }
 
 
@@ -509,7 +537,8 @@ class Node{
                         $path_parent = $path_parent.".".$path;
 
 
-                    if(count($node["child"]) == 1 and $this->originFormat != "XML") // extra
+
+                    if(!$this->isJson and count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
