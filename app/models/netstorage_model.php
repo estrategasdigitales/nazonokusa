@@ -83,6 +83,7 @@ class Netstorage_model extends Nucleo {
 						$formatos = $this->cms->get_trabajos_formatos($trabajo->uid_trabajo);
 						$node = new Node(
 							[
+                                'formato_origen' => $trabajo->formato_origen,
 								'input' => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_origen)),
 								'template' => base_url() . 'nucleo/feed_service?url=' . urlencode(base64_encode($trabajo->url_origen)),
 								'paths' => base64_decode($trabajo->campos_seleccionados),
@@ -137,6 +138,7 @@ class Netstorage_model extends Nucleo {
 					case 2:
 						$node = new Node(
 							[
+                                'formato_origen' => $trabajo->formato_origen,
 								'input' => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_origen)),
 								'template' => base_url() . $trabajo->json_estructura,
 								'paths' => base64_decode($trabajo->campos_seleccionados),

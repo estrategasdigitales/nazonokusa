@@ -22,6 +22,8 @@ class Node{
 
     var $TEMPLATE_PATHS = [];
 
+    var $FORMATO_ORIGEN = "";
+
     var $STORE 			= null;
 
     var $isTemplate     = false;
@@ -33,6 +35,7 @@ class Node{
 
     var $isJson         = false;
 
+
     var $originFormat   = "JSON";
 
     function __construct($arguments = [])
@@ -41,6 +44,7 @@ class Node{
         $this->URL_TEMPLATE = isset($arguments["template"]) ? $arguments["template"] : "";
         $this->ORIGIN_PATHS = $arguments["paths"];
 
+        $this->FORMATO_ORIGEN = $arguments["formato_origen"];
 
         $this->PATHS 		    = $this->_setChildPath();
 
@@ -268,12 +272,16 @@ class Node{
         $tree = [];
         $new_childs[0] = $paths[0];
 
-        foreach($paths as $path)
+        if($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP")
         {
-           if(substr_count($path["path"],$paths[0]["path"]) == 0 )
-               $new_childs[] = $path;
+            foreach($paths as $path)
+            {
+                if(substr_count($path["path"],$paths[0]["path"]) == 0 )
+                    $new_childs[] = $path;
 
+            }
         }
+
 
         if(count($new_childs) > 1)
             return  ["path" => "", "child" => $new_childs ];
