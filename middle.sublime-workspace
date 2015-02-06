@@ -1,0 +1,1421 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"is_nu",
+				"is_numeric"
+			],
+			[
+				"isn",
+				"is_null"
+			],
+			[
+				"arrey",
+				"array_key_exists"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"h",
+				"href	Attr"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"base",
+				"base64_decode"
+			],
+			[
+				"mar",
+				"margin-right"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"array_m",
+				"array_merge"
+			],
+			[
+				"array_p",
+				"array_push"
+			],
+			[
+				"is_a",
+				"is_array"
+			],
+			[
+				"in",
+				"input"
+			],
+			[
+				"ma",
+				"margin-top"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"fon-",
+				"font-weight"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"v",
+				"valign-celd"
+			],
+			[
+				"br",
+				"before"
+			],
+			[
+				"ta",
+				"target	Attr"
+			],
+			[
+				"for",
+				"foreach	foreach …"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/libraries/Node.php",
+			"settings":
+			{
+				"buffer_size": 33927,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.php",
+			"settings":
+			{
+				"buffer_size": 6343,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/libraries/Cron_manager.php",
+			"settings":
+			{
+				"buffer_size": 4596,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/nucleo.php",
+			"settings":
+			{
+				"buffer_size": 22057,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/netstorage_model.php",
+			"settings":
+			{
+				"buffer_size": 8408,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/cms_model.php",
+			"settings":
+			{
+				"buffer_size": 33415,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "$_COOKIE = array[2]\n	$_COOKIE['sessions_app'] = (string) 2OpHimncajMrNk00UAjkHhV6086n5bTbhcRZtYsIA02AINGwJVl2V5WtgBib1AQmqCZIfB9lmVt56vGFoZ40UWdb6we0KCNlWg28zOINFU1Vze2oEfTvu9ZWIa1F1AY4cZFDVVPb+PdXpgUzIMhI3SBwDzLX0exFsDRmFDiueY49qFCf+N5hJGMiG6j6FYjfF52CvSZIeibSCIa/Hsoo27lE/msfcE0e6i9wu3ullHubn5F9QfahcG7o+a2VuXuHpUkAVaYXQzR9ZVFxkBe6nT6iPuXVScMA0R707YlUgKA6lkv6hG2qzHQq7T7OzMOScO+Tn7izzQjfp7JQ+sCEaICXJWH+5JK2leqsGgAihJ0mx5QSrrqz8vY5p1wNFz6fDnuk+DuPMqcfLb0ZQBjy4JNwt++HSZHdfINVmcUYzFg=\n	$_COOKIE['XDEBUG_SESSION'] = (string) sublime.xdebug\n$_ENV = array[0]\n$_FILES = array[0]\n$_GET = array[1]\n	$_GET['status'] = (string) 1\n$_POST = array[0]\n$_REQUEST = array[1]\n	$_REQUEST['status'] = (string) 1\n$_SERVER = array[95]\n	$_SERVER['REDIRECT_HTTP_HOST'] = (string) middleware.televisa.dev\n	$_SERVER['REDIRECT_HTTP_CONNECTION'] = (string) keep-alive\n	$_SERVER['REDIRECT_HTTP_CACHE_CONTROL'] = (string) max-age=0\n	$_SERVER['REDIRECT_HTTP_ACCEPT'] = (string) text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n	$_SERVER['REDIRECT_HTTP_USER_AGENT'] = (string) Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36\n	$_SERVER['REDIRECT_HTTP_ACCEPT_ENCODING'] = (string) gzip,deflate,sdch\n	$_SERVER['REDIRECT_HTTP_ACCEPT_LANGUAGE'] = (string) es-ES,es;q=0.8,en;q=0.6\n	$_SERVER['REDIRECT_HTTP_COOKIE'] = (string) sessions_app=2OpHimncajMrNk00UAjkHhV6086n5bTbhcRZtYsIA02AINGwJVl2V5WtgBib1AQmqCZIfB9lmVt56vGFoZ40UWdb6we0KCNlWg28zOINFU1Vze2oEfTvu9ZWIa1F1AY4cZFDVVPb%2BPdXpgUzIMhI3SBwDzLX0exFsDRmFDiueY49qFCf%2BN5hJGMiG6j6FYjfF52CvSZIeibSCIa%2FHsoo27lE%2FmsfcE0e6i9wu3ullHubn5F9QfahcG7o%2Ba2VuXuHpUkAVaYXQzR9ZVFxkBe6nT6iPuXVScMA0R707YlUgKA6lkv6hG2qzHQq7T7OzMOScO%2BTn7izzQjfp7JQ%2BsCEaICXJWH%2B5JK2leqsGgAihJ0mx5QSrrqz8vY5p1wNFz6fDnuk%2BDuPMqcfLb0ZQBjy4JNwt%2B%2BHSZHdfINVmcUYzFg%3D; XDEBUG_SESSION=sublime.xdebug\n	$_SERVER['REDIRECT_PATH'] = (string) /usr/bin:/bin:/usr/sbin:/sbin\n	$_SERVER['REDIRECT_SERVER_SIGNATURE'] = <string>\n	$_SERVER['REDIRECT_SERVER_SOFTWARE'] = (string) Apache/2.2.26 (Unix) PHP/5.5.6 DAV/2 mod_ssl/2.2.26 OpenSSL/0.9.8y mod_perl/2.0.7 Perl/v5.16.2\n	$_SERVER['REDIRECT_SERVER_NAME'] = (string) middleware.televisa.dev\n	$_SERVER['REDIRECT_SERVER_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_SERVER_PORT'] = (string) 80\n	$_SERVER['REDIRECT_REMOTE_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_DOCUMENT_ROOT'] = (string) /Users/miguelmartinez/Sites/middle\n	$_SERVER['REDIRECT_SERVER_ADMIN'] = (string) you@example.com\n	$_SERVER['REDIRECT_SCRIPT_FILENAME'] = <string>\n	$_SERVER['REDIRECT_REMOTE_PORT'] = (string) 52925\n	$_SERVER['REDIRECT_GEOIP_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_REDIRECT_STATUS'] = (string) 200\n	$_SERVER['REDIRECT_HASH_ENCRYPT'] = (string) lZuBmQwPCcbhDZOG4hcNptY3BumAB93K32sc\n	$_SERVER['REDIRECT_BASE_URL'] = (string) http://middleware.televisa.dev\n	$_SERVER['REDIRECT_DB_HOST'] = (string) localhost\n	$_SERVER['REDIRECT_DB_USER'] = (string) root\n	$_SERVER['REDIRECT_DB_PASS'] = (string) nowsee123\n	$_SERVER['REDIRECT_DB_NAME'] = (string) dev_tvsa_middleware\n	$_SERVER['REDIRECT_DB_PREFIX'] = (string) mw_\n	$_SERVER['REDIRECT_STORAGE_URL'] = (string) storagemas.upload.akamai.com\n	$_SERVER['REDIRECT_STORAGE_USER'] = (string) marcoplata\n	$_SERVER['REDIRECT_STORAGE_PASS'] = (string) y4mi.99yS\n	$_SERVER['REDIRECT_CRON_HOST'] = (string) 107.170.237.101\n	...\n$input = array[1]\n	$input['category'] = array[1]\n		...\n$output = <uninitialized>\n$paths = array[3]\n	$paths[0] = array[3]\n		...\n	$paths[1] = array[3]\n		...\n	$paths[2] = array[3]\n		...\n$return = array[0]\n$template = array[1]\n	$template[0] = array[1]\n		...\n$this = Node[8]\n	$this->curl = Alertas_model[27]\n		...\n	$this->URL_INPUT = (string) http://middleware.televisa.dev/nucleo/feed_service_content?url=aHR0cDovL2ZlZWRzLmVzbWFzLmNvbS9kYXRhLWZlZWRzLWVzbWFzL2lwYWQvZGVwb3J0ZXMuanM%3D\n	$this->INPUT = array[1]\n		...\n	$this->URL_TEMPLATE = (string) http://middleware.televisa.dev/nucleo/feed_service?url=aHR0cDovL2ZlZWRzLmVzbWFzLmNvbS9kYXRhLWZlZWRzLWVzbWFzL2lwYWQvZGVwb3J0ZXMuanM%3D\n	$this->TEMPLATE = array[1]\n		...\n	$this->ORIGIN_PATHS = array[6]\n		...\n	$this->PATHS = array[3]\n		...\n	$this->STORE = JsonStore[1]\n		...\n",
+			"settings":
+			{
+				"buffer_size": 4206,
+				"line_ending": "Unix",
+				"name": "Xdebug Context",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix",
+				"name": "Xdebug Watch",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "[0] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->getData:542\n[1] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->getDataFixed:555\n[2] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->toJSON:614\n[3] file:///Users/miguelmartinez/Sites/middle/app/models/netstorage_model.php.Netstorage_model->harddisk_write:99\n[4] file:///Users/miguelmartinez/Sites/middle/app/controllers/nucleo.php.Nucleo->job_process:302\n[5] file:///Users/miguelmartinez/Sites/middle/core/core/CodeIgniter.php.call_user_func_array:359\n[6] file:///Users/miguelmartinez/Sites/middle/core/core/CodeIgniter.php.require_once:359\n[7] file:///Users/miguelmartinez/Sites/middle/index.php.{main}:200\n",
+			"settings":
+			{
+				"buffer_size": 729,
+				"line_ending": "Unix",
+				"name": "Xdebug Stack",
+				"read_only": true,
+				"scratch": true
+			}
+		},
+		{
+			"contents": "=> /Users/miguelmartinez/Sites/middle/app/libraries/Node.php\n	|+| 542\n",
+			"settings":
+			{
+				"buffer_size": 70,
+				"line_ending": "Unix",
+				"name": "Xdebug Breakpoint",
+				"read_only": true,
+				"scratch": true
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 281.0,
+		"selected_items":
+		[
+			[
+				"stop",
+				"Xdebug: Stop Debugging (Close Windows)"
+			],
+			[
+				"start",
+				"Xdebug: Start Debugging (Launch Browser)"
+			],
+			[
+				"xde",
+				"Xdebug: Start Debugging (Launch Browser)"
+			],
+			[
+				"strat",
+				"Xdebug: Restart Session"
+			],
+			[
+				"star",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"view",
+				"Laravel Generate: View"
+			],
+			[
+				"vi",
+				"Laravel Generate: View"
+			],
+			[
+				"vie",
+				"Laravel Generate: View"
+			],
+			[
+				"control",
+				"Laravel Generate: Controller"
+			],
+			[
+				"model",
+				"Laravel Generate: Model"
+			],
+			[
+				"contro",
+				"Laravel Generate: Controller"
+			],
+			[
+				"contr",
+				"Laravel Generate: Controller"
+			],
+			[
+				"seed",
+				"Laravel Generate: Seed"
+			],
+			[
+				"CONTRO",
+				"Laravel Generate: Controller"
+			],
+			[
+				"lravel",
+				"Laravel Generate: View"
+			],
+			[
+				"laravel",
+				"Laravel Generate: Seed"
+			],
+			[
+				"xml",
+				"Set Syntax: XML"
+			],
+			[
+				"sty",
+				"Set Syntax: Stylus"
+			],
+			[
+				"css",
+				"Set Syntax: CSS"
+			],
+			[
+				"java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"styl",
+				"Set Syntax: Stylus"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"ph",
+				"Set Syntax: PHP"
+			]
+		],
+		"width": 418.0
+	},
+	"console":
+	{
+		"height": 174.0,
+		"history":
+		[
+			"import urllib3,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib3.install_opener( urllib3.build_opener( urllib3.ProxyHandler()) ); by = urllib3.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')",
+			"import urllib3,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')",
+			"import urllib2,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/miguelmartinez/Sites/middle"
+	],
+	"file_history":
+	[
+		"/Users/miguelmartinez/Sites/middle/index.php",
+		"/Users/miguelmartinez/Library/Application Support/Sublime Text 3/Packages/User/Xdebug.sublime-settings",
+		"/Users/miguelmartinez/Library/Application Support/Sublime Text 3/Packages/Xdebug Client/Xdebug.sublime-settings",
+		"/Users/miguelmartinez/Sites/middle/middle.sublime-project",
+		"/Users/miguelmartinez/Sites/middle/middle.sublime-workspace",
+		"/Users/miguelmartinez/Sites/middle/js/init-tree-alquimia.js",
+		"/Users/miguelmartinez/Sites/middle/core/libraries/Xmlrpc.php",
+		"/Users/miguelmartinez/Sites/middle/jx/tests/jxrun_demo.sh",
+		"/Users/miguelmartinez/Sites/middle/outputs/deportes/videos/6409d497-5fbe-11e4-9ac8-2b4dfe156ee9/json-json.js",
+		"/Users/miguelmartinez/Sites/middle/core/helpers/download_helper.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_listar_categorias_asignadas.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_listar_verticales_asignadas.php",
+		"/Users/miguelmartinez/Sites/middle/app/helpers/magpierss/scripts/smarty_plugin/modifier.rss_date_parse.php",
+		"/Users/miguelmartinez/Sites/middle/app/config/doctypes.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_vertical.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_usuario.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_trabajo.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_estructura.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_categoria.php",
+		"/Users/miguelmartinez/Sites/middle/js/base64_encode.js",
+		"/Users/miguelmartinez/Sites/middle/app/models/crontabs_model.php",
+		"/Users/miguelmartinez/Sites/middle/app/models/cronlog_model.php",
+		"/Users/miguelmartinez/Sites/middle/jx/tests/test_findnode.php",
+		"/Users/miguelmartinez/Sites/middle/app/models/netstorage_model.php",
+		"/Users/miguelmartinez/Sites/middle/jx/findnode.php",
+		"/Users/miguelmartinez/Sites/middle/.htaccess",
+		"/Users/miguelmartinez/Sites/middle/app/controllers/nucleo.php",
+		"/Users/miguelmartinez/Sites/middle/app/libraries/Node.php",
+		"/Users/miguelmartinez/Sites/middle/app/controllers/cms.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/database.php",
+		"/Users/miguelmartinez/Sites/middle/app/config/database.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/local/database.php",
+		"/Users/miguelmartinez/Sites/jsbin/jsbin/views/index.html",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/codding2.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/dashboard.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/layout.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/layout.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/home/home.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/home.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/dashboard.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/variables.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/maximebf/debugbar/demo/dump_assets.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/database/seeds/DatabaseSeeder.php",
+		"/Users/miguelmartinez/Sites/cube/stylus/dashboard/dashboard.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/HomeController.php",
+		"/Users/miguelmartinez/Sites/cube/stylus/home/home.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOne.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOneOrMany.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/Exception/TooManyRequestsHttpException.php",
+		"/Users/miguelmartinez/Sites/cube/humans.txt",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/codding.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/lesson/lesson.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/skeleton.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/video.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/lesson.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/routes.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/profile.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/home/schedules.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/user/login.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/user/forgot.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/UsersController.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/CourseController.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/schedules.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/phpseclib/phpseclib/travis/setup-composer.sh",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/server.php",
+		"/Users/miguelmartinez/Sites/cube/stylus/home/schedules.styl",
+		"/Users/miguelmartinez/Sites/cube/schedules.html",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Queue/SqsQueue.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/svg/square.svg",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/profile.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/main-nav.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/course.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/course.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/toolbar-guest.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/toolbar-auth.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/courses.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/toolbar.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/stylus.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/courses.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/filters.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/auth.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/bootstrap/start.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/paypal.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/local/app.php",
+		"/Users/miguelmartinez/Sites/cube/lesson.html",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/join.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/support.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/footer.blade.php",
+		"/Users/miguelmartinez/Sites/cube/course.html",
+		"/Users/miguelmartinez/Sites/cube/support.html",
+		"/Users/miguelmartinez/Sites/cube/dashboard.html",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/credit-card.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/choose-store.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/bank-transfer.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/success.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/payment.blade.php",
+		"/Users/miguelmartinez/Sites/cube/payment.html",
+		"/Users/miguelmartinez/Sites/cube/payment-paypal.html",
+		"/Users/miguelmartinez/Sites/cube/stylus/dashboard/courses/courses.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/predis/predis/lib/Predis/Option/ClientOptions.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/composer.json",
+		"/Users/miguelmartinez/Sites/cube/courses.html",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/bootstrap/forms.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/Joomla/Categories.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/mobile.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/topbar.styl",
+		"/Users/miguelmartinez/Sites/groundbreaker/stylus/home.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/node_modules/browserify/node_modules/insert-module-globals/node_modules/JSONStream/test/multiple_objects.js",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/mycourses.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/layout.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/course/lessons.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/toolbar.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/lesson.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/joomla/Items.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/courses.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/joomla/Categories.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/tabcodding.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/validator/validate.js",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/CoddingController.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/tmp/tmp.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/base64_encode.js",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/php.sh",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/codding.blade.php",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/course.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/esprima.js",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/soon.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/colors.styl",
+		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/carrousel.styl"
+	],
+	"find":
+	{
+		"height": 43.0
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+			"/Users/miguelmartinez/Sites/middle",
+			"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views",
+			"<open folders>,/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus",
+			"<open folders>",
+			"<open folders>,/Users/miguelmartinez/Sites/kmg",
+			"<open folders>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"folders",
+			"settings",
+			"folders",
+			"__do",
+			"    	print_r($paths);\n    	print_r($input);\n    	print_r($template);\n    	die;",
+			"harddisk_write",
+			"mapAttributes",
+			"feed_service",
+			"_getTEMPLATE",
+			"get_trabajo_ejecutar",
+			"Node",
+			"active_job",
+			"get_trabajo_ejecutar",
+			"cron",
+			"job_process",
+			"outp",
+			"out",
+			".html",
+			"BASEPATH",
+			"error",
+			"FrameGuard",
+			"27ae60",
+			"03ae60",
+			"quiz",
+			"login/email",
+			"85b200",
+			"nav-tabs",
+			"access",
+			"describe-box",
+			"col-md-3",
+			"col-md-10",
+			"sm",
+			"green-text",
+			"payment",
+			"mentor",
+			"session",
+			"detectEnvironment",
+			"$env",
+			"detectEnvironment",
+			"resumen",
+			"support",
+			".form-group",
+			"countries",
+			"categor",
+			"categori",
+			"foreach",
+			"coun",
+			"courses",
+			"countri",
+			"countr",
+			"count",
+			"editor",
+			"content",
+			"parent",
+			"lang",
+			"cod",
+			"countdown",
+			"7fa200",
+			"column",
+			"button",
+			"lesson",
+			"a2a2a2",
+			"GRAY_CARROUSEL",
+			"f0f0f0",
+			"background",
+			"dashboard",
+			"7cab00",
+			"698c00",
+			"999999",
+			"555555",
+			"panel3",
+			"panel2",
+			"hljs",
+			"698c00",
+			"2f5228",
+			"5EC23D",
+			"green",
+			"6b9300",
+			"dash",
+			"account",
+			".sigin-button",
+			"span",
+			"BORDER",
+			"DARK_GRAY",
+			"#A6A6A6",
+			"878787",
+			"#878787",
+			"aliases",
+			"Artdarek\\OAuth\\Facade\\OAuth",
+			"bbbbbb",
+			"00468c",
+			"4",
+			"85b200",
+			"F0F0F0",
+			"2",
+			"333333",
+			"787878",
+			"background-gray-letter",
+			"countries",
+			"countr",
+			"Phone1",
+			"siginUser",
+			"required",
+			"validation",
+			"FACEBOOK",
+			"font-family",
+			"div.switch input:last-of-type:checked",
+			"div.switch input:first-of-type:checked",
+			"div.switch input:first-of-type:checked + label",
+			"div.switch input:first-of-type:checked",
+			"div.switch input:last-of-type",
+			"4288CA",
+			"#F5F5F5",
+			"F5F5F5",
+			"#F5F5F5",
+			"box-shadow",
+			"#F3FAF6",
+			"switch",
+			"positive",
+			"positive-color",
+			"icon-woman",
+			"center",
+			"subtitle",
+			"icon-woman",
+			"first-level",
+			".accordion dd > a",
+			".accordion dt > a, .accordion dd > a",
+			"h1"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"	print_r($paths);\n    	print_r($input);\n    	print_r($template);\n    	die;\n",
+			"",
+			"description",
+			"./noticia",
+			"h3",
+			"light_gray",
+			"",
+			"0.0.9",
+			"0.0.8",
+			"UA-51076015-1",
+			"0.0.7",
+			"main.css?v=0.0.6",
+			"main.css?v=0.0.5",
+			"",
+			",'Off'",
+			"'Off',",
+			",'Off'",
+			"'Off',",
+			",Off,"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/libraries/Node.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 33927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 14387.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6343,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 336.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/libraries/Cron_manager.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4596,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 3.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/controllers/nucleo.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 22057,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 1.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "app/models/netstorage_model.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8408,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 208.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/models/cms_model.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 33415,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 30.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4206,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3476,
+								3476
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 235.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 8,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 729,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								729,
+								729
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 70,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								70,
+								70
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				2,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			],
+			[
+				1,
+				1,
+				2,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.5,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.510834609044,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 32.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.xdebug":
+	{
+		"height": 37.0
+	},
+	"project": "middle.sublime-project",
+	"replace":
+	{
+		"height": 66.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"das",
+				"dev.cube.academy/app/views/dashboard/dashboard.blade.php"
+			],
+			[
+				"home",
+				"dev.cube.academy/app/views/home/home.blade.php"
+			],
+			[
+				"sch",
+				"dev.cube.academy/app/views/home/schedules.blade.php"
+			],
+			[
+				"dash",
+				"dev.cube.academy/app/views/dashboard/dashboard.blade.php"
+			],
+			[
+				"cours",
+				"dev.cube.academy/stylus/dashboard/courses/courses.styl"
+			],
+			[
+				"courses",
+				"dev.cube.academy/app/views/dashboard/courses/courses.blade.php"
+			],
+			[
+				"mob",
+				"stylus/mobile.styl"
+			],
+			[
+				"color",
+				"stylus/colors.styl"
+			],
+			[
+				"colo",
+				"stylus/colors.styl"
+			],
+			[
+				"course",
+				"app/views/course/course.blade.php"
+			],
+			[
+				"pro",
+				"stylus/profile.styl"
+			],
+			[
+				"sty",
+				"stylus/stylus.styl"
+			],
+			[
+				"accou",
+				"app/views/users/account.blade.php"
+			],
+			[
+				"cour",
+				"app/views/dashboard/courses.blade.php"
+			],
+			[
+				"gui-",
+				"stylus/gui-editor.styl"
+			],
+			[
+				"campu",
+				"app/views/campus.blade.php"
+			],
+			[
+				"mycous",
+				"app/views/dashboard/mycourses.blade.php"
+			],
+			[
+				"topbar",
+				"app/views/dashboard/topbar.blade.php"
+			],
+			[
+				"myco",
+				"app/views/dashboard/mycourses.blade.php"
+			],
+			[
+				"d",
+				"stylus/dashboard.styl"
+			],
+			[
+				"cou",
+				"stylus/course.styl"
+			],
+			[
+				"topb",
+				"app/views/dashboard/topbar.blade.php"
+			],
+			[
+				"lay",
+				"app/views/layout.blade.php"
+			],
+			[
+				"myc",
+				"app/views/dashboard/mycourses.blade.php"
+			],
+			[
+				"col",
+				"stylus/colors.styl"
+			],
+			[
+				"user",
+				"app/controllers/UsersController.php"
+			],
+			[
+				"login",
+				"app/views/users/login.blade.php"
+			],
+			[
+				"font.",
+				"stylus/font.styl"
+			],
+			[
+				"rou",
+				"app/routes.php"
+			],
+			[
+				"homecon",
+				"app/controllers/HomeController.php"
+			],
+			[
+				"styl",
+				"stylus/stylus.styl"
+			],
+			[
+				"logi",
+				"app/views/users/login.blade.php"
+			],
+			[
+				"sche",
+				"vendor/laravel/framework/src/Illuminate/Support/Facades/Schema.php"
+			],
+			[
+				"layo",
+				"app/views/layout.blade.php"
+			],
+			[
+				"log",
+				"app/views/login.blade.php"
+			],
+			[
+				"fou",
+				"stylus/foundation.styl"
+			],
+			[
+				"font",
+				"stylus/fonts.styl"
+			],
+			[
+				"menu",
+				"stylus/menu.styl"
+			],
+			[
+				"main",
+				"stylus/main.styl"
+			],
+			[
+				"event",
+				"stylus/event/event.styl"
+			],
+			[
+				"men",
+				"stylus/menu.styl"
+			],
+			[
+				"foun",
+				"stylus/foundation.styl"
+			],
+			[
+				"evento",
+				"application/views/evento/evento.php"
+			],
+			[
+				"eventos",
+				"application/views/eventos/eventos.php"
+			],
+			[
+				"events",
+				"stylus/events/events.styl"
+			],
+			[
+				"result",
+				"application/views/resultados/resultados.php"
+			],
+			[
+				"eveno",
+				"application/views/eventos/eventos.php"
+			],
+			[
+				"resul",
+				"application/views/resultados/resultados.php"
+			],
+			[
+				"resultad",
+				"application/views/resultados/resultados.php"
+			],
+			[
+				"mai",
+				"stylus/main.styl"
+			],
+			[
+				"icons-menu",
+				"application/views/slide-menu.php"
+			],
+			[
+				"res",
+				"application/views/resultados/resultados.php"
+			],
+			[
+				"notici",
+				"application/views/noticias/noticias.php"
+			],
+			[
+				"noti",
+				"application/views/noticias/noticias.php"
+			],
+			[
+				"even",
+				"application/views/evento/evento.php"
+			],
+			[
+				"eve",
+				"stylus/event/event.styl"
+			],
+			[
+				"fon",
+				"stylus/fonts.styl"
+			],
+			[
+				"m",
+				"stylus/main.styl"
+			],
+			[
+				"ma",
+				"stylus/main.styl"
+			],
+			[
+				"ev",
+				"application/views/evento/evento.php"
+			],
+			[
+				"he",
+				"application/views/header.php"
+			],
+			[
+				"head",
+				"application/views/header.php"
+			],
+			[
+				"me",
+				"stylus/menu.styl"
+			],
+			[
+				"sli",
+				"application/views/slide-menu.php"
+			],
+			[
+				"",
+				"humans.txt"
+			],
+			[
+				"soyn",
+				"application/views/home/menu-soynadador.php"
+			],
+			[
+				"hom",
+				"stylus/home.styl"
+			],
+			[
+				"in",
+				"index.html"
+			],
+			[
+				"inde",
+				"index.html"
+			],
+			[
+				"pre",
+				"press.html"
+			],
+			[
+				"ca",
+				"stylus/category.styl"
+			],
+			[
+				"cate",
+				"kmg/stylus/category.styl"
+			],
+			[
+				"foo",
+				"stylus/footer.styl"
+			],
+			[
+				"main.",
+				"js/main.js"
+			],
+			[
+				"cat",
+				"stylus/category.styl"
+			],
+			[
+				"ab",
+				"about.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 1,
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"15":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"17":
+				{
+					"group": 0,
+					"index": 2
+				},
+				"18":
+				{
+					"group": 0,
+					"index": 3
+				},
+				"19":
+				{
+					"group": 0,
+					"index": 4
+				},
+				"20":
+				{
+					"group": 0,
+					"index": 5
+				},
+				"98":
+				{
+					"group": 0,
+					"index": 1
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						2,
+						1
+					],
+					[
+						0,
+						1,
+						1,
+						2
+					],
+					[
+						1,
+						1,
+						2,
+						2
+					]
+				],
+				"cols":
+				[
+					0.0,
+					0.5,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					0.60152349486,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 214.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

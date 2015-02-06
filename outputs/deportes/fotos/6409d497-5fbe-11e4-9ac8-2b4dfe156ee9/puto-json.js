@@ -1,0 +1,1 @@
+[{"goals":[{"local":"2","penaltiesLocal":"","visit":"1"}],"referees":[{"assistant1":"Jose Santana Martinez","assistant2":"Christian Kiabek Espinosa Zavala"}]}]

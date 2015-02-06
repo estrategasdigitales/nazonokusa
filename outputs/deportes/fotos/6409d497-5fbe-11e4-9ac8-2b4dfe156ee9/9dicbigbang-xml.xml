@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+ <resource>
+  <media:group>
+   <media:content url="http://i2.esmas.com/2014/09/09/695578/the-big-bang-theory-1009x504.jpg" width="1009"/>
+   <media:content url="http://i2.esmas.com/2014/09/09/695578/the-big-bang-theory-500x500.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/09/695578/the-big-bang-theory-500x245.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/09/695578/the-big-bang-theory-330x330.jpg" width="330"/>
+   <media:content url="http://i2.esmas.com/2014/09/09/695578/the-big-bang-theory-120x90.jpg" width="120"/>
+  </media:group>
+  <author><![CDATA[Christian Pedraza]]></author>
+  <title><![CDATA[Big Bang Theory te ayuda a conseguir chamba]]></title>
+ </resource>
+ <resource>
+  <media:group>
+   <media:content url="http://i2.esmas.com/2014/09/11/696347/bazinga-1009x504.jpg" width="1009"/>
+   <media:content url="http://i2.esmas.com/2014/09/11/696347/bazinga-500x500.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/11/696347/bazinga-500x245.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/11/696347/bazinga-330x330.jpg" width="330"/>
+   <media:content url="http://i2.esmas.com/2014/09/11/696347/bazinga-120x90.jpg" width="120"/>
+  </media:group>
+  <author><![CDATA[Christian Pedraza]]></author>
+  <title><![CDATA[Usos alternativos para la 'BAZINGA!']]></title>
+ </resource>
+ <resource>
+  <media:group>
+   <media:content url="http://i2.esmas.com/2014/09/08/694987/the-big-bang-theory-1009x504.jpg" width="1009"/>
+   <media:content url="http://i2.esmas.com/2014/09/08/694987/the-big-bang-theory-500x500.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/08/694987/the-big-bang-theory-500x245.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/09/08/694987/the-big-bang-theory-330x330.jpg" width="330"/>
+  </media:group>
+  <author><![CDATA[José Luis Castilla]]></author>
+  <title><![CDATA[Cinco tipos de 'amigos' insoportables]]></title>
+ </resource>
+ <resource>
+  <media:group>
+   <media:content url="http://i2.esmas.com/2014/08/29/691239/the-big-bang-theory-1009x504.jpg" width="1009"/>
+   <media:content url="http://i2.esmas.com/2014/08/29/691239/the-big-bang-theory-500x500.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/08/29/691239/the-big-bang-theory-500x245.jpg" width="500"/>
+   <media:content url="http://i2.esmas.com/2014/08/29/691239/the-big-bang-theory-330x330.jpg" width="330"/>
+   <media:content url="http://i2.esmas.com/2014/08/29/691239/the-big-bang-theory-120x90.jpg" width="120"/>
+  </media:group>
+  <author><![CDATA[Christian Pedraza]]></author>
+  <title><![CDATA[Errores en la primera cita según Big Bang Theory]]></title>
+ </resource>
+</resources>

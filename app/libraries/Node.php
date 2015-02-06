@@ -270,23 +270,28 @@ class Node{
         $paths = $this->toTree($paths);
 
         $tree = [];
-        $new_childs[0] = $paths[0];
+
 
         if($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP")
         {
+            $new_childs[0] = $paths[0];
+
             foreach($paths as $path)
             {
                 if(substr_count($path["path"],$paths[0]["path"]) == 0 )
                     $new_childs[] = $path;
 
             }
-        }
+
+            if(count($new_childs) > 1)
+                return  ["path" => "", "child" => $new_childs ];
+            else
+                return $new_childs[0];
+        }else
+            return $paths[0];
 
 
-        if(count($new_childs) > 1)
-            return  ["path" => "", "child" => $new_childs ];
-        else
-            return $new_childs[0];
+
 
     }
 
@@ -392,7 +397,7 @@ class Node{
 
         }else
         {
-            if(array_key_exists(0,$input))
+            if(array_key_exists(0,$input) and ($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP"))
             {
                 $this->isJson = true;
                 $path = "";
@@ -429,8 +434,8 @@ class Node{
                 {
                     $input_key = key($inputs[0]);
 
-                    if(count($inputs[0][$input_key]) > 1 and is_array($inputs[0][$input_key]) )
-                        $inputs = $inputs[0];
+                    //if(count($inputs[0][$input_key]) > 1 and is_array($inputs[0][$input_key]) and $input_key!="@attributes" )
+                    //    $inputs = $inputs[0];
                 }
 
 
@@ -1287,30 +1292,50 @@ class Node{
 
     public function _toJSON( &$nodes ){
         foreach ($nodes as $nKey => &$nValue) {
-            if ( is_array( $nValue ) and array_key_exists( 0, $nValue ) and ( isset( $nValue[0]["@attributes"] ) or  isset( $nValue[0]["@value"] ) ) ){
-                if(isset($nValue[0]["@attributes"]))
-                $nValue["@attributes"] = $nValue[0]["@attributes"];
+            if ( is_array( $nValue ) and array_key_exists(0,$nValue) ){
 
-                if(isset($nValue[0]["@value"]))
-                    $nValue["@value"] = $nValue[0]["@value"];
+                foreach($nValue as $keynValue => &$recordnValue)
+                {
+                    if( isset( $recordnValue["@attributes"] ) or  isset( $recordnValue["@value"] ) )
+                    {
 
-                if ( isset( $nValue["@attributes"] ) and isset( $nValue["@value"] ) ){
-                    $attributes = $nValue["@attributes"];
-                    $value = $nValue["@value"];
+                        if ( isset( $recordnValue["@attributes"] ) and isset( $recordnValue["@value"] ) ){
+                            $attributes = $recordnValue["@attributes"];
+                            $value = $recordnValue["@value"];
 
-                    foreach ( $attributes as $katt => $vatt ) {
-                        foreach ( $vatt as $kvatt => $vvatt )
-                            $nValue[$kvatt] = $vvatt;
-                    }
-                    $nValue[$value] = $value;
+                            foreach ( $attributes as $katt => $vatt ) {
+                                foreach ( $vatt as $kvatt => $vvatt )
+                                    $nValue[$keynValue][$kvatt] = $vvatt;
+                            }
+                            $nValue[$keynValue][$value] = $value;
 
-                    unset($nValue["@attributes"]);
-                    unset($nValue["@value"]);
-                    unset($nValue[0]);
+                            unset($nValue[$keynValue]["@attributes"]);
+                            unset($nValue[$keynValue]["@value"]);
+                            //unset($nValue[0]);
 
-                } else if( isset( $nValue["@value"] ) ){
-                    $nValue = $nValue["@value"];
+                        } else if( isset( $recordnValue["@value"] ) ){
+                            $nValue[$keynValue] = $recordnValue["@value"];
+                            unset($nValue[$keynValue]["@value"]);
+
+                        }elseif($recordnValue["@attributes"])
+                        {
+                            $attributes = $recordnValue["@attributes"];
+
+                            foreach ( $attributes as $katt => $vatt ) {
+                                foreach ( $vatt as $kvatt => $vvatt )
+                                    $nValue[$keynValue][$kvatt] = $vvatt;
+                            }
+
+                            unset($nValue[$keynValue]["@attributes"]);
+                        }
+
+                        //unset($nValue[$keynValue]);
+                    }else
+                        $this->_toJSON( $recordnValue );
                 }
+
+
+
             } elseif ( is_array( $nValue ) and count( $nValue ) > 0 ){
                 $this->_toJSON( $nValue );
             }

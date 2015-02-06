@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule">
+ <channel>
+  <title>title</title>
+  <link>http://televisa.com</link>
+  <description>televisa</description>
+  <image>
+   <title>televisa.com</title>
+   <link>http://i.esmas.com/img/univ/portal/rss/feed_1.jpg</link>
+   <link>http://www.televisa.com</link>
+  </image>
+  <language>es-mx</language>
+  <copyright>2005 Comercio Mas S.A. de C.V</copyright>
+  <managingEditor>ulises.blanco@esmas.net (Ulises Blanco)</managingEditor>
+  <webMaster>feeds@esmas.com (feeds Esmas.com)</webMaster>
+  <pubDate>Sun, 18 Jan 2015 15:37:36 GMT</pubDate>
+  <lastBuildDate>Sun, 18 Jan 2015 15:37:36 GMT</lastBuildDate>
+  <category>Home Principal esmas</category>
+  <generator>GALAXY 1.0</generator>
+  <atom:link href="http://feeds.esmas.com/data-feeds-esmas/xml/index.xml" rel="self" type="application/rss+xml"/>
+  <ttl>60</ttl>
+  <item>
+   <title><![CDATA[¿Recibes puros regalos desagradables?]]></title>
+   <description><![CDATA[Si tu respuesta fue afirmativa, entonces te identificarás con The Haunting Hour, así no se puede.]]></description>
+   <category><![CDATA[canal5 > series > la-hora-embrujada > multimedia > videos]]></category>
+   <categoryid><![CDATA[0104114011150101]]></categoryid>
+   <guid isPermaLink="false"><![CDATA[a5e5e6d8-24a8-11e4-a6dc-b5c1aa0f4a49]]></guid>
+  </item>
+ </channel>
+</rss>

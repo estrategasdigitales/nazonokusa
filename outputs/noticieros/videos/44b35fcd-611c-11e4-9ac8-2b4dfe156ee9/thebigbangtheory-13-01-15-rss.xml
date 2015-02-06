@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule">
+ <channel>
+  <title>televisa canal 5</title>
+  <link>hhtp://www.televisa.com</link>
+  <description>Canal5</description>
+  <image>
+   <title>televisa.com</title>
+   <link>http://i.esmas.com/img/univ/portal/rss/feed_1.jpg</link>
+   <link>http://www.televisa.com</link>
+  </image>
+  <language>es-mx</language>
+  <copyright>2005 Comercio Mas S.A. de C.V</copyright>
+  <managingEditor>ulises.blanco@esmas.net (Ulises Blanco)</managingEditor>
+  <webMaster>feeds@esmas.com (feeds Esmas.com)</webMaster>
+  <pubDate>Sun, 18 Jan 2015 15:46:17 GMT</pubDate>
+  <lastBuildDate>Sun, 18 Jan 2015 15:46:17 GMT</lastBuildDate>
+  <category>Home Principal esmas</category>
+  <generator>GALAXY 1.0</generator>
+  <atom:link href="http://feeds.esmas.com/data-feeds-esmas/xml/index.xml" rel="self" type="application/rss+xml"/>
+  <ttl>60</ttl>
+  <item>
+   <title><![CDATA[¿Eres un #ForeverAlone como Raj?]]></title>
+   <link><![CDATA[http://www.televisa.com/canal5/series/the-big-bang-theory-5/multimedia/video/753107/eres-foreveralone-raj/]]></link>
+   <description><![CDATA[Así es una semana rutinaria en la vida de este genio de The Big Bang Theory... ¡qué triste su vida!]]></description>
+   <pubDateTime><![CDATA[Wed, 13 Aug 2014 17:18:36  CST]]></pubDateTime>
+   <categoryid><![CDATA[0104114011070101]]></categoryid>
+   <guid><![CDATA[63451226-2278-11e4-a6dc-b5c1aa0f4a49]]></guid>
+  </item>
+  <item>
+   <title><![CDATA[Ese Leonard es bien 'hater']]></title>
+   <link><![CDATA[http://www.televisa.com/canal5/series/the-big-bang-theory-5/multimedia/video/753839/ese-leonard-bien-hater/]]></link>
+   <description><![CDATA[Así como lo ven, este genio también tiene su lado troll, chequen su teoría del origen del mundo.]]></description>
+   <pubDateTime><![CDATA[Wed, 13 Aug 2014 17:04:44  CST]]></pubDateTime>
+   <categoryid><![CDATA[0104114011070101]]></categoryid>
+   <guid><![CDATA[513c97df-231d-11e4-a6dc-b5c1aa0f4a49]]></guid>
+  </item>
+  <item>
+   <title><![CDATA[Nada puede separar a Howard de su mamá]]></title>
+   <link><![CDATA[http://www.televisa.com/canal5/series/the-big-bang-theory-5/multimedia/video/753844/nada-separar-howard-mama/]]></link>
+   <description><![CDATA[No hay distancia lo suficientemente lejos como para no encontralo, ni siquiera el espacio exterior.]]></description>
+   <pubDateTime><![CDATA[Wed, 13 Aug 2014 17:10:45  CST]]></pubDateTime>
+   <categoryid><![CDATA[0104114011070101]]></categoryid>
+   <guid><![CDATA[3378b325-231f-11e4-a6dc-b5c1aa0f4a49]]></guid>
+  </item>
+ </channel>
+</rss>
