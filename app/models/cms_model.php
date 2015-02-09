@@ -350,12 +350,14 @@ class Cms_model extends CI_Model {
         }
 
         public function get_usuario_alertas( $uid_job ){
-            $this->db->select( 'a.uid_trabajo, b.nombre, b.apellidos, b.compania_celular, c.slug_compania as carrier' );
+            $this->db->select( 'a.uid_trabajo, a.nombre as name_job, b.nombre, b.apellidos, b.compania_celular, c.slug_compania as carrier, d.nombre as name_category, e.nombre as name_vertical' );
             $this->db->select( "AES_DECRYPT( b.email,'{$this->key_encrypt}') email", FALSE );
             $this->db->select( "AES_DECRYPT( b.celular,'{$this->key_encrypt}') celular", FALSE );
             $this->db->from( $this->db->dbprefix('trabajos').' AS a');
-            $this->db->join( $this->db->dbprefix('usuarios').' AS b', 'a.uid_usuario = b.uid_usuario');
-            $this->db->join( $this->db->dbprefix('catalogo_compania_celular'). ' AS c', 'b.compania_celular = c.id');
+            $this->db->join( $this->db->dbprefix('usuarios').' AS b', 'a.uid_usuario = b.uid_usuario', 'LEFT');
+            $this->db->join( $this->db->dbprefix('catalogo_compania_celular'). ' AS c', 'b.compania_celular = c.id', 'LEFT');
+            $this->db->join( $this->db->dbprefix('categorias'). ' AS d', 'a.uid_categoria = d.uid_categoria', 'LEFT');
+            $this->db->join( $this->db->dbprefix('verticales'). ' AS e', 'a.uid_vertical = e.uid_vertical', 'LEFT');
             $this->db->where( 'a.uid_trabajo = ', $uid_job );
             $this->db->where( 'a.activo = ', 1 );
             $data = $this->db->get();
@@ -488,9 +490,7 @@ class Cms_model extends CI_Model {
         }
 
         public function add_trabajo( $trabajo ){
-
             $timestamp = time();
-
             $this->db->set( 'uid_trabajo', "UUID()", FALSE );
             $this->db->set( 'uid_usuario', $trabajo['usuario'] );
             $this->db->set( 'uid_categoria', $trabajo['categoria'] );

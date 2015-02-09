@@ -1069,6 +1069,11 @@ class Cms extends CI_Controller {
         $this->pdf->Output( $reporte->slug_nombre_reporte . '.pdf', 'I');
 	}
 
+	/**
+	 * Método para detectar el encoding del feed
+	 * @param  string $url Url del Feed
+	 * @return
+	 */
 	private function detect_encoding( $url ){
 		$url = file_get_contents_curl( $url );
 		$dom = new DOMDocument();
@@ -1077,8 +1082,11 @@ class Cms extends CI_Controller {
 		return $dom->xmlEncoding;
 	}
 
-
-
+	/**
+	 * Método para detectar los headers / namespaces del feed
+	 * @param  string $url Url del feed
+	 * @return
+	 */
 	private function detect_headers( $url ){
 		$headers = '';
 		$url = file_get_contents_curl( $url );	

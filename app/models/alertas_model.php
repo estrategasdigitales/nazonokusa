@@ -16,7 +16,7 @@ class Alertas_model extends Nucleo {
      * [alerta description]
      * @return [type] [description]
      */
-    public function alerta($uid_trabajo, $id_mensaje = ''){
+    public function alerta( $uid_trabajo, $id_mensaje = ''){
         // Cadena para hacer las peticiones al servicio de SMS
         // Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes    
         // 202 - Respuesta success
@@ -37,11 +37,18 @@ class Alertas_model extends Nucleo {
         if ( $user != FALSE ){
             if ( isset( $id_mensaje ) && ! empty( $id_mensaje ) ) $message = $id_mensaje;
             else $message = "Falla al identificar error especifico";
+
+            $body['uid_job']        = $uid_trabajo;
+            $body['name_job']       = $user->name_job;
+            $body['name_category']  = $user->name_category;
+            $body['name_vertical']  = $user->name_vertical;
+            $body['time']           = date('Y/m/d H:i:s', time() );
+            $body['message']        = $message;
             
             $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
             $this->email->to( $user->email );
-            $this->email->subject( 'Error en trabajo de Middleware' );
-            $this->email->message( 'Ha ocurrido el siguiente error: ' . $message );
+            $this->email->subject( 'Error en trabajo ' . $uid_trabajo );
+            $this->email->message( $this->load->view('cms/mail/codigo_recuperacion'), $body, TRUE );
             $this->email->send();
 
             //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
