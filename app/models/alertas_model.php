@@ -10,7 +10,6 @@ class Alertas_model extends Nucleo {
     function __construct() {
         parent::__construct();
         $this->load->model( 'cronlog_model', 'cronlog' );
-        $this->load->library( 'email' );
     }
 
     /**
@@ -49,7 +48,7 @@ class Alertas_model extends Nucleo {
             $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
             $this->email->to( $user->email );
             $this->email->subject( 'Error en trabajo ' . $body['name_job'] );
-            $this->email->message( $this->load->view('cms/mail/codigo_recuperacion'), $body );
+            $this->email->message( $this->load->view('cms/mail/codigo_recuperacion'), $body, FALSE );
             $this->email->send();
 
             //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
