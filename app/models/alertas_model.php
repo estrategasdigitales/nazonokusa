@@ -17,6 +17,13 @@ class Alertas_model extends Nucleo {
      * @return [type] [description]
      */
     public function alerta( $uid_trabajo, $id_mensaje = ''){
+        $mail['protocol'] = 'mail';
+        $mail['wordwrap'] = FALSE;
+        $mail['mailtype'] = 'html';
+        $mail['charset'] = 'utf-8';
+        $mail['crlf'] = "\r\n";
+        $mail['newline'] = "\r\n";
+        $this->load->library( 'email', $mail );
         // Cadena para hacer las peticiones al servicio de SMS
         // Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes    
         // 202 - Respuesta success
