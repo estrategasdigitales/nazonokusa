@@ -560,6 +560,8 @@ class Nucleo extends CI_Controller {
             $CI->load->model( 'alertas_model', 'alertas' );
             if ( $CI->alertas->alerta( $id_job ) == TRUE )
                 echo json_encode( [ 'response' => 'success'] );
+            else
+                echo json_encode( [ 'response' => 'error'] );
         } else {
             echo json_encode( [ 'response' => 'error'] );
         }
