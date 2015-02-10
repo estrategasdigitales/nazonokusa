@@ -553,4 +553,15 @@ class Nucleo extends CI_Controller {
             return TRUE;
         }
     }
+
+    public function test_alert( $id_job = '' ){
+        if ( isset( $id_job ) && ! empty( $id_job ) ){
+            $CI =& get_instance();
+            $CI->load->model( 'alertas_model', 'alertas' );
+            $CI->alertas->alerta( $id_job );
+            echo json_encode( [ 'response' => 'success'] );
+        } else {
+            echo json_encode( [ 'response' => 'error'] );
+        }
+    }
 }
