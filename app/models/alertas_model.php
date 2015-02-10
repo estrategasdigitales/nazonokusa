@@ -60,6 +60,7 @@ class Alertas_model extends Nucleo {
             else
                 return TRUE;
         }
+        return FALSE;
     }
 }
 
