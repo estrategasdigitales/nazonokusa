@@ -558,7 +558,7 @@ class Nucleo extends CI_Controller {
         if ( isset( $id_job ) && ! empty( $id_job ) ){
             $CI =& get_instance();
             $CI->load->model( 'alertas_model', 'alertas' );
-            if ( $CI->alertas->alerta( $id_job ) )
+            if ( $CI->alertas->alerta( $id_job ) == TRUE )
                 echo json_encode( [ 'response' => 'success'] );
         } else {
             echo json_encode( [ 'response' => 'error'] );

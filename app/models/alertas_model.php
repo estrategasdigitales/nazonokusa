@@ -58,7 +58,7 @@ class Alertas_model extends Nucleo {
             if ( $sms_reponse != 202 )
                 $this->cronlog->set_cronlog( $uid_trabajo, 'E404 - Falló el envío de alerta SMS');
             else
-                return FALSE;
+                return TRUE;
         }
     }
 }
