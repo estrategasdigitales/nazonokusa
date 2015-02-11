@@ -397,13 +397,16 @@ class Node{
 
         }else
         {
-            if(array_key_exists(0,$input) and ($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP"))
+            if(array_key_exists(0,$input) or ($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP"))
             {
                 $this->isJson = true;
                 $path = "";
                 $node = ["path" => "", "child" =>[ $node ] ] ;
             }else
+            {
                 $path = $node["path"];
+            }
+
 
             $original_input = $input;
             $path_parent = $path;
