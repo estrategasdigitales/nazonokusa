@@ -824,7 +824,7 @@ class Node{
                         if($nKey=="media:group")
                             $writer->startElement($nKey);
 
-                    }else if(is_numeric($parentKey))
+                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
                         $writer->startElement($nKey);
                     elseif($parentKey == "resources")
                     {
@@ -872,7 +872,7 @@ class Node{
                         if($nKey=="media:group")
                             $writer->startElement($nKey);
 
-                    }elseif(is_numeric($parentKey))
+                    }elseif(is_numeric($parentKey) and !is_numeric($nKey))
                         $writer->startElement($nKey);
                     elseif($parentKey == "channel")
                     {
@@ -1253,17 +1253,18 @@ class Node{
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
         $template = $this->_getTEMPLATE();
         $key = key($template);
+        /*
         if ( ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ) or $this->originFormat == "XML" ){
             $xml = new ArrayToXML();
 
-            if($this->originFormat == "XML")
+            if($this->originFormat == "XML" and isset($nodes["resources"]))
                 $nodes = $nodes["resources"][0];
 
             $output =  $xml->buildXML($nodes,$key);
 
             file_put_contents($file, $output);
         } else {
-
+*/
             $writer = new XMLWriter();
             $writer->openURI( $file );
             //$writer->startDocument( '1.0', "UTF-8" );
@@ -1278,6 +1279,12 @@ class Node{
             } elseif(!$paths["path"]) {
                 $writer->startElement("resources");
 
+                $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
+                $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
+                $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
+                $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
+                $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
+                $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
@@ -1290,7 +1297,7 @@ class Node{
 
             $writer->endDocument();
             $writer->flush();
-        }
+        //}
     }
 
     public function _toJSON( &$nodes ){
@@ -1318,7 +1325,7 @@ class Node{
 
                         } else if( isset( $recordnValue["@value"] ) ){
                             $nValue[$keynValue] = $recordnValue["@value"];
-                            unset($nValue[$keynValue]["@value"]);
+                            //unset($nValue[$keynValue]["@value"]);
 
                         }elseif($recordnValue["@attributes"])
                         {
