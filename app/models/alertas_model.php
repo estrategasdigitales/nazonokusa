@@ -17,7 +17,7 @@ class Alertas_model extends Nucleo {
      * @return [type] [description]
      */
     public function alerta( $uid_trabajo, $id_mensaje = ''){
-        $mail['protocol'] = 'mail';
+        $mail['protocol'] = 'sendmail';
         $mail['wordwrap'] = FALSE;
         $mail['mailtype'] = 'html';
         $mail['charset'] = 'utf-8';
@@ -45,17 +45,17 @@ class Alertas_model extends Nucleo {
             if ( isset( $id_mensaje ) && ! empty( $id_mensaje ) ) $message = $id_mensaje;
             else $message = "Falla al identificar error especifico";
 
-            $body['uid_job']        = $uid_trabajo;
-            $body['name_job']       = $user->name_job;
-            $body['name_category']  = $user->name_category;
-            $body['name_vertical']  = $user->name_vertical;
-            $body['time']           = date('Y/m/d H:i:s', time() );
-            $body['message']        = $message;
+            $data['uid_job']        = $uid_trabajo;
+            $data['name_job']       = $user->name_job;
+            $data['name_category']  = $user->name_category;
+            $data['name_vertical']  = $user->name_vertical;
+            $data['time']           = date('Y/m/d H:i:s', time() );
+            $data['message']        = $message;
             
             $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
             $this->email->to( $user->email );
-            $this->email->subject( 'Error en trabajo ' . $body['name_job'] );
-            $this->email->message( $this->load->view('cms/mail/error_message'), $body, FALSE );
+            $this->email->subject( 'Error en trabajo ' . $data['name_job'] );
+            $this->email->message( $this->load->view('cms/mail/error_message'), $data, FALSE );
             $this->email->send();
 
             //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
