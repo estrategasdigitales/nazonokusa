@@ -45,22 +45,23 @@ class Alertas_model extends Nucleo {
             $data['time']           = date('Y/m/d H:i:s', time() );
             $data['message']        = $message;
 
-            print_r( $data );die;
             
             $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
             $this->email->to( $user->email );
             $this->email->subject( 'Error en trabajo ' . $data['name_job'] );
-            $this->email->message( $this->load->view('cms/mail/error_message'), $data, TRUE );
-            $this->email->send();
-
-            //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
-            $url_sms = $url_sms_service . '?msisdn=52' . $user->celular . '&carrier=' . $user->carrier . '&user=' . $user_sms . '&password=' . $pass_sms . '&message=' . rawurlencode( $message );
-            
-            $sms_reponse = $this->curl->simple_get( $url_sms );
-            if ( $sms_reponse != 202 )
-                $this->cronlog->set_cronlog( $uid_trabajo, 'E404 - Falló el envío de alerta SMS');
-            else
-                return TRUE;
+            $this->email->message( $this->load->view('cms/mail/error_message', $data, TRUE ) );
+            if ( $this->email->send() ){
+                //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
+                $url_sms = $url_sms_service . '?msisdn=52' . $user->celular . '&carrier=' . $user->carrier . '&user=' . $user_sms . '&password=' . $pass_sms . '&message=' . rawurlencode( $message );
+                
+                $sms_reponse = $this->curl->simple_get( $url_sms );
+                if ( $sms_reponse != 202 )
+                    $this->cronlog->set_cronlog( $uid_trabajo, 'E404 - Falló el envío de alerta SMS');
+                else
+                    return TRUE;
+            } else {
+                return FALSE;
+            }
         }
         return FALSE;
     }
