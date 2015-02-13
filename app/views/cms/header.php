@@ -22,6 +22,28 @@
     ?>
     <script>window.jQuery || document.write('<script src="<?=$jquery?> "><\/script>')</script>
 
+	<script>
+		$(document).ready(function(){
+			$.ajaxSetup({
+				timeout:20000,
+				error: function(jqXHR, exception) {
+		            if (jqXHR.status == 404) {
+		                alert('El recurso solicitado no está disponible');
+		            } else if (jqXHR.status == 500) {
+		                alert('Ocurrió un error interno, favor de contactar al administrador.');
+		            } else if (exception === 'parsererror') {
+		                alert('El formato solicitado no es valido.');
+		            } else if (exception === 'timeout') {
+		                alert('El tiempo de espera ha excedido el limite permitido, favor de revisar su conexión a internet.');
+		            } else if (exception === 'abort') {
+		                alert('Petición cancelada.');
+		            } else {
+		                alert('Error en la conexión, favor de revisar su equipo.');
+		            }
+		        }
+			});
+		});
+	</script>
 
 	<!--<script type="text/javascript" src="<?php echo base_url(); ?>js/no.conflict.js"></script>-->
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery-ui-1.10.4.custom.js"></script>
@@ -35,6 +57,7 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>js/serialize.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/tree-f2.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
+
 </head>
 <body>
 	<div class="container-fluid">
