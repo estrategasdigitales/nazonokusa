@@ -43,9 +43,9 @@ class Netstorage_model extends Nucleo {
 		if ( file_get_contents_curl( $trabajo->url_origen ) ) {
 			/*$CI =& get_instance();
 			$CI->load->model('cronlog_model', 'cronlog');*/
-			if (!file_exists('./outputs/' . $trabajo->slug_categoria)) {
+			if (! file_exists('./outputs/' . $trabajo->slug_categoria)) {
 				if (!mkdir('./outputs/' . $trabajo->slug_categoria)) {
-					$CI->cronlog->set_cronlog($trabajo->uid_trabajo, 'error', 'E01 - No se ha podido crear el directorio de la categoría');
+					$CI->cronlog->set_cronlog( $trabajo->uid_trabajo, 'error', 'E01 - No se ha podido crear el directorio de la categoría' );
 					$this->alertas->alerta($trabajo->uid_trabajo, 'E01');
 				}
 			}

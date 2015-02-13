@@ -17,16 +17,16 @@
 			<td style="padding-bottom:10px">ID: <b><?php echo $uid_job; ?></b></td>
 		</tr>
 		<tr>
-			<td style="padding-bottom:10px">Categoría: <?php echo $name_category; ?></td>
+			<td style="padding-bottom:10px">Categoría: <b><?php echo $name_category; ?></b></td>
 		</tr>
 		<tr>
-			<td style="padding-bottom:10px">Vertcical: <?php echo $name_vertical; ?></td>
+			<td style="padding-bottom:10px">Vertical: <b><?php echo $name_vertical; ?></b></td>
 		</tr>
 		<tr>
 			<td style="padding-bottom:10px;">Fecha y Hora: <b><?php echo $time; ?></b></td>
 		</tr>
 		<tr>
-			<td style="padding-bottom:10px">Detalles: <?php echo $message; ?></td>
+			<td style="padding-bottom:10px">Detalles: <b><?php echo $message; ?></b></td>
 		</tr>
 		<tr>
 			<td style="padding-bottom:10px">Para más detalles, da clic <a href="<?php echo base_url(); ?>/trabajos.html">aquí</a></td>
