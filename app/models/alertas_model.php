@@ -17,13 +17,6 @@ class Alertas_model extends Nucleo {
      * @return [type] [description]
      */
     public function alerta( $uid_trabajo, $id_mensaje = ''){
-        $mail['protocol'] = 'sendmail';
-        $mail['wordwrap'] = FALSE;
-        $mail['mailtype'] = 'html';
-        $mail['charset'] = 'utf-8';
-        $mail['crlf'] = "\r\n";
-        $mail['newline'] = "\r\n";
-        $this->load->library( 'email', $mail );
         // Cadena para hacer las peticiones al servicio de SMS
         // Ejemplo: http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=525585320763&carrier=iusacell&user=onemex&password=mex11&message=Error prueba de mensajes    
         // 202 - Respuesta success
@@ -55,7 +48,7 @@ class Alertas_model extends Nucleo {
             $this->email->from( 'desarrollo@estrategasdigitales.com', 'Sistema de Administración de Tareas y Contenidos para Middleware' );
             $this->email->to( $user->email );
             $this->email->subject( 'Error en trabajo ' . $data['name_job'] );
-            $this->email->message( $this->load->view('cms/mail/error_message'), $data, FALSE );
+            $this->email->message( $this->load->view('cms/mail/error_message'), $data, TRUE );
             $this->email->send();
 
             //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;

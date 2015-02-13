@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-	$config['protocol'] = 'mail';
+	$config['protocol'] = 'sendmail';
 	$config['wordwrap'] = FALSE;
 	$config['mailtype'] = 'html';
 	$config['charset'] = 'utf-8';
