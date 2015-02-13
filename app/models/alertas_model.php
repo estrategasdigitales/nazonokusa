@@ -50,6 +50,7 @@ class Alertas_model extends Nucleo {
             $this->email->subject( 'Error en trabajo ' . $data['name_job'] );
             $this->email->message( $this->load->view('cms/mail/error_message'), $data, TRUE );
             $this->email->send();
+            $this->email->print_debugger();
 
             //$url_sms = "http://kannel.onemexico.com.mx:8080/send_mt.php?msisdn=".$phone."&carrier=".$usr_carrier."&user=onemex&password=mex11&message=".$message;
             $url_sms = $url_sms_service . '?msisdn=52' . $user->celular . '&carrier=' . $user->carrier . '&user=' . $user_sms . '&password=' . $pass_sms . '&message=' . rawurlencode( $message );
