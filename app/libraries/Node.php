@@ -35,7 +35,7 @@ class Node{
 
     var $isJson         = false;
 
-
+    var $isHeader       = false;
     var $originFormat   = "JSON";
 
     function __construct($arguments = [])
@@ -826,9 +826,9 @@ class Node{
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                         $writer->startElement($nKey);
-                    elseif($parentKey == "resources")
+                    elseif($parentKey == "resources" and !$this->isHeader)
                     {
-
+                        $this->isHeader = true;
                         $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                         $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
 
@@ -874,9 +874,9 @@ class Node{
 
                     }elseif(is_numeric($parentKey) and !is_numeric($nKey))
                         $writer->startElement($nKey);
-                    elseif($parentKey == "channel")
+                    elseif($parentKey == "channel" and !$this->isHeader)
                     {
-
+                        $this->isHeader = true;
                         $writer->startElement("channel");
                         $this->_headerRSS($writer,$attributes);
 
@@ -1231,7 +1231,7 @@ class Node{
             $this->_toXML( $writer, $nodes, "channel", 'rss' );
         } elseif(!$paths["path"]) {
             $writer->startElement("channel");
-
+            $this->isHeader = true;
             $this->_headerRSS($writer,$attributes);
             $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
 
@@ -1277,6 +1277,7 @@ class Node{
             if ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ){
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
             } elseif(!$paths["path"]) {
+                $this->isHeader = true;
                 $writer->startElement("resources");
 
                 $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
