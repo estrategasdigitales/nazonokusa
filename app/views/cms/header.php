@@ -25,7 +25,7 @@
 	<script>
 		$(document).ready(function(){
 			$.ajaxSetup({
-				timeout:20000,
+				timeout:25000,
 				error: function(jqXHR, exception) {
 		            if (jqXHR.status == 404) {
 		                alert('El recurso solicitado no está disponible');
@@ -35,6 +35,7 @@
 		                alert('El formato solicitado no es valido.');
 		            } else if (exception === 'timeout') {
 		                alert('El tiempo de espera ha excedido el limite permitido, favor de revisar su conexión a internet.');
+		                location.reload();
 		            } else if (exception === 'abort') {
 		                alert('Petición cancelada.');
 		            } else {
