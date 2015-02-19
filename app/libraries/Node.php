@@ -272,7 +272,7 @@ class Node{
         $tree = [];
 
 
-        if($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP")
+        if(($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP") and $paths[0]["path"] !="")
         {
             $new_childs[0] = $paths[0];
 
