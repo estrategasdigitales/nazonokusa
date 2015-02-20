@@ -24,6 +24,8 @@
 
 	<script>
 		$(document).ready(function(){
+			Ext.override(Ext.data.proxy.Ajax, { timeout: 120000 });
+			
 			$.ajaxSetup({
 				timeout:25000,
 				error: function(jqXHR, exception) {
