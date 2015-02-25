@@ -1228,7 +1228,7 @@ class Node{
 
     public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
 
-
+        $this->isHeader = false;
         $template = $this->_getTEMPLATE();
         $key = key($template);
 
@@ -1265,7 +1265,11 @@ class Node{
             $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
 
         }else
+        {
+
             $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
+        }
+
 
 
 
@@ -1281,6 +1285,7 @@ class Node{
 
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
         $template = $this->_getTEMPLATE();
+        $this->isHeader = false;
         $key = key($template);
         /*
         if ( ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ) or $this->originFormat == "XML" ){
