@@ -425,7 +425,7 @@ class Node{
 
         }else
         {
-            if(array_key_exists(0,$input) or ($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP"))
+            if(array_key_exists(0,$input))
             {
                 $this->isJson = true;
                 $path = "";
