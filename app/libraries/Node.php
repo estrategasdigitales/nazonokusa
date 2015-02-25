@@ -287,6 +287,21 @@ class Node{
                 return  ["path" => "", "child" => $new_childs ];
             else
                 return $new_childs[0];
+
+        }else if(count($paths) > 2 and $paths[0]["path"] !="" ){
+
+            $new_childs = array();
+
+            foreach($paths as $path)
+            {
+                $regex = "/".$path["path"]."/";
+                if(!$this->in_array_match($regex, $paths))
+                    $new_childs[] = $path;
+
+            }
+
+            return $new_childs;
+
         }else
             return $paths[0];
 
@@ -308,6 +323,19 @@ class Node{
         return $this->TEMPLATE_PATHS;
     }
 
+
+
+    private function in_array_match($regex, $array) {
+        if (!is_array($array))
+            trigger_error('Argument 2 must be array');
+        foreach ($array as $v => $record) {
+            $match = preg_match($regex, $record["path"]);
+            if ($match === 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private function _extractData($record,$string) {
 
@@ -401,7 +429,8 @@ class Node{
             {
                 $this->isJson = true;
                 $path = "";
-                $node = ["path" => "", "child" =>[ $node ] ] ;
+                if($node[0]["path"] != "")
+                    $node = ["path" => "", "child" => $node  ] ;
             }else
             {
                 $path = $node["path"];
