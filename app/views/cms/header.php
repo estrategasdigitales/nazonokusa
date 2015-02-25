@@ -27,7 +27,7 @@
 			Ext.override(Ext.data.proxy.Ajax, { timeout: 120000 });
 			
 			$.ajaxSetup({
-				timeout:25000,
+				timeout:95000,
 				error: function(jqXHR, exception) {
 		            if (jqXHR.status == 404) {
 		                alert('El recurso solicitado no está disponible');
