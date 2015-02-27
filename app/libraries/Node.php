@@ -858,10 +858,14 @@ class Node{
                     elseif($parentKey == "resources" and !$this->isHeader)
                     {
                         $this->isHeader = true;
-                        /*
+
                         $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                         $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
-                        */
+                        $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
+                        $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
+                        $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
+                        $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
+                        
                         $writer->startElement("resources");
                         $nKey = "resource";
 
@@ -1314,14 +1318,14 @@ class Node{
             } elseif(!$paths["path"]) {
                 $this->isHeader = true;
                 $writer->startElement("resources");
-/*
+
                 $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                 $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
                 $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
                 $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
                 $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
                 $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
-*/
+
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
             }else
