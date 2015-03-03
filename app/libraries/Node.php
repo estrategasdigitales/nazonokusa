@@ -429,7 +429,7 @@ class Node{
             {
                 $this->isJson = true;
                 $path = "";
-                if($node[0]["path"] != "")
+                if( isset($node[0]) and isset($node[0]["path"]) and $node[0]["path"] != "")
                     $node = ["path" => "", "child" => $node  ] ;
             }else
             {
@@ -850,7 +850,7 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if($nKey=="media:group")
+                        //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
@@ -865,7 +865,7 @@ class Node{
                         $writer->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
                         $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
                         $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
-                        
+
                         $writer->startElement("resources");
                         $nKey = "resource";
 
@@ -887,7 +887,7 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if($nKey=="media:group")
+                        //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->endElement();
 
                     }elseif(!is_numeric($nKey))
@@ -903,7 +903,7 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if($nKey=="media:group")
+                        //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->startElement($nKey);
 
                     }elseif(is_numeric($parentKey) and !is_numeric($nKey))
@@ -933,7 +933,7 @@ class Node{
 
                    if($this->startsWith("media:",$nKey))
                     {
-                        if($nKey=="media:group")
+                        //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->endElement();
 
                     }elseif(!is_numeric($nKey))
@@ -1386,7 +1386,7 @@ class Node{
 
 
 
-            } elseif ( is_array( $nValue ) and count( $nValue ) > 0 ){
+            }elseif ( is_array( $nValue ) and count( $nValue ) > 0 ){
                 $this->_toJSON( $nValue );
             }
         }
