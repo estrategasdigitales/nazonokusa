@@ -771,7 +771,7 @@ class Node{
                     $writer->writeCData($nValue);
 
 
-                if(substr_count($nKey,"@") == 0)
+                if(substr_count($nKey,"@") == 0 )
                     $writer->endElement();
 
             }elseif(array_key_exists("@cdata", $nValue))
@@ -854,7 +854,13 @@ class Node{
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
-                        $writer->startElement($nKey);
+                    {
+
+                        if(count($nValue,1) > 2)
+                            $writer->startElement($nKey);
+
+
+                    }
                     elseif($parentKey == "resources" and !$this->isHeader)
                     {
                         $this->isHeader = true;
@@ -890,7 +896,12 @@ class Node{
                         //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->endElement();
 
-                    }elseif(!is_numeric($nKey))
+                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
+                    {
+                        if(count($nValue,1) > 2)
+                            $writer->endElement();
+                    }
+                    elseif(!is_numeric($nKey) )
                         $writer->endElement();
                     elseif(count($nodes) > 1)
                         $writer->endElement();
@@ -906,8 +917,14 @@ class Node{
                         //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->startElement($nKey);
 
-                    }elseif(is_numeric($parentKey) and !is_numeric($nKey))
-                        $writer->startElement($nKey);
+                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
+                    {
+
+                        if(count($nValue,1) > 2)
+                            $writer->startElement($nKey);
+
+
+                    }
                     elseif($parentKey == "channel" and !$this->isHeader)
                     {
                         $this->isHeader = true;
@@ -936,7 +953,12 @@ class Node{
                         //if($nKey=="media:group" or $nKey=="media:content")
                             $writer->endElement();
 
-                    }elseif(!is_numeric($nKey))
+                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
+                    {
+                        if(count($nValue,1) > 2)
+                            $writer->endElement();
+                    }
+                   elseif(!is_numeric($nKey))
                         $writer->endElement();
                     elseif(count($nodes) > 1)
                         $writer->endElement();
