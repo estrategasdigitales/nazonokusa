@@ -292,10 +292,17 @@ class Node{
 
             $new_childs = array();
 
+            $new_paths = $paths;
+
+            $new_childs[] = $paths[0];
+            array_shift($paths);
+
             foreach($paths as $path)
             {
-                $regex = "/".$path["path"]."/";
-                if(!$this->in_array_match($regex, $paths))
+                array_shift($new_paths);
+
+                $regex = $path["path"];
+                if(!$this->in_array_match($regex, $new_paths) )
                     $new_childs[] = $path;
 
             }
@@ -329,9 +336,10 @@ class Node{
         if (!is_array($array))
             trigger_error('Argument 2 must be array');
         foreach ($array as $v => $record) {
-            $match = preg_match($regex, $record["path"]);
-            if ($match === 1) {
+            //$match = preg_match($regex, $record["path"]);
+            if (substr_count($record["path"],$regex) > 0) {
                 return true;
+                break;
             }
         }
         return false;
@@ -433,7 +441,11 @@ class Node{
                     $node = ["path" => "", "child" => $node  ] ;
             }else
             {
-                $path = $node["path"];
+                 if(array_key_exists(0,$node))
+                     $node = $node[0];
+
+
+                    $path = $node["path"];
             }
 
 
@@ -476,7 +488,7 @@ class Node{
                 $new_path = preg_replace("/\[\*\]$/","",$path);
                 $inputs = $store->get($input, "$.".$new_path);
 
-                if(count($inputs) == 0)
+                if(count($inputs) == 0 or isset($inputs[0][0]) )
                     $inputs = $store->get($input, "$.".$path);
             }
 
@@ -528,7 +540,7 @@ class Node{
         $tpath = count($paths)-1;
 
 
-        if($id_path < $tpath)
+        if($id_path <= $tpath)
             $id_path++;
 
 
