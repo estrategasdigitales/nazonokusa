@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c5633d23-06b7-483a-8519-f29e2826c252" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/libraries/Node.php" afterPath="$PROJECT_DIR$/app/libraries/Node.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/netstorage_model.php" afterPath="$PROJECT_DIR$/app/models/netstorage_model.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/nucleo.php" afterPath="$PROJECT_DIR$/app/controllers/nucleo.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="middle.iws" />
@@ -26,28 +28,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Node.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Node.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/libraries/Node.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="542" column="22" selection-start="13197" selection-end="13197" vertical-scroll-proportion="0.33333334" vertical-offset="8022" max-vertical-offset="21795">
+            <state line="715" column="0" selection-start="19482" selection-end="19482" vertical-scroll-proportion="-1.92" vertical-offset="10629" max-vertical-offset="21840">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="JsonStore.php" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/libraries/jsonpath/JsonStore.php">
+      <file leaf-file-name="routes.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/config/routes.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="0" selection-start="455" selection-end="455" vertical-scroll-proportion="-5.0416665" vertical-offset="239" max-vertical-offset="1710">
+            <state line="75" column="66" selection-start="3257" selection-end="3257" vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="1365">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="nucleo.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/controllers/nucleo.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="346" column="59" selection-start="12919" selection-end="12939" vertical-scroll-proportion="0.0" vertical-offset="5190" max-vertical-offset="8430">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cms_model.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/cms_model.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="297" column="44" selection-start="13031" selection-end="13051" vertical-scroll-proportion="0.0" vertical-offset="4455" max-vertical-offset="10695">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="netstorage_model.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/models/netstorage_model.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="148" column="49" selection-start="6744" selection-end="6762" vertical-scroll-proportion="0.0" vertical-offset="2220" max-vertical-offset="3945">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="528" selection-end="528" vertical-scroll-proportion="-4.8333335" vertical-offset="139" max-vertical-offset="3120">
+            <state line="17" column="0" selection-start="528" selection-end="528" vertical-scroll-proportion="0.33333334" vertical-offset="150" max-vertical-offset="3120">
               <folding />
             </state>
           </provider>
@@ -78,14 +107,14 @@
         <option value="$PROJECT_DIR$/app/libraries/Xml_2_array.php" />
         <option value="$PROJECT_DIR$/app/helpers/convert_formats_helper.php" />
         <option value="$PROJECT_DIR$/app/controllers/cms.php" />
-        <option value="$PROJECT_DIR$/app/models/cms_model.php" />
         <option value="$PROJECT_DIR$/app/views/cms/header.php" />
         <option value="$PROJECT_DIR$/app/libraries/ArrayToXML.php" />
-        <option value="$PROJECT_DIR$/app/controllers/nucleo.php" />
         <option value="$PROJECT_DIR$/app/views/cms/admin/trabajos.php" />
-        <option value="$PROJECT_DIR$/app/models/netstorage_model.php" />
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/core/core/Common.php" />
+        <option value="$PROJECT_DIR$/app/controllers/nucleo.php" />
+        <option value="$PROJECT_DIR$/app/models/cms_model.php" />
+        <option value="$PROJECT_DIR$/app/models/netstorage_model.php" />
         <option value="$PROJECT_DIR$/app/libraries/Node.php" />
       </list>
     </option>
@@ -160,7 +189,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -174,11 +203,29 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="core" />
+              <option name="myItemId" value="models" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="middle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="middle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -250,7 +297,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="724" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -258,7 +305,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2109375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36641222" sideWeight="0.83203125" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.41984734" sideWeight="0.83203125" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46717557" sideWeight="0.16796875" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -350,122 +397,82 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>486</line>
-          <option name="timeStamp" value="791" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>860</line>
+          <line>862</line>
           <option name="timeStamp" value="850" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>758</line>
-          <option name="timeStamp" value="852" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>902</line>
-          <option name="timeStamp" value="853" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>899</line>
-          <option name="timeStamp" value="854" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>894</line>
-          <option name="timeStamp" value="855" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>871</line>
+          <line>873</line>
           <option name="timeStamp" value="856" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1430</line>
-          <option name="timeStamp" value="858" />
+          <line>959</line>
+          <option name="timeStamp" value="881" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1096</line>
-          <option name="timeStamp" value="859" />
+          <line>960</line>
+          <option name="timeStamp" value="882" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1100</line>
-          <option name="timeStamp" value="860" />
+          <line>1103</line>
+          <option name="timeStamp" value="886" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1112</line>
-          <option name="timeStamp" value="861" />
+          <line>1110</line>
+          <option name="timeStamp" value="887" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1102</line>
-          <option name="timeStamp" value="862" />
+          <line>1105</line>
+          <option name="timeStamp" value="888" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>1109</line>
-          <option name="timeStamp" value="863" />
+          <line>1113</line>
+          <option name="timeStamp" value="889" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>423</line>
-          <option name="timeStamp" value="873" />
+          <line>724</line>
+          <option name="timeStamp" value="900" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>447</line>
-          <option name="timeStamp" value="874" />
+          <line>1273</line>
+          <option name="timeStamp" value="915" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>444</line>
-          <option name="timeStamp" value="875" />
+          <line>1303</line>
+          <option name="timeStamp" value="916" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>488</line>
-          <option name="timeStamp" value="876" />
+          <line>673</line>
+          <option name="timeStamp" value="917" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>490</line>
-          <option name="timeStamp" value="877" />
+          <line>715</line>
+          <option name="timeStamp" value="918" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>491</line>
-          <option name="timeStamp" value="878" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>498</line>
-          <option name="timeStamp" value="879" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/app/libraries/Node.php</url>
-          <line>539</line>
-          <option name="timeStamp" value="880" />
+          <line>710</line>
+          <option name="timeStamp" value="919" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="881" />
+      <option name="time" value="920" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/core/Exceptions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="185" column="0" selection-start="4586" selection-end="4586" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2970" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/errors/error_php.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="0" selection-start="282" selection-end="282" vertical-scroll-proportion="0.0" vertical-offset="135" max-vertical-offset="225" />
@@ -587,21 +594,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/middle.sublime-workspace">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1382" column="21" selection-start="36341" selection-end="36341" vertical-scroll-proportion="59.39828" vertical-offset="0" max-vertical-offset="21390" />
-      </provider>
       <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
         <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1382" column="21" selection-start="36341" selection-end="36341" vertical-scroll-proportion="59.39828" vertical-offset="0" max-vertical-offset="21390" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/middle.sublime-project">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="389" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/config/routes.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="71" selection-start="3524" selection-end="3531" vertical-scroll-proportion="1.0895523" vertical-offset="835" max-vertical-offset="1365" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/tvsa/Tree.js">
@@ -666,24 +668,9 @@
         <state line="42" column="281" selection-start="2117" selection-end="2117" vertical-scroll-proportion="-0.98136646" vertical-offset="946" max-vertical-offset="2070" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/nucleo.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="366" column="5" selection-start="14050" selection-end="14050" vertical-scroll-proportion="0.0" vertical-offset="5160" max-vertical-offset="8610" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/cms_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="29" selection-start="1124" selection-end="1127" vertical-scroll-proportion="0.0" vertical-offset="532" max-vertical-offset="10695" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/models/trabajos_model.php">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="1" selection-start="234" selection-end="234" vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="255" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/netstorage_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="47" selection-start="3440" selection-end="3454" vertical-scroll-proportion="0.0" vertical-offset="1275" max-vertical-offset="3930" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/libraries/jsonpath/JsonPath.php">
@@ -703,28 +690,57 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/helpers/file_get_contents_curl_helper.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="172" selection-end="172" vertical-scroll-proportion="-2.625" vertical-offset="12" max-vertical-offset="375">
+        <state line="5" column="0" selection-start="172" selection-end="172" vertical-scroll-proportion="-2.625" vertical-offset="12" max-vertical-offset="375" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/core/Router.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-6.5571427" vertical-offset="2295" max-vertical-offset="7905" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/config/routes.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="75" column="66" selection-start="3257" selection-end="3257" vertical-scroll-proportion="0.0" vertical-offset="1125" max-vertical-offset="1365">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/libraries/jsonpath/JsonStore.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="24" column="0" selection-start="455" selection-end="455" vertical-scroll-proportion="-5.0416665" vertical-offset="239" max-vertical-offset="1710">
+        <state line="24" column="0" selection-start="455" selection-end="455" vertical-scroll-proportion="0.33333334" vertical-offset="239" max-vertical-offset="1710" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/netstorage_model.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="49" selection-start="6744" selection-end="6762" vertical-scroll-proportion="0.0" vertical-offset="2220" max-vertical-offset="3945">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.php">
+    <entry file="file://$PROJECT_DIR$/app/models/cms_model.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="528" selection-end="528" vertical-scroll-proportion="-4.8333335" vertical-offset="139" max-vertical-offset="3120">
+        <state line="297" column="44" selection-start="13031" selection-end="13051" vertical-scroll-proportion="0.0" vertical-offset="4455" max-vertical-offset="10695">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/nucleo.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="346" column="59" selection-start="12919" selection-end="12939" vertical-scroll-proportion="0.0" vertical-offset="5190" max-vertical-offset="8430">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/libraries/Node.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="542" column="22" selection-start="13197" selection-end="13197" vertical-scroll-proportion="0.33333334" vertical-offset="8022" max-vertical-offset="21795">
+        <state line="715" column="0" selection-start="19482" selection-end="19482" vertical-scroll-proportion="-1.92" vertical-offset="10629" max-vertical-offset="21840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="0" selection-start="528" selection-end="528" vertical-scroll-proportion="0.33333334" vertical-offset="150" max-vertical-offset="3120">
           <folding />
         </state>
       </provider>

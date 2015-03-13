@@ -30,8 +30,9 @@ class Node{
 
     var $cdata          = false;
 
-    var $isStandardOutPut = true;
-    var $isJsonVariable   = false;
+    var $ESPECIFICO     = false;
+    var $ESPECIFICO_FORMATO = "";
+    var $isJsonVariable = false;
 
     var $isJson         = false;
 
@@ -646,10 +647,11 @@ class Node{
                         //resource[*].attributes[*].pubDate
                         $eval_template = explode(".",$child["value"]);
 
+/*
                         if(count($eval_template) > 1)
                             array_shift($eval_template);
+*/
 
-                        //resource[0].attributes[*].pubDate
 
 
                         $first_node_iteration = explode("[*]",$eval_template[0]);
@@ -675,7 +677,7 @@ class Node{
                             $eval_template_record = explode("[*]",$eval_template_record);
 
 
-                            if($this->isJsonVariable)
+                            if($this->isJsonVariable or $this->ESPECIFICO_FORMATO == "RSS" or $this->ESPECIFICO_FORMATO == "JSON" )
                             {
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
@@ -955,7 +957,7 @@ class Node{
                         if(count($nodes) > 1)
                             $writer->startElement($parentKey);
                     }
-                    else
+                    elseif(!is_numeric($nKey))
                         $writer->startElement($nKey);
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
@@ -1265,7 +1267,15 @@ class Node{
 
 
 
-    public function toRSS( $nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+    public function toRSS( $_nodes= [],$file = 'rss.xml', $encoding = 'UTF-8', $attributes = [] ){
+
+
+
+        if($this->ESPECIFICO)
+            $nodes["item"] = $_nodes;
+        else
+            $nodes = $_nodes;
+
 
         $this->isHeader = false;
         $template = $this->_getTEMPLATE();
@@ -1294,32 +1304,25 @@ class Node{
         $paths = $this->_getPaths();
 
 
-
         if ( ( $key == "channel" or $key == "item" ) and  $this->isTemplate ){
             $this->_toXML( $writer, $nodes, "channel", 'rss' );
         } elseif(!$paths["path"]) {
-            $writer->startElement("channel");
             $this->isHeader = true;
+            $writer->startElement("channel");
             $this->_headerRSS($writer,$attributes);
-            $this->_toXML( $writer, $nodes, 'item','rss',$attributes);
+
+            $this->_toXML( $writer, $nodes, 'item', 'rss' );
 
         }else
-        {
-
-            $this->_toXML( $writer, $nodes, 'channel','rss',$attributes);
-        }
-
-
+            $this->_toXML( $writer, $nodes, 'channel', 'rss' );
 
 
         if(!$paths["path"])
             $writer->endElement();
 
-
-        $writer->endElement(); // rss
-
         $writer->endDocument();
         $writer->flush();
+
     }
 
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){

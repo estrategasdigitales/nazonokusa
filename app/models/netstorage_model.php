@@ -145,7 +145,8 @@ class Netstorage_model extends Nucleo {
 							]
 						);
 						$node->originFormat = $trabajo->formato_origen;
-						$node->isStandardOutPut = TRUE;
+						$node->ESPECIFICO = TRUE;
+                        $node->ESPECIFICO_FORMATO = $trabajo->formato_salida;
 
 						$encoding = base64_decode($trabajo->encoding);
 						$header = base64_decode($trabajo->cabeceras);

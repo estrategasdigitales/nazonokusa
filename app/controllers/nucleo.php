@@ -243,7 +243,8 @@ class Nucleo extends CI_Controller {
                 $dom->preserveWhiteSpace = TRUE;
                 if ( $dom->documentElement->nodeName == 'rss' ){
                     $rss = $this->xml_2_array->createArray( $url );
-                    $feed[] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
+                    $feed[]["item"] = $this->mapAttributes( json_encode( $rss['rss']['channel']['item'] ) );
+
                     $contents = $this->array_unique_multidimensional( $feed );
                     $indices = create_indexes_specific( $contents );
                 } else {
