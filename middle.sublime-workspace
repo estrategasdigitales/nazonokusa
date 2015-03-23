@@ -4,20 +4,96 @@
 		"selected_items":
 		[
 			[
-				"is_nu",
-				"is_numeric"
+				"doc",
+				"document"
 			],
 			[
-				"isn",
-				"is_null"
+				"php",
+				"php"
 			],
 			[
-				"arrey",
-				"array_key_exists"
+				"exp",
+				"explode"
 			],
 			[
-				"el",
-				"else"
+				"is",
+				"isset"
+			],
+			[
+				"func",
+				"function_exists"
+			],
+			[
+				"uns",
+				"unset"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"json",
+				"json_decode"
+			],
+			[
+				"t",
+				"title"
+			],
+			[
+				"per",
+				"perm"
+			],
+			[
+				"std",
+				"stats_dens_logistic"
+			],
+			[
+				"str_p",
+				"str_plural"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"array_",
+				"array_push"
+			],
+			[
+				"exi",
+				"exists"
+			],
+			[
+				"u",
+				"ucfirst"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"parm",
+				"params"
+			],
+			[
+				"array_p",
+				"array_pop"
+			],
+			[
+				"inpu",
+				"inputs"
+			],
+			[
+				"strto",
+				"strtolower"
+			],
+			[
+				"strepl",
+				"str_replace"
+			],
+			[
+				"st",
+				"stylus"
 			],
 			[
 				"h",
@@ -42,10 +118,6 @@
 			[
 				"array_m",
 				"array_merge"
-			],
-			[
-				"array_p",
-				"array_push"
 			],
 			[
 				"is_a",
@@ -95,128 +167,16 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "app/libraries/Node.php",
-			"settings":
-			{
-				"buffer_size": 33927,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "index.php",
-			"settings":
-			{
-				"buffer_size": 6343,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/libraries/Cron_manager.php",
-			"settings":
-			{
-				"buffer_size": 4596,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/controllers/nucleo.php",
-			"settings":
-			{
-				"buffer_size": 22057,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/models/netstorage_model.php",
-			"settings":
-			{
-				"buffer_size": 8408,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/models/cms_model.php",
-			"settings":
-			{
-				"buffer_size": 33415,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"contents": "$_COOKIE = array[2]\n	$_COOKIE['sessions_app'] = (string) 2OpHimncajMrNk00UAjkHhV6086n5bTbhcRZtYsIA02AINGwJVl2V5WtgBib1AQmqCZIfB9lmVt56vGFoZ40UWdb6we0KCNlWg28zOINFU1Vze2oEfTvu9ZWIa1F1AY4cZFDVVPb+PdXpgUzIMhI3SBwDzLX0exFsDRmFDiueY49qFCf+N5hJGMiG6j6FYjfF52CvSZIeibSCIa/Hsoo27lE/msfcE0e6i9wu3ullHubn5F9QfahcG7o+a2VuXuHpUkAVaYXQzR9ZVFxkBe6nT6iPuXVScMA0R707YlUgKA6lkv6hG2qzHQq7T7OzMOScO+Tn7izzQjfp7JQ+sCEaICXJWH+5JK2leqsGgAihJ0mx5QSrrqz8vY5p1wNFz6fDnuk+DuPMqcfLb0ZQBjy4JNwt++HSZHdfINVmcUYzFg=\n	$_COOKIE['XDEBUG_SESSION'] = (string) sublime.xdebug\n$_ENV = array[0]\n$_FILES = array[0]\n$_GET = array[1]\n	$_GET['status'] = (string) 1\n$_POST = array[0]\n$_REQUEST = array[1]\n	$_REQUEST['status'] = (string) 1\n$_SERVER = array[95]\n	$_SERVER['REDIRECT_HTTP_HOST'] = (string) middleware.televisa.dev\n	$_SERVER['REDIRECT_HTTP_CONNECTION'] = (string) keep-alive\n	$_SERVER['REDIRECT_HTTP_CACHE_CONTROL'] = (string) max-age=0\n	$_SERVER['REDIRECT_HTTP_ACCEPT'] = (string) text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n	$_SERVER['REDIRECT_HTTP_USER_AGENT'] = (string) Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36\n	$_SERVER['REDIRECT_HTTP_ACCEPT_ENCODING'] = (string) gzip,deflate,sdch\n	$_SERVER['REDIRECT_HTTP_ACCEPT_LANGUAGE'] = (string) es-ES,es;q=0.8,en;q=0.6\n	$_SERVER['REDIRECT_HTTP_COOKIE'] = (string) sessions_app=2OpHimncajMrNk00UAjkHhV6086n5bTbhcRZtYsIA02AINGwJVl2V5WtgBib1AQmqCZIfB9lmVt56vGFoZ40UWdb6we0KCNlWg28zOINFU1Vze2oEfTvu9ZWIa1F1AY4cZFDVVPb%2BPdXpgUzIMhI3SBwDzLX0exFsDRmFDiueY49qFCf%2BN5hJGMiG6j6FYjfF52CvSZIeibSCIa%2FHsoo27lE%2FmsfcE0e6i9wu3ullHubn5F9QfahcG7o%2Ba2VuXuHpUkAVaYXQzR9ZVFxkBe6nT6iPuXVScMA0R707YlUgKA6lkv6hG2qzHQq7T7OzMOScO%2BTn7izzQjfp7JQ%2BsCEaICXJWH%2B5JK2leqsGgAihJ0mx5QSrrqz8vY5p1wNFz6fDnuk%2BDuPMqcfLb0ZQBjy4JNwt%2B%2BHSZHdfINVmcUYzFg%3D; XDEBUG_SESSION=sublime.xdebug\n	$_SERVER['REDIRECT_PATH'] = (string) /usr/bin:/bin:/usr/sbin:/sbin\n	$_SERVER['REDIRECT_SERVER_SIGNATURE'] = <string>\n	$_SERVER['REDIRECT_SERVER_SOFTWARE'] = (string) Apache/2.2.26 (Unix) PHP/5.5.6 DAV/2 mod_ssl/2.2.26 OpenSSL/0.9.8y mod_perl/2.0.7 Perl/v5.16.2\n	$_SERVER['REDIRECT_SERVER_NAME'] = (string) middleware.televisa.dev\n	$_SERVER['REDIRECT_SERVER_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_SERVER_PORT'] = (string) 80\n	$_SERVER['REDIRECT_REMOTE_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_DOCUMENT_ROOT'] = (string) /Users/miguelmartinez/Sites/middle\n	$_SERVER['REDIRECT_SERVER_ADMIN'] = (string) you@example.com\n	$_SERVER['REDIRECT_SCRIPT_FILENAME'] = <string>\n	$_SERVER['REDIRECT_REMOTE_PORT'] = (string) 52925\n	$_SERVER['REDIRECT_GEOIP_ADDR'] = (string) 127.0.0.1\n	$_SERVER['REDIRECT_REDIRECT_STATUS'] = (string) 200\n	$_SERVER['REDIRECT_HASH_ENCRYPT'] = (string) lZuBmQwPCcbhDZOG4hcNptY3BumAB93K32sc\n	$_SERVER['REDIRECT_BASE_URL'] = (string) http://middleware.televisa.dev\n	$_SERVER['REDIRECT_DB_HOST'] = (string) localhost\n	$_SERVER['REDIRECT_DB_USER'] = (string) root\n	$_SERVER['REDIRECT_DB_PASS'] = (string) nowsee123\n	$_SERVER['REDIRECT_DB_NAME'] = (string) dev_tvsa_middleware\n	$_SERVER['REDIRECT_DB_PREFIX'] = (string) mw_\n	$_SERVER['REDIRECT_STORAGE_URL'] = (string) storagemas.upload.akamai.com\n	$_SERVER['REDIRECT_STORAGE_USER'] = (string) marcoplata\n	$_SERVER['REDIRECT_STORAGE_PASS'] = (string) y4mi.99yS\n	$_SERVER['REDIRECT_CRON_HOST'] = (string) 107.170.237.101\n	...\n$input = array[1]\n	$input['category'] = array[1]\n		...\n$output = <uninitialized>\n$paths = array[3]\n	$paths[0] = array[3]\n		...\n	$paths[1] = array[3]\n		...\n	$paths[2] = array[3]\n		...\n$return = array[0]\n$template = array[1]\n	$template[0] = array[1]\n		...\n$this = Node[8]\n	$this->curl = Alertas_model[27]\n		...\n	$this->URL_INPUT = (string) http://middleware.televisa.dev/nucleo/feed_service_content?url=aHR0cDovL2ZlZWRzLmVzbWFzLmNvbS9kYXRhLWZlZWRzLWVzbWFzL2lwYWQvZGVwb3J0ZXMuanM%3D\n	$this->INPUT = array[1]\n		...\n	$this->URL_TEMPLATE = (string) http://middleware.televisa.dev/nucleo/feed_service?url=aHR0cDovL2ZlZWRzLmVzbWFzLmNvbS9kYXRhLWZlZWRzLWVzbWFzL2lwYWQvZGVwb3J0ZXMuanM%3D\n	$this->TEMPLATE = array[1]\n		...\n	$this->ORIGIN_PATHS = array[6]\n		...\n	$this->PATHS = array[3]\n		...\n	$this->STORE = JsonStore[1]\n		...\n",
-			"settings":
-			{
-				"buffer_size": 4206,
-				"line_ending": "Unix",
-				"name": "Xdebug Context",
-				"read_only": true,
-				"scratch": true
-			}
-		},
-		{
-			"contents": "",
-			"settings":
-			{
-				"buffer_size": 0,
-				"line_ending": "Unix",
-				"name": "Xdebug Watch",
-				"read_only": true,
-				"scratch": true
-			}
-		},
-		{
-			"contents": "[0] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->getData:542\n[1] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->getDataFixed:555\n[2] file:///Users/miguelmartinez/Sites/middle/app/libraries/Node.php.Node->toJSON:614\n[3] file:///Users/miguelmartinez/Sites/middle/app/models/netstorage_model.php.Netstorage_model->harddisk_write:99\n[4] file:///Users/miguelmartinez/Sites/middle/app/controllers/nucleo.php.Nucleo->job_process:302\n[5] file:///Users/miguelmartinez/Sites/middle/core/core/CodeIgniter.php.call_user_func_array:359\n[6] file:///Users/miguelmartinez/Sites/middle/core/core/CodeIgniter.php.require_once:359\n[7] file:///Users/miguelmartinez/Sites/middle/index.php.{main}:200\n",
-			"settings":
-			{
-				"buffer_size": 729,
-				"line_ending": "Unix",
-				"name": "Xdebug Stack",
-				"read_only": true,
-				"scratch": true
-			}
-		},
-		{
-			"contents": "=> /Users/miguelmartinez/Sites/middle/app/libraries/Node.php\n	|+| 542\n",
-			"settings":
-			{
-				"buffer_size": 70,
-				"line_ending": "Unix",
-				"name": "Xdebug Breakpoint",
-				"read_only": true,
-				"scratch": true
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
 	{
-		"height": 281.0,
+		"height": 167.0,
 		"selected_items":
 		[
 			[
-				"stop",
-				"Xdebug: Stop Debugging (Close Windows)"
-			],
-			[
-				"start",
-				"Xdebug: Start Debugging (Launch Browser)"
-			],
-			[
-				"xde",
-				"Xdebug: Start Debugging (Launch Browser)"
-			],
-			[
-				"strat",
-				"Xdebug: Restart Session"
-			],
-			[
-				"star",
-				"Xdebug: Start Debugging"
-			],
-			[
-				"install",
-				"Package Control: Install Package"
+				"migra",
+				"Laravel Generate: Migration"
 			],
 			[
 				"view",
@@ -291,17 +251,11 @@
 				"Set Syntax: PHP"
 			]
 		],
-		"width": 418.0
+		"width": 440.0
 	},
 	"console":
 	{
-		"height": 174.0,
-		"history":
-		[
-			"import urllib3,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib3.install_opener( urllib3.build_opener( urllib3.ProxyHandler()) ); by = urllib3.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')",
-			"import urllib3,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')",
-			"import urllib2,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) if not os.path.exists(ipp) else None; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler()) ); by = urllib2.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); open( os.path.join( ipp, pf), 'wb' ).write(by) if dh == h else None; print('Error validating download (got %s instead of %s), please try manual install' % (dh, h) if dh != h else 'Please restart Sublime Text to finish installation')"
-		]
+		"height": 174.0
 	},
 	"distraction_free":
 	{
@@ -312,152 +266,170 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/Users/miguelmartinez/Sites/middle"
-	],
 	"file_history":
 	[
-		"/Users/miguelmartinez/Sites/middle/index.php",
-		"/Users/miguelmartinez/Library/Application Support/Sublime Text 3/Packages/User/Xdebug.sublime-settings",
-		"/Users/miguelmartinez/Library/Application Support/Sublime Text 3/Packages/Xdebug Client/Xdebug.sublime-settings",
-		"/Users/miguelmartinez/Sites/middle/middle.sublime-project",
-		"/Users/miguelmartinez/Sites/middle/middle.sublime-workspace",
-		"/Users/miguelmartinez/Sites/middle/js/init-tree-alquimia.js",
-		"/Users/miguelmartinez/Sites/middle/core/libraries/Xmlrpc.php",
-		"/Users/miguelmartinez/Sites/middle/jx/tests/jxrun_demo.sh",
-		"/Users/miguelmartinez/Sites/middle/outputs/deportes/videos/6409d497-5fbe-11e4-9ac8-2b4dfe156ee9/json-json.js",
-		"/Users/miguelmartinez/Sites/middle/core/helpers/download_helper.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_listar_categorias_asignadas.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_listar_verticales_asignadas.php",
-		"/Users/miguelmartinez/Sites/middle/app/helpers/magpierss/scripts/smarty_plugin/modifier.rss_date_parse.php",
-		"/Users/miguelmartinez/Sites/middle/app/config/doctypes.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_vertical.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_usuario.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_trabajo.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_estructura.php",
-		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/modal_eliminar_categoria.php",
-		"/Users/miguelmartinez/Sites/middle/js/base64_encode.js",
-		"/Users/miguelmartinez/Sites/middle/app/models/crontabs_model.php",
-		"/Users/miguelmartinez/Sites/middle/app/models/cronlog_model.php",
-		"/Users/miguelmartinez/Sites/middle/jx/tests/test_findnode.php",
-		"/Users/miguelmartinez/Sites/middle/app/models/netstorage_model.php",
-		"/Users/miguelmartinez/Sites/middle/jx/findnode.php",
-		"/Users/miguelmartinez/Sites/middle/.htaccess",
-		"/Users/miguelmartinez/Sites/middle/app/controllers/nucleo.php",
-		"/Users/miguelmartinez/Sites/middle/app/libraries/Node.php",
-		"/Users/miguelmartinez/Sites/middle/app/controllers/cms.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/database.php",
-		"/Users/miguelmartinez/Sites/middle/app/config/database.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/local/database.php",
-		"/Users/miguelmartinez/Sites/jsbin/jsbin/views/index.html",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/codding2.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/dashboard.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/layout.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/layout.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/home/home.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/home.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/dashboard.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/variables.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/maximebf/debugbar/demo/dump_assets.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/database/seeds/DatabaseSeeder.php",
-		"/Users/miguelmartinez/Sites/cube/stylus/dashboard/dashboard.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/HomeController.php",
-		"/Users/miguelmartinez/Sites/cube/stylus/home/home.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOne.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Relations/HasOneOrMany.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/Exception/TooManyRequestsHttpException.php",
-		"/Users/miguelmartinez/Sites/cube/humans.txt",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/codding.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/lesson/lesson.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/skeleton.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/video.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/lesson/lesson.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/routes.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/profile.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/home/schedules.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/user/login.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/user/forgot.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/UsersController.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/CourseController.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/schedules.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/phpseclib/phpseclib/travis/setup-composer.sh",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/server.php",
-		"/Users/miguelmartinez/Sites/cube/stylus/home/schedules.styl",
-		"/Users/miguelmartinez/Sites/cube/schedules.html",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/laravel/framework/src/Illuminate/Queue/SqsQueue.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/svg/square.svg",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/profile.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/main-nav.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/course.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/course.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/toolbar-guest.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/toolbar-auth.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/courses/courses.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/toolbar.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/stylus.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/dashboard/courses/courses.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/filters.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/auth.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/bootstrap/start.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/paypal.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/config/local/app.php",
-		"/Users/miguelmartinez/Sites/cube/lesson.html",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/join.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/home/support.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/footer.blade.php",
-		"/Users/miguelmartinez/Sites/cube/course.html",
-		"/Users/miguelmartinez/Sites/cube/support.html",
-		"/Users/miguelmartinez/Sites/cube/dashboard.html",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/credit-card.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/choose-store.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/bank-transfer.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/success.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/payment/payment.blade.php",
-		"/Users/miguelmartinez/Sites/cube/payment.html",
-		"/Users/miguelmartinez/Sites/cube/payment-paypal.html",
-		"/Users/miguelmartinez/Sites/cube/stylus/dashboard/courses/courses.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/vendor/predis/predis/lib/Predis/Option/ClientOptions.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/composer.json",
-		"/Users/miguelmartinez/Sites/cube/courses.html",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/bootstrap/forms.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/Joomla/Categories.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/mobile.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/topbar.styl",
-		"/Users/miguelmartinez/Sites/groundbreaker/stylus/home.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/node_modules/browserify/node_modules/insert-module-globals/node_modules/JSONStream/test/multiple_objects.js",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/dashboard/mycourses.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/layout.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/course/lessons.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/toolbar.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/lesson.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/joomla/Items.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/courses.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/models/joomla/Categories.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/tabcodding.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/validator/validate.js",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/controllers/CoddingController.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/tmp/tmp.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/base64_encode.js",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/php.sh",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views/gui/codding.blade.php",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/course.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/httpdocs/js/esprima.js",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/soon.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/colors.styl",
-		"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus/carrousel.styl"
+		"/Users/miguelmartinez/Sites/fundacion/admin.fundacion.com/app/views/crud/index.blade.php",
+		"/Users/miguelmartinez/Sites/shippingapp/www/shipment_request_detail.html",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/bootstrap/jumbotron.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/www/dashboard.html",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/shipment_request_detail.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/www/js/bootstrap-confirmation.min.js",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/bootstrap/theme.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/font.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/www/shipment_request.html",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/stylus.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/shipment_request.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/settings.styl",
+		"/Users/miguelmartinez/Sites/shippingapp/stylus/style.styl",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Crud.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/index.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/show.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/helpers.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Causas.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/home/login.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/.env",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/commands/CrudMake.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/database/seeds/UsersTableSeeder.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/create.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/crud/index.styl",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/controllers/CrudController.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/stylus.styl",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/vendor/nesbot/carbon/tests/SubTest.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/controllers/CrudController.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/commands/CrudMigration.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Eventos.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Noticias.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/commands/CrudCreate.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/skeleton.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/dashboard/toolbar.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/lang/en/crud.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/lang/es/crud.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/layout-form.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/toolbar-form.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/toolbar.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/tabs/tab.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Donadores.php",
+		"/Users/miguelmartinez/Sites/acorrerle/acorrerle.sublime-workspace",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/Contacto.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/ApoyamosCausa.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/models/UneteNosotros.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/settings.styl",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/bootstrap/tables.styl",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/httpdocs/js/bootstrap-datetimepicker.js",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/crud/tabs/tabs.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/vendor/braunson/laravel-html5-forms/src/Braunson/LaravelHTML5Forms/FormBuilder.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/vendor/braunson/laravel-html5-forms/src/Braunson/LaravelHTML5Forms/FormBuilder.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/commands/crud/template/model.crud",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/datetimepicker/bootstrap-datetimepicker.css",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus/datepicker/datepicker.css",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/vendor/xethron/migrations-generator/src/Xethron/MigrationsGenerator/Generators/FieldGenerator.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/database/migrations/2015_03_04_185733_create_roles_table.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/config/app.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/.env.example",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/.env.local",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/admin.jsl.sublime-workspace",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/dashboard/leftbar.blade.php",
+		"/Users/miguelmartinez/Sites/admin.fundacion.com/app/views/dashboard/dashboard.blade.php",
+		"/Users/miguelmartinez/Downloads/edigitales_tvsa_middleware.sql",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/WebTracking.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Agency.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/BladingNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Categories.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Certificate.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CertificateNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Charges.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/ChargesNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbCms.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbCrmtickets.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbInvitation.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbMailroom.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbMessages.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbMessagesComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbMessagesTo.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfClaims.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfClaimsComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfEbay.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfEbayComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfEbayItems.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfLost.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfLostComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfLostItems.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfPayments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfPickup.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfPickupComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfPrizes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfProbshp.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfProbshpComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfShop.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfShopComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfShpinst.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbNfShpinstComments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbPoints.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmbPrizes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmsImages.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmsPages.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CmsVideos.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Customer.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/CustomerNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Delivery.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/DeliveryReports.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/DeliveryReportsNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Handover.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/HandoverItems.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Insurance.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InsuranceNotes.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Invoice.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwb.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwbchg.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceChgs.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Logfile.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Manifest.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/MasterAwb.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Mawb.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/NspPages.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/NspPagesGroup.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Payments.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PaymentsInf.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Pcustomer.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PcustomerNotepad.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PermissionsRoles.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PermissionsUsers.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Plogfile.php",
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Pmessages.php"
 	],
 	"find":
 	{
-		"height": 43.0
+		"height": 41.0
 	},
 	"find_in_files":
 	{
-		"height": 102.0,
+		"height": 0.0,
 		"where_history":
 		[
-			"/Users/miguelmartinez/Sites/middle",
-			"/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/app/views",
+			"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus",
+			"/Users/miguelmartinez/Sites/admin.fundacion.com/vendor",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/vendor",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/vendor",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/",
+			"<open files>",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models",
+			"<open files>",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/controllers",
+			"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/views",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/vendor/zizaco/entrust/src",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/stylus",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/models",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/vendor",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/vendor",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/vendor/",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/",
+			"/Users/miguelmartinez/Sites/tokotu/dev.admin.jsl.com/app/views",
 			"<open folders>,/Users/miguelmartinez/Sites/tokotu/dev.cube.academy/stylus",
 			"<open folders>",
 			"<open folders>,/Users/miguelmartinez/Sites/kmg",
@@ -469,142 +441,148 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"folders",
-			"settings",
-			"folders",
-			"__do",
-			"    	print_r($paths);\n    	print_r($input);\n    	print_r($template);\n    	die;",
-			"harddisk_write",
-			"mapAttributes",
-			"feed_service",
-			"_getTEMPLATE",
-			"get_trabajo_ejecutar",
-			"Node",
-			"active_job",
-			"get_trabajo_ejecutar",
-			"cron",
-			"job_process",
-			"outp",
-			"out",
-			".html",
-			"BASEPATH",
-			"error",
-			"FrameGuard",
-			"27ae60",
-			"03ae60",
-			"quiz",
-			"login/email",
-			"85b200",
-			"nav-tabs",
-			"access",
-			"describe-box",
-			"col-md-3",
-			"col-md-10",
-			"sm",
-			"green-text",
-			"payment",
-			"mentor",
-			"session",
-			"detectEnvironment",
-			"$env",
-			"detectEnvironment",
-			"resumen",
-			"support",
-			".form-group",
-			"countries",
-			"categor",
-			"categori",
-			"foreach",
-			"coun",
-			"courses",
-			"countri",
-			"countr",
-			"count",
-			"editor",
-			"content",
-			"parent",
-			"lang",
-			"cod",
-			"countdown",
-			"7fa200",
-			"column",
-			"button",
-			"lesson",
-			"a2a2a2",
-			"GRAY_CARROUSEL",
-			"f0f0f0",
-			"background",
-			"dashboard",
-			"7cab00",
-			"698c00",
-			"999999",
-			"555555",
-			"panel3",
-			"panel2",
-			"hljs",
-			"698c00",
-			"2f5228",
-			"5EC23D",
-			"green",
-			"6b9300",
-			"dash",
-			"account",
-			".sigin-button",
-			"span",
-			"BORDER",
-			"DARK_GRAY",
-			"#A6A6A6",
-			"878787",
-			"#878787",
-			"aliases",
-			"Artdarek\\OAuth\\Facade\\OAuth",
-			"bbbbbb",
-			"00468c",
-			"4",
-			"85b200",
-			"F0F0F0",
-			"2",
-			"333333",
-			"787878",
-			"background-gray-letter",
-			"countries",
-			"countr",
-			"Phone1",
-			"siginUser",
-			"required",
-			"validation",
-			"FACEBOOK",
-			"font-family",
-			"div.switch input:last-of-type:checked",
-			"div.switch input:first-of-type:checked",
-			"div.switch input:first-of-type:checked + label",
-			"div.switch input:first-of-type:checked",
-			"div.switch input:last-of-type",
-			"4288CA",
-			"#F5F5F5",
-			"F5F5F5",
-			"#F5F5F5",
-			"box-shadow",
-			"#F3FAF6",
-			"switch",
-			"positive",
-			"positive-color",
-			"icon-woman",
-			"center",
-			"subtitle",
-			"icon-woman",
-			"first-level",
-			".accordion dd > a",
-			".accordion dt > a, .accordion dd > a",
-			"h1"
+			"<?",
+			"./print_label.html",
+			"type",
+			"#0080420914 to Fort Smith",
+			"href",
+			"https://github.com/Tavicu/bootstrap-confirmatio",
+			"jumbotron",
+			".jumbotron",
+			"text-center",
+			"scan",
+			"$schema",
+			"getCRUD",
+			"fk_column",
+			"$nodes",
+			"fk_column",
+			"is_foreign_key",
+			"getRelations",
+			"getFKRelations",
+			"<?",
+			"getFKRelations",
+			"getColumns",
+			"getColumnsByView",
+			"$column->name",
+			"getFileNameInputs",
+			"file",
+			"getFileNameInputs",
+			"app_path",
+			"getP",
+			"allowed",
+			"inputFiles",
+			"image",
+			"save",
+			"mimes:",
+			"store",
+			"die",
+			"gallery",
+			"inputFiles",
+			"inputTypes",
+			"getValidations",
+			"inputs",
+			"image",
+			".table-responsive",
+			"default_tabs",
+			"setNumberMinMax",
+			"number",
+			"setNumberMinMax",
+			"Max",
+			"max",
+			"setNumberMinMax",
+			"number",
+			"min",
+			"->paginate();",
+			"pagin",
+			"hide",
+			"right",
+			".bootstrap-datetimepicker-widget.dropdown-menu",
+			"bootstrap-datetimepicker-widget",
+			"hide",
+			"close",
+			"labels",
+			"lables",
+			"btn_in_show",
+			"getItem",
+			"getFields",
+			"repository",
+			"generate",
+			"datePrefix",
+			"Please create a function",
+			"getCRUD",
+			"getColumns",
+			"listTableColumns",
+			"getRelationsByTables",
+			"listTables",
+			"guarded",
+			"getCRUD",
+			"getCrud",
+			"permission",
+			"CrudController",
+			"routeNeedsPermission",
+			"class",
+			"getPathView",
+			"get_c",
+			"model",
+			"addResourceTab",
+			"addResource",
+			"die",
+			"tab",
+			"resourceDefaults",
+			"printItem",
+			"show",
+			"routeNeedsPermission",
+			"getClassName",
+			"crud",
+			"currentRouteName",
+			"crud",
+			"Agency",
+			"agency",
+			"app_path",
+			"printItem",
+			"gett",
+			"$tab",
+			"show",
+			"GETTA",
+			"getCRUD",
+			"show",
+			"getCrud",
+			"getTabs",
+			"tabs",
+			"tab",
+			"show",
+			"beforeShowTabs",
+			"(object)",
+			">beforeShow((object)",
+			"beforeStore",
+			"getCrud",
+			"btn",
+			"printItem",
+			"fk_column",
+			"addResource",
+			"resourceDefaults",
+			"getResourceMethods",
+			"resourceDefaults",
+			"verbs",
+			"resourceDefaults",
+			"resource",
+			"destroy",
+			"Route",
+			"resource"
 		],
 		"highlight": false,
 		"in_selection": false,
 		"preserve_case": false,
-		"regex": true,
+		"regex": false,
 		"replace_history":
 		[
-			"	print_r($paths);\n    	print_r($input);\n    	print_r($template);\n    	die;\n",
+			"",
+			"validations",
+			"getValidations",
+			"\"validations\"",
+			"\"inputs\"",
+			"input",
+			"inputs",
 			"",
 			"description",
 			"./noticia",
@@ -628,322 +606,19 @@
 		"show_context": true,
 		"use_buffer2": true,
 		"whole_word": false,
-		"wrap": true
+		"wrap": false
 	},
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "app/libraries/Node.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 33927,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 14387.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "index.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 6343,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 336.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "app/libraries/Cron_manager.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4596,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 3.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 7,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "app/controllers/nucleo.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 22057,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 1.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 8,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "app/models/netstorage_model.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 8408,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 208.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 9,
-					"type": "text"
-				},
-				{
-					"buffer": 5,
-					"file": "app/models/cms_model.php",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 33415,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 30.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
-				{
-					"buffer": 6,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4206,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								3476,
-								3476
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
-							"translate_tabs_to_spaces": false,
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 235.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 7,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 0,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				}
-			]
-		},
-		{
-			"selected": 0,
-			"sheets":
-			[
-				{
-					"buffer": 8,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 729,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								729,
-								729
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				},
-				{
-					"buffer": 9,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 70,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								70,
-								70
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Xdebug Client/Xdebug.tmLanguage",
-							"word_wrap": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 35.0
+		"height": 33.0
 	},
 	"input":
 	{
@@ -956,52 +631,33 @@
 			[
 				0,
 				0,
-				2,
+				1,
 				1
-			],
-			[
-				0,
-				1,
-				1,
-				2
-			],
-			[
-				1,
-				1,
-				2,
-				2
 			]
 		],
 		"cols":
 		[
 			0.0,
-			0.5,
 			1.0
 		],
 		"rows":
 		[
 			0.0,
-			0.510834609044,
 			1.0
 		]
 	},
 	"menu_visible": true,
 	"output.exec":
 	{
-		"height": 32.0
+		"height": 37.0
 	},
 	"output.find_results":
 	{
 		"height": 0.0
 	},
-	"output.xdebug":
-	{
-		"height": 37.0
-	},
-	"project": "middle.sublime-project",
 	"replace":
 	{
-		"height": 66.0
+		"height": 62.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1010,16 +666,104 @@
 		"selected_items":
 		[
 			[
+				"ship",
+				"www/shipment_request.html"
+			],
+			[
+				"font",
+				"stylus/font.styl"
+			],
+			[
+				"sett",
+				"stylus/settings.styl"
+			],
+			[
+				"crudm",
+				"app/commands/CrudMake.php"
+			],
+			[
+				"crud",
+				"app/models/Crud.php"
+			],
+			[
+				"sty",
+				"stylus/stylus.styl"
+			],
+			[
+				"crudco",
+				"app/controllers/CrudController.php"
+			],
+			[
+				"filt",
+				"app/filters.php"
+			],
+			[
+				"ro",
+				"app/routes.php"
+			],
+			[
+				"crudcon",
+				"app/controllers/CrudController.php"
+			],
+			[
+				"crudc",
+				"app/controllers/CrudController.php"
+			],
+			[
+				"user",
+				"app/models/Users.php"
+			],
+			[
+				"basemo",
+				"app/models/BaseModel.php"
+			],
+			[
+				"print",
+				"app/controllers/PrintController.php"
+			],
+			[
+				"pcu",
+				"app/models/Pcustomer.php"
+			],
+			[
+				"paym",
+				"app/models/Payments.php"
+			],
+			[
+				"pcus",
+				"app/database/migrations/2015_01_27_163304_create_pcustomer_table.php"
+			],
+			[
+				"pcustomerta",
+				"app/database/seeds/PcustomerTableSeeder.php"
+			],
+			[
+				"pcustomer_",
+				"app/database/migrations/2015_01_27_163304_create_pcustomer_table.php"
+			],
+			[
+				"users",
+				"app/controllers/UsersController.php"
+			],
+			[
+				"carlo",
+				"app/models/Carlos.php"
+			],
+			[
+				"load",
+				"app/controllers/LoadController.php"
+			],
+			[
+				"image",
+				"stylus/bootstrap/mixins/image.styl"
+			],
+			[
+				"imag",
+				"stylus/_bootstrap/mixins/image.styl"
+			],
+			[
 				"das",
-				"dev.cube.academy/app/views/dashboard/dashboard.blade.php"
-			],
-			[
-				"home",
-				"dev.cube.academy/app/views/home/home.blade.php"
-			],
-			[
-				"sch",
-				"dev.cube.academy/app/views/home/schedules.blade.php"
+				"cube/stylus/dashboard/dashboard.styl"
 			],
 			[
 				"dash",
@@ -1052,10 +796,6 @@
 			[
 				"pro",
 				"stylus/profile.styl"
-			],
-			[
-				"sty",
-				"stylus/stylus.styl"
 			],
 			[
 				"accou",
@@ -1110,10 +850,6 @@
 				"stylus/colors.styl"
 			],
 			[
-				"user",
-				"app/controllers/UsersController.php"
-			],
-			[
 				"login",
 				"app/views/users/login.blade.php"
 			],
@@ -1152,10 +888,6 @@
 			[
 				"fou",
 				"stylus/foundation.styl"
-			],
-			[
-				"font",
-				"stylus/fonts.styl"
 			],
 			[
 				"menu",
@@ -1266,6 +998,10 @@
 				"application/views/slide-menu.php"
 			],
 			[
+				"home",
+				"application/views/home/home.php"
+			],
+			[
 				"",
 				"humans.txt"
 			],
@@ -1324,98 +1060,10 @@
 		],
 		"width": 380.0
 	},
-	"select_symbol":
-	{
-		"height": 0.0,
-		"selected_items":
-		[
-		],
-		"width": 0.0
-	},
-	"selected_group": 1,
-	"settings":
-	{
-		"xdebug":
-		{
-			"hide_conflict": false,
-			"restore_index":
-			{
-				"15":
-				{
-					"group": 0,
-					"index": 0
-				},
-				"17":
-				{
-					"group": 0,
-					"index": 2
-				},
-				"18":
-				{
-					"group": 0,
-					"index": 3
-				},
-				"19":
-				{
-					"group": 0,
-					"index": 4
-				},
-				"20":
-				{
-					"group": 0,
-					"index": 5
-				},
-				"98":
-				{
-					"group": 0,
-					"index": 1
-				}
-			},
-			"restore_layout":
-			{
-				"cells":
-				[
-					[
-						0,
-						0,
-						2,
-						1
-					],
-					[
-						0,
-						1,
-						1,
-						2
-					],
-					[
-						1,
-						1,
-						2,
-						2
-					]
-				],
-				"cols":
-				[
-					0.0,
-					0.5,
-					1.0
-				],
-				"rows":
-				[
-					0.0,
-					0.60152349486,
-					1.0
-				]
-			}
-		}
-	},
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 214.0,
-	"status_bar_visible": true,
-	"template_settings":
-	{
-	}
+	"side_bar_width": 386.0,
+	"status_bar_visible": true
 }

@@ -2,14 +2,7 @@
 	"folders":
 	[
 		{
-			"follow_symlinks": true,
-			"path": "."
+			"path": "/Users/miguelmartinez/Sites/middle"
 		}
-	],
-    "settings":
-    {
-        "xdebug": {
-            "url": "http://middleware.televisa.dev",
-        }
-    }
+	]
 }

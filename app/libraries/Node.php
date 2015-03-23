@@ -647,6 +647,16 @@ class Node{
                         //resource[*].attributes[*].pubDate
                         $eval_template = explode(".",$child["value"]);
 
+
+
+                        $key_eval_template = array_search('item[*]', $eval_template);
+
+                        if(is_numeric($key_eval_template))
+                        {
+                            unset($eval_template[$key_eval_template]);
+                            $eval_template = array_values($eval_template);
+                        }
+
 /*
                         if(count($eval_template) > 1)
                             array_shift($eval_template);
@@ -677,7 +687,11 @@ class Node{
                             $eval_template_record = explode("[*]",$eval_template_record);
 
 
-                            if($this->isJsonVariable or $this->ESPECIFICO_FORMATO == "RSS" or $this->ESPECIFICO_FORMATO == "JSON" )
+                            if($eval_template_record[0] == "item")
+                            {
+
+                            }
+                            elseif(($this->isJsonVariable or $this->ESPECIFICO_FORMATO == "RSS" or $this->ESPECIFICO_FORMATO == "JSON" ))
                             {
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
@@ -821,6 +835,11 @@ class Node{
                             $writer->writeAttribute($katt, $vatt); // no attributes
                     }
 
+                    if(isset($nValue["@value"]))
+                    {
+                        $writer->writeCData($nValue["@value"]);
+                    }
+
                     $writer->endElement();
                 }else
                 {
@@ -864,14 +883,24 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        //if($nKey=="media:group" or $nKey=="media:content")
+                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                        {
+
+                        }else
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
 
                         if(count($nValue,1) > 2)
-                            $writer->startElement($nKey);
+                        {
+                            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                            {
+
+                            }else
+                                $writer->startElement($nKey);
+                        }
+
 
 
                     }
@@ -907,13 +936,23 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        //if($nKey=="media:group" or $nKey=="media:content")
+                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                        {
+
+                        }else
                             $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
                         if(count($nValue,1) > 2)
-                            $writer->endElement();
+                        {
+                            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                            {
+
+                            }else
+                                $writer->endElement();
+                        }
+
                     }
                     elseif(!is_numeric($nKey) )
                         $writer->endElement();
@@ -928,14 +967,24 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        //if($nKey=="media:group" or $nKey=="media:content")
+                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                        {
+
+                        }else
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
 
-                        if(count($nValue,1) > 2)
-                            $writer->startElement($nKey);
+                        if(count($nValue,1) > 2 )
+                        {
+                            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                            {
+
+                            }else
+                                $writer->startElement($nKey);
+                        }
+
 
 
                     }
@@ -964,13 +1013,23 @@ class Node{
 
                    if($this->startsWith("media:",$nKey))
                     {
-                        //if($nKey=="media:group" or $nKey=="media:content")
+                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                        {
+
+                        }else
                             $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
                         if(count($nValue,1) > 2)
-                            $writer->endElement();
+                        {
+                            if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
+                            {
+
+                            }else
+                                $writer->endElement();
+                        }
+
                     }
                    elseif(!is_numeric($nKey))
                         $writer->endElement();
