@@ -91,7 +91,7 @@ class Node{
     private function _decodeDataURLS()
     {
         $this->INPUT 	= $this->_decodeDataURL($this->URL_INPUT);
-	$this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
+	    $this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
         $this->TEMPLATE = $this->mapAttributes($this->TEMPLATE);
     }
 
@@ -634,7 +634,8 @@ class Node{
                     $return = str_replace('"','\"',$return);
 
                     // when set template!!!
-                    if($child["path"].".".$child["key"] != $child["value"] and $child["path"] != "")
+                    //if($child["path"].".".$child["key"] != $child["value"] and $child["path"] != "")
+                    if($this->ESPECIFICO)
                     {
                         $this->isTemplate = true;
                         //resources[*].resource[*].attributes[*].pubDate
@@ -655,12 +656,9 @@ class Node{
                         {
                             unset($eval_template[$key_eval_template]);
                             $eval_template = array_values($eval_template);
-                        }
-
-/*
-                        if(count($eval_template) > 1)
+                        }elseif(count($eval_template) > 1)
                             array_shift($eval_template);
-*/
+
 
 
 
@@ -883,10 +881,7 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
-                        {
 
-                        }else
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
@@ -936,10 +931,6 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
-                        {
-
-                        }else
                             $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
@@ -967,10 +958,6 @@ class Node{
 
                     if($this->startsWith("media:",$nKey))
                     {
-                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
-                        {
-
-                        }else
                             $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
@@ -1013,10 +1000,6 @@ class Node{
 
                    if($this->startsWith("media:",$nKey))
                     {
-                        if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
-                        {
-
-                        }else
                             $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
@@ -1163,11 +1146,15 @@ class Node{
         if($this->isTemplate)
         {
             $template = $this->_getTemplate();
-            $key = key($template);
+            if(count($template) > 0)
+            {
+                $key = key($template);
 
-            $template = count($template) > 1 ? $template : $template[$key];
+                $template = count($template) > 1 ? $template : $template[$key];
 
-            $this->createEmptyChildren($data,$template);
+                $this->createEmptyChildren($data,$template);
+            }
+
         }
 
         return $data;

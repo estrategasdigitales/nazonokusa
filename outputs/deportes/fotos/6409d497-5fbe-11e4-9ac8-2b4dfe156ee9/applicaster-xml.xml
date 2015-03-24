@@ -4,15 +4,17 @@
   <attributes>
    <description><![CDATA[Guillermo Zavala nos da el previo de la Jornada 1 del Apertura 2014]]></description>
    <title><![CDATA[Guillermo Zavala nos da el previo de la Jornada 1 del Apertura 2014]]></title>
-   <image_assets>
-    <image_asset>
-     <url><![CDATA[http://apps.tvolucion.com/m4v/ent/tdnop/20a82809cc0f7a05ec9c2212d4664b15/0f7a05ec9c-600.mp4]]></url>
-     <key><![CDATA[]]></key>
-    </image_asset>
-   </image_assets>
+   <alternative_streams>
+    <default><![CDATA[http://apps.tvolucion.com/m4v/ent/tdnop/20a82809cc0f7a05ec9c2212d4664b15/0f7a05ec9c-600.mp4]]></default>
+   </alternative_streams>
    <external_id><![CDATA[]]></external_id>
    <enabled><![CDATA[]]></enabled>
-   <default><![CDATA[]]></default>
+   <image_assets>
+    <image_asset>
+     <key><![CDATA[]]></key>
+     <url><![CDATA[]]></url>
+    </image_asset>
+   </image_assets>
   </attributes>
   <type><![CDATA[]]></type>
  </resource>
