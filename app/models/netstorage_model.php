@@ -136,17 +136,23 @@ class Netstorage_model extends Nucleo {
 						}
 						break;
 					case 2:
+
+
 						$node = new Node(
 							[
                                 'formato_origen' => $trabajo->formato_origen,
-								'input' => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_origen)),
-								'template' => base_url() . $trabajo->json_estructura,
-								'paths' => base64_decode($trabajo->campos_seleccionados),
+								'input'          => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_origen)),
+								'template'       => base_url() . $trabajo->json_estructura,
+								'paths'          => base64_decode($trabajo->campos_seleccionados),
 							]
 						);
-						$node->originFormat = $trabajo->formato_origen;
-						$node->ESPECIFICO = TRUE;
-                        $node->ESPECIFICO_FORMATO = $trabajo->formato_salida;
+
+
+						$node->originFormat         = $trabajo->formato_origen;
+						$node->ESPECIFICO           = TRUE;
+                        $node->ESPECIFICO_FORMATO   = $trabajo->formato_salida;
+                        $node->ESPECIFICO_URL_SALIDA= $trabajo->url_salida;
+
 
 						$encoding = base64_decode($trabajo->encoding);
 						$header = base64_decode($trabajo->cabeceras);

@@ -15,6 +15,7 @@ class Node{
     var $INPUT 		    = null;
 
     var $URL_TEMPLATE 	= null;
+    var $ESPECIFICO_URL_SALIDA     = null;
     var $TEMPLATE 		= null;
 
     var $ORIGIN_PATHS 	= [];
@@ -1239,75 +1240,113 @@ class Node{
     }
 
 
+    public function _getHeaderRSS($url)
+    {
+        $data = file_get_contents_curl($url);
+        $xml2array = xml2array( $data );
+        $channel = $xml2array["rss"]["channel"];
+        unset($channel["item"]);
+
+        return $channel;
+    }
+
+
+    public function _setHeaderRSS($writer,$headers)
+    {
+        foreach($headers as $tag => $text)
+        {
+            $writer->startElement($tag);
+
+            if(is_array($text))
+                $this->_setHeaderRSS($writer,$text);
+            else
+                $writer->text($text);
+
+
+            $writer->endElement();
+
+        }
+    }
+
     public function _headerRSS($writer, $attributes = [])
     {
-        $writer->startElement("title");
-        $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
-        $writer->endElement();
 
-        $writer->startElement("link");
-        $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
-        $writer->endElement();
+        if($this->ESPECIFICO_FORMATO == "RSS")
+        {
+            $headers = $this->_getHeaderRSS($this->ESPECIFICO_URL_SALIDA);
+            $this->_setHeaderRSS($writer,$headers);
 
-        $writer->startElement("description");
-        $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
-        $writer->endElement();
+        }else{
 
-        $writer->startElement("image");
-        $writer->startElement("title");
-        $writer->text("televisa.com");
-        $writer->endElement();
+            $writer->startElement("title");
+            $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
+            $writer->endElement();
 
-        $writer->startElement("link");
-        $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
-        $writer->endElement();
+            $writer->startElement("link");
+            $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
+            $writer->endElement();
 
-        $writer->startElement("link");
-        $writer->text("http://www.televisa.com");
-        $writer->endElement();
-        $writer->endElement();
+            $writer->startElement("description");
+            $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
+            $writer->endElement();
 
-        $writer->startElement("language");
-        $writer->text("es-mx");
-        $writer->endElement();
+            $writer->startElement("image");
+            $writer->startElement("title");
+            $writer->text("televisa.com");
+            $writer->endElement();
 
-        $writer->startElement("copyright");
-        $writer->text("2005 Comercio Mas S.A. de C.V");
-        $writer->endElement();
+            $writer->startElement("link");
+            $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
+            $writer->endElement();
 
-        $writer->startElement("managingEditor");
-        $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
-        $writer->endElement();
+            $writer->startElement("link");
+            $writer->text("http://www.televisa.com");
+            $writer->endElement();
+            $writer->endElement();
 
-        $writer->startElement("webMaster");
-        $writer->text("feeds@esmas.com (feeds Esmas.com)");
-        $writer->endElement();
+            $writer->startElement("language");
+            $writer->text("es-mx");
+            $writer->endElement();
 
-        $writer->startElement("pubDate");
-        $writer->text($this->getDate());
-        $writer->endElement();
+            $writer->startElement("copyright");
+            $writer->text("2005 Comercio Mas S.A. de C.V");
+            $writer->endElement();
 
-        $writer->startElement("lastBuildDate");
-        $writer->text($this->getDate());
-        $writer->endElement();
+            $writer->startElement("managingEditor");
+            $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
+            $writer->endElement();
 
-        $writer->startElement("category");
-        $writer->text("Home Principal esmas");
-        $writer->endElement();
+            $writer->startElement("webMaster");
+            $writer->text("feeds@esmas.com (feeds Esmas.com)");
+            $writer->endElement();
 
-        $writer->startElement("generator");
-        $writer->text("GALAXY 1.0");
-        $writer->endElement();
+            $writer->startElement("pubDate");
+            $writer->text($this->getDate());
+            $writer->endElement();
 
-        $writer->startElement("atom:link");
-        $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
-        $writer->writeAttribute( 'rel', 'self' );
-        $writer->writeAttribute( 'type', 'application/rss+xml' );
-        $writer->endElement();
+            $writer->startElement("lastBuildDate");
+            $writer->text($this->getDate());
+            $writer->endElement();
 
-        $writer->startElement("ttl");
-        $writer->text("60");
-        $writer->endElement();
+            $writer->startElement("category");
+            $writer->text("Home Principal esmas");
+            $writer->endElement();
+
+            $writer->startElement("generator");
+            $writer->text("GALAXY 1.0");
+            $writer->endElement();
+
+            $writer->startElement("atom:link");
+            $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
+            $writer->writeAttribute( 'rel', 'self' );
+            $writer->writeAttribute( 'type', 'application/rss+xml' );
+            $writer->endElement();
+
+            $writer->startElement("ttl");
+            $writer->text("60");
+            $writer->endElement();
+
+        }
     }
 
 

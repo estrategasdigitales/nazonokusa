@@ -64,7 +64,7 @@ $autoload['libraries'] = array( 'curl', 'database', 'form_validation', 'email', 
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array( 'url', 'form', 'string', 'html', 'date', 'magpie', 'tree','convert_formats', 'file_get_contents_curl', 'reports' );
+$autoload['helper'] = array( 'url', 'form', 'string', 'html', 'date', 'magpie', 'tree','convert_formats', 'file_get_contents_curl', 'reports','xml2array' );
 
 
 /*

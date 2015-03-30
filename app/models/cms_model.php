@@ -299,7 +299,7 @@ class Cms_model extends CI_Model {
             //$this->db->cache_off();
             $this->db->select( 'a.uid_usuario, a.uid_trabajo, a.formato_origen, b.slug_categoria, c.slug_vertical,
                 a.slug_nombre_feed, a.url_origen, a.campos_seleccionados, a.activo, 
-                a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura, d.formato_salida, d.encoding, d.cabeceras,d.variable' );
+                a.cron_config, a.tipo_salida, a.plantilla, d.json_estructura,d.url_origen as url_salida, d.formato_salida, d.encoding, d.cabeceras,d.variable' );
             $this->db->from( $this->db->dbprefix('trabajos') . ' AS a' );
             $this->db->join( $this->db->dbprefix('categorias'). ' AS b', 'a.uid_categoria = b.uid_categoria','INNER' );
             $this->db->join( $this->db->dbprefix('verticales'). ' AS c', 'a.uid_vertical = c.uid_vertical','INNER' );
