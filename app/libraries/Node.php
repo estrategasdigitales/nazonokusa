@@ -820,7 +820,7 @@ class Node{
 
                 if(!array_key_exists(0, $nValue["@attributes"]))
                 {
-                    if(is_numeric($key))
+                    if(!is_numeric($nKey))
                         $writer->startElement($nKey);
                     else
                         $writer->startElement($key);
@@ -888,6 +888,7 @@ class Node{
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
 
+
                         if(count($nValue,1) > 2)
                         {
                             if(array_key_exists(0,$nValue) and ( isset($nValue[0]["@value"]) or isset($nValue[0]["@attributes"]) ))
@@ -895,8 +896,8 @@ class Node{
 
                             }else
                                 $writer->startElement($nKey);
-                        }
-
+                        }else if(!is_numeric($nKey) and  !array_key_exists(0,$nValue))
+                            $writer->startElement($nKey);
 
 
                     }
@@ -943,7 +944,8 @@ class Node{
 
                             }else
                                 $writer->endElement();
-                        }
+                        }else if(!is_numeric($nKey) and !array_key_exists(0,$nValue))
+                            $writer->endElement();
 
                     }
                     elseif(!is_numeric($nKey) )
@@ -971,7 +973,8 @@ class Node{
 
                             }else
                                 $writer->startElement($nKey);
-                        }
+                        }else if(!is_numeric($nKey) and !array_key_exists(0,$nValue))
+                            $writer->startElement($nKey);
 
 
 
@@ -1012,7 +1015,8 @@ class Node{
 
                             }else
                                 $writer->endElement();
-                        }
+                        }else if(!is_numeric($nKey) and !array_key_exists(0,$nValue))
+                            $writer->endElement();
 
                     }
                    elseif(!is_numeric($nKey))
@@ -1153,6 +1157,9 @@ class Node{
 
                 $template = count($template) > 1 ? $template : $template[$key];
 
+                if(array_key_exists(0,$template))
+                    $template = $template[0];
+                
                 $this->createEmptyChildren($data,$template);
             }
 
@@ -1202,6 +1209,9 @@ class Node{
                             }
                             else
                             {
+                                $key = key($child);
+
+
                                 if($i == 1 and !array_key_exists(0,$data) )
                                     $data[$index_child] = $child;
                                 else
@@ -1234,6 +1244,24 @@ class Node{
     }
 
 
+    public function setZero(&$_child)
+    {
+
+
+        foreach($_child as $key => $child)
+        {
+            if(is_array($child) and count($child) > 0) {
+                $this->setZero($child);
+            }else{
+                $_child[0][$key] =  $child;
+                unset($_child[$key]);
+            }
+        }
+
+
+    }
+
+
     public function getDataFixed()
     {
         return $this->_fixkeys($this->getData());
@@ -1244,6 +1272,7 @@ class Node{
     {
         $data = file_get_contents_curl($url);
         $xml2array = xml2array( $data );
+
         $channel = $xml2array["rss"]["channel"];
         unset($channel["item"]);
 
@@ -1463,6 +1492,7 @@ class Node{
     }
 
     public function _toJSON( &$nodes ){
+
         foreach ($nodes as $nKey => &$nValue) {
             if ( is_array( $nValue ) and array_key_exists(0,$nValue) ){
 

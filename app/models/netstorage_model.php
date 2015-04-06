@@ -142,7 +142,7 @@ class Netstorage_model extends Nucleo {
 							[
                                 'formato_origen' => $trabajo->formato_origen,
 								'input'          => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_origen)),
-								'template'       => base_url() . $trabajo->json_estructura,
+								'template'       => base_url() . 'nucleo/feed_service_content?url=' . urlencode(base64_encode($trabajo->url_salida)),
 								'paths'          => base64_decode($trabajo->campos_seleccionados),
 							]
 						);

@@ -192,6 +192,7 @@ class Nucleo extends CI_Controller {
 
 
         $url = $this->input->get( 'url' );
+
         $url = urldecode( base64_decode( $url ) );
         $url = file_get_contents_curl( $url );
 
