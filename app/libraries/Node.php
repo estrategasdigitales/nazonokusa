@@ -1159,7 +1159,7 @@ class Node{
 
                 if(array_key_exists(0,$template))
                     $template = $template[0];
-                
+
                 $this->createEmptyChildren($data,$template);
             }
 

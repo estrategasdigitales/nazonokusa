@@ -5,6 +5,13 @@ Ext.define('TVSA.Viewport', {
     border : false,
     initComponent: function (){
         var me = this;
+
+
+        Ext.Ajax.on('requestexception', function (conn, response, options) {
+            alert("Se ha perdido la conexi&oacute;n a internet. Intente nuevamente.");
+        });
+
+
         var tree1 = Ext.create("TVSA.Tree",{
             region      : 'west',
             id          : 'tvsafeed',

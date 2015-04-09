@@ -13,6 +13,8 @@ Ext.define('TVSA.Tree', {
     initComponent: function (){
         
         var me = this;
+
+
         var data = {
             data     : me.data,
             root: {
@@ -109,12 +111,17 @@ Ext.define('TVSA.Tree', {
         var me = this;
         if(!Ext.isEmpty(url)){
             me.setLoading("Cargando Feed");
+
+
             Ext.Ajax.request ({
                 url: url,
+
                 success: function (file) {
+
                     me.setData(file);
                 }
-            }); 
+            });
+
         }
     },
 

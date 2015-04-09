@@ -24,7 +24,8 @@
 
 	<script>
 		$(document).ready(function(){
-			
+
+
 			$.ajaxSetup({
 				timeout:95000,
 				error: function(jqXHR, exception) {
@@ -44,6 +45,22 @@
 		            }
 		        }
 			});
+
+            $(document).ajaxError(function( event, request, settings ) {
+
+
+                if (request.status == 404) {
+                    alert('El recurso solicitado no está disponible');
+                } else if (request.status == 500) {
+                    alert('Ocurrió un error interno, favor de contactar al administrador.');
+                } else {
+                    alert("Se ha perdido la conexión a internet. Intente nuevamente.");
+                }
+
+
+            });
+
+
 		});
 	</script>
 
