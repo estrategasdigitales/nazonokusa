@@ -10,7 +10,7 @@ require_once( __DIR__ . '/ArrayToXML.php' );
 class Node{
     private $curl;
 
-
+    var $ARRAY_EVAL     = [];
     var $URL_INPUT 		= null;
     var $INPUT 		    = null;
 
@@ -576,9 +576,19 @@ class Node{
                     $eval2 = $last_eval.$property_eval."['".$i."']";// extra
             }
 
-
-
             $eval = $last_eval.$property_eval."['".$i."']";
+            $eval_especifico = $eval;
+
+            if(!isset($this->ARRAY_EVAL[$last_eval.$property_eval]))
+                $this->ARRAY_EVAL[$last_eval.$property_eval] = $i;
+            else{
+
+                $i_eval = $this->ARRAY_EVAL[$last_eval.$property_eval] + 1;
+
+
+                $eval_especifico = $last_eval.$property_eval."['".$i_eval ."']";
+                $this->ARRAY_EVAL[$last_eval.$property_eval] = $i_eval;
+            }
 
 
 
@@ -641,7 +651,7 @@ class Node{
                         $this->isTemplate = true;
                         //resources[*].resource[*].attributes[*].pubDate
 
-                        preg_match_all('/\[(.*?)\]/', $eval, $matches);
+                        preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
                         $last_iteration = $matches[1][count($matches[1])-1];
                         //$last_iteration = intval($last_iteration);
