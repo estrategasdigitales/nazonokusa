@@ -77,6 +77,13 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/tree-f2.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
 
+    <script type="text/javascript">
+
+        Ext.Ajax.on('requestexception', function (conn, response, options) {
+            alert("Se ha perdido la conexión a internet. Intente nuevamente.");
+        });
+    </script>
+
 </head>
 <body>
 	<div class="container-fluid">

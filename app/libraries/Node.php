@@ -605,10 +605,12 @@ class Node{
                     if($path_parent and substr_count($path_parent, $path) == 0)
                         $path_parent = $path_parent.".".$path;
 
-
+                    $eval = $eval_especifico;
 
                     if(!$this->isJson and count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
+
+
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
                 }else
@@ -653,7 +655,7 @@ class Node{
 
                         preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
-                        $last_iteration = $matches[1][count($matches[1])-1];
+                        $last_iteration = $matches[1][1];
                         //$last_iteration = intval($last_iteration);
 
                         //resource[*].attributes[*].pubDate
@@ -675,12 +677,12 @@ class Node{
 
                         $first_node_iteration = explode("[*]",$eval_template[0]);
                         $first_node_iteration = $first_node_iteration[0];
-
+/*
                         if(isset($output[$first_node_iteration]))
                             $total_childs  = count($output[$first_node_iteration]);
                         else
                             $total_childs = 0;
-
+*/
 
                         $current_iteration = $last_iteration;
 
