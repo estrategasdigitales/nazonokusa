@@ -1043,7 +1043,7 @@ class Cms extends CI_Controller {
 	public function generar_reporte_pdf(){
 		$reporte = $this->cms->get_reporte_detalle( base64_decode( $this->input->get('token') ) );
 		$resultado = $this->cms->get_reporte_resultado( $reporte );
-		$this->pdf = new Pdf();
+		$this->pdf = new Pdf('L');
 		$this->pdf->AddPage();
 		$this->pdf->AliasNbPages();
 		$this->pdf->SetTitle('Reporte de Tareas');
@@ -1051,18 +1051,20 @@ class Cms extends CI_Controller {
         $this->pdf->SetRightMargin(15);
         $this->pdf->SetFillColor(200,200,200);
         $this->pdf->SetFont('Arial', 'B', 9);
-        $this->pdf->Cell(15,3,'ID','TBL',0,'C','1');
-        $this->pdf->Cell(25,3,'FECHA','TB',0,'L','1');
-        $this->pdf->Cell(25,3,'STATUS','TB',0,'L','1');
+        $this->pdf->Cell(75,3,'UID','TBLR',0,'L','1');
+        $this->pdf->Cell(75,3,'NOMBRE','TBRL',0,'L','1');
+        $this->pdf->Cell(125,3,'DESCRIPCION','TBRL',0,'L','1');
+        $this->pdf->Cell(25,3,'STATUS','TBLR',0,'L','1');
+        $this->pdf->Cell(35,3,'FECHA','TBR',0,'L','1');
         $this->pdf->Ln(3);
         $x = 1;
         foreach ($resultado->result() as $result) {
-            // se imprime el numero actual y despues se incrementa el valor de $x en uno
-            $this->pdf->Cell(15,3,$x++,'BL',0,'C',0);
             // Se imprimen los datos de cada trabajo
-            $this->pdf->Cell(25,3,$result->uid_trabajo,'B',0,'L',0);
-            $this->pdf->Cell(25,3,$result->time,'B',0,'L',0);
-            $this->pdf->Cell(25,3,$result->status,'B',0,'L',0);
+            $this->pdf->Cell(75,3,$result->uid_trabajo,'BLR',0,'L',0);
+            $this->pdf->Cell(75,3,$result->nombre,'BRL',0,'L',0);
+            $this->pdf->Cell(125,3,$result->description,'BR',0,'L',0);
+            $this->pdf->Cell(25,3,$result->status,'BRL',0,'L',0);
+            $this->pdf->Cell(35,3,$result->time,'BR',0,'L',0);
             //Se agrega un salto de linea
             $this->pdf->Ln(3);
         }

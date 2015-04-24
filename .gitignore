@@ -23,5 +23,11 @@ Thumbs.db
 *.so
 *.exe
 *.sql
+*.sql.gz
 /cache/
+outputs/
 outputs/*
+.idea/
+/.idea/
+.svn/
+/.svn/
