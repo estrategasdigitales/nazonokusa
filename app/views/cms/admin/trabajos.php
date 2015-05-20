@@ -22,7 +22,12 @@
 				<?php if ( $trabajos ): ?>
 					<?php foreach( $trabajos as $trabajo ): ?>
 						<tr>
-							<td><?php echo $trabajo->nombre; ?></td>
+							<?php if ( $trabajo->tipo_salida == 1 ): ?>
+								<td> <a href="<?php echo base_url();?>editar_trabajo/<?php echo $trabajo->uid_trabajo; ?>"><?php echo $trabajo->nombre; ?></a> </td>
+							<?php endif; ?>
+							<?php if ( $trabajo->tipo_salida == 2 ): ?>
+								<td><?php echo $trabajo->nombre; ?></td>
+							<?php endif; ?>
 							<td class="text-center">
 								<a href="<?php echo $trabajo->url_origen; ?>" class="petroleo" target="_blank">
 									<span class="glyphicon glyphicon-link"></span>

@@ -494,6 +494,41 @@ class Nucleo extends CI_Controller {
         }
     }
 
+
+    /**
+     * [validar_form_trabajo description]
+     * @return [type] [description]
+     */
+    public function editar_form_trabajo($uid_trabajo){
+
+
+        if ( $this->session->userdata( 'session' ) !== TRUE ){
+            redirect(' login' );
+        } else {
+
+            $cronjob_config = $this->input->post('cron_minuto').' '.$this->input->post('cron_hora').' '.$this->input->post('cron_diames').' '.$this->input->post('cron_mes').' '.$this->input->post('cron_diasemana');
+
+
+            
+            $trabajo['uid_trabajo']          =  $uid_trabajo;
+
+
+            $trabajo['campos_seleccionados'] = ($this->input->post( 'campos_seleccionados' ));
+
+            //$trabajo['feeds_output']      = conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
+            $trabajo['cron_config']         = $cronjob_config;
+
+            //$trabajo                      = $this->security->xss_clean( $trabajo );
+            $guardar                        = $this->cms->editar_trabajo( $trabajo );
+            if ( $guardar !== FALSE ){
+                echo TRUE;
+            } else {
+                echo '<span class="error">Ocurrió un problema al intentar guardar el <b>Trabajo</b></span>';
+            }
+            
+        }
+    }
+
     /**
      * [claves description]
      * @param  [type] $arreglo [description]

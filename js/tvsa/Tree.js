@@ -119,6 +119,8 @@ Ext.define('TVSA.Tree', {
                 success: function (file) {
 
                     me.setData(file);
+
+
                 }
             });
 
@@ -134,6 +136,9 @@ Ext.define('TVSA.Tree', {
             json = json[0];
 
         Tree.node(me.store,json,true,"tree",node);
+
+        TVSA.standar.setChecked();
+
         me.fireEvent("renderTree",me.store);
         node.expand();
         me.setLoading(false);

@@ -268,6 +268,20 @@
 	},
 	"file_history":
 	[
+		"/Users/miguelmartinez/Sites/fundacion/app/views/crud/form.blade.php",
+		"/Users/miguelmartinez/Sites/middle/app/config/routes.php",
+		"/Users/miguelmartinez/Sites/middle/app/controllers/cms.php",
+		"/Users/miguelmartinez/Sites/middle/app/models/cms_model.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/editar_trabajo.php",
+		"/Users/miguelmartinez/Sites/middle/css/middleware.css",
+		"/Users/miguelmartinez/Sites/fundacion/app/start/helpers.php",
+		"/Users/miguelmartinez/Sites/fundacion/app/controllers/admin/CrudController.php",
+		"/Users/miguelmartinez/Sites/fundacion/app/storage/dumps/20150519133404.sql",
+		"/Users/miguelmartinez/Sites/fundacion/.env",
+		"/Users/miguelmartinez/Sites/fundacion/app/start/artisan.php",
+		"/Users/miguelmartinez/Sites/fundacion/app/commands/CrudDump.php",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/trabajos.php",
+		"/Users/miguelmartinez/Sites/middle/app/models/trabajos_model.php",
 		"/Users/miguelmartinez/Sites/fundacion/admin.fundacion.com/app/views/crud/index.blade.php",
 		"/Users/miguelmartinez/Sites/shippingapp/www/shipment_request_detail.html",
 		"/Users/miguelmartinez/Sites/shippingapp/stylus/bootstrap/jumbotron.styl",
@@ -381,21 +395,7 @@
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Invoice.php",
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwb.php",
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwbchg.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceChgs.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Logfile.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Manifest.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/MasterAwb.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Mawb.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/NspPages.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/NspPagesGroup.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Payments.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PaymentsInf.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Pcustomer.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PcustomerNotepad.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PermissionsRoles.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/PermissionsUsers.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Plogfile.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Pmessages.php"
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceChgs.php"
 	],
 	"find":
 	{
@@ -403,7 +403,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 99.0,
 		"where_history":
 		[
 			"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus",
@@ -441,6 +441,18 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"number",
+			"remoteCombo",
+			"default_record",
+			"categorias",
+			"get_trabajo_editar",
+			"editar_",
+			"editar",
+			"uid_trabajo",
+			"admin_trabajos",
+			"editar_trabajo",
+			"nuevo_trabajo",
+			"nuevo_trabaj",
 			"<?",
 			"./print_label.html",
 			"type",
@@ -556,19 +568,7 @@
 			">beforeShow((object)",
 			"beforeStore",
 			"getCrud",
-			"btn",
-			"printItem",
-			"fk_column",
-			"addResource",
-			"resourceDefaults",
-			"getResourceMethods",
-			"resourceDefaults",
-			"verbs",
-			"resourceDefaults",
-			"resource",
-			"destroy",
-			"Route",
-			"resource"
+			"btn"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1064,6 +1064,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 386.0,
+	"side_bar_width": 389.0,
 	"status_bar_visible": true
 }

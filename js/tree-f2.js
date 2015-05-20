@@ -146,13 +146,35 @@ Ext.application({
         TVSA.standar = {
             id            : "tvsatreestandar",
             hiddenInput   : "campos_seleccionados",
+            checkeds      : null,
             save     : function(id){
                 var me          = this;
 
                 Ext.get(id).dom.value = me.getData();
 
             },
+            setChecked : function(){
+                var me       = this;
 
+                if(checkeds)
+                {
+                    var tree     = Ext.getCmp(me.id);
+                    var root     = tree.store.getRootNode();
+
+                    tree.on("renderTree",function(){
+                        me.save("campos_seleccionados");
+                    });
+
+                    checkeds = Ext.decode(checkeds);
+
+                    root.cascadeBy(function(node) {
+                        var data = node.data;
+                      if(checkeds.indexOf(data.id) != -1)
+                        node.set('checked', true);
+                    });
+                }
+
+            },
             getData  : function(){
                 var me      = this,
                     tree    = Ext.getCmp(me.id);

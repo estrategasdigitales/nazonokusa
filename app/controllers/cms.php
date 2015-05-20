@@ -833,6 +833,25 @@ class Cms extends CI_Controller {
 	}
 
 	/**
+	 * [editar_trabajo description]
+	 * @return [type] [description]
+	 */
+	public function editar_trabajo($uid_trabajo){
+		if ( $this->session->userdata('session') !== TRUE ){
+			redirect('login');
+		} else {
+			
+			$data['formatos_salida'] = $this->cms->get_trabajos_formatos($uid_trabajo);
+
+			$data['estructuras']	= $this->cms->get_estructuras();
+			$data['trabajo']		= $this->cms->get_trabajo_editar($uid_trabajo);
+			$data['uid_trabajo']	= $uid_trabajo;
+			
+			$this->load->view( 'cms/admin/editar_trabajo', $data );
+		}
+	}
+
+	/**
 	 * [nueva_estructura description]
 	 * @return [type] [description]
 	 */

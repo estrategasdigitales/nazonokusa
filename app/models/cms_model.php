@@ -271,9 +271,13 @@ class Cms_model extends CI_Model {
 
         public function get_trabajo_editar( $uid_trabajo ){
             //$this->db->cache_on();
-            $this->db->select('uid_trabajo, id_trabajo, nombre, url_origen, fecha_registro, uid_usuario, cron_config');
-            $this->db->where('uid_trabajo',$uid_trabajo);
-            $result = $this->db->get($this->db->dbprefix( 'trabajos' ) );
+            $this->db->select('t.uid_trabajo, t.id_trabajo, t.nombre, t.url_origen, t.fecha_registro, t.uid_usuario, t.cron_config,t.campos_seleccionados,c.nombre AS categoria,c.uid_categoria,v.nombre as vertical,v.uid_vertical');
+            $this->db->from( $this->db->dbprefix('trabajos') . ' AS t' );
+            $this->db->join( $this->db->dbprefix('categorias'). ' AS c', 't.uid_categoria = c.uid_categoria','INNER' );
+            $this->db->join( $this->db->dbprefix('verticales'). ' AS v', 't.uid_vertical = v.uid_vertical','INNER' );
+
+            $this->db->where('t.uid_trabajo',$uid_trabajo);
+            $result = $this->db->get();
             if ( $result->num_rows() > 0 ) return $result->row();
             else return FALSE;
             $result->free_result();
@@ -529,6 +533,19 @@ class Cms_model extends CI_Model {
                 return FALSE;
             }
         }
+
+
+        public function editar_trabajo( $trabajo ){
+
+            $this->db->set( 'campos_seleccionados', $trabajo['campos_seleccionados'] );
+            $this->db->set( 'cron_config', $trabajo['cron_config'] );
+
+            $this->db->where( 'uid_trabajo', $trabajo['uid_trabajo'] );
+            $this->db->update( $this->db->dbprefix( 'trabajos' ) );
+
+            return TRUE;
+        }
+
 
         public function add_usuario( $usuario ){
             $timestamp = time();

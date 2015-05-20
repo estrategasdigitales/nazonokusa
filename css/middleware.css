@@ -310,3 +310,10 @@ header{
 .petroleo {
     color: #001533;
 }
+
+.info-value{
+  padding: 0.5em;
+  display: inline-block;
+  font-weight: bold;
+  color:rgb(88, 97, 105);
+}
