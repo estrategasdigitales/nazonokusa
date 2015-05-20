@@ -187,11 +187,13 @@ class Cms_model extends CI_Model {
         }
 
         public function get_reporte_resultado( $reporte ){
-            $this->db->select('uid_trabajo, status');
-            $this->db->select("FROM_UNIXTIME(time) AS time", FALSE);
-            $this->db->where( 'time >= ', $reporte->fecha_inicio );
-            $this->db->where( 'time <= ', $reporte->fecha_fin );
-            $resultado = $this->db->get( $this->db->dbprefix('cron_log') );
+            $this->db->select('a.uid_trabajo, b.nombre, a.status, a.description');
+            $this->db->select("FROM_UNIXTIME(a.time) AS time", FALSE);
+            $this->db->from( $this->db->dbprefix( 'cron_log' ) . ' AS a' );
+            $this->db->join( $this->db->dbprefix( 'trabajos' ) . ' AS b', 'a.uid_trabajo = b.uid_trabajo', 'LEFT' );
+            $this->db->where( 'a.time >= ', $reporte->fecha_inicio );
+            $this->db->where( 'a.time <= ', $reporte->fecha_fin );
+            $resultado = $this->db->get();
             return $resultado;
             $resultado->free_result();
         }
