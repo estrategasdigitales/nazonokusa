@@ -8,10 +8,13 @@ $campos_seleccionados = base64_decode($trabajo->campos_seleccionados);
 $campos_seleccionados = json_decode($campos_seleccionados);
 $feed1 = [];
 
-foreach ($campos_seleccionados as $feeds) 
+if($campos_seleccionados)
 {
-	if(isset($feeds->feed1))
-		$feed1[] = $feeds->feed1;
+	foreach ($campos_seleccionados as $feeds ) 
+	{
+		if(isset($feeds->feed1))
+			$feed1[] = $feeds->feed1;
+	}
 }
 
 $feed1 = json_encode($feed1);
@@ -266,7 +269,7 @@ $cron_diasemana = $cron_config[4];
 
 									foreach ($dias as $key => $value) {
 
-										if($key === $cron_diasemana)
+										if($key == $cron_diasemana)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
@@ -292,7 +295,7 @@ $cron_diasemana = $cron_config[4];
 										}
 											
 
-										if($key === $cron_diames)
+										if($key == $cron_diames)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
@@ -320,7 +323,7 @@ $cron_diasemana = $cron_config[4];
 
 									foreach ($dias as $key => $value) {
 
-										if($key === $cron_hora)
+										if($key == $cron_hora)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
@@ -334,7 +337,7 @@ $cron_diasemana = $cron_config[4];
 										if(strlen($value) == 1)
 											$value = "0".$value;
 
-										if($key === $cron_hora)
+										if($key == $cron_hora)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
@@ -359,7 +362,7 @@ $cron_diasemana = $cron_config[4];
 
 									foreach ($dias as $key => $value) {
 
-										if($key === $cron_minuto)
+										if($key == $cron_minuto)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
@@ -373,7 +376,7 @@ $cron_diasemana = $cron_config[4];
 										if(strlen($value) == 1)
 											$value = "0".$value;
 
-										if($key === $cron_minuto)
+										if($key == $cron_minuto)
 											echo '<option selected value="'.$key.'">'.$value.'</option>';
 										else
 											echo '<option value="'.$key.'">'.$value.'</option>';
