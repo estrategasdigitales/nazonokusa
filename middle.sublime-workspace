@@ -167,6 +167,54 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "app/views/cms/admin/editar_trabajo.php",
+			"settings":
+			{
+				"buffer_size": 12936,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/nucleo.php",
+			"settings":
+			{
+				"buffer_size": 24171,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/models/cms_model.php",
+			"settings":
+			{
+				"buffer_size": 36100,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/tree-f2.js",
+			"settings":
+			{
+				"buffer_size": 7426,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/tvsa/Tree.js",
+			"settings":
+			{
+				"buffer_size": 4189,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/controllers/cms.php",
+			"settings":
+			{
+				"buffer_size": 46958,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -268,10 +316,16 @@
 	},
 	"file_history":
 	[
+		"/Users/miguelmartinez/Sites/middle/app/controllers/cms.php",
+		"/Users/miguelmartinez/Sites/middle/app/controllers/nucleo.php",
+		"/Users/miguelmartinez/Sites/middle/app/models/cms_model.php",
+		"/Users/miguelmartinez/Sites/middle/js/tree-f2.js",
+		"/Users/miguelmartinez/Sites/middle/js/tvsa/Viewport.js",
+		"/Users/miguelmartinez/Sites/middle/js/tvsa/Tree.js",
+		"/Users/miguelmartinez/Sites/middle/js/middleware.js",
+		"/Users/miguelmartinez/Sites/middle/app/views/cms/header.php",
 		"/Users/miguelmartinez/Sites/fundacion/app/views/crud/form.blade.php",
 		"/Users/miguelmartinez/Sites/middle/app/config/routes.php",
-		"/Users/miguelmartinez/Sites/middle/app/controllers/cms.php",
-		"/Users/miguelmartinez/Sites/middle/app/models/cms_model.php",
 		"/Users/miguelmartinez/Sites/middle/app/views/cms/admin/editar_trabajo.php",
 		"/Users/miguelmartinez/Sites/middle/css/middleware.css",
 		"/Users/miguelmartinez/Sites/fundacion/app/start/helpers.php",
@@ -389,13 +443,7 @@
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/DeliveryReports.php",
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/DeliveryReportsNotes.php",
 		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Handover.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/HandoverItems.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Insurance.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InsuranceNotes.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/Invoice.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwb.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceAwbchg.php",
-		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/InvoiceChgs.php"
+		"/Users/miguelmartinez/Sites/jsl/dev2.adm.jslspeedpak.com/app/models/HandoverItems.php"
 	],
 	"find":
 	{
@@ -403,7 +451,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 99.0,
+		"height": 0.0,
 		"where_history":
 		[
 			"/Users/miguelmartinez/Sites/admin.fundacion.com/stylus",
@@ -441,6 +489,35 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"cron_diasemana",
+			"update",
+			"editar",
+			"editar_form_trabajo",
+			"editar_trabajo",
+			"edit",
+			"update",
+			"->updat",
+			"add_trabajo",
+			"valida",
+			"_form_trabajo",
+			"cron_hora",
+			"key",
+			"/5",
+			"validar_form_trabajo",
+			"cronjob_config",
+			"add_trabajo",
+			"tarea",
+			"validar_form_trabajo",
+			"editar",
+			"cargar_campos_estandar()",
+			"Formatos estándar",
+			"hidden",
+			"editar",
+			"standar",
+			"root",
+			"tvsatemplate",
+			"tipo_salida",
+			"url-origen",
 			"number",
 			"remoteCombo",
 			"default_record",
@@ -539,36 +616,7 @@
 			"addResourceTab",
 			"addResource",
 			"die",
-			"tab",
-			"resourceDefaults",
-			"printItem",
-			"show",
-			"routeNeedsPermission",
-			"getClassName",
-			"crud",
-			"currentRouteName",
-			"crud",
-			"Agency",
-			"agency",
-			"app_path",
-			"printItem",
-			"gett",
-			"$tab",
-			"show",
-			"GETTA",
-			"getCRUD",
-			"show",
-			"getCrud",
-			"getTabs",
-			"tabs",
-			"tab",
-			"show",
-			"beforeShowTabs",
-			"(object)",
-			">beforeShow((object)",
-			"beforeStore",
-			"getCrud",
-			"btn"
+			"tab"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -611,8 +659,175 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "app/views/cms/admin/editar_trabajo.php",
+					"settings":
+					{
+						"buffer_size": 12936,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								383,
+								383
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/controllers/nucleo.php",
+					"settings":
+					{
+						"buffer_size": 24171,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								20878,
+								20878
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7893.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/models/cms_model.php",
+					"settings":
+					{
+						"buffer_size": 36100,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35662,
+								35662
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 14672.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/tree-f2.js",
+					"settings":
+					{
+						"buffer_size": 7426,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4822,
+								4822
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2941.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "js/tvsa/Tree.js",
+					"settings":
+					{
+						"buffer_size": 4189,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3903,
+								3913
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2597.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/controllers/cms.php",
+					"settings":
+					{
+						"buffer_size": 46958,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								34692,
+								34703
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 17483.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -1064,6 +1279,6 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 389.0,
+	"side_bar_width": 426.0,
 	"status_bar_visible": true
 }
