@@ -20,12 +20,6 @@ Ext.application({
         TVSA = {
             _view    : null,
             _inputHidden : null,
-            resetAll     : function(){
-                var me = this;
-                me.resetTemplate();
-                me.resetFeed();
-                me.resetGrid();
-            },
             resetTemplate : function(){
                 var me       = this,
                     tree     = Ext.getCmp('tvsatemplate');
@@ -42,6 +36,13 @@ Ext.application({
                     }
 
             },
+            resetAll     : function(){
+                var me = this;
+                me.resetTemplate();
+                me.resetFeed();
+                me.resetGrid();
+            },
+
             resetFeed    : function(){
                 var me       = this,
                     tree     = Ext.getCmp('tvsafeed');
@@ -153,28 +154,7 @@ Ext.application({
                 Ext.get(id).dom.value = me.getData();
 
             },
-            setChecked : function(){
-                var me       = this;
 
-                if(typeof checkeds != 'undefined')
-                {
-                    var tree     = Ext.getCmp(me.id);
-                    var root     = tree.store.getRootNode();
-
-                    tree.on("renderTree",function(){
-                        me.save("campos_seleccionados");
-                    });
-
-                    checkeds = Ext.decode(checkeds);
-
-                    root.cascadeBy(function(node) {
-                        var data = node.data;
-                      if(checkeds.indexOf(data.id) != -1)
-                        node.set('checked', true);
-                    });
-                }
-
-            },
             getData  : function(){
                 var me      = this,
                     tree    = Ext.getCmp(me.id);
@@ -201,8 +181,6 @@ Ext.application({
                     tree.destroy();
 
                 me.create(id);
-
-
 
             },
             create : function(id){
@@ -252,6 +230,28 @@ Ext.application({
 
                         store.getRootNode().removeAll();
                     }
+
+            },
+            setChecked : function(){
+                var me       = this;
+
+                if(typeof checkeds != 'undefined')
+                {
+                    var tree     = Ext.getCmp(me.id);
+                    var root     = tree.store.getRootNode();
+
+                    tree.on("renderTree",function(){
+                        me.save("campos_seleccionados");
+                    });
+
+                    checkeds = Ext.decode(checkeds);
+
+                    root.cascadeBy(function(node) {
+                        var data = node.data;
+                      if(checkeds.indexOf(data.id) != -1)
+                        node.set('checked', true);
+                    });
+                }
 
             }
         }
