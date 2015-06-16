@@ -156,7 +156,7 @@ Ext.application({
             setChecked : function(){
                 var me       = this;
 
-                if(checkeds)
+                if(typeof checkeds != 'undefined')
                 {
                     var tree     = Ext.getCmp(me.id);
                     var root     = tree.store.getRootNode();
