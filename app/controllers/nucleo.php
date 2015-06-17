@@ -337,8 +337,6 @@ class Nucleo extends CI_Controller {
      */
     public function job_process(){
         $this->load->model( 'netstorage_model','storage' );
-        $CI =& get_instance();
-        $CI->load->model( 'crontabs_model','crontabs' );
         $job['status'] 	= $this->input->post( 'status' );
         $job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
         $process 		= $this->cms->active_job( $job );
@@ -348,20 +346,17 @@ class Nucleo extends CI_Controller {
             if ( $job['status'] == 1 ){
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
                 if ( file_get_contents_curl( $trabajo->url_origen ) ) {
-                    $CI->crontabs->set_cron( $trabajo->cron_config, $job['uidjob'] );
                     $this->storage->harddisk_write($trabajo);
                 } else {
                     $job['status'] = 0;
                     $job['uidjob'] = $trabajo->uid_trabajo;
                     $process = $this->cms->active_job( $job );
-                    $CI->crontabs->unset_cron( $trabajo->cron_config, $trabajo->uid_trabajo );
                     $response = '<span class="error">El contenido del servicio no se encuentra <b>disponible</b> en este momento. </span>';
                     echo $response;
                     exit;
                 }
             } else {
                 $trabajo = $this->cms->get_trabajo_ejecutar( $job['uidjob'] );
-                $CI->crontabs->unset_cron( $trabajo->cron_config, $job['uidjob'] );
             }
         } else {
             $response = '<span class="error">Ocurrió un problema al intentar <b>activar/desactivar</b> la tarea. </span>';
