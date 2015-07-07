@@ -11,21 +11,21 @@ class Node{
     private $curl;
 
     var $ARRAY_EVAL     = [];
-    var $URL_INPUT 		= null;
-    var $INPUT 		    = null;
+    var $URL_INPUT      = null;
+    var $INPUT          = null;
 
-    var $URL_TEMPLATE 	= null;
+    var $URL_TEMPLATE   = null;
     var $ESPECIFICO_URL_SALIDA     = null;
-    var $TEMPLATE 		= null;
+    var $TEMPLATE       = null;
 
-    var $ORIGIN_PATHS 	= [];
-    var $PATHS 			= [];
+    var $ORIGIN_PATHS   = [];
+    var $PATHS          = [];
 
     var $TEMPLATE_PATHS = [];
 
     var $FORMATO_ORIGEN = "";
 
-    var $STORE 			= null;
+    var $STORE          = null;
 
     var $isTemplate     = false;
 
@@ -42,19 +42,19 @@ class Node{
 
     function __construct($arguments = [])
     {
-        $this->URL_INPUT 	 = $arguments["input"];
+        $this->URL_INPUT     = $arguments["input"];
         $this->URL_TEMPLATE = isset($arguments["template"]) ? $arguments["template"] : "";
         $this->ORIGIN_PATHS = $arguments["paths"];
 
         $this->FORMATO_ORIGEN = $arguments["formato_origen"];
 
-        $this->PATHS 		    = $this->_setChildPath();
+        $this->PATHS            = $this->_setChildPath();
 
         $this->TEMPLATE_PATHS = $this->_setChildPath("template");
 
         $this->_decodeDataURLS();
 
-        $this->STORE 			= new JsonStore();
+        $this->STORE            = new JsonStore();
         $this->curl =& get_instance();
         $this->curl->load->helper( 'file_get_contents_curl' );
     }
@@ -91,8 +91,8 @@ class Node{
 
     private function _decodeDataURLS()
     {
-        $this->INPUT 	= $this->_decodeDataURL($this->URL_INPUT);
-	    $this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
+        $this->INPUT    = $this->_decodeDataURL($this->URL_INPUT);
+        $this->TEMPLATE = $this->_decodeDataURL($this->URL_TEMPLATE);
         $this->TEMPLATE = $this->mapAttributes($this->TEMPLATE);
     }
 
@@ -803,11 +803,25 @@ class Node{
 
                 if(is_numeric($nKey))
                     $writer->startElement($key);
-                elseif(substr_count($nKey,"@") == 0)
+                else if(substr_count($nKey,"@") == 0)
                     $writer->startElement($nKey);
 
 
-                    $writer->writeCData($nValue);
+                    if($nKey=="@value")
+                    {
+                        if(substr_count($nValue,'-')==4)
+                        {
+                            $writer->startElement('guid');
+                                $writer->writeCData($nValue);
+                            $writer->endElement();
+                        }
+                        else
+                            $writer->writeCData($paths);
+                        
+                    }
+                    else
+                        $writer->writeCData($nValue);
+                    //guid
 
 
                 if(substr_count($nKey,"@") == 0 )
@@ -816,7 +830,7 @@ class Node{
             }elseif(array_key_exists("@cdata", $nValue))
             {
                 if(!is_numeric($nKey))
-                    $writer->startElement($nKey);
+                    $writer->startElement($parentKey);
 
 
                     $writer->writeCData($nValue["@cdata"]);
@@ -877,8 +891,8 @@ class Node{
                         if(is_numeric($key) and isset($nValue["@attributes"]))
                             $writer->startElement($nKey);
 
+                            $writer->writeCData($nValue);
 
-                        $writer->writeCData($nValue["@value"]);
 
                         if(is_numeric($key) and isset($nValue["@attributes"]))
                             $writer->endElement();
@@ -1102,13 +1116,13 @@ class Node{
 
 
     public function mapAttributes( $feed ){
-        $campos_orig 	= is_array($feed) ? $feed : json_decode( $feed, TRUE );
-        $campos 		= [];
+        $campos_orig    = is_array($feed) ? $feed : json_decode( $feed, TRUE );
+        $campos         = [];
 
         if(!is_array($campos_orig))
             return [];
 
-        $items 			= count( $campos_orig );
+        $items          = count( $campos_orig );
         if ( ! empty( $campos_orig[0] ) ){
             for ( $i = 0; $i < count( $campos_orig ); $i++ ){
                 foreach ( $campos_orig[$i] as $key => $value ){
@@ -1528,8 +1542,10 @@ class Node{
                             //unset($nValue[0]);
 
                         } else if( isset( $recordnValue["@value"] ) ){
-                            $nValue[$keynValue] = $recordnValue["@value"];
-                            //unset($nValue[$keynValue]["@value"]);
+                            if(array_key_exists(0,$nValue))
+                              $nValue = $recordnValue["@value"];  
+                            else
+                                $nValue[$keynValue] = $recordnValue["@value"];
 
                         }elseif($recordnValue["@attributes"])
                         {
