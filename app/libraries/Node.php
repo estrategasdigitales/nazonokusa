@@ -816,7 +816,7 @@ class Node{
                             $writer->endElement();
                         }
                         else
-                            $writer->writeCData($paths);
+                            $writer->writeCData($nValue);
                         
                     }
                     else
@@ -830,7 +830,7 @@ class Node{
             }elseif(array_key_exists("@cdata", $nValue))
             {
                 if(!is_numeric($nKey))
-                    $writer->startElement($parentKey);
+                    $writer->startElement($nKey);
 
 
                     $writer->writeCData($nValue["@cdata"]);
