@@ -605,12 +605,10 @@ class Node{
                     if($path_parent and substr_count($path_parent, $path) == 0)
                         $path_parent = $path_parent.".".$path;
 
-                    $eval = $eval_especifico;
+
 
                     if(!$this->isJson and count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
-
-
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
                 }else
@@ -655,7 +653,15 @@ class Node{
 
                         preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
-                        $last_iteration = $matches[1][1];
+                        //$last_iteration = $matches[1][0];
+                        //if($this->ESPECIFICO_FORMATO != 'RSS')
+                        //{
+                        //   $last_iteration = $matches[1][0];
+                        //}
+                        //else
+                            $last_iteration = $matches[1][1];
+
+                        //$last_iteration = $matches[1][count($matches[1])-1];
                         //$last_iteration = intval($last_iteration);
 
                         //resource[*].attributes[*].pubDate
@@ -677,12 +683,13 @@ class Node{
 
                         $first_node_iteration = explode("[*]",$eval_template[0]);
                         $first_node_iteration = $first_node_iteration[0];
-/*
+
+                       /*
                         if(isset($output[$first_node_iteration]))
                             $total_childs  = count($output[$first_node_iteration]);
                         else
                             $total_childs = 0;
-*/
+                        */
 
                         $current_iteration = $last_iteration;
 
@@ -803,31 +810,19 @@ class Node{
 
                 if(is_numeric($nKey))
                     $writer->startElement($key);
-                else if(substr_count($nKey,"@") == 0)
+
+                elseif(substr_count($nKey,"@") == 0)
                     $writer->startElement($nKey);
 
 
-                    if($nKey=="@value")
-                    {
-                        if(substr_count($nValue,'-')==4)
-                        {
-                            $writer->startElement('guid');
-                                $writer->writeCData($nValue);
-                            $writer->endElement();
-                        }
-                        else
-                            $writer->writeCData($nValue);
-                        
-                    }
-                    else
-                        $writer->writeCData($nValue);
-                    //guid
+                    $writer->writeCData($nValue);
 
 
                 if(substr_count($nKey,"@") == 0 )
                     $writer->endElement();
 
-            }elseif(array_key_exists("@cdata", $nValue))
+            }
+            elseif(array_key_exists("@cdata", $nValue))
             {
                 if(!is_numeric($nKey))
                     $writer->startElement($nKey);
@@ -840,16 +835,31 @@ class Node{
                     $writer->endElement();
 
 
-            }elseif(array_key_exists("@attributes", $nValue)){
-
-
+            }
+            else if(array_key_exists("@attributes", $nValue)){
 
                 if(!array_key_exists(0, $nValue["@attributes"]))
                 {
+
+                    $isOpened = false;
+
                     if(!is_numeric($nKey))
-                        $writer->startElement($nKey);
-                    else
-                        $writer->startElement($key);
+                        {
+                            if(!$this->startsWith("media:",$nKey))
+                            {
+                                $writer->startElement($nKey);
+                                $isOpened = true;
+                            }
+                        }
+                    else{
+                        
+                        if(!$this->startsWith("media:",$key))
+                        {
+                            $writer->startElement($key);
+                            $isOpened = true;
+                        }
+                        
+                    }
 
                     foreach ($nValue["@attributes"] as $katt => $vatt)
                     {
@@ -865,9 +875,11 @@ class Node{
                         $writer->writeCData($nValue["@value"]);
                     }
 
-                    $writer->endElement();
-                }else
-                {
+                    if($isOpened)
+                        $writer->endElement();
+
+
+                }else{
                     foreach ($nValue["@attributes"] as $katt => $vatt) {
 
 
@@ -891,8 +903,8 @@ class Node{
                         if(is_numeric($key) and isset($nValue["@attributes"]))
                             $writer->startElement($nKey);
 
-                            $writer->writeCData($nValue);
 
+                        $writer->writeCData($nValue);
 
                         if(is_numeric($key) and isset($nValue["@attributes"]))
                             $writer->endElement();
@@ -900,8 +912,8 @@ class Node{
 
                 }
 
-            }elseif(is_array($nValue) and count($nValue) > 0)
-            {
+            }
+            elseif(is_array($nValue) and count($nValue) > 0){
 
                 if($kind == "xml")
                 {
@@ -909,7 +921,7 @@ class Node{
                     if($this->startsWith("media:",$nKey))
                     {
 
-                            $writer->startElement($nKey);
+                        $writer->startElement($nKey);
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
@@ -957,9 +969,9 @@ class Node{
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
 
-                    if($this->startsWith("media:",$nKey))
+                    if($this->startsWith("media:",$nKey) )
                     {
-                            $writer->endElement();
+                        $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
@@ -981,13 +993,17 @@ class Node{
 
 
 
-                }else if($kind == "rss")
+                }
+                else if($kind == "rss")
                 {
 
-
+                    //var $isnewmedia = false;
                     if($this->startsWith("media:",$nKey))
                     {
-                            $writer->startElement($nKey);
+                        //echo ' '.$parentKey.'->'.$nKey.'<br>';
+
+                        $writer->startElement($nKey);
+                         
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
@@ -998,9 +1014,14 @@ class Node{
                             {
 
                             }else
+                            {
                                 $writer->startElement($nKey);
+                            }
+
                         }else if(!is_numeric($nKey) and !array_key_exists(0,$nValue))
-                            $writer->startElement($nKey);
+                           {
+                                $writer->startElement($nKey);
+                           } 
 
 
 
@@ -1030,7 +1051,7 @@ class Node{
 
                    if($this->startsWith("media:",$nKey))
                     {
-                            $writer->endElement();
+                        $writer->endElement();
 
                     }else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
@@ -1055,7 +1076,7 @@ class Node{
 
             }
 
-        }
+        }//End Foreach
 
 
         if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
@@ -1186,11 +1207,14 @@ class Node{
                 if(array_key_exists(0,$template))
                     $template = $template[0];
 
+                //print_r($data);
                 $this->createEmptyChildren($data,$template);
             }
 
         }
 
+        //print_r($data);
+        //die;
         return $data;
     }
 
@@ -1211,6 +1235,7 @@ class Node{
 
         if($data)
         {
+
             foreach($data as $index_record => &$record)
             {
 
@@ -1235,12 +1260,10 @@ class Node{
                             }
                             else
                             {
-                                $key = key($child);
-
-
+                                //$key = key($child);
                                 if($i == 1 and !array_key_exists(0,$data) )
                                     $data[$index_child] = $child;
-                                else
+                                else 
                                     $record[$index_child] = $child;
                             }
 
@@ -1541,7 +1564,7 @@ class Node{
                             unset($nValue[$keynValue]["@value"]);
                             //unset($nValue[0]);
 
-                        } else if( isset( $recordnValue["@value"] ) ){
+                        }else if( isset( $recordnValue["@value"] ) ){
                             if(array_key_exists(0,$nValue))
                               $nValue = $recordnValue["@value"];  
                             else
