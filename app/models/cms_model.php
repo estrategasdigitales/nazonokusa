@@ -701,7 +701,7 @@ class Cms_model extends CI_Model {
         }
 
         public function delete_trabajo( $uid_trabajo ){
-            $this->db->delete($this->db->dbprefix( 'trabajos_categorias' ), array( 'uid_trabajo' => $uid_trabajo ) );
+            //$this->db->delete($this->db->dbprefix( 'trabajos_categorias' ), array( 'uid_trabajo' => $uid_trabajo ) );
             $this->db->delete($this->db->dbprefix( 'trabajos' ), array( 'uid_trabajo' => $uid_trabajo ) );
             //$this->db->cache_delete_all();
             return ( $this->db->affected_rows() > 0 );
