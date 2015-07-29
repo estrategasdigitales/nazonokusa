@@ -665,7 +665,7 @@ class Node{
                             else if ($path == '@attributes[*]')
                                 $last_iteration = $matches[1][0];
                             else
-                                $last_iteration = $matches[1][1];
+                                $last_iteration = $matches[1][count($matches[1])-1];
                         }
 
                         //echo ' PATH_N '. $path . '<br>';
