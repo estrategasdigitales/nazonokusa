@@ -654,12 +654,22 @@ class Node{
                         preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
                         //$last_iteration = $matches[1][0];
-                        //if($this->ESPECIFICO_FORMATO != 'RSS')
-                        //{
-                        //   $last_iteration = $matches[1][0];
-                        //}
-                        //else
+                       
+                        if($this->ESPECIFICO_FORMATO == 'RSS'){
                             $last_iteration = $matches[1][1];
+                        }
+                        else
+                        {
+                            if($path == 'guid[*]')
+                                $last_iteration = $matches[1][0];
+                            else if ($path == '@attributes[*]')
+                                $last_iteration = $matches[1][0];
+                            else
+                                $last_iteration = $matches[1][1];
+                        }
+
+                        //echo ' PATH_N '. $path . '<br>';
+                        //echo ' PATH_P '. $path_parent . '<br>';
 
                         //$last_iteration = $matches[1][count($matches[1])-1];
                         //$last_iteration = intval($last_iteration);
