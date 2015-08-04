@@ -892,17 +892,30 @@ class Node{
                 }else{
                     foreach ($nValue["@attributes"] as $katt => $vatt) {
 
+                        $isOpened = false;
 
                         if(is_numeric($key))
                             $writer->startElement($nKey);
 
 
+
                         foreach ($vatt as $kvatt => $vvatt) {
 
-                            //$writer->startElement($nKey);
+                            $isOpened = false;
+
+                            if($this->startsWith("media:content",$key))
+                            {
+                                $writer->startElement($key);
+                                $isOpened = true;
+                            }
+                                                        
                             $writer->writeAttribute($kvatt, $vvatt);
-                            //$writer->endElement();
+
+                            if($isOpened)
+                                $writer->endElement();
+
                         }
+
 
                         if(is_numeric($key))
                             $writer->endElement();
@@ -928,7 +941,7 @@ class Node{
                 if($kind == "xml")
                 {
 
-                    if($this->startsWith("media:",$nKey))
+                    if($this->startsWith("media:",$nKey) && !$this->startsWith("media:content",$nKey))
                     {
 
                         $writer->startElement($nKey);
@@ -979,7 +992,7 @@ class Node{
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
 
-                    if($this->startsWith("media:",$nKey) )
+                    if($this->startsWith("media:",$nKey) && !$this->startsWith("media:content",$nKey))
                     {
                         $writer->endElement();
 
