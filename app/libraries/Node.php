@@ -836,13 +836,16 @@ class Node{
             {
                 if(!is_numeric($nKey))
                     $writer->startElement($nKey);
+                else
+                    $writer->startElement($key);
+
 
 
                     $writer->writeCData($nValue["@cdata"]);
 
 
-                if(!is_numeric($nKey))
-                    $writer->endElement();
+                //if(!is_numeric($nKey))
+                $writer->endElement();
 
 
             }
@@ -855,7 +858,7 @@ class Node{
 
                     if(!is_numeric($nKey))
                         {
-                            if(!$this->startsWith("media:",$nKey))
+                            if(!$this->startsWith("media:",$nKey) || $this->ESPECIFICO)
                             {
                                 $writer->startElement($nKey);
                                 $isOpened = true;
@@ -863,7 +866,7 @@ class Node{
                         }
                     else{
                         
-                        if(!$this->startsWith("media:",$key))
+                        if(!$this->startsWith("media:",$key) || $this->ESPECIFICO)
                         {
                             $writer->startElement($key);
                             $isOpened = true;
@@ -903,7 +906,7 @@ class Node{
 
                             $isOpened = false;
 
-                            if($this->startsWith("media:content",$key))
+                            if($this->startsWith("media:content",$key) && !$this->ESPECIFICO )
                             {
                                 $writer->startElement($key);
                                 $isOpened = true;
@@ -946,7 +949,14 @@ class Node{
 
                         $writer->startElement($nKey);
 
-                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
+                    }
+                    else if($this->startsWith("guid",$key))
+                    {
+
+                        $writer->startElement($key);
+
+                    }
+                    else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
 
 
@@ -996,7 +1006,11 @@ class Node{
                     {
                         $writer->endElement();
 
-                    }else if(is_numeric($parentKey) and !is_numeric($nKey))
+                    }
+                    else if($this->startsWith("guid",$key)){
+                        $writer->endElement();                      
+                    }
+                    else if(is_numeric($parentKey) and !is_numeric($nKey))
                     {
                         if(count($nValue,1) > 2)
                         {
