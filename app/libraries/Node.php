@@ -1548,7 +1548,9 @@ class Node{
             $writer->setIndent( 4 );
 
             $paths = $this->_getPaths();
-
+            
+            if(sizeof($nodes)==1)
+                $nodes = $nodes[0];
 
             if ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ){
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
@@ -1579,8 +1581,14 @@ class Node{
 
     public function _toJSON( &$nodes ){
 
+         //   print_r($nodes);
+         //   echo 'here';die;
+        if(sizeof($nodes)==1)
+            $nodes = $nodes[0];
+
         foreach ($nodes as $nKey => &$nValue) {
             if ( is_array( $nValue ) and array_key_exists(0,$nValue) ){
+
 
                 foreach($nValue as $keynValue => &$recordnValue)
                 {
