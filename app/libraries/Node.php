@@ -115,7 +115,6 @@ class Node{
                 $return[] = [ "path"=>$i,"order"=>strlen($i), "child" => [] ];
         }
 
-
         return $return;
     }
 
@@ -598,7 +597,6 @@ class Node{
                     $eval = $eval2;// extra
 
 
-
                 if(isset($child["child"]))
                 {
 
@@ -687,8 +685,6 @@ class Node{
                             $eval_template = array_values($eval_template);
                         }elseif(count($eval_template) > 1)
                             array_shift($eval_template);
-
-
 
 
                         $first_node_iteration = explode("[*]",$eval_template[0]);
@@ -1549,8 +1545,21 @@ class Node{
 
             $paths = $this->_getPaths();
             
-            if(sizeof($nodes)==1)
-                $nodes = $nodes[0];
+            $max_indentation = 1;
+            $array_str = print_r($nodes, true);
+            $lines = explode("\n", $array_str);
+            foreach ($lines as $line) {
+                $indentation = (strlen($line) - strlen(ltrim($line))) / 4;
+                if ($indentation > $max_indentation) {
+                    $max_indentation = $indentation;
+                }
+            }
+            $deep = ceil(($max_indentation - 1) / 2) + 1;
+
+            if($deep<=4){
+                if(sizeof($nodes)==1)
+                    $nodes = $nodes[0];
+            }
 
             if ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ){
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
@@ -1581,10 +1590,20 @@ class Node{
 
     public function _toJSON( &$nodes ){
 
-         //   print_r($nodes);
-         //   echo 'here';die;
-        if(sizeof($nodes)==1)
-            $nodes = $nodes[0];
+        $max_indentation = 1;
+        $array_str = print_r($nodes, true);
+        $lines = explode("\n", $array_str);
+        foreach ($lines as $line) {
+            $indentation = (strlen($line) - strlen(ltrim($line))) / 4;
+            if ($indentation > $max_indentation) {
+                $max_indentation = $indentation;
+            }
+        }
+        $deep = ceil(($max_indentation - 1) / 2) + 1;
+        if($deep<=4){
+            if(sizeof($nodes)==1)
+                $nodes = $nodes[0];
+        }
 
         foreach ($nodes as $nKey => &$nValue) {
             if ( is_array( $nValue ) and array_key_exists(0,$nValue) ){
