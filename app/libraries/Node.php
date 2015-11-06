@@ -793,7 +793,8 @@ class Node{
 
         $paths = $this->_getPaths();
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+
+        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
         {
             $writer->startElement($parentKey);
         }
@@ -923,7 +924,7 @@ class Node{
                     if(isset($nValue["@value"]))
                     {
                         if(is_numeric($key) and isset($nValue["@attributes"]))
-                            $writer->startElement($nKey);
+                          $writer->startElement($nKey);
 
 
                         $writer->writeCData($nValue);
@@ -937,8 +938,13 @@ class Node{
             }
             elseif(is_array($nValue) and count($nValue) > 0){
 
-                if($kind == "xml")
+                //if($parentKey == "resources" && $nKey=='resource')
+                //    echo 'KEY ENCONTRADA';
+
+
+                if($kind == "xml" )
                 {
+                    //echo '<br>'.$parentKey.':'.$nKey.'<br>';
 
                     if($this->startsWith("media:",$nKey) && !$this->startsWith("media:content",$nKey))
                     {
@@ -962,9 +968,13 @@ class Node{
                             {
 
                             }else
+                            {
                                 $writer->startElement($nKey);
+                            } 
                         }else if(!is_numeric($nKey) and  !array_key_exists(0,$nValue))
+                        {
                             $writer->startElement($nKey);
+                        }   
 
 
                     }
@@ -982,18 +992,21 @@ class Node{
                         $writer->startElement("resources");
                         $nKey = "resource";
 
-                    }else if($parentKey == "resource")
-                    {
-                        if($key != "resource" or $key == "resource")
-                            $writer->startElement("resource");
                     }
                     elseif(is_numeric($nKey))
                     {
                         if(count($nodes) > 1)
-                            $writer->startElement($parentKey);
+                        {
+                            if($parentKey != "resources" && $nKey != 'resources' && $nKey != 'resource')
+                                $writer->startElement($parentKey);
+                        }
                     }
                     else
-                        $writer->startElement($nKey);
+                    {
+                        if($parentKey != "resources" && $nKey != 'resources' && $nKey != 'resource')
+                            $writer->startElement($nKey);
+                        
+                    }
 
                     $this->_toXML($writer,$nValue,$nKey,$kind);
 
@@ -1020,10 +1033,16 @@ class Node{
 
                     }
                     elseif(!is_numeric($nKey) )
-                        $writer->endElement();
+                    {
+                        if($parentKey != "resources" && $nKey != 'resources' && $nKey != 'resource')
+                        {
+                            $writer->endElement();
+                        }
+                    }
                     elseif(count($nodes) > 1)
-                        $writer->endElement();
-
+                    {
+                            $writer->endElement();
+                    }
 
 
                 }
@@ -1112,7 +1131,7 @@ class Node{
         }//End Foreach
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey))
+        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
         {
             $writer->endElement();
         }
@@ -1557,7 +1576,7 @@ class Node{
             $deep = ceil(($max_indentation - 1) / 2) + 1;
 
             if($deep<=4){
-                if(sizeof($nodes)==1)
+                if(count($nodes)==1)
                     $nodes = $nodes[0];
             }
 
@@ -1576,8 +1595,12 @@ class Node{
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
-            }else
-                $this->_toXML( $writer, $nodes, 'resources', 'xml' );
+            }
+            else
+            {
+                if($this->isHeader != true)
+                    $this->_toXML( $writer, $nodes, 'resources', 'xml' );
+            }
 
 
             if(!$paths["path"])
