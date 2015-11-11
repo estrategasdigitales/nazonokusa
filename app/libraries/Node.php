@@ -662,8 +662,10 @@ class Node{
                                 $last_iteration = $matches[1][0];
                             else if ($path == '@attributes[*]')
                                 $last_iteration = $matches[1][0];
+                            else if ($path == 'resource[*]')
+                                $last_iteration = $matches[1][0];
                             else
-                                $last_iteration = $matches[1][count($matches[1])-1];
+                                $last_iteration = $matches[1][1];
                         }
 
                         //echo ' PATH_N '. $path . '<br>';
@@ -794,10 +796,10 @@ class Node{
         $paths = $this->_getPaths();
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
+        /*if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
         {
             $writer->startElement($parentKey);
-        }
+        }*/
 
 
         foreach ($nodes as $nKey => $nValue) {
@@ -982,6 +984,8 @@ class Node{
                     {
                         $this->isHeader = true;
 
+                        $writer->startElement("resources");
+
                         $writer->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
                         $writer->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
                         $writer->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
@@ -989,8 +993,9 @@ class Node{
                         $writer->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
                         $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
 
-                        $writer->startElement("resources");
+                        
                         $nKey = "resource";
+                        $writer->startElement($nKey);
 
                     }
                     elseif(is_numeric($nKey))
@@ -1039,7 +1044,7 @@ class Node{
                             $writer->endElement();
                         }
                     }
-                    elseif(count($nodes) > 1)
+                    elseif(count($nodes) > 1 /*&& $nKey != "resources"*/)
                     {
                             $writer->endElement();
                     }
@@ -1131,10 +1136,10 @@ class Node{
         }//End Foreach
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
+        /*if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
         {
             $writer->endElement();
-        }
+        }*/
 
     }
 
@@ -1245,7 +1250,11 @@ class Node{
 
         $input    = $this->_getINPUT();
 
+        //print_r($input);die;
+
         $data = $this->__do($paths,$input);
+
+        //print_r($data);die;
 
         if($this->isTemplate)
         {
@@ -1564,7 +1573,7 @@ class Node{
 
             $paths = $this->_getPaths();
             
-            $max_indentation = 1;
+            /*$max_indentation = 1;
             $array_str = print_r($nodes, true);
             $lines = explode("\n", $array_str);
             foreach ($lines as $line) {
@@ -1578,7 +1587,9 @@ class Node{
             if($deep<=4){
                 if(count($nodes)==1)
                     $nodes = $nodes[0];
-            }
+            }*/
+
+            //print_r($nodes);die;
 
             if ( ( $key == "resources" or $key == "resource" ) and  $this->isTemplate ){
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
