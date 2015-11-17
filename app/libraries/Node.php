@@ -423,6 +423,7 @@ class Node{
     private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
     {
         $node = $paths;
+        $path = '';
 
         if($id_path > 0)
         {
@@ -442,10 +443,10 @@ class Node{
                     $node = ["path" => "", "child" => $node  ] ;
             }else
             {
-                 if(array_key_exists(0,$node))
-                     $node = $node[0];
-
-
+                if(array_key_exists(0,$node))
+                    {
+                         $node = $node[0];
+                    }
                     $path = $node["path"];
             }
 
@@ -560,8 +561,9 @@ class Node{
                         $eval2 = $property_eval."['".$i."']";
                     else
                         $eval2 = $property_eval."['0']['".$i."']";
-                }else
-                    $eval2 = $property_eval."['".$i."']";// extra
+                }
+                //else
+                //    $eval2 = $property_eval."['".$i."']";// extra
             }else
             {
                 if(!is_numeric($i))
@@ -797,10 +799,10 @@ class Node{
         $paths = $this->_getPaths();
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
-        {
-            $writer->startElement($parentKey);
-        }
+        //if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
+        //{
+        //    $writer->startElement($parentKey);
+        //}
 
 
         foreach ($nodes as $nKey => $nValue) {
@@ -1125,11 +1127,10 @@ class Node{
         }//End Foreach
 
 
-        if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
-        {
-           $writer->endElement(); 
-
-        }
+        //if(($parentKey == "resources") and count($nodes) > 1 and !is_numeric($parentKey) )
+        //{
+        //   $writer->endElement(); 
+        //}
 
     }
 
@@ -1236,8 +1237,7 @@ class Node{
     public function getData()
     {
         $paths = $this->_getPaths();
-
-        $input    = $this->_getINPUT();
+        $input = $this->_getINPUT();
 
         //print_r($input);die;
 
@@ -1541,7 +1541,7 @@ class Node{
             {
                 $this->_toXML( $writer, $nodes, $key, 'xml' );
             } 
-            else if(!$paths["path"]) {
+            else if( !isset($paths["path"] ) ) {
 
                 $this->isHeader = true;
                 $writer->startElement("resources");
@@ -1563,22 +1563,21 @@ class Node{
             }
 
             
-            if(!$paths["path"])
+            if(!isset($paths["path"]))
                 $writer->endElement();
             
             $writer->endDocument();
             $writer->flush();
 
-            /*$final = file_get_contents($file);
-            $final = $final.substr($final, 0 , 12 + strpos($final, "</resources>") );
-            file_put_contents($file, $final,FILE_USE_INCLUDE_PATH);*/
             $fh = fopen($file,'r');
             $final = fread($fh, filesize($file));
-            $final = substr($final, 0 , 12 + strpos($final, "</resources>") );
-            fclose($fh);
 
-            $fh = fopen($file,'w+') or die("can't open file");
-            fwrite($fh, $final);
+            if(strpos($final, "</resources>")>24){
+                $final = substr($final, 0 , strpos($final, "</resources>") + 12 );
+                fclose($fh);
+                $fh = fopen($file,'w+') or die("can't open file");
+                fwrite($fh, $final);
+            }     
             fclose($fh);
     }
 
@@ -1638,6 +1637,9 @@ class Node{
     }
 
     public function toJSON( $data = [], $file = 'json.json', $function = '' ){
+
+        //print_r($data);
+
         $this->_toJSON($data);
         if ( ! empty ( $function ) )
             $json = $function . '('. json_encode( $data ) .')';
