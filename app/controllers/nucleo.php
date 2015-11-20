@@ -12,7 +12,8 @@ class Nucleo extends CI_Controller {
         $this->load->model( 'cms_model', 'cms' );
     }
 
-    public function jsonp_decode($jsonp, $assoc = false) { // PHP 5.3 adds depth as third parameter to json_decode
+    public function jsonp_decode($jsonp, $assoc = false) { 
+    // PHP 5.3 adds depth as third parameter to json_decode
         if($jsonp[0] !== '[' && $jsonp[0] !== '{') { // we have JSONP
             $jsonp = substr($jsonp, strpos($jsonp, '('));
         }
@@ -52,7 +53,7 @@ class Nucleo extends CI_Controller {
         $feed_salida = $this->cms->get_template_feed( $template );
         if ( $feed_salida != FALSE ){
 
-            echo base_url() . $feed_salida->json_estructura;
+            echo /*base_url() .*/ $feed_salida->json_estructura;
         } else {
             echo '<span class="error">Ocurrió un problema al intentar <b>cargar el template de salida</b>. </span>';
         }
@@ -128,12 +129,14 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
 
-        if ( $feed = jsonp_decode( $url,true ) ){
+        if ( $feed = jsonp_decode( $url,true) ){
 
+            
             if($isVariable)
                 $feed = $feed[0];
 
             $cont[] = $this->mapAttributes( $feed  );
+
             $contents = $this->array_unique_multidimensional( $cont );
             $indices = create_indexes_specific( $contents );
         } else {
@@ -279,12 +282,11 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
         if ( $feed = jsonp_decode( $url ) ){
+            
+            $url = utf8_decode($url);
             $contenido_feed = jsonp_decode( $url );
-
-            if($isVariable)
-                $contenido_feed = $contenido_feed[0];
-
-        } else {
+        } 
+        else {
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
                 $feed = substr( $url, $pos + 1, -1 );
@@ -372,6 +374,8 @@ class Nucleo extends CI_Controller {
     public function mapAttributes( $feed ){
         $campos_orig 	= is_array($feed) ? $feed : jsonp_decode( $feed, TRUE );
 
+        //print_r($campos_orig );die;
+
         if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
             unset($campos_orig["@attributes"]);
         $campos 		= [];
@@ -397,6 +401,7 @@ class Nucleo extends CI_Controller {
                 }
             }
         } else {
+
             foreach ( $campos_orig as $key => $value ){
                 if ( is_object( $value ) ){
                     $value = get_object_vars( $value );
