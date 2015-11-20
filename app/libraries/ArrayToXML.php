@@ -1,136 +1,164 @@
 <?php
-// Based on: http://stackoverflow.com/questions/99350/passing-php-associative-arrays-to-and-from-xml
-class ArrayToXML {
-    private $version;
-    private $encoding;
+/**
+ * Array2XML: A class to convert array in PHP to XML
+ * It also takes into account attributes names unlike SimpleXML in PHP
+ * It returns the XML in form of DOMDocument class for further manipulation.
+ * It throws exception if the tag name or attribute name has illegal chars.
+ *
+ * Author : Lalit Patel
+ * Website: http://www.lalit.org/lab/convert-php-array-to-xml-with-attributes
+ * License: Apache License 2.0
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ * Version: 0.1 (10 July 2011)
+ * Version: 0.2 (16 August 2011)
+ *          - replaced htmlentities() with htmlspecialchars() (Thanks to Liel Dulev)
+ *          - fixed a edge case where root node has a false/null/0 value. (Thanks to Liel Dulev)
+ * Version: 0.3 (22 August 2011)
+ *          - fixed tag sanitize regex which didn't allow tagnames with single character.
+ * Version: 0.4 (18 September 2011)
+ *          - Added support for CDATA section using @cdata instead of @value.
+ * Version: 0.5 (07 December 2011)
+ *          - Changed logic to check numeric array indices not starting from 0.
+ * Version: 0.6 (04 March 2012)
+ *          - Code now doesn't @cdata to be placed in an empty array
+ * Version: 0.7 (24 March 2012)
+ *          - Reverted to version 0.5
+ * Version: 0.8 (02 May 2012)
+ *          - Removed htmlspecialchars() before adding to text node or attributes.
+ *
+ * Usage:
+ *       $xml = Array2XML::createXML('root_node_name', $php_array);
+ *       echo $xml->saveXML();
+ */
 
-    /*
-     * Construct ArrayToXML object with selected version and encoding
-     *
-     * for available values check XmlWriter docs http://www.php.net/manual/en/function.xmlwriter-start-document.php
-     * @param string $xml_version XML Version, default 1.0
-     * @param string $xml_encoding XML Encoding, default UTF-8
+class Array2XML {
+
+    private static $xml = null;
+    private static $encoding = 'UTF-8';
+
+    /**
+     * Initialize the root XML node [optional]
+     * @param $version
+     * @param $encoding
+     * @param $format_output
      */
-    public function __construct($xmlVersion = '1.0', $xmlEncoding = 'UTF-8') {
-        $this->version = $xmlVersion;
-        $this->encoding = $xmlEncoding;
+    public static function init($version = '1.0', $encoding = 'UTF-8', $format_output = true) {
+        self::$xml = new DomDocument($version, $encoding);
+        self::$xml->formatOutput = $format_output;
+        self::$encoding = $encoding;
     }
 
     /**
-     * Build an XML Data Set
-     *
-     * @param array $data Associative Array containing values to be parsed into an XML Data Set(s)
-     * @param string $startElement Root Opening Tag, default data
-     * @return string XML String containig values
-     * @return mixed Boolean false on failure, string XML result on success
+     * Convert an Array to XML
+     * @param string $node_name - name of the root node to be converted
+     * @param array $arr - aray to be converterd
+     * @return DomDocument
      */
-    public function buildXML($data, $startElement = 'data'){
-        if(!is_array($data)){
-            $err = 'Invalid variable type supplied, expected array not found on line '.__LINE__." in Class: ".__CLASS__." Method: ".__METHOD__;
-            trigger_error($err);
-            //if($this->_debug) echo $err;
-            return false; //return false error occurred
-        }
-        $xml = new XmlWriter();
-        $xml->openMemory();
-        $xml->startDocument($this->version, $this->encoding);
-        $xml->startElement($startElement);
+    public static function &createXML($node_name, $arr=array()) {
+        $xml = self::getXMLRoot();
+        $xml->appendChild(self::convert($node_name, $arr));
 
-            $xml->writeAttribute( 'xmlns:content', 'http://purl.org/rss/1.0/modules/content/' );
-            $xml->writeAttribute( 'xmlns:media', 'http://search.yahoo.com/mrss/' );
-            $xml->writeAttribute( 'xmlns:atom','http://www.w3.org/2005/Atom' );
-
-            $xml->writeAttribute( 'xmlns:itunes','http://www.itunes.com/dtds/podcast-1.0.dtd' );
-            $xml->writeAttribute( 'xmlns:slash','http://purl.org/rss/1.0/modules/slash/' );
-            $xml->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
-
-
-        $this->writeEl($xml, $data);
-
-        $xml->endElement();//write end element
-        //returns the XML results
-        return $xml->outputMemory(true);
+        self::$xml = null;    // clear the xml node in the class for 2nd time use.
+        return $xml;
     }
 
     /**
-     * Write keys in $data prefixed with @ as XML attributes, if $data is an array.
-     * When an @ prefixed key is found, a '%' key is expected to indicate the element itself,
-     * and '#' prefixed key indicates CDATA content
-     *
-     * @param object $xml XMLWriter Object
-     * @param array $data with attributes filtered out
+     * Convert an Array to XML
+     * @param string $node_name - name of the root node to be converted
+     * @param array $arr - aray to be converterd
+     * @return DOMNode
      */
-    protected function writeAttr(XMLWriter $xml, $data) {
-        if(is_array($data)) {
-            $nonAttributes = array();
-            foreach($data as $key => $val) {
+    private static function &convert($node_name, $arr=array()) {
 
-                //handle an attribute with elements
-                if($key[0] == '@attributes') {  // if($key[0] == '@') {
-                    $xml->writeAttribute(substr($key, 1), $val);
-                } else if($key[0] == '%') {
-                    if(is_array($val)) $nonAttributes = $val;
-                    else $xml->text($val);
-                } elseif($key == '@cdata') {  // if($key[0] == '#') {
-                    if(is_array($val)) $nonAttributes = $val;
-                    else {
-                        //$xml->startElement(substr($key, 1));
-                        $xml->writeCData($val);
-                        //$xml->endElement();
+        //print_arr($node_name);
+        $xml = self::getXMLRoot();
+        $node = $xml->createElement($node_name);
+
+        if(is_array($arr)){
+            // get the attributes first.;
+            if(isset($arr['@attributes'])) {
+                foreach($arr['@attributes'] as $key => $value) {
+                    if(!self::isValidTagName($key)) {
+                        throw new Exception('[Array2XML] Illegal character in attribute name. attribute: '.$key.' in node: '.$node_name);
                     }
-                }elseif($val == "")
-                {
-                    $xml->startElement($key);
-                    $xml->writeCData($val);
-                    $xml->endElement();
+                    $node->setAttribute($key, self::bool2str($value));
                 }
-                //ignore normal elements
-                else $nonAttributes[$key] = $val;
+                unset($arr['@attributes']); //remove the key from the array once done.
             }
-            return $nonAttributes;
-        }
-        else return $data;
-    }
 
-    /**
-     * Write XML as per Associative Array
-     *
-     * @param object $xml XMLWriter Object
-     * @param array $data Associative Data Array
-     */
-    protected function writeEl(XMLWriter $xml, $data) {
-        foreach($data as $key => $value) {
-            if(is_array($value) && !$this->isAssoc($value)) { //numeric array
-                foreach($value as $itemValue){
-                    if(is_array($itemValue)) {
-                        $xml->startElement($key);
-                        $itemValue = $this->writeAttr($xml, $itemValue);
-                        $this->writeEl($xml, $itemValue);
-                        $xml->endElement();
-                    } else {
-                        $itemValue = $this->writeAttr($xml, $itemValue);
-                        $xml->writeElement($key, "$itemValue");
-                    }
-                }
-            } else if(is_array($value)) { //associative array
-                $xml->startElement($key);
-                $value = $this->writeAttr($xml, $value);
-                $this->writeEl($xml, $value);
-                $xml->endElement();
-            } else { //scalar
-                $value = $this->writeAttr($xml, $value);
-                $xml->writeElement($key, "$value");
+            // check if it has a value stored in @value, if yes store the value and return
+            // else check if its directly stored as string
+            if(isset($arr['@value'])) {
+                $node->appendChild($xml->createTextNode(self::bool2str($arr['@value'])));
+                unset($arr['@value']);    //remove the key from the array once done.
+                //return from recursion, as a note with value cannot have child nodes.
+                return $node;
+            } else if(isset($arr['@cdata'])) {
+                $node->appendChild($xml->createCDATASection(self::bool2str($arr['@cdata'])));
+                unset($arr['@cdata']);    //remove the key from the array once done.
+                //return from recursion, as a note with cdata cannot have child nodes.
+                return $node;
             }
         }
+
+        //create subnodes using recursion
+        if(is_array($arr)){
+            // recurse to get the node for that key
+            foreach($arr as $key=>$value){
+                if(!self::isValidTagName($key)) {
+                    throw new Exception('[Array2XML] Illegal character in tag name. tag: '.$key.' in node: '.$node_name);
+                }
+                if(is_array($value) && is_numeric(key($value))) {
+                    // MORE THAN ONE NODE OF ITS KIND;
+                    // if the new array is numeric index, means it is array of nodes of the same kind
+                    // it should follow the parent key name
+                    foreach($value as $k=>$v){
+                        $node->appendChild(self::convert($key, $v));
+                    }
+                } else {
+                    // ONLY ONE NODE OF ITS KIND
+                    $node->appendChild(self::convert($key, $value));
+                }
+                unset($arr[$key]); //remove the key from the array once done.
+            }
+        }
+
+        // after we are done with all the keys in the array (if it is one)
+        // we check if it has any text value, if yes, append it.
+        if(!is_array($arr)) {
+            $node->appendChild($xml->createTextNode(self::bool2str($arr)));
+        }
+
+        return $node;
     }
 
     /*
-     * Check if array is associative with string based keys
-     * FROM: http://stackoverflow.com/questions/173400/php-arrays-a-good-way-to-check-if-an-array-is-associative-or-sequential/4254008#4254008
-     *
-     * @param array $array Array to check
+     * Get the root XML node, if there isn't one, create it.
      */
-    protected function isAssoc($array) {
-        return (bool)count(array_filter(array_keys($array), 'is_string'));
+    private static function getXMLRoot(){
+        if(empty(self::$xml)) {
+            self::init();
+        }
+        return self::$xml;
+    }
+
+    /*
+     * Get string representation of boolean value
+     */
+    private static function bool2str($v){
+        //convert boolean to text value.
+        $v = $v === true ? 'true' : $v;
+        $v = $v === false ? 'false' : $v;
+        return $v;
+    }
+
+    /*
+     * Check if the tag name or attribute name contains illegal characters
+     * Ref: http://www.w3.org/TR/xml/#sec-common-syn
+     */
+    private static function isValidTagName($tag){
+        $pattern = '/^[a-z_]+[a-z0-9\:\-\.\_]*[^:]*$/i';
+        return preg_match($pattern, $tag, $matches) && $matches[0] == $tag;
     }
 }
+?>
