@@ -12,8 +12,7 @@ class Nucleo extends CI_Controller {
         $this->load->model( 'cms_model', 'cms' );
     }
 
-    public function jsonp_decode($jsonp, $assoc = false) { 
-    // PHP 5.3 adds depth as third parameter to json_decode
+    public function jsonp_decode($jsonp, $assoc = false) { // PHP 5.3 adds depth as third parameter to json_decode
         if($jsonp[0] !== '[' && $jsonp[0] !== '{') { // we have JSONP
             $jsonp = substr($jsonp, strpos($jsonp, '('));
         }
@@ -53,7 +52,7 @@ class Nucleo extends CI_Controller {
         $feed_salida = $this->cms->get_template_feed( $template );
         if ( $feed_salida != FALSE ){
 
-            echo /*base_url() .*/ $feed_salida->json_estructura;
+            echo base_url() . $feed_salida->json_estructura;
         } else {
             echo '<span class="error">Ocurrió un problema al intentar <b>cargar el template de salida</b>. </span>';
         }
@@ -79,11 +78,11 @@ class Nucleo extends CI_Controller {
             redirect('login');
         }else {
             $trabajo = $this->cms->get_trabajo_editar( $uid_trabajo );
-            $data['usuario']    	= $this->session->userdata( 'nombre' );
-            $data['categorias'] 	= $this->cms->get_categorias();
-            $data['verticales'] 	= $this->cms->get_verticales();
+            $data['usuario']        = $this->session->userdata( 'nombre' );
+            $data['categorias']     = $this->cms->get_categorias();
+            $data['verticales']     = $this->cms->get_verticales();
             $data['trabajo_editar'] = $trabajo->uid_trabajo;
-            $data['cron_date'] 		= jsonp_decode( $trabajo->cron_config, true );
+            $data['cron_date']      = jsonp_decode( $trabajo->cron_config, true );
             $this->load->view( 'cms/admin/editar_trabajo', $data );
         }
     }
@@ -129,14 +128,12 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
 
-        if ( $feed = jsonp_decode( $url,true) ){
+        if ( $feed = jsonp_decode( $url,true ) ){
 
-            
             if($isVariable)
                 $feed = $feed[0];
 
             $cont[] = $this->mapAttributes( $feed  );
-
             $contents = $this->array_unique_multidimensional( $cont );
             $indices = create_indexes_specific( $contents );
         } else {
@@ -282,11 +279,15 @@ class Nucleo extends CI_Controller {
             $url = html_entity_decode( $url );
         }
         if ( $feed = jsonp_decode( $url ) ){
-            
-            $url = utf8_decode($url);
+
+            if($isVariable)
+            {
+                $url = utf8_decode($url);
+            }    
+
             $contenido_feed = jsonp_decode( $url );
-        } 
-        else {
+
+        } else {
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
                 $feed = substr( $url, $pos + 1, -1 );
@@ -339,9 +340,9 @@ class Nucleo extends CI_Controller {
      */
     public function job_process(){
         $this->load->model( 'netstorage_model','storage' );
-        $job['status'] 	= $this->input->post( 'status' );
-        $job['uidjob'] 	= base64_decode( $this->input->post('uidjob') );
-        $process 		= $this->cms->active_job( $job );
+        $job['status']  = $this->input->post( 'status' );
+        $job['uidjob']  = base64_decode( $this->input->post('uidjob') );
+        $process        = $this->cms->active_job( $job );
         $response = TRUE;
 
         if ( $process == TRUE ){
@@ -372,14 +373,12 @@ class Nucleo extends CI_Controller {
      * @return [type]       [description]
      */
     public function mapAttributes( $feed ){
-        $campos_orig 	= is_array($feed) ? $feed : jsonp_decode( $feed, TRUE );
-
-        //print_r($campos_orig );die;
+        $campos_orig    = is_array($feed) ? $feed : jsonp_decode( $feed, TRUE );
 
         if(count($campos_orig) > 1 and isset($campos_orig["@attributes"]))
             unset($campos_orig["@attributes"]);
-        $campos 		= [];
-        $items 			= count( $campos_orig );
+        $campos         = [];
+        $items          = count( $campos_orig );
         if ( ! empty( $campos_orig[0] ) ){
             for ( $i = 0; $i < count( $campos_orig ); $i++ ){
                 foreach ( $campos_orig[$i] as $key => $value ){
@@ -401,7 +400,6 @@ class Nucleo extends CI_Controller {
                 }
             }
         } else {
-
             foreach ( $campos_orig as $key => $value ){
                 if ( is_object( $value ) ){
                     $value = get_object_vars( $value );
@@ -464,25 +462,25 @@ class Nucleo extends CI_Controller {
             if ( $this->form_validation->run() === TRUE ){
 
 
-                $trabajo['usuario'] 			= $this->session->userdata( 'uid' );
-                $trabajo['nombre']   			= $this->input->post( 'nombre' );
-                $trabajo['slug_nombre_feed']	= url_title( $this->input->post( 'nombre' ), 'dash', TRUE );
-                $trabajo['url-origen']   		= $this->input->post( 'url-origen' );
-                $trabajo['categoria']   		= $this->input->post( 'categoria' );
-                $trabajo['vertical']   			= $this->input->post( 'vertical' );
-                $trabajo['campos']				= $this->input->post( 'claves' );
-                $trabajo['tipo_salida']			= $this->input->post( 'tipo_salida' );
+                $trabajo['usuario']             = $this->session->userdata( 'uid' );
+                $trabajo['nombre']              = $this->input->post( 'nombre' );
+                $trabajo['slug_nombre_feed']    = url_title( $this->input->post( 'nombre' ), 'dash', TRUE );
+                $trabajo['url-origen']          = $this->input->post( 'url-origen' );
+                $trabajo['categoria']           = $this->input->post( 'categoria' );
+                $trabajo['vertical']            = $this->input->post( 'vertical' );
+                $trabajo['campos']              = $this->input->post( 'claves' );
+                $trabajo['tipo_salida']         = $this->input->post( 'tipo_salida' );
                 if ( $this->input->post( 'tipo_salida' ) == 2 )
-                    $trabajo['uid_plantilla']		= $this->input->post( 'formato_especifico' );
+                    $trabajo['uid_plantilla']       = $this->input->post( 'formato_especifico' );
                 $trabajo['campos_seleccionados'] = ($this->input->post( 'campos_seleccionados' ));
                 if ( $this->input->post('tipo_salida') == 1 ){
-                    $trabajo['formatos']			= formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
+                    $trabajo['formatos']            = formatos_output_seleccionados( $this->input->post('formato'), $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss') );
                 }
-                //$trabajo['feeds_output']		= conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
-                $trabajo['cron_config']			= $cronjob_config;
+                //$trabajo['feeds_output']      = conversion_feed_output( $this->input->post('formato'), $trabajo['json_output'], $this->input->post('nom_funcion'), $this->input->post('valores_rss'), $this->input->post('claves_rss'), $this->url_storage, $trabajo['usuario'], $trabajo['categoria'], $trabajo['vertical'], $trabajo['slug_nombre_feed'] );
+                $trabajo['cron_config']         = $cronjob_config;
 
-                //$trabajo 						= $this->security->xss_clean( $trabajo );
-                $guardar 						= $this->cms->add_trabajo( $trabajo );
+                //$trabajo                      = $this->security->xss_clean( $trabajo );
+                $guardar                        = $this->cms->add_trabajo( $trabajo );
                 if ( $guardar !== FALSE ){
                     echo TRUE;
                 } else {

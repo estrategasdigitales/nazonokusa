@@ -1363,7 +1363,7 @@ class Node{
             //echo 'KEY: '.$key.'<br>';
             $openResources = true;
 
-            if($nodes['resources'])
+            if(isset($nodes['resources']))
                 if(is_array($nodes['resources']) && count($nodes['resources']) ==1 )
                     $openResources = false;
 
