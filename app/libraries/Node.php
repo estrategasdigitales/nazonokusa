@@ -1385,21 +1385,26 @@ class Node{
             $xpath       = new DOMXPath($doc);
             $resources   = $xpath->evaluate("/resources")->item(0);
             
+            $keyname     = 'resource';
+
+
             $domElemsToRemove = array();
             foreach ($resources->childNodes as $resource) {
-                if($resource->nodeName!='resources' && $resource->nodeName!='resource' and $resource->nodeType==1)
+                if($resource->nodeName!='resources' && $resource->nodeName!=$keyname and $resource->nodeType==1)
                 {
-                    //echo 'Remove: '.$resource->nodeName.'<br>';
+                    if($resource->nodeName=='mxm')
+                        $keyname = 'mxm';
+                    
                     $domElemsToRemove[] = $resource;
                 }
             }
 
             if(count($domElemsToRemove)>0){
-                $newresource = $doc->createElement('resource');
+                $newresource = $doc->createElement($keyname);
                 $resources->appendChild($newresource);           
 
                 foreach ($resources->childNodes as $resource) {
-                    if($resource->nodeName!='resource' and $resource->nodeType==1)
+                    if($resource->nodeName!=$keyname and $resource->nodeType==1)
                     {
                         //echo 'Move: '.$resource->nodeName.'<br>';
                         $xpath->evaluate("/resources")->item(0)->lastChild->appendChild($resource->cloneNode(true));                    
