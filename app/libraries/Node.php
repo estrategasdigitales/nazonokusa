@@ -1361,13 +1361,20 @@ class Node{
             $paths = $this->_getPaths();
 
             //echo 'KEY: '.$key.'<br>';
-            
+            $openResources = true;
+
+            if($nodes['resources'])
+                if(is_array($nodes['resources']) && count($nodes['resources']) ==1 )
+                    $openResources = false;
+
             //if($key!='resources')
+            if($openResources)
                 $writer->startElement("resources");
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
             //if($key!='resources')
+            if($openResources)
                 $writer->endElement();
 
             $writer->endDocument();
