@@ -649,6 +649,7 @@ class Node{
                         $return = $record;
                     $return = str_replace('"','\"',$return);
 
+
                     // when set template!!!
                     //if($child["path"].".".$child["key"] != $child["value"] and $child["path"] != "")
                     if($this->ESPECIFICO)
@@ -658,34 +659,9 @@ class Node{
 
                         preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
-                        //$last_iteration = $matches[1][0];
-                       
-                        if($this->ESPECIFICO_FORMATO == 'RSS'){
-                            $last_iteration = $matches[1][1];
-                        }
-                        else
-                        {
-                            if($path == 'guid[*]')
-                                $last_iteration = $matches[1][0];
-                            else if ($path == '@attributes[*]')
-                                $last_iteration = $matches[1][0];
-                            else if ($path == 'attributes[*]')
-                                $last_iteration = $matches[1][0];
-                            else
-                                $last_iteration = $matches[1][count($matches[1])-1];
+                        $last_iteration = $matches[1][count($matches[1])-1];
 
-                        }
-
-                        //echo ' PATH_N '. $path . '<br>';
-                        //echo ' PATH_P '. $path_parent . '<br>';
-
-                        //$last_iteration = $matches[1][count($matches[1])-1];
-                        //$last_iteration = intval($last_iteration);
-
-                        //resource[*].attributes[*].pubDate
                         $eval_template = explode(".",$child["value"]);
-
-
 
                         $key_eval_template = array_search('item[*]', $eval_template);
 
@@ -700,70 +676,61 @@ class Node{
                         $first_node_iteration = explode("[*]",$eval_template[0]);
                         $first_node_iteration = $first_node_iteration[0];
 
-                       /*
-                        if(isset($output[$first_node_iteration]))
-                            $total_childs  = count($output[$first_node_iteration]);
-                        else
-                            $total_childs = 0;
-                        */
 
                         $current_iteration = $last_iteration;
 
-                        /*
-                        if($last_iteration!=$total_childs)
-                            $current_iteration = $total_childs + $last_iteration;
-
-                        */
 
                         foreach($eval_template as $eval_template_value => $eval_template_record)
                         {
 
                             $eval_template_record = explode("[*]",$eval_template_record);
 
-
+                            
                             if($eval_template_record[0] == "item")
                             {
 
                             }
-                            elseif(($this->isJsonVariable or $this->ESPECIFICO_FORMATO == "RSS" or $this->ESPECIFICO_FORMATO == "JSON" ))
+                            elseif($this->ESPECIFICO)
                             {
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
-
                                 $eval_template_record = implode("",$n_eval_template_record);
 
-                            }elseif( $eval_template_record > 1  or $this->isJsonVariable)
+                            }
+                            elseif( $eval_template_record > 1 )
                             {
 
 
                                 $eval_template_record[0] = "['".$eval_template_record[0]."']";
                                 $eval_template_record[1] = "[*]";
                                 $eval_template_record = implode("",$eval_template_record);
-                            }else
+                            }
+                            else
                             {
                                 $eval_template_record = "['".$eval_template_record[0]."']";
                             }
-
+                            
 
                             if($eval_template_value == 0)
                             {
-
-                                $eval_template[$eval_template_value] = str_replace("*",$current_iteration,$eval_template_record);
+                                $eval_template[$eval_template_value] = str_replace("*",$last_eval_template,$eval_template_record);
                             }
                             else
                                 $eval_template[$eval_template_value] = str_replace("*",0,$eval_template_record);
+                            
+
                         }
 
                         //resource[0].attributes[0].pubDate
 
                         $eval_template = implode("",$eval_template);
-
                         $eval_template = explode("[*]",$eval_template);
                         $eval_template = implode("",$eval_template);
 
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
 
-                    }else
+                    }
+                    else
                     {
 
                         $key = explode("[*]",$key);
@@ -1139,6 +1106,7 @@ class Node{
                 unset($_child[$key]);
             }
         }
+
     }
 
     public function getDataFixed()
@@ -1394,7 +1362,7 @@ class Node{
                 {
                     if($resource->nodeName=='mxm')
                         $keyname = 'mxm';
-                    
+
                     $domElemsToRemove[] = $resource;
                 }
             }
