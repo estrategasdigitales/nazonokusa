@@ -406,8 +406,14 @@ $cron_diasemana = $cron_config[4];
 
 
 		<script type="text/javascript">
-			cargar_campos_estandar();
-			checkeds = '<?php echo $feed1?>';
+		$(document).ready(function(){
+			setTimeout(function(){
+				cargar_campos_estandar();
+				checkeds = '<?php echo $feed1?>';	
+			},1000);
+			
+		});
+			
 		</script>
 
 	<?php echo form_close(); ?>

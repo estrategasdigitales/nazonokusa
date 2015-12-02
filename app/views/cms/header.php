@@ -73,10 +73,13 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.form.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/extjs/ext-all.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/init-tree-alquimia.js"></script>
+
+	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/base64_encode.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>js/serialize.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/tree-f2.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/middleware.js"></script>
+
 
     <script type="text/javascript">
 
