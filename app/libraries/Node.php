@@ -423,7 +423,7 @@ class Node{
     }
 
 
-    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
+    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = 0)
     {
         $node = $paths;
         $path = '';
@@ -615,9 +615,12 @@ class Node{
                     if(!$this->isJson and count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
 
-                    $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
+                    //echo 'Se llama a __do <br>';
+
+                    $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$last_eval_template++);
                 }else
                 {
+
                     if(count($node["child"]) == 1)
                     {
                         $last_eval = $eval; // extra
@@ -627,6 +630,7 @@ class Node{
 
                         if(is_numeric($is_number))
                         {
+                            $last_eval_template = $out[1];
                             array_pop($out[1]);
                             $last_eval = preg_replace('/\[\'[(0-9a-z:. )]\'\]$/',"",$last_eval);
                         }
@@ -692,31 +696,34 @@ class Node{
                             }
                             elseif($this->ESPECIFICO)
                             {
+                                //echo 'O1';
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
                                 $eval_template_record = implode("",$n_eval_template_record);
+                                //echo "$eval_template_record <br>";
 
                             }
                             elseif( $eval_template_record > 1 )
                             {
-
-
+                                //echo 'O2';
                                 $eval_template_record[0] = "['".$eval_template_record[0]."']";
                                 $eval_template_record[1] = "[*]";
                                 $eval_template_record = implode("",$eval_template_record);
                             }
                             else
                             {
+                                //echo 'O3';
                                 $eval_template_record = "['".$eval_template_record[0]."']";
                             }
                             
 
-                            if($eval_template_value == 0)
-                            {
+                            //if($eval_template_value == 0)
+                            //{
                                 $eval_template[$eval_template_value] = str_replace("*",$last_eval_template,$eval_template_record);
-                            }
-                            else
-                                $eval_template[$eval_template_value] = str_replace("*",0,$eval_template_record);
+                                //echo "$eval_template_record : $last_eval_template : $last_eval_template : $eval_template[$eval_template_value] <br>";
+                            //}
+                            //else
+                            //    $eval_template[$eval_template_value] = str_replace("*",0,$eval_template_record);
                             
 
                         }
@@ -726,6 +733,8 @@ class Node{
                         $eval_template = implode("",$eval_template);
                         $eval_template = explode("[*]",$eval_template);
                         $eval_template = implode("",$eval_template);
+
+                        //echo "\$output$eval_template = \"$return\";";
 
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
 

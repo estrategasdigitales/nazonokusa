@@ -211,18 +211,21 @@ class Nucleo extends CI_Controller {
             if($isVariable)
                 $feed = $feed[0];
 
-
-            foreach ( $feed as $item ){
+            /*foreach ( $feed as $item ){
                 if ( is_array( $item ) && count( $item ) == 1 )
                     $item = (array)$item[0];
                 else
                     $item = json_encode( $item );
+                
+                $cont[] = $this->mapAttributes( $item );
+            }*/
 
-                $cont[] = $this->mapAttributes( $item  );
-            }
+            $cont[] = $this->mapAttributes( (array)$feed  );
+
             $contents = $this->array_unique_multidimensional( $cont );
             $indices = create_indexes_specific( $contents );
         } else {
+
             $pos = strpos( $url, '(' );
             if ( $pos > -1 && ( substr( $url, -1 ) === ')' ) ){
                 $feed = substr( $url, $pos );
