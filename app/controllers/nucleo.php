@@ -285,7 +285,10 @@ class Nucleo extends CI_Controller {
 
             if($isVariable)
             {
-                $url = utf8_decode($url);
+                if ( mb_detect_encoding( $url ) != 'UTF-8' ){
+                    $url = utf8_decode($url);
+                }   
+               // $url = utf8_decode($url);
             }    
 
             $contenido_feed = jsonp_decode( $url );

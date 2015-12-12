@@ -869,7 +869,12 @@ class Node{
                 }
                 else if( ( $nKey!='resources' || $nKey!='channel' ) )
                 {
-                    $writer->startElement($key);
+                    if(is_numeric($nKey)){
+                        $writer->startElement('resource');
+                    }
+                    else
+                        $writer->startElement($key);
+
                     $isOpen = true;
                 }
 
@@ -1340,9 +1345,34 @@ class Node{
             //echo 'KEY: '.$key.'<br>';
             $openResources = true;
 
+            if(is_array($nodes) && count($nodes)==1)
+            {
+                if(!is_numeric($key))
+                {   
+                    if(isset($nodes[$key])){
+                        echo 'Reemplaza';
+                        $nodes = $nodes[$key];
+                    }
+                }
+                else
+                {
+                    echo 'Reemplaza 1';
+                    $array = array();
+                    array_push($array, $nodes);   
+                    $nodes = $array;    
+                }
+
+            }
+            
+        
+
             if(isset($nodes['resources']))
                 if(is_array($nodes['resources']) && count($nodes['resources']) ==1 )
                     $openResources = false;
+            
+
+          //print_r($nodes);
+
 
             //if($key!='resources')
             if($openResources)
@@ -1357,6 +1387,8 @@ class Node{
             $writer->endDocument();
             $writer->flush();
 
+                
+
             $doc         = new DOMDocument();
             $doc->load( $file );
             $xpath       = new DOMXPath($doc);
@@ -1365,6 +1397,7 @@ class Node{
             $keyname     = 'resource';
 
 
+           
             $domElemsToRemove = array();
             foreach ($resources->childNodes as $resource) {
                 if($resource->nodeName!='resources' && $resource->nodeName!=$keyname and $resource->nodeType==1)
@@ -1393,7 +1426,9 @@ class Node{
 
                 $doc->save($file);
             }
+
             
+        
              
     }
 
