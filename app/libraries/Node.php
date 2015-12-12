@@ -1350,13 +1350,13 @@ class Node{
                 if(!is_numeric($key))
                 {   
                     if(isset($nodes[$key])){
-                        echo 'Reemplaza';
+                        //echo 'Reemplaza';
                         $nodes = $nodes[$key];
                     }
                 }
                 else
                 {
-                    echo 'Reemplaza 1';
+                    //echo 'Reemplaza 1';
                     $array = array();
                     array_push($array, $nodes);   
                     $nodes = $array;    
