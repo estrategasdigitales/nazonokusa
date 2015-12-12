@@ -1376,7 +1376,10 @@ class Node{
 
             //if($key!='resources')
             if($openResources)
+            {  
                 $writer->startElement("resources");
+                $writer->writeAttribute('xmlns:media','http://search.yahoo.com/mrss/');
+            }
 
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
 
