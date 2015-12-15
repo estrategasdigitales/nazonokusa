@@ -776,7 +776,6 @@ class Node{
 
     private function _toXML($writer,$nodes,$parentKey,$kind = "",$attributes = [])
     {
-      
        foreach ($nodes as $nKey => $nValue) 
        { 
 
@@ -784,10 +783,7 @@ class Node{
             $value = $nValue;
             $isOpen = false;
 
-            //echo 'PK:'.$parentKey.'  '.'KY:'.$nKey.'<br>';
-            //echo 'Is Array:'.is_array($nValue).'<br>';
-
-
+          
             if(!is_array($nValue))
             {
                 $is_numeric = explode("x",$nKey);
@@ -836,23 +832,14 @@ class Node{
                 if(array_key_exists("@cdata", $nValue))
                 {
                     if(!is_numeric($nKey))
-                    {
                         $writer->startElement($nKey);
-                        $isOpen = true;
-                    }
                     else
-                    {
                         $writer->startElement($key);
-                        $isOpen = true;
-                    }
 
                     $writer->writeCData($nValue["@cdata"]);
                     unset($nValue["@cdata"]);
 
-                    if($isOpen)
-                    {
-                        $writer->endElement();
-                    }
+                    $writer->endElement();                    
 
                     continue;
                 }     
@@ -870,7 +857,11 @@ class Node{
                 else if( ( $nKey!='resources' || $nKey!='channel' ) )
                 {
                     if(is_numeric($nKey)){
-                        $writer->startElement('resource');
+
+                        if($kind=='xml')
+                            $writer->startElement('resource');
+                        else if($kind=='rss')
+                            $writer->startElement('item');
                     }
                     else
                         $writer->startElement($key);
@@ -1278,12 +1269,15 @@ class Node{
         $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
 
 
+        if(isset($nodes['resources']))
+            $nodes=$nodes['resources'];
+
+
         $writer->startElement( 'channel' );
         $this->_headerRSS($writer,$attributes);
-        
-        $this->_toXML( $writer, $nodes, "item", 'rss' );
-        
-        $writer->endElement();
+            
+        $this->_toXML( $writer, $nodes, 'item', 'rss' );
+
         $writer->endElement();
 
         $writer->endDocument();
@@ -1296,7 +1290,7 @@ class Node{
         
         $domElemsToRemove = array();
         foreach ($resources->childNodes as $resource) {
-            if($resource->nodeName!='item' && $resource->nodeName!='channel' and $resource->nodeType==1 && !$resource->hasAttribute('isHeader') )
+            if($resource->nodeName!='item' && $resource->nodeName!='resource' && $resource->nodeName!='resources' && $resource->nodeName!='channel' && $resource->nodeType==1 && !$resource->hasAttribute('isHeader') )
             {
                 $domElemsToRemove[] = $resource;
             }
@@ -1308,7 +1302,6 @@ class Node{
         if(count($domElemsToRemove)>0){
             $newresource = $doc->createElement('item');
             $resources->appendChild($newresource);           
-            $guid;
             foreach ($resources->childNodes as $resource) {
                 if($resource->nodeName!='item' and $resource->nodeType==1 && !$resource->hasAttribute('isHeader'))
                 {
@@ -1329,7 +1322,8 @@ class Node{
     }
 
 
-    public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
+    public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' )
+    {
 
         $template = $this->_getTEMPLATE();
         $this->isHeader = false;
@@ -1372,7 +1366,6 @@ class Node{
             
 
           //print_r($nodes);
-
 
             //if($key!='resources')
             if($openResources)
@@ -1429,13 +1422,10 @@ class Node{
 
                 $doc->save($file);
             }
-
-            
-        
-             
     }
 
-    public function _toJSON( &$nodes ){
+    public function _toJSON( &$nodes )
+    {
 
         foreach ($nodes as $nKey => $nValue) {
             if ( is_array( $nValue ) and array_key_exists(0,$nValue) ){
@@ -1490,7 +1480,8 @@ class Node{
         }
     }
 
-    public function toJSON( $data = [], $file = 'json.json', $function = '' ){
+    public function toJSON( $data = [], $file = 'json.json', $function = '' )
+    {
 
         //print_r($data);
 
