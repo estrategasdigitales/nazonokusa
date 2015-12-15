@@ -776,16 +776,23 @@ class Node{
 
     private function _toXML($writer,$nodes,$parentKey,$kind = "",$attributes = [])
     {
+        
+       $isOpen = false;
+
        foreach ($nodes as $nKey => $nValue) 
        { 
 
             $key = $parentKey;
             $value = $nValue;
-            $isOpen = false;
-
+            
+            if($isOpen){
+                $isOpen=false;
+                $writer->endElement();
+            }
           
             if(!is_array($nValue))
             {
+                
                 $is_numeric = explode("x",$nKey);
                 if(count($is_numeric) > 1 )
                 {
@@ -799,12 +806,13 @@ class Node{
 
                 $writer->writeCData($nValue);
                 $writer->endElement();
+                $isOpen=false;
             }
             else{
 
                 if(isset($nValue["@value"]))
                 {
-                    if(!is_numeric($nKey) && ($nKey!=$key) )
+                    if( !is_numeric($nKey) && ($nKey!=$key) )
                     {
                         $writer->startElement($nKey);
                         $isOpen = true;
@@ -825,6 +833,7 @@ class Node{
                     if($isOpen)
                     {
                         $writer->endElement();
+                        $isOpen=false;
                     }
                     
                     continue;
@@ -839,35 +848,49 @@ class Node{
                     $writer->writeCData($nValue["@cdata"]);
                     unset($nValue["@cdata"]);
 
-                    $writer->endElement();                    
+                    $writer->endElement(); 
+                    $isOpen=false;                   
 
                     continue;
                 }     
 
                
-                if(!is_numeric($nKey) && ($nKey!=$key)  && ( $nKey!='resources' || $nKey!='channel' ) )
+                if(!is_numeric($nKey) && $nKey!=$key)
                 {
-                    $writer->startElement($nKey);
+                     if($kind=='rss' && $nKey =='resource')
+                        $writer->startElement('item');
+                    else
+                        $writer->startElement($nKey);
+
                     $isOpen = true;
                 }
-                else if( ($nKey==$key) && ( $nKey!='resources' || $nKey!='channel' ) )
-                {
-                    $isOpen = false;
+                else if($nKey!=$key && ( $key!='resources' || $key!='channel' ) )
+                {                                            
+                    if($kind=='rss' && $key =='resource')
+                    {
+                        $writer->startElement('item');
+                        $isOpen = true;
+                    }
+                    else if($kind == 'rss' && $key =='item')
+                    {
+                        $writer->startElement('item');
+                        $isOpen = true;
+                    }
+                    else if($kind == 'xml' && $key =='resource')
+                    {
+                        $writer->startElement('resource');
+                        $isOpen = true;
+                    }
+                    
                 }
                 else if( ( $nKey!='resources' || $nKey!='channel' ) )
                 {
-                    if(is_numeric($nKey)){
-
-                        if($kind=='xml')
-                            $writer->startElement('resource');
-                        else if($kind=='rss')
-                            $writer->startElement('item');
+                    if($isOpen){
+                        $isOpen=false;
+                        $writer->endElement();
                     }
-                    else
-                        $writer->startElement($key);
-
-                    $isOpen = true;
                 }
+               
 
                 if(array_key_exists("@attributes", $nValue)){
                     foreach ($nValue["@attributes"] as $katt => $vatt) {
@@ -884,6 +907,7 @@ class Node{
                 if($isOpen)
                 {
                     $writer->endElement();
+                    $isOpen=false;
                 }
 
             }
@@ -1357,12 +1381,11 @@ class Node{
                 }
 
             }
-            
+     
         
 
             if(isset($nodes['resources']))
-                if(is_array($nodes['resources']) && count($nodes['resources']) ==1 )
-                    $openResources = false;
+                $nodes=$nodes['resources'];
             
 
           //print_r($nodes);
