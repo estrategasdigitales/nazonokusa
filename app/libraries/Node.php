@@ -770,14 +770,14 @@ class Node{
 
     private function _toXML($writer,$nodes,$parentKey,$kind = "",$attributes = [])
     {
-      
+       
        foreach ($nodes as $nKey => $nValue) 
        { 
 
         if(is_array($nValue) && count($nValue) == 1)
             $nValue = $nValue[key($nValue)];
         if(is_array($nValue) && count($nValue) == 1)
-            $nValue = $nValue[key($nValue)];
+           $nValue = $nValue[key($nValue)];
 
             $key = $parentKey;
             $value = $nValue;
@@ -860,36 +860,38 @@ class Node{
                     continue;
                 }     
 
-               
-                if( !is_numeric($nKey) )
-                {
-                    
-                    $writer->startElement($nKey);    
 
-                    $isOpen = true;
+
+                if( !is_numeric($nKey))
+                {
+                    if($nKey!="@attributes")
+                    {
+                        $writer->startElement($nKey);    
+                        $isOpen = true;
+                    }
                     
                 }
                 else 
                 {                    
-                    if(!is_numeric($key)){
+                    if(!is_numeric($key) ){
                         
                         if($key == 'program')
                             $nKey = 'resource';
                         if($key == 'image_assets')
                             $nKey = 'image_asset';
-                        if($key == 'attributes')
-                            $nKey = 'attributes';
                         
                         if(!is_numeric($nKey))
                             $key = $nKey;
-                        //echo 'PK:'.$parentKey.'  '.'KY:'.$nKey.'<br>';
+
+                        //echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
                         $writer->startElement($key);
+                        $isOpen = true;
                     }
-                    else{
-                        $writer->startElement($nKey);
+                    else {
+                        $writer->startElement($nKey);                        
+                        $isOpen = true;
                     }
 
-                    $isOpen = true;
                 }
 
                 if(array_key_exists("@attributes", $nValue)){
@@ -910,8 +912,6 @@ class Node{
 
             
         }
-
-
     }
 
     /**
@@ -1019,6 +1019,8 @@ class Node{
         $paths = $this->_getPaths();
 
         $input    = $this->_getINPUT();
+
+        //print_r($paths);
 
         $data = $this->__do($paths,$input);
 
@@ -1153,6 +1155,7 @@ class Node{
         foreach($headers as $tag => $text)
         {
             $writer->startElement($tag);
+            $writer->writeAttribute('isHeader', 'true');
 
             if(is_array($text))
                 $this->_setHeaderRSS($writer,$text);
@@ -1176,70 +1179,87 @@ class Node{
         }else{
 
             $writer->startElement("title");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text(isset($attributes->title) ? $attributes->title : "televisa.com");
             $writer->endElement();
 
             $writer->startElement("link");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text(isset($attributes->link) ? $attributes->link : "http://www.televisa.com");
             $writer->endElement();
 
             $writer->startElement("description");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text(isset($attributes->description) ? $attributes->description : "El sitio número de internet de habla hispana con el mejor contenido de noticias, espectáculos, telenovelas, deportes, futbol, estadísticas y mucho más");
             $writer->endElement();
 
             $writer->startElement("image");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->startElement("title");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("televisa.com");
             $writer->endElement();
 
             $writer->startElement("link");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("http://i.esmas.com/img/univ/portal/rss/feed_1.jpg");
             $writer->endElement();
 
             $writer->startElement("link");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("http://www.televisa.com");
             $writer->endElement();
             $writer->endElement();
 
             $writer->startElement("language");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("es-mx");
             $writer->endElement();
 
             $writer->startElement("copyright");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("2005 Comercio Mas S.A. de C.V");
             $writer->endElement();
 
             $writer->startElement("managingEditor");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("ulises.blanco@esmas.net (Ulises Blanco)");
             $writer->endElement();
 
             $writer->startElement("webMaster");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("feeds@esmas.com (feeds Esmas.com)");
             $writer->endElement();
 
             $writer->startElement("pubDate");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text($this->getDate());
             $writer->endElement();
 
             $writer->startElement("lastBuildDate");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text($this->getDate());
             $writer->endElement();
 
             $writer->startElement("category");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("Home Principal esmas");
             $writer->endElement();
 
             $writer->startElement("generator");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("GALAXY 1.0");
             $writer->endElement();
 
             $writer->startElement("atom:link");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->writeAttribute( 'href', 'http://feeds.esmas.com/data-feeds-esmas/xml/index.xml' );
             $writer->writeAttribute( 'rel', 'self' );
             $writer->writeAttribute( 'type', 'application/rss+xml' );
             $writer->endElement();
 
             $writer->startElement("ttl");
+            $writer->writeAttribute('isHeader', 'true');
             $writer->text("60");
             $writer->endElement();
 
@@ -1319,16 +1339,6 @@ class Node{
             if(is_array($nodes) && count($nodes) == 1)
                 $nodes = $nodes[key($nodes)];
 
-          
-           /*foreach($nodes as $key => $value)
-            {
-              if(is_array($value) && count($value) > 1)
-              {
-                $nodes['resource'] = $nodes[$key];
-                unset($nodes[$key]);;
-              }
-
-            }*/
 
             if($openResources)
             {  
