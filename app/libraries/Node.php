@@ -313,9 +313,6 @@ class Node{
         }else
             return $paths[0];
 
-
-
-
     }
 
 
@@ -323,7 +320,6 @@ class Node{
     {
         return $this->PATHS;
     }
-
 
 
     private function _getTemplatePaths()
@@ -445,7 +441,6 @@ class Node{
                  if(array_key_exists(0,$node))
                      $node = $node[0];
 
-
                     $path = $node["path"];
             }
 
@@ -461,7 +456,9 @@ class Node{
             if($input and is_array($input) and array_key_exists(0,$input))
                 $inputs = $input;
             else
+            {
                 $inputs[0] = $input;
+            }
         }
         else{
 
@@ -534,10 +531,6 @@ class Node{
 
 
 
-
-
-
-
         $tpath = count($paths)-1;
 
 
@@ -562,7 +555,8 @@ class Node{
                         $eval2 = $property_eval."['0']['".$i."']";
                 }else
                     $eval2 = $property_eval."['".$i."']";// extra
-            }else
+            }
+            else
             {
                 if(!is_numeric($i))
                 {
@@ -609,7 +603,8 @@ class Node{
                         $eval = $last_eval; // extra
 
                     $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
-                }else
+                }
+                else
                 {
                     if(count($node["child"]) == 1)
                     {
@@ -753,7 +748,8 @@ class Node{
 
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
 
-                    }else
+                    }
+                    else
                     {
 
                         $key = explode("[*]",$key);
@@ -792,6 +788,17 @@ class Node{
 
     private function _toXML($writer,$nodes,$parentKey,$kind = "",$attributes = [])
     {
+
+        if(isset($nodes['media:group']))
+        {    
+            $nodes=$nodes['media:group'];
+            $parentKey = 'media:group';
+        }
+        if(isset($nodes['media:content']))
+        {    
+            $nodes=$nodes['media:content'];
+            $parentKey = 'media:content';
+        }
        
        foreach ($nodes as $nKey => $nValue) 
        { 
@@ -805,9 +812,9 @@ class Node{
             $value = $nValue;
             $isOpen = false;
 
+
             //echo 'PK:'.$parentKey.'  '.'KY:'.$nKey.'<br>';
             //echo 'Is Array:'.is_array($nValue).'<br>';
-
 
             if(!is_array($nValue))
             {
@@ -902,14 +909,20 @@ class Node{
                         if($key == 'image_assets')
                             $nKey = 'image_asset';
                         
-                        if(!is_numeric($nKey))
+                        if(!is_numeric($nKey) )
                             $key = $nKey;
 
                         //echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
+                       
+                         
                         $writer->startElement($key);
-                        $isOpen = true;
+                        $isOpen = true;                    
+
+
                     }
                     else {
+
+                        //echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
                         $writer->startElement($nKey);                        
                         $isOpen = true;
                     }
@@ -1312,6 +1325,9 @@ class Node{
         $writer->writeAttribute( 'xmlns:rawvoice','http://www.rawvoice.com/rawvoiceRssModule' );
 
 
+        if(isset($nodes['subcategories']))
+            $nodes=$nodes['subcategories'];
+
         if(isset($nodes['resources']))
             $nodes=$nodes['resources'];
 
@@ -1334,6 +1350,45 @@ class Node{
         $writer->endDocument();
         $writer->flush();
 
+
+        $doc         = new DOMDocument();
+        $doc->load( $file );
+        $xpath       = new DOMXPath($doc);
+        $resources   = $xpath->evaluate("/rss/channel")->item(0);
+        
+        $domElemsToRemove = array();
+        foreach ($resources->childNodes as $resource) {
+            if($resource->nodeName!='item' && $resource->nodeName!='resource' && $resource->nodeName!='resources' && $resource->nodeName!='channel' && $resource->nodeType==1 && !$resource->hasAttribute('isHeader') )
+            {
+                $domElemsToRemove[] = $resource;
+            }
+            else if($resource->nodeName=='#cdata-section'){
+                $domElemsToRemove[] = $resource;
+            }
+        }
+
+        if(count($domElemsToRemove)>0){
+            $newresource = $doc->createElement('item');
+            $resources->appendChild($newresource);           
+            foreach ($resources->childNodes as $resource) {
+                if($resource->nodeName!='item' and $resource->nodeType==1 && !$resource->hasAttribute('isHeader'))
+                {
+                    $xpath->evaluate("/rss/channel")->item(0)->lastChild->appendChild($resource->cloneNode(true));
+                }
+                else if($resource->nodeName=='#cdata-section'){
+                    $xpath->evaluate("/rss/channel")->item(0)->lastChild->appendChild($resource->cloneNode(true));
+                }
+            }
+            
+            foreach( $domElemsToRemove as $domElement ){ 
+              $domElement->parentNode->removeChild($domElement); 
+            } 
+
+            $doc->save($file);
+        }
+
+
+
     }
 
     public function toXML( $nodes = [], $file = 'xml.xml', $encoding = 'UTF-8' ){
@@ -1351,10 +1406,14 @@ class Node{
             //echo 'KEY: '.$key.'<br>';
             $openResources = true;
 
+
+            if(isset($nodes['subcategories']))
+                $nodes=$nodes['subcategories'];
+
             if(isset($nodes['resources']))
                 $nodes=$nodes['resources'];
             if(isset($nodes['channel']))
-            $nodes=$nodes['channel'];
+                $nodes=$nodes['channel'];
 
             if(is_array($nodes) && count($nodes) == 1)
                 $nodes = $nodes[key($nodes)];
