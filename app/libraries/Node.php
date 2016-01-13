@@ -270,26 +270,38 @@ class Node{
         $paths = $this->_setChild($paths);
         $paths = $this->toTree($paths);
 
+        //print_r($paths);
+
         $tree = [];
 
 
         if(($this->FORMATO_ORIGEN == "JSON" OR $this->FORMATO_ORIGEN == "JSONP") and $paths[0]["path"] !="")
         {
-            $new_childs[0] = $paths[0];
+            //echo 'XXX';
 
-            foreach($paths as $path)
+            $new_childs[0] = $paths[0];
+            return  $return = ["path" => "", "child" => $paths ];
+            
+            /*foreach($paths as $path)
             {
                 if(substr_count($path["path"],$paths[0]["path"]) == 0 )
                     $new_childs[] = $path;
 
             }
-
             if(count($new_childs) > 1)
-                return  ["path" => "", "child" => $new_childs ];
+            {
+                $return = ["path" => "", "child" => $new_childs ];
+                return $return;
+            }
             else
-                return $new_childs[0];
+            {
+                $return = $new_childs[0];
+                return $return;
+            }*/
 
         }else if(count($paths) > 2 and $paths[0]["path"] !="" ){
+
+            //echo 'YYY';
 
             $new_childs = array();
 
@@ -1055,7 +1067,11 @@ class Node{
 
         $input    = $this->_getINPUT();
 
+
+        //echo '<br><br>';
+
         //print_r($paths);
+        //print_r($input);
 
         $data = $this->__do($paths,$input);
 

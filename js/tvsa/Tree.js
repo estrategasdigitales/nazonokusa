@@ -38,7 +38,7 @@ Ext.define('TVSA.Tree', {
                     if(Ext.isObject(value))
                         id+="."+key;
                     else if(Ext.isArray(value))
-                        id+="."+key+"[*]";
+                        id+="."+key+"[*]";    
                     else if(  Ext.isObject( key ) )
                         id+="[*]";
                     else
@@ -119,7 +119,6 @@ Ext.define('TVSA.Tree', {
                 success: function (file) {
 
                     me.setData(file);
-
 
                 }
             });
