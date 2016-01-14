@@ -803,14 +803,27 @@ class Node{
 
         if(isset($nodes['media:group']))
         {    
-            $nodes=$nodes['media:group'];
+             $tmp = $nodes['media:group'];
+            foreach ($nodes as $key => $value) {
+                if($key!='media:group'){
+                    $tmp[$key] = $value;
+                }
+            }            
+            $nodes=$tmp;
             $parentKey = 'media:group';
         }
         if(isset($nodes['media:content']))
-        {    
-            $nodes=$nodes['media:content'];
+        {   
+            $tmp = $nodes['media:content'];
+            foreach ($nodes as $key => $value) {
+                if($key!='media:content'){
+                    $tmp[$key] = $value;
+                }
+            }            
+            $nodes=$tmp;
             $parentKey = 'media:content';
         }
+        
        
        foreach ($nodes as $nKey => $nValue) 
        { 
@@ -934,7 +947,7 @@ class Node{
                     }
                     else {
 
-                        //echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
+                        echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
                         $writer->startElement($nKey);                        
                         $isOpen = true;
                     }
