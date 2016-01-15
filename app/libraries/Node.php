@@ -800,7 +800,7 @@ class Node{
 
     private function _toXML($writer,$nodes,$parentKey,$kind = "",$attributes = [])
     {
-
+        /*
         if(isset($nodes['media:group']))
         {    
              $tmp = $nodes['media:group'];
@@ -822,15 +822,15 @@ class Node{
             }            
             $nodes=$tmp;
             $parentKey = 'media:content';
-        }
-        
+        }*/       
+
        
        foreach ($nodes as $nKey => $nValue) 
        { 
 
-        if(is_array($nValue) && count($nValue) == 1)
-            $nValue = $nValue[key($nValue)];
-        if(is_array($nValue) && count($nValue) == 1)
+        if(is_array($nValue) && count($nValue) == 1 && !array_key_exists("@attributes", $nValue) )
+           $nValue = $nValue[key($nValue)];
+        if(is_array($nValue) && count($nValue) == 1 && !array_key_exists("@attributes", $nValue) )
            $nValue = $nValue[key($nValue)];
 
             $key = $parentKey;
@@ -865,7 +865,8 @@ class Node{
                 }
                 
             }
-            else{
+            else
+            {
 
                 if(isset($nValue["@value"]))
                 {
@@ -947,7 +948,7 @@ class Node{
                     }
                     else {
 
-                        echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
+                        //echo 'PK:'.$key.'  '.'KY:'.$nKey.'<br>';
                         $writer->startElement($nKey);                        
                         $isOpen = true;
                     }
