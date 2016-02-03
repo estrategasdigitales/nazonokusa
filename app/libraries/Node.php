@@ -364,7 +364,19 @@ class Node{
             if (key_exists($name, $current_data)) {
                 return $current_data[$name];
             } else if(!is_numeric($key)){
-                return $current_data[$key][$name];
+
+                /*echo '<br>'.$key;
+                echo '<br>'.$name .'<br>';
+                print_r($current_data);
+                print_r($current_data[$key][$name]);
+                echo '<br><br>';*/
+
+                //return $current_data[$key][$name];
+                if(isset($current_data[$key][$name]))
+                    return $current_data[$key][$name];
+                else
+                    return '';
+
             }
         }
 
@@ -1087,9 +1099,11 @@ class Node{
         //print_r($paths);
         //print_r($input);
 
+
         $data = $this->__do($paths,$input);
 
-        //print_r($data);
+        //print_r($data); die;
+
 
         if($this->isTemplate)
         {
