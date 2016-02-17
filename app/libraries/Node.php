@@ -440,9 +440,10 @@ class Node{
     }
 
 
-    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = "")
+    private function __do($paths,$input,$original_input = [],$id_path = 0,$output = [],$path_parent = "",$last_eval = "",$parent_eval="",$last_eval_template = 0)
     {
         $node = $paths;
+        $path = '';
 
         if($id_path > 0)
         {
@@ -452,19 +453,22 @@ class Node{
 
             //$path_parent = $path;
 
-        }else
+        }
+        else
         {
-            if(array_key_exists(0,$input))
+            if(is_array($input) && array_key_exists(0,$input))
             {
                 $this->isJson = true;
                 $path = "";
                 if( isset($node[0]) and isset($node[0]["path"]) and $node[0]["path"] != "")
                     $node = ["path" => "", "child" => $node  ] ;
-            }else
+            }
+            else
             {
-                 if(array_key_exists(0,$node))
-                     $node = $node[0];
-
+                if(is_array($input) && array_key_exists(0,$node))
+                    {
+                         $node = $node[0];
+                    }
                     $path = $node["path"];
             }
 
@@ -480,13 +484,11 @@ class Node{
             if($input and is_array($input) and array_key_exists(0,$input))
                 $inputs = $input;
             else
-            {
                 $inputs[0] = $input;
-            }
         }
         else{
 
-            if($this->startsWith("media:",$path))
+            if($this->startsWith("media:",$path) || $this->startsWith("applicaster:",$path))
             {
                 $path = preg_replace("/\[\*\]$/","",$path);
 
@@ -518,7 +520,7 @@ class Node{
 
         }
 
-        if($input)
+        if($input && is_array($input))
         {
             if(count($inputs) == 0 and array_key_exists(0,$input))
             {
@@ -555,6 +557,10 @@ class Node{
 
 
 
+
+
+
+
         $tpath = count($paths)-1;
 
 
@@ -577,10 +583,10 @@ class Node{
                         $eval2 = $property_eval."['".$i."']";
                     else
                         $eval2 = $property_eval."['0']['".$i."']";
-                }else
-                    $eval2 = $property_eval."['".$i."']";// extra
-            }
-            else
+                }
+                //else
+                //    $eval2 = $property_eval."['".$i."']";// extra
+            }else
             {
                 if(!is_numeric($i))
                 {
@@ -626,10 +632,12 @@ class Node{
                     if(!$this->isJson and count($node["child"]) == 1 and $this->originFormat != "XML") // extra
                         $eval = $last_eval; // extra
 
-                    $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$i);
-                }
-                else
+                    //echo 'Se llama a __do <br>';
+
+                    $output = $this->__do($child,$record,$original_input,$id_path,$output,$path_parent,$eval,$last_eval,$last_eval_template++);
+                }else
                 {
+
                     if(count($node["child"]) == 1)
                     {
                         $last_eval = $eval; // extra
@@ -639,6 +647,7 @@ class Node{
 
                         if(is_numeric($is_number))
                         {
+                            $last_eval_template = $out[1];
                             array_pop($out[1]);
                             $last_eval = preg_replace('/\[\'[(0-9a-z:. )]\'\]$/',"",$last_eval);
                         }
@@ -661,6 +670,7 @@ class Node{
                         $return = $record;
                     $return = str_replace('"','\"',$return);
 
+
                     // when set template!!!
                     //if($child["path"].".".$child["key"] != $child["value"] and $child["path"] != "")
                     if($this->ESPECIFICO)
@@ -670,31 +680,9 @@ class Node{
 
                         preg_match_all('/\[(.*?)\]/', $eval_especifico, $matches);
 
-                        //$last_iteration = $matches[1][0];
-                       
-                        if($this->ESPECIFICO_FORMATO == 'RSS'){
-                            $last_iteration = $matches[1][1];
-                        }
-                        else
-                        {
-                            if($path == 'guid[*]')
-                                $last_iteration = $matches[1][0];
-                            else if ($path == '@attributes[*]')
-                                $last_iteration = $matches[1][0];
-                            else
-                                $last_iteration = $matches[1][count($matches[1])-1];
-                        }
+                        $last_iteration = $matches[1][count($matches[1])-1];
 
-                        //echo ' PATH_N '. $path . '<br>';
-                        //echo ' PATH_P '. $path_parent . '<br>';
-
-                        //$last_iteration = $matches[1][count($matches[1])-1];
-                        //$last_iteration = intval($last_iteration);
-
-                        //resource[*].attributes[*].pubDate
                         $eval_template = explode(".",$child["value"]);
-
-
 
                         $key_eval_template = array_search('item[*]', $eval_template);
 
@@ -709,66 +697,61 @@ class Node{
                         $first_node_iteration = explode("[*]",$eval_template[0]);
                         $first_node_iteration = $first_node_iteration[0];
 
-                       /*
-                        if(isset($output[$first_node_iteration]))
-                            $total_childs  = count($output[$first_node_iteration]);
-                        else
-                            $total_childs = 0;
-                        */
 
                         $current_iteration = $last_iteration;
 
-                        /*
-                        if($last_iteration!=$total_childs)
-                            $current_iteration = $total_childs + $last_iteration;
-
-                        */
 
                         foreach($eval_template as $eval_template_value => $eval_template_record)
                         {
 
                             $eval_template_record = explode("[*]",$eval_template_record);
 
-
+                            
                             if($eval_template_record[0] == "item")
                             {
 
                             }
-                            elseif(($this->isJsonVariable or $this->ESPECIFICO_FORMATO == "RSS" or $this->ESPECIFICO_FORMATO == "JSON" ))
+                            elseif($this->ESPECIFICO)
                             {
+                                //echo 'O1';
                                 $n_eval_template_record[0] = "[*]";
                                 $n_eval_template_record[1] = "['".$eval_template_record[0]."']";
-
                                 $eval_template_record = implode("",$n_eval_template_record);
+                                //echo "$eval_template_record <br>";
 
-                            }elseif( $eval_template_record > 1  or $this->isJsonVariable)
+                            }
+                            elseif( $eval_template_record > 1 )
                             {
-
-
+                                //echo 'O2';
                                 $eval_template_record[0] = "['".$eval_template_record[0]."']";
                                 $eval_template_record[1] = "[*]";
                                 $eval_template_record = implode("",$eval_template_record);
-                            }else
-                            {
-                                $eval_template_record = "['".$eval_template_record[0]."']";
-                            }
-
-
-                            if($eval_template_value == 0)
-                            {
-
-                                $eval_template[$eval_template_value] = str_replace("*",$current_iteration,$eval_template_record);
                             }
                             else
-                                $eval_template[$eval_template_value] = str_replace("*",0,$eval_template_record);
+                            {
+                                //echo 'O3';
+                                $eval_template_record = "['".$eval_template_record[0]."']";
+                            }
+                            
+
+                            //if($eval_template_value == 0)
+                            //{
+                                $eval_template[$eval_template_value] = str_replace("*",$last_eval_template,$eval_template_record);
+                                //echo "$eval_template_record : $last_eval_template : $last_eval_template : $eval_template[$eval_template_value] <br>";
+                            //}
+                            //else
+                            //    $eval_template[$eval_template_value] = str_replace("*",0,$eval_template_record);
+                            
+
                         }
 
                         //resource[0].attributes[0].pubDate
 
                         $eval_template = implode("",$eval_template);
-
                         $eval_template = explode("[*]",$eval_template);
                         $eval_template = implode("",$eval_template);
+
+                        //echo "\$output$eval_template = \"$return\";";
 
                         eval("\$output$eval_template = \"$return\";"); // when set template!!!
 
