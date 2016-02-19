@@ -346,7 +346,7 @@ class Cms_model extends CI_Model {
                 $this->db->where( 'nivel >=', 1 );
             else
                 $this->db->where( 'nivel >=', 2 );
-            $this->db->where( 'uid_usuario !=', $uid );
+            //$this->db->where( 'uid_usuario !=', $uid );
             if ( ! empty( $limit ) )
                 $this->db->limit( $limit, $start );
             $result = $this->db->get( $this->db->dbprefix( 'usuarios' ) );
