@@ -30,7 +30,7 @@ class Cron extends CI_Controller {
 		foreach ($crons as $key => $value) {
 			$this->set_cron($value->cron_config,$value->uid_trabajo);
 		}
-		//print_r($crons);
+		print_r($crons);
 	}
 
 	public function run_cronjob(){
