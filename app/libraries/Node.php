@@ -221,6 +221,7 @@ class Node{
 
         }
 
+        //print_r($return);
         return $return;
     }
 
@@ -263,6 +264,7 @@ class Node{
     {
 
         $paths = $this->_parsePATHS($kind);
+
         $paths = $this->_groupBy($paths,"path");
 
         $paths = $this->setNewPaths($paths);
@@ -1441,6 +1443,7 @@ class Node{
                 $nodes=$nodes['resources'];
             if(isset($nodes['channel']))
                 $nodes=$nodes['channel'];
+            
 
             if(is_array($nodes) && count($nodes) == 1)
                 $nodes = $nodes[key($nodes)];
@@ -1450,11 +1453,25 @@ class Node{
 
             if($openResources)
             {  
-                $writer->startElement("resources");
+                if($this->ESPECIFICO){
+                    $writer->startElement($key);
+                }
+                else
+                    $writer->startElement("resources");
+
                 $writer->writeAttribute('xmlns:media','http://search.yahoo.com/mrss/');
+                $writer->writeAttribute('xmlns:applicaster','http://search.yahoo.com/mrss/');
             }
 
+            //print_r($nodes);
+
+            if($this->ESPECIFICO){
+                $this->_toXML( $writer, $nodes, $key, 'xml' );
+            }
+            else{
                 $this->_toXML( $writer, $nodes, 'resource', 'xml' );
+            }
+
 
             if($openResources)
                 $writer->endElement();
@@ -1521,6 +1538,9 @@ class Node{
     }
 
     public function toJSON( $data = [], $file = 'json.json', $function = '' ){
+
+        //print_r($data);
+
         $this->_toJSON($data);
         if ( ! empty ( $function ) )
             $json = $function . '('. json_encode( $data ) .')';
